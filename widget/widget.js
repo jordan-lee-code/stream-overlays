@@ -19,7 +19,7 @@
 
   var STORE_KEY = "chat_poll_v1";
 
-  /* Style presets. The same twelve, with the same colours, in every overlay in this
+  /* Style presets. The same fourteen, with the same colours, in every overlay in this
      set, generated from one table so they cannot drift apart, so any preset looks
      like one family across a whole stream. The default, Soft black, is a see-through
      black panel with white text. */
@@ -95,6 +95,18 @@
       row: "rgba(255, 255, 255, 0.12)", track: "rgba(255, 255, 255, 0.18)",
       segs: ["#C8B6E2", "#D9A7C7", "#A88FC0", "#8E7B9E", "#6E6080", "#B695C8", "#E0BBD4", "#4F4658"],
       font: "Quicksand"
+    },
+    pastelpink: {
+      bg: "#FFE3EC", text: "#6A2E4B", accent: "#D95C8A", onAccent: "#FFF5F9",
+      row: "rgba(255, 255, 255, 0.5)", track: "rgba(106, 46, 75, 0.14)",
+      segs: ["#F7A8C6", "#FFC8DD", "#E0679A", "#FBB1BD", "#D98BB0", "#FFD6E6", "#F28DB2", "#C95F8B"],
+      font: "Fredoka"
+    },
+    faegreen: {
+      bg: "#2C4A36", text: "#EEF5DA", accent: "#C9E265", onAccent: "#2C4A36",
+      row: "rgba(238, 245, 218, 0.12)", track: "rgba(238, 245, 218, 0.2)",
+      segs: ["#C9E265", "#8FB84E", "#E6F29A", "#6E9A45", "#F2F7C0", "#A8CB62", "#B7D96D", "#4F7A3A"],
+      font: "Almendra"
     }
   };
   var BASE = PRESETS.glass;
@@ -133,6 +145,11 @@
   }
   function str(v, dflt) {
     return (v === undefined || v === null || v === "") ? dflt : String(v);
+  }
+  // For wording where an empty field is a real choice. StreamElements sends "" for a cleared
+  // field, which str() would turn back into the default.
+  function txt(v, dflt) {
+    return (v === undefined || v === null) ? dflt : String(v);
   }
   function cmd(v, dflt) {
     return str(v, dflt).toLowerCase().trim();
@@ -178,11 +195,11 @@
       words: {
         vote: str(f.voteWord, "vote"),
         votes: str(f.votesWord, "votes"),
-        blindSuffix: str(f.blindSuffix, " in"),
+        blindSuffix: txt(f.blindSuffix, " in"),
         hintVerb: str(f.hintVerb, "type"),
         hintTo: str(f.hintTo, "to"),
         hintOr: str(f.hintOr, "or"),
-        hintSuffix: str(f.hintSuffix, "in chat"),
+        hintSuffix: txt(f.hintSuffix, "in chat"),
         timerSuffix: str(f.timerSuffix, "")
       },
       // Colours used when the preset is Custom; a preset colours every part itself.
@@ -796,7 +813,7 @@
   function hintText() {
     var keys = poll.options.map(function (o, i) { return LETTERS[i]; });
     var W = cfg.words;
-    var tail = " " + W.hintSuffix;
+    var tail = W.hintSuffix ? " " + W.hintSuffix : "";
     if (keys.length >= 5) return W.hintVerb + " " + keys[0] + " " + W.hintTo + " " + keys[keys.length - 1] + tail;
     if (keys.length === 1) return W.hintVerb + " " + keys[0] + tail;
     return W.hintVerb + " " + keys.slice(0, -1).join(", ") + " " + W.hintOr + " " + keys[keys.length - 1] + tail;

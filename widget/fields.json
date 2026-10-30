@@ -560,6 +560,8 @@
       "pastel": "Cosy summer pastel",
       "celestial": "Celestial",
       "pastelgoth": "Pastel goth",
+      "pastelpink": "Pastel pink",
+      "faegreen": "Fae green",
       "custom": "Custom (use the colours below)"
     },
     "group": "Theme"
