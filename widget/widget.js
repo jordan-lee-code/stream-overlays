@@ -304,6 +304,7 @@
 
     set("--accent", T.accent);
     set("--flag", T.flag || T.accent);
+    set("--flag-edge", T.flag ? "inset 0 0 0 1px rgba(20, 16, 38, 0.38)" : "none");
     set("--track", T.track);
     set("--glow", T.glow);
     set("--thanks-scale", String(L.thanksScale));

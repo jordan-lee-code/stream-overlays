@@ -32,6 +32,6 @@
     "dev": "node build/build.js && python3 -m http.server 8000"
   },
   "dependencies": {
-    "sub-goals-overlay": "git+https://github.com/jordan-lee-code/sub-goals-overlay.git#v1.4.0"
+    "sub-goals-overlay": "git+https://github.com/jordan-lee-code/sub-goals-overlay.git#v1.4.1"
   }
 }
