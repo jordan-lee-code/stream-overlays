@@ -188,9 +188,9 @@
     c.maxShown = clamp(Math.floor(num(f.maxShown, 3)), 1, 10);
     c.maxPending = clamp(Math.floor(num(f.maxPending, 20)), 1, 50);
     c.repeatMs = Math.max(0, num(f.repeatSeconds, 0)) * 1000;
-    c.showPending = bool(f.showPending, false);
-    c.pendingLabel = txt(f.pendingLabel, "Next");
-    c.pendingRows = clamp(Math.floor(num(f.pendingRows, 2)), 1, 10);
+    c.showPending = bool(f.showPending, true);
+    c.dueText = txt(f.dueText, "due");
+    c.pendingRows = clamp(Math.floor(num(f.pendingRows, 3)), 1, 10);
     c.textSize = Math.max(2, num(f.textSize, 7));
     c.titleScale = Math.max(0.2, num(f.titleScale, 0.55));
     c.pendingScale = Math.max(0.2, num(f.pendingScale, 0.55));
@@ -305,40 +305,39 @@
   function render() {
     if (!el.app) return;
     var on = showing(), off = waiting(), t = now();
-    var pendingShown = cfg.showPending ? off.slice(0, cfg.pendingRows) : [];
-    el.root.hidden = !(on.length || pendingShown.length);
+    var rows = on.slice(0, cfg.maxShown).concat(cfg.showPending ? off.slice(0, cfg.pendingRows) : []);
+    el.root.hidden = !rows.length;
     el.app.classList.toggle("alert", on.length > 0 && cfg.pulse);
     el.title.textContent = cfg.title; el.title.hidden = !cfg.showTitle || !cfg.title || !on.length;
-    // Rebuilt only when what is on screen changes, so the countdowns can tick without flicker.
-    var key = on.slice(0, cfg.maxShown).map(function (i) { return i.id; }).join(",") + "/" + Math.max(0, on.length - cfg.maxShown) + "|" +
-      pendingShown.map(function (i) { return i.id; }).join(",");
+    // Rebuilt only when what is on screen changes, so the timers can tick without flicker.
+    var key = rows.map(function (i) { return i.id + (i.shown ? "d" : "w"); }).join(",") + "/" + Math.max(0, on.length - cfg.maxShown);
     if (key !== lastKey) {
       lastKey = key;
       clear(el.list);
-      on.slice(0, cfg.maxShown).forEach(function (it, n) {
-        var li = document.createElement("li"); li.className = "rm-item" + (n === 0 ? " first" : "");
+      var addRow = function (it, first) {
+        var li = document.createElement("li");
+        li.className = "rm-row " + (it.shown ? "due" : "waiting") + (first ? " first" : "");
+        li.id = "rm-row-" + it.id;
         li.appendChild(span("rm-text", it.text));
+        li.appendChild(span("rm-time", ""));
         el.list.appendChild(li);
-      });
+      };
+      var dueRows = on.slice(0, cfg.maxShown);
+      dueRows.forEach(function (it, n) { addRow(it, n === 0); });
+      // The count of the reminders that do not fit belongs with the ones that are due.
       if (on.length > cfg.maxShown) {
         var more = document.createElement("li"); more.className = "rm-more"; more.textContent = "+" + (on.length - cfg.maxShown) + " more";
         el.list.appendChild(more);
       }
-      clear(el.pending);
-      pendingShown.forEach(function (it) {
-        var li = document.createElement("li"); li.className = "rm-next";
-        li.appendChild(span("rm-next-label", cfg.pendingLabel));
-        li.appendChild(span("rm-next-text", it.text));
-        li.appendChild(span("rm-next-time", ""));
-        li.id = "rm-pending-" + it.id;
-        el.pending.appendChild(li);
-      });
+      rows.slice(dueRows.length).forEach(function (it) { addRow(it, false); });
     }
-    // The countdowns are plain text updates on the rows already there.
-    for (var i = 0; i < el.pending.children.length; i++) {
-      var li2 = el.pending.children[i], id = parseInt(String(li2.id).replace("rm-pending-", ""), 10), match = null;
-      for (var k = 0; k < off.length; k++) if (off[k].id === id) match = off[k];
-      if (match) li2.children[li2.children.length - 1].textContent = "in " + short(match.due - t);
+    // The timers are plain text updates on the rows already there. A reminder that is due says so.
+    for (var i = 0; i < el.list.children.length; i++) {
+      var li2 = el.list.children[i];
+      if (String(li2.className).indexOf("rm-row") !== 0) continue;
+      var id = parseInt(String(li2.id).replace("rm-row-", ""), 10), match = null;
+      for (var k = 0; k < state.items.length; k++) if (state.items[k].id === id) match = state.items[k];
+      if (match) li2.children[1].textContent = match.shown ? cfg.dueText : short(match.due - t);
     }
   }
   function popTitle() {
@@ -350,11 +349,11 @@
     var s = el.app.style;
     s.setProperty("--rm-size", cfg.textSize + "cqw");
     s.setProperty("--rm-title", cfg.titleScale);
-    s.setProperty("--rm-next", cfg.pendingScale);
+    s.setProperty("--rm-wait", cfg.pendingScale);
     s.setProperty("--rm-gap", cfg.itemGap + "em");
   }
   function bind() {
-    var ids = { root: "rm-root", app: "rm-app", title: "rm-title", list: "rm-list", pending: "rm-pending" };
+    var ids = { root: "rm-root", app: "rm-app", title: "rm-title", list: "rm-list" };
     for (var k in ids) { if (ids.hasOwnProperty(k)) el[k] = byId(ids[k]); }
   }
 
@@ -362,7 +361,7 @@
     if (!loaded) return;
     fireDue();
     if (cfg.repeatMs > 0 && showing().length && now() - lastRepeat >= cfg.repeatMs) { lastRepeat = now(); sound(); }
-    if (cfg.showPending && waiting().length) render();
+    if (waiting().length) render();
   }, TICK_MS);
 
   window.addEventListener("onWidgetLoad", function (obj) {

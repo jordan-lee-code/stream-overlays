@@ -56,20 +56,20 @@
   },
   "showPending": {
     "type": "checkbox",
-    "label": "Show the reminders that are still waiting, with a countdown",
-    "value": false,
+    "label": "Show a reminder as soon as it is set, with a countdown on the right (off shows it only once it is due)",
+    "value": true,
     "group": "Reminders"
   },
-  "pendingLabel": {
+  "dueText": {
     "type": "text",
-    "label": "Label before a waiting reminder",
-    "value": "Next",
+    "label": "What the timer says when the countdown runs out",
+    "value": "due",
     "group": "Reminders"
   },
   "pendingRows": {
     "type": "number",
     "label": "Waiting reminders shown",
-    "value": 2,
+    "value": 3,
     "min": 1,
     "max": 10,
     "step": 1,

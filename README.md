@@ -1,19 +1,19 @@
 # Reminder Overlay
 
-A StreamElements custom widget for the things you promised yourself you would do while streaming. Type `!reminder 15m clean room`, and fifteen minutes later it appears on screen. It stays there, through a refresh and however long you ignore it, until you type `!reminder clear`.
+A StreamElements custom widget for the things you promised yourself you would do while streaming. Type `!reminder 15m clean room`, and it appears on screen with a countdown on the right. When the countdown runs out it changes to "due" and stays there, through a refresh and however long you ignore it, until you type `!reminder clear`.
 
-<p align="center"><img src="docs/default.png" alt="A soft black rounded card with a small REMINDER title and the words clean room in large type" width="380"></p>
+<p align="center"><img src="docs/default.png" alt="A soft black rounded card with a reminder that is due, saying clean room with the word due on the right, above a second reminder counting down" width="380"></p>
 
-It is a single self-contained widget in plain JavaScript, with no dependencies and nothing to install. Nothing shows on screen until a reminder is due, so it can sit in a scene all the time.
+It is a single self-contained widget in plain JavaScript, with no dependencies and nothing to install. Nothing shows on screen until a reminder is set, so it can sit in a scene all the time.
 
 ## Features
 
 - Set from chat: `!reminder 15m clean room`, with times like `90s`, `1h30m`, `1:30:00` or a bare number of minutes.
-- Stays until cleared: a reminder that is due appears and is never timed out. It survives a refresh, and one that came due while the overlay was closed shows as soon as it loads.
+- A countdown on every reminder: the words on the left and a timer on the right, which counts down while it waits and turns to "due" when it runs out.
+- Stays until cleared: a reminder that is due is never timed out. It survives a refresh, and one that came due while the overlay was closed shows as soon as it loads.
 - Several at once: reminders stack in the order they came due, with a count of any more.
 - Clear, snooze and cancel: `!reminder clear` takes away what is showing, `snooze` hides it for a while and brings it back, and `cancel` drops one that is still waiting.
 - Hard to miss: the border pulses while a reminder is showing, and a sound can play again every few seconds until you deal with it.
-- Waiting reminders: optionally show what is coming, with a countdown.
 - Moderator control: the streamer, and by default moderators, can set and clear them. Viewers cannot.
 - Customisable: around 40 settings cover the wording, sizes, shape, outline, colours, fonts, sounds and animation.
 - Saved: reminders, waiting and showing, survive a browser-source refresh.
@@ -59,7 +59,7 @@ Choose **Custom** to use the colour pickers and font instead. They are ignored w
 1. In StreamElements, edit your overlay and add **+ Add Widget, Static/Custom, Custom Widget**.
 2. Select the widget, open **Settings, Open Editor**, and paste each file from `widget/` into the matching tab: `widget.html` into HTML, `widget.css` into CSS, `widget.js` into JS, and `fields.json` into Fields.
 3. Click **Done**. The settings are grouped into Commands, Reminders, Size, Manual controls, Look, Custom colours, Sounds and Troubleshooting.
-4. Size and position the widget. The text scales with the box, and nothing shows until a reminder is due.
+4. Size and position the widget. The text scales with the box, and nothing shows until a reminder is set.
 
 The widget reads Twitch chat and events through StreamElements, so it works as soon as it is on an active overlay.
 
@@ -79,9 +79,15 @@ The command word is a setting. Viewers can type the bare `!reminder` to make the
 
 **Writing the time.** The time is the first word after the command, with no spaces inside it: `90s`, `15m`, `1h30m`, `1d`, `1.5h`, `1:30:00` (hours, minutes, seconds), `5:00` (minutes and seconds), or a bare number, which is minutes. Everything after it is the reminder. A reminder can be set up to two days ahead.
 
+## The countdown, and due
+
+As soon as a reminder is set it shows on screen, with its words on the left and a timer on the right counting down: `clean room        14:59`. When the timer runs out it changes to `due`, the REMINDER title appears and the border starts to pulse. It then stays exactly like that until you clear it. Several reminders stack, with the ones that are due above the ones still counting down.
+
+If you would rather a reminder stayed out of sight until it is due, untick **Show a reminder as soon as it is set**. The word shown when the countdown ends is a setting too, and a blank one shows nothing.
+
 ## It stays until cleared
 
-A reminder that is due appears and stays. It has no timeout. Refreshing the browser source does not lose it, and neither does closing OBS: reminders are saved with the time they are due, so one that came due while the overlay was closed appears as soon as it loads.
+A reminder that is due shows "due" where the countdown was, and stays. It has no timeout. Refreshing the browser source does not lose it, and neither does closing OBS: reminders are saved with the time they are due, so one that came due while the overlay was closed appears as soon as it loads.
 
 Because it cannot be missed, it can also be annoying, which is the point. Tick the repeat setting to play the sound again every few seconds until it is cleared, or `snooze` it if you are not ready yet.
 
@@ -92,7 +98,7 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | Group | What it covers |
 | --- | --- |
 | Commands | The command word and who may use it. |
-| Reminders | The text for a reminder with no words, the snooze time, how many show at once and can wait, the repeating sound, and the list of waiting reminders. |
+| Reminders | The text for a reminder with no words, the snooze time, how many show at once and can wait, the repeating sound, whether a reminder shows while it counts down, and the word for when it is due. |
 | Size | Text, title and waiting-reminder sizes, the space between reminders, and the pulsing border. |
 | Manual controls | Buttons to show a test reminder, clear, clear everything, and snooze. |
 | Look | Title, the style preset, font, boldness, corners, padding, outline, shadow and Animate. |
@@ -138,9 +144,9 @@ docs/     screenshots used in this README
 
 The widget uses the StreamElements events `onWidgetLoad` and `onEventReceived` with `message` and `widget-button`, and `SE_API.store`.
 
-A reminder is timed by the clock of the computer running the overlay, and it only appears while the widget is loaded. If the overlay is closed when a reminder is due, it appears the next time the overlay loads.
+A reminder is timed by the clock of the computer running the overlay, and it only appears while the widget is loaded. If the overlay is closed when a reminder is due, it appears, saying due, the next time the overlay loads.
 
-A StreamElements widget can read chat but cannot write to it, so setting a reminder gives no reply in chat. You will see it appear when it is due, or turn on **Show the reminders that are still waiting** to see them counting down.
+A StreamElements widget can read chat but cannot write to it, so setting a reminder gives no reply in chat. You will see it appear on screen with its countdown straight away.
 
 The JavaScript is plain ES5, so it can be pasted straight into the StreamElements editor.
 
