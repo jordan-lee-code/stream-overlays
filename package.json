@@ -1,0 +1,33 @@
+{
+  "name": "stream-goals-overlay",
+  "version": "1.0.0",
+  "description": "A StreamElements custom widget: sub and bits goals for the stream that start again by themselves for each new stream.",
+  "private": true,
+  "license": "MIT",
+  "author": "Jordan Lee",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jordan-lee-code/stream-goals-overlay.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jordan-lee-code/stream-goals-overlay/issues"
+  },
+  "homepage": "https://github.com/jordan-lee-code/stream-goals-overlay#readme",
+  "keywords": [
+    "streamelements",
+    "twitch",
+    "overlay",
+    "widget",
+    "goals",
+    "sub-goal",
+    "bits"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "funding": "https://ko-fi.com/journeyingjordan",
+  "scripts": {
+    "test": "node test/test-widget.js",
+    "dev": "python3 -m http.server 8000"
+  }
+}
