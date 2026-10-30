@@ -1,0 +1,478 @@
+{
+  "command": {
+    "type": "text",
+    "label": "Command word",
+    "value": "!activity",
+    "group": "Commands"
+  },
+  "whoCanManage": {
+    "type": "dropdown",
+    "label": "Who can use it",
+    "value": "mods",
+    "options": {
+      "broadcaster": "Broadcaster only",
+      "mods": "Broadcaster + moderators"
+    },
+    "group": "Commands"
+  },
+  "layout": {
+    "type": "dropdown",
+    "label": "Layout",
+    "value": "list",
+    "options": {
+      "list": "A list of the latest events",
+      "latest": "Only the latest event, large"
+    },
+    "group": "Feed"
+  },
+  "rows": {
+    "type": "number",
+    "label": "Events shown in the list",
+    "value": 5,
+    "min": 1,
+    "max": 15,
+    "step": 1,
+    "group": "Feed"
+  },
+  "order": {
+    "type": "dropdown",
+    "label": "Order",
+    "value": "newest-first",
+    "options": {
+      "newest-first": "Newest at the top",
+      "newest-last": "Newest at the bottom"
+    },
+    "group": "Feed"
+  },
+  "fadeAfter": {
+    "type": "number",
+    "label": "Hide an event after this many seconds (0 to keep it until it scrolls off)",
+    "value": 0,
+    "min": 0,
+    "max": 3600,
+    "step": 1,
+    "group": "Feed"
+  },
+  "showSubs": {
+    "type": "checkbox",
+    "label": "Show new subs and resubs",
+    "value": true,
+    "group": "Feed"
+  },
+  "showGifts": {
+    "type": "checkbox",
+    "label": "Show gifted subs",
+    "value": true,
+    "group": "Feed"
+  },
+  "showBits": {
+    "type": "checkbox",
+    "label": "Show bits",
+    "value": true,
+    "group": "Feed"
+  },
+  "showTips": {
+    "type": "checkbox",
+    "label": "Show tips",
+    "value": true,
+    "group": "Feed"
+  },
+  "showFollows": {
+    "type": "checkbox",
+    "label": "Show follows",
+    "value": true,
+    "group": "Feed"
+  },
+  "showRaids": {
+    "type": "checkbox",
+    "label": "Show raids",
+    "value": true,
+    "group": "Feed"
+  },
+  "minBits": {
+    "type": "number",
+    "label": "Smallest cheer shown, in bits (0 for all)",
+    "value": 0,
+    "min": 0,
+    "step": 1,
+    "group": "Feed"
+  },
+  "minTip": {
+    "type": "number",
+    "label": "Smallest tip shown (0 for all)",
+    "value": 0,
+    "min": 0,
+    "step": 0.5,
+    "group": "Feed"
+  },
+  "ignoreNames": {
+    "type": "text",
+    "label": "Names to leave out, separated by commas (for example bots)",
+    "value": "",
+    "group": "Feed"
+  },
+  "textSub": {
+    "type": "text",
+    "label": "New sub",
+    "value": "{name} subscribed",
+    "group": "Wording"
+  },
+  "textResub": {
+    "type": "text",
+    "label": "Resub ({months} is the number of months)",
+    "value": "{name} resubscribed for {months} months",
+    "group": "Wording"
+  },
+  "textGift": {
+    "type": "text",
+    "label": "Gifted subs ({count}, and {subs} is sub or subs)",
+    "value": "{name} gifted {count} {subs}",
+    "group": "Wording"
+  },
+  "textBits": {
+    "type": "text",
+    "label": "Bits ({amount} is the number of bits)",
+    "value": "{name} cheered {amount} bits",
+    "group": "Wording"
+  },
+  "textTip": {
+    "type": "text",
+    "label": "Tip ({currency} and {amount})",
+    "value": "{name} tipped {currency}{amount}",
+    "group": "Wording"
+  },
+  "textFollow": {
+    "type": "text",
+    "label": "Follow",
+    "value": "{name} followed",
+    "group": "Wording"
+  },
+  "textRaid": {
+    "type": "text",
+    "label": "Raid ({amount} is the number of viewers)",
+    "value": "{name} raided with {amount} viewers",
+    "group": "Wording"
+  },
+  "currency": {
+    "type": "text",
+    "label": "Currency symbol",
+    "value": "£",
+    "group": "Wording"
+  },
+  "anonymousName": {
+    "type": "text",
+    "label": "Name shown for anonymous gifters and cheerers",
+    "value": "Anonymous",
+    "group": "Wording"
+  },
+  "showTags": {
+    "type": "checkbox",
+    "label": "Show a small tag before each event",
+    "value": true,
+    "group": "Tags and totals"
+  },
+  "tagSub": {
+    "type": "text",
+    "label": "Tag for subs",
+    "value": "Sub",
+    "group": "Tags and totals"
+  },
+  "tagGift": {
+    "type": "text",
+    "label": "Tag for gifts",
+    "value": "Gift",
+    "group": "Tags and totals"
+  },
+  "tagBits": {
+    "type": "text",
+    "label": "Tag for bits",
+    "value": "Bits",
+    "group": "Tags and totals"
+  },
+  "tagTip": {
+    "type": "text",
+    "label": "Tag for tips",
+    "value": "Tip",
+    "group": "Tags and totals"
+  },
+  "tagFollow": {
+    "type": "text",
+    "label": "Tag for follows",
+    "value": "Follow",
+    "group": "Tags and totals"
+  },
+  "tagRaid": {
+    "type": "text",
+    "label": "Tag for raids",
+    "value": "Raid",
+    "group": "Tags and totals"
+  },
+  "showTotals": {
+    "type": "checkbox",
+    "label": "Show the session totals under the list",
+    "value": true,
+    "group": "Tags and totals"
+  },
+  "totalsLabel": {
+    "type": "text",
+    "label": "Label before the totals",
+    "value": "This stream",
+    "group": "Tags and totals"
+  },
+  "totalSubs": {
+    "type": "checkbox",
+    "label": "Total: subs",
+    "value": true,
+    "group": "Tags and totals"
+  },
+  "totalGifts": {
+    "type": "checkbox",
+    "label": "Total: gifted subs",
+    "value": true,
+    "group": "Tags and totals"
+  },
+  "totalBits": {
+    "type": "checkbox",
+    "label": "Total: bits",
+    "value": true,
+    "group": "Tags and totals"
+  },
+  "totalTips": {
+    "type": "checkbox",
+    "label": "Total: tips",
+    "value": true,
+    "group": "Tags and totals"
+  },
+  "totalFollows": {
+    "type": "checkbox",
+    "label": "Total: follows",
+    "value": false,
+    "group": "Tags and totals"
+  },
+  "totalRaids": {
+    "type": "checkbox",
+    "label": "Total: raids",
+    "value": false,
+    "group": "Tags and totals"
+  },
+  "textSize": {
+    "type": "number",
+    "label": "Text size (percent of the box width)",
+    "value": 5,
+    "min": 2,
+    "max": 20,
+    "step": 0.25,
+    "group": "Size"
+  },
+  "titleScale": {
+    "type": "number",
+    "label": "Title size (share of the text size)",
+    "value": 1.2,
+    "min": 0.5,
+    "max": 3,
+    "step": 0.05,
+    "group": "Size"
+  },
+  "latestScale": {
+    "type": "number",
+    "label": "Size of the single latest event (share of the text size)",
+    "value": 1.6,
+    "min": 0.5,
+    "max": 4,
+    "step": 0.1,
+    "group": "Size"
+  },
+  "rowGap": {
+    "type": "number",
+    "label": "Space between events",
+    "value": 0.3,
+    "min": 0,
+    "max": 2,
+    "step": 0.05,
+    "group": "Size"
+  },
+  "btnClear": {
+    "type": "button",
+    "label": "Clear the feed (keep the totals)",
+    "group": "Manual controls"
+  },
+  "btnReset": {
+    "type": "button",
+    "label": "Clear the feed and the totals",
+    "group": "Manual controls"
+  },
+  "title": {
+    "type": "text",
+    "label": "Title",
+    "value": "Recent activity",
+    "group": "Look"
+  },
+  "showTitle": {
+    "type": "checkbox",
+    "label": "Show the title",
+    "value": true,
+    "group": "Look"
+  },
+  "themePreset": {
+    "type": "dropdown",
+    "label": "Style preset (the same twenty-two are in every overlay in this set)",
+    "value": "glass",
+    "options": {
+      "glass": "Soft black (default)",
+      "frost": "Soft white",
+      "midnight": "Midnight blue",
+      "sunset": "Sunset",
+      "forest": "Forest",
+      "ocean": "Ocean",
+      "rose": "Rose",
+      "neon": "Neon",
+      "cosycabin": "Cosy cabin",
+      "pastel": "Cosy summer pastel",
+      "celestial": "Celestial",
+      "pastelgoth": "Pastel goth",
+      "pastelpink": "Pastel pink",
+      "faegreen": "Fae green",
+      "pride": "Rainbow pride",
+      "progress": "Progress pride",
+      "trans": "Trans pride",
+      "bi": "Bi pride",
+      "pan": "Pan pride",
+      "enby": "Non-binary pride",
+      "lesbian": "Lesbian pride",
+      "ace": "Ace pride",
+      "custom": "Custom (use the colours below)"
+    },
+    "group": "Look"
+  },
+  "fontFamily": {
+    "type": "googleFont",
+    "label": "Font (used when the style preset is Custom)",
+    "value": "BioRhyme",
+    "group": "Look"
+  },
+  "weight": {
+    "type": "number",
+    "label": "Boldness (100 to 900)",
+    "value": 800,
+    "min": 100,
+    "max": 900,
+    "step": 100,
+    "group": "Look"
+  },
+  "radius": {
+    "type": "number",
+    "label": "Corner roundness, in pixels",
+    "value": 24,
+    "min": 0,
+    "max": 100,
+    "step": 1,
+    "group": "Look"
+  },
+  "pad": {
+    "type": "number",
+    "label": "Padding above and below",
+    "value": 0.5,
+    "min": 0,
+    "max": 3,
+    "step": 0.05,
+    "group": "Look"
+  },
+  "borderWidth": {
+    "type": "number",
+    "label": "Outline width, in pixels",
+    "value": 0,
+    "min": 0,
+    "max": 20,
+    "step": 1,
+    "group": "Look"
+  },
+  "borderColor": {
+    "type": "colorpicker",
+    "label": "Outline colour",
+    "value": "#FFFFFF",
+    "group": "Look"
+  },
+  "shadow": {
+    "type": "checkbox",
+    "label": "Shadow",
+    "value": false,
+    "group": "Look"
+  },
+  "animate": {
+    "type": "checkbox",
+    "label": "Animate",
+    "value": true,
+    "group": "Look"
+  },
+  "colorPanel": {
+    "type": "colorpicker",
+    "label": "Panel colour (used when the style preset is Custom)",
+    "value": "#000000",
+    "group": "Custom colours"
+  },
+  "panelOpacity": {
+    "type": "number",
+    "label": "Panel opacity, 0 to 1 (used when the style preset is Custom)",
+    "value": 0.55,
+    "min": 0,
+    "max": 1,
+    "step": 0.05,
+    "group": "Custom colours"
+  },
+  "cText": {
+    "type": "colorpicker",
+    "label": "Text (used when the style preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Custom colours"
+  },
+  "cAccent": {
+    "type": "colorpicker",
+    "label": "Accent (used when the style preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Custom colours"
+  },
+  "cTrack": {
+    "type": "colorpicker",
+    "label": "Bars and chips (used when the style preset is Custom)",
+    "value": "#444444",
+    "group": "Custom colours"
+  },
+  "cWarn": {
+    "type": "colorpicker",
+    "label": "Alert colour (used when the style preset is Custom)",
+    "value": "#D64545",
+    "group": "Custom colours"
+  },
+  "soundEvent": {
+    "type": "sound-input",
+    "label": "An event arrives",
+    "value": "",
+    "group": "Sounds"
+  },
+  "soundEventVol": {
+    "type": "number",
+    "label": "Volume for that sound (0 to 100)",
+    "value": 60,
+    "min": 0,
+    "max": 100,
+    "step": 5,
+    "group": "Sounds"
+  },
+  "test_soundEvent": {
+    "type": "button",
+    "label": "Test it",
+    "group": "Sounds"
+  },
+  "mute": {
+    "type": "checkbox",
+    "label": "Mute every sound",
+    "value": false,
+    "group": "Sounds"
+  },
+  "debug": {
+    "type": "checkbox",
+    "label": "Log every event to the browser-source console",
+    "value": false,
+    "group": "Troubleshooting"
+  }
+}
