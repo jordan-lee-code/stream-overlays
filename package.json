@@ -1,0 +1,32 @@
+{
+  "name": "sub-goals-overlay",
+  "version": "1.0.0",
+  "description": "A StreamElements custom widget that shows sub and bits goals filling up as chat reaches them.",
+  "private": true,
+  "license": "MIT",
+  "author": "Jordan Lee",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jordan-lee-code/sub-goals-overlay.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jordan-lee-code/sub-goals-overlay/issues"
+  },
+  "homepage": "https://github.com/jordan-lee-code/sub-goals-overlay#readme",
+  "keywords": [
+    "streamelements",
+    "twitch",
+    "overlay",
+    "widget",
+    "subscriber-goals",
+    "bits"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "test": "node test/test-widget.js",
+    "build": "node build/build-overlay.js",
+    "dev": "python3 -m http.server 8000"
+  }
+}

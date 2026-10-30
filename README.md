@@ -1,122 +1,160 @@
-# Sub Incentives
+# Sub Goals Overlay
 
-A little overlay for a Twitch stream that shows what chat is working towards. Five subs unlocks karaoke, ten unlocks playing a game, fifteen unlocks chat confessions, and every sub that lands nudges all of the progress bars forward together.
+A StreamElements custom widget that shows the goals chat is working towards, such as "5 subs unlocks karaoke", with a progress bar that fills as subs and bits arrive.
 
-It sits in a rounded, softly see-through black panel with white text in BioRhyme, and it is a StreamElements custom widget written in plain JavaScript, with no dependencies and nothing to install.
+![The overlay showing two reached goals, one in progress and one waiting](docs/screenshot.png)
 
-## How the counting works
+Goals are added live from chat with `!incentive add 15 chat confessions`. The widget is plain JavaScript with no dependencies and nothing to install, and almost everything about how it looks and what it says can be changed from the StreamElements settings.
 
-Every sub counts as one. That means a brand new sub, a resub, a Prime sub and a single targeted gift each add one to the total, and a gift bomb adds the number of subs that were gifted.
+## Features
 
-Bits count too, at 500 bits to one sub by default, so a 1000 bit cheer moves every bar by two. A cheer too small to make a whole sub is kept rather than thrown away, so 300 bits followed by another 300 adds up to one sub with 100 left over. You can change the rate with **Bits that count as one sub** in the Goals group, and setting it to 0 switches bits off.
+- **Live goals:** add, remove and clear goals from chat, with several shown at once.
+- **Smooth progress:** the goal being worked on gets the biggest line and a progress bar, while the others condense to a single line. Reached goals celebrate, then stay on screen struck through.
+- **Subs and bits:** new subs, resubs and gifted subs all count, and bits convert at a rate you choose, with leftovers carried over. The bits bar takes a few seconds to calculate, so chat can watch it happen.
+- **Sounds:** optional sounds for a sub, for bits and for a goal being reached.
+- **Pause and resume:** stop counting before a stream starts and start it when you go live.
+- **Scales to its box:** text scales with the space the widget is given in StreamElements, and long goal names shrink to fit rather than wrapping or being cut off.
+- **Customisable:** more than 80 settings cover wording, colours, fonts, sizes, spacing, sounds and the chat command words.
+- **Testable offline:** a local dev harness and an automated test script, no live stream needed.
 
-When bits arrive, a small strip appears at the bottom of the panel: a `+300 bits` chip over a bar. After a moment the bar fills towards the next sub slowly and evenly, over a few seconds, while the number beside it counts up in step, so you can watch the calculation happen. When the bar fills it flashes `= +1 sub`, holds, drops back and counts up to the bits left over, and then the strip tucks itself away. **Seconds the bits bar takes to calculate** and **Seconds the bits strip stays on screen once the bar has finished** in the Bits group set how long each part takes, and **Animate bits being cheered and turning into subs** switches the strip off while bits still count.
+## Screenshots
 
-Gift bombs deserve a careful note, because StreamElements sends them as several events. There is one announcement carrying the real number of subs, and then one follow-up per recipient whose `amount` is a streak or lifetime figure (something like 170), not a count. This widget counts the announcement and skips the follow-ups, so a bomb of 10 moves the total by 10 and not by 1,710.
+The overlay sits over your scene with a see-through panel. These are all taken from the local dev harness, with the default settings unless noted.
 
-If you ever see a number that surprises you on a real stream, turn on **debug** in the settings. Each subscriber event is then logged to the browser-source console exactly as it arrived, which is far kinder than guessing.
+**Bits turning into a sub.** A cheer shows a chip and a bar that fills over a few seconds while the number counts up. When the bar fills it flashes the subs it made, then drops back to show the bits left over.
 
-## Commands
+<p><img src="docs/bits.png" alt="The bits strip at the bottom of the panel showing +350 bits and = +1 sub with a glowing bar" width="440"></p>
 
-The command word is `!incentive` by default and can be renamed in the settings. Adding, removing and adjusting are for the broadcaster and moderators (or the broadcaster alone, if you choose that).
+**Tracking paused.** `!incentive stop` ignores new subs and bits, so goals can be set up before going live. A note appears beside the count.
+
+<p><img src="docs/paused.png" alt="The overlay with tracking paused, showing 0 subs (paused) and four goals" width="440"></p>
+
+**Every goal reached.** Reached goals stay on screen, struck through, and a thank-you message appears at the bottom.
+
+<p><img src="docs/thank-you.png" alt="The overlay with three reached goals struck through and a thank-you message" width="440"></p>
+
+**Your own look.** Colours, fonts, wording, outline, shadow and spacing are all settings. This one uses a pink theme, a different font for the title, and "gifts" in place of "subs".
+
+<p><img src="docs/custom-theme.png" alt="The overlay in a customised pink theme with an outline and a script font for the title" width="440"></p>
+
+## Quick start
+
+1. In StreamElements, add a **Custom widget** to your overlay and open its editor.
+2. Paste `widget/widget.html` into the HTML tab, `widget/widget.css` into CSS and `widget/widget.js` into JS.
+3. Open the Fields tab and paste in the contents of `widget/fields.json`.
+4. Resize the widget box on the canvas. The text scales with the box, so it looks the same at any size. About 620 by 560 pixels suits four goals.
+5. Use the **Add examples** button in Manual controls to check the look, or add goals from chat.
+
+If you prefer to import, run `npm run build` to generate `dist/incentives.overlay.json`. StreamElements does not document its overlay import format, so pasting the files in (above) is the reliable route.
+
+## Chat commands
+
+The command word is `!incentive` by default. The broadcaster and moderators can use everything except showing the panel, and the broadcaster alone can be chosen in the settings. Every word below can be renamed in the settings.
 
 | Command | What it does |
 | --- | --- |
-| `!incentive add 15 chat confessions` | Adds a goal: the first number is the subs needed, the rest is its name. |
+| `!incentive add 15 chat confessions` | Adds a goal: the number of subs needed, then its name. |
 | `!incentive remove 2` | Removes the second goal in the order shown. |
-| `!incentive remove karaoke` | Removes the nearest goal whose name contains that text, in any case. |
+| `!incentive remove karaoke` | Removes the nearest goal whose name contains that text. |
 | `!incentive clear` | Removes every goal. |
-| `!incentive subs +3` | Adds three to the sub count. Also `-3`, `set 12` and `=12`. |
-| `!incentive bits +500` | Adds bits from somewhere else, such as a different platform. They use your bits rate, carry over leftovers and play the bits animation, and they work even while tracking is stopped. |
-| `!incentive reset` | Sets the sub count back to zero and keeps the goals, ready for a new stream. |
-| `!incentive stop` | Pauses tracking: new subs and bits are ignored until you start it again. A small "(paused)" note appears beside the sub count, on the title's line. |
-| `!incentive start` | Resumes tracking. Nothing that arrived while it was stopped is counted afterwards. |
-| `!incentive` or `!incentive list` | Gives the panel a little pop. Anyone can use this one. |
+| `!incentive subs +3` | Adjusts the sub count. Also `-3`, `set 12` and `=12`. |
+| `!incentive bits +500` | Adds bits from somewhere else. They use your bits rate and play the bits animation. |
+| `!incentive reset` | Sets the count back to zero and re-opens every goal, ready for a new stream. |
+| `!incentive stop` | Pauses tracking. New subs and bits are ignored until you start it again. |
+| `!incentive start` | Resumes tracking. |
+| `!incentive` or `!incentive list` | Shows the panel. Anyone can use this. |
 
-Stopping is handy for the time before a big stream: set the goals up, leave tracking stopped, and type `!incentive start` when you go live. While stopped, adding goals and `!incentive subs ...` corrections still work. You can also have it start stopped by unticking **Start with tracking on** in the Goals group, which applies on the very first load only, and there is a **Start / stop** button in Manual controls. Whether it is running survives a browser-source refresh.
+A widget can read chat but cannot write to it, so `!incentive list` only shows the panel. A StreamElements chatbot command can reply in chat if you would like the goals read out.
 
-If you add a goal that has already been reached, it celebrates straight away and then clears like any other.
+## How counting works
 
-## What chat sees
+Every sub counts as one: a new sub, a resub, a Prime sub and a single gifted sub each add one. A gift bomb adds the number of subs that were gifted.
 
-Goals are shown nearest first, with the bar filling smoothly as subs arrive. When one is reached it glows and says Unlocked! for a few moments (eight seconds by default) before it fades out and makes room for the next goal. If a gift bomb unlocks several at once, they take turns rather than all flashing at the same moment.
+StreamElements reports a gift bomb as several events. One announcement carries the real number of subs, and then one follow-up per recipient carries a streak or lifetime figure (for example 170) in the same `amount` field. The widget counts the announcement and ignores the follow-ups, so a bomb of 10 moves the total by 10 and not by 1,710.
 
-When every goal has been reached and the last celebration is over, a thank-you appears at the bottom of the panel: "Thank you for your generosity! <3" under a thin divider, styled like the bits strip. It goes away again if you add a goal or reset, and it needs **Keep reached goals on screen** to be ticked, because that is what keeps the finished goals there to be counted. You can change the words, switch it off, or add a full glowing bar under it, in the **Thank you** group.
+Bits count at 500 to a sub by default. A cheer too small to make a whole sub is kept, so 300 bits followed by another 300 makes one sub with 100 left over. A rate of 0 switches bits off.
 
-By default four goals show at once. If you have more than that, the nearest unfinished ones win the slots. The panel stays out of sight entirely while there are no goals.
+If a count ever looks wrong on a live stream, tick **Log each subscriber and cheer event** in the Troubleshooting settings. Each event is then logged to the browser-source console exactly as it arrived.
 
-## Setting it up in StreamElements
+## Goals and the thank-you message
 
-Option A, importing the overlay:
+Goals are shown nearest first. By default four upcoming goals show at once. When a goal is reached it glows and says "Unlocked!" for a few seconds, then settles into a struck-through line that stays on screen. Several goals reached by one gift bomb take turns.
 
-1. Run `node build/build-overlay.js`.
-2. In StreamElements, import `dist/incentives.overlay.json` as a new overlay.
+Once every goal has been reached and the last celebration is over, a thank-you message appears at the bottom of the panel. It disappears again if you add a goal or reset. Both are optional and configurable.
 
-I have to be honest that the import format StreamElements uses is not publicly documented, so this route is a best effort and I have not been able to confirm it against a live account.
+Whether tracking is running, the sub count, leftover bits and the goals are all saved in the StreamElements store, so a browser-source refresh keeps them.
 
-Option B, pasting it in, which is the route I would trust:
+## Configuration
 
-1. In StreamElements, add a **Custom widget** to your overlay and open its editor.
-2. Paste `widget/widget.html` into the HTML tab, `widget/widget.css` into CSS, and `widget/widget.js` into JS.
-3. Open the Fields tab and paste in the contents of `widget/fields.json`.
-4. Resize the widget box on the canvas. The panel is always exactly as wide as the box you draw, so it can never outgrow the stream. A goal name too long for its row shrinks to fit rather than wrapping, and is only trimmed with an ellipsis if it would have to shrink a very long way. The text scales with the box, so the panel looks the same whether you draw it small in a corner or large: the **Text size** setting is how big the text is in a box 620 pixels wide, and everything is scaled from there. If the content is too tall for the box, the text scales down a little further so everything fits inside it. About 620 by 560 pixels suits four goals.
+Every setting has a plain label in StreamElements, grouped as follows.
 
-The **Manual controls** group in the settings has buttons to add three example goals, nudge the count up and down, reset it, and clear the goals, which is handy for checking the look before going live.
+| Group | What it covers |
+| --- | --- |
+| Commands | The command word, who can use it, and the word for each action. |
+| Counting | Whether new subs and gifts count, whether tracking starts on, and a starting count. |
+| Bits | The bits rate, the animation, how long the bar takes to calculate, and how long the strip stays. |
+| Goals | How many show at once, their order, whether reached goals stay, and the celebration time. |
+| Heading | The title and sub count: text, size, boldness, colour and an optional font of their own. |
+| Wording | The words for sub and subs, the celebrating text, the reached text and the paused note. |
+| Panel | Colour, opacity, corners, padding, an optional outline and shadow, and vertical position. |
+| Text | Font, size, line spacing, and the colours and boldness of the current, waiting and reached goals. |
+| Progress bars | Bar colours, thickness, glow and spacing. |
+| Thank you | The message, its size, boldness and colour, and an optional bar. |
+| Sounds | A sound and volume for subs, bits and goals, plus a master mute. |
+| Animation | One switch for all animation, and how long a bar takes to fill. |
+| Manual controls | Buttons to add example goals, adjust the count, start or stop tracking, reset and clear. |
 
-## Changing things without me
-
-Nearly everything can be changed from the widget's settings in StreamElements, so if something needs a tweak while I am away, nobody has to touch the code. Each setting has a plain label saying what it does, and they are grouped like this:
-
-- **Commands:** the command word, who can use it, and the word for each action (`add`, `remove`, `clear`, `subs`, `bits`, `reset`, `start`, `stop`, `list`), in case you would rather say `!goal new 15 movie night`.
-- **Counting:** whether new subs and resubs count, whether gifts count, whether tracking starts on, and a starting count.
-- **Bits:** how many bits make a sub (0 switches bits off), whether to animate them, how many seconds the bar takes to calculate (3 by default), how long the strip stays once it has finished, and the word used for bits.
-- **Goals:** how many show at once, the order, whether reached goals stay on screen, how long the celebration lasts, whether waiting goals show their target, and the longest name allowed.
-- **Heading:** the title text and whether the sub count shows beside it. The title and the sub count always share one size (larger than the goals by default, and if a long title has to shrink to fit, the count shrinks with it), and each has its own boldness (extra bold by default), colour and, if you tick the box, a font of their own.
-- **Wording:** the words for one sub and several subs, the celebrating text, the text beside a reached goal, and the note shown while paused.
-- **Panel:** colour, opacity, corner roundness, padding, an optional outline and shadow, and where the panel sits in its box.
-- **Text:** the font (BioRhyme by default), text size, line spacing, the size of the goal being worked on (the biggest line in the list) with the waiting and reached goals smaller beside it, the colour and boldness of each of those, plus strike-through and a soft shadow.
-- **Progress bars:** the bar colour, the empty bar colour and opacity, the glow, the thickness and the space between goals.
-- **Thank you:** the message that appears once every goal is reached, whether to show it, an optional glowing bar under it (off by default), and its size, boldness and colour.
-- **Sounds:** a sound for a sub, for bits and for a goal being reached, each uploaded straight into the settings, with its own volume and one tick box that mutes everything.
-- **Animation:** one tick box that switches every animation off, and how long a bar takes to fill.
-- **Manual controls:** buttons to add example goals, nudge the count, start or stop tracking, reset, or clear the goals.
-
-Chat can do the everyday things (adding goals, fixing the count, starting and stopping), and the settings cover the rest, so between them there should be very little that needs the code.
+The full list, with defaults, is in [`widget/fields.json`](widget/fields.json).
 
 ## Sounds
 
-There are three, and each is optional: one when a sub counts, one when bits are cheered or added, and one when a goal is reached. In StreamElements, each has an upload box in the **Sounds** group of the settings, so there is nothing to host yourself. Leave a box empty for no sound.
+Each of the three sounds has an upload box in the Sounds group, so there is nothing to host yourself. Leave a box empty for no sound.
 
-A gift bomb plays the sub sound once, not once per recipient, and a gift bomb that reaches several goals plays the goal sound once. When a sub or cheer is the thing that reaches a goal, only the goal sound plays so the two do not talk over each other, and you can untick **When a sub or cheer reaches a goal, play only the goal sound** if you would rather hear both.
+A gift bomb plays the sub sound once, not once per recipient, and a bomb that reaches several goals plays the goal sound once. When a sub or cheer is what reaches a goal, only the goal sound plays, unless you untick that option. Manual `!incentive subs` corrections are silent.
 
-Manual corrections with `!incentive subs` are silent, though they can still reach a goal and play its sound. `!incentive bits` plays the bits sound, since it also plays the bits animation. While tracking is stopped, real subs and cheers are ignored and so make no sound at all. The **Manual controls** group has a button for each sound, handy for checking a volume without waiting for a real sub.
+A browser may refuse to play sound until someone has interacted with the page, which can happen in an editor preview. An OBS browser source plays sounds without that.
 
-One thing to know: a browser can refuse to play sound until someone has interacted with the page, which can happen in a preview window. In an OBS browser source, sounds play without that.
+## Local development
 
-## Trying it locally first
+There is no build step and no dependencies. Serve the project root and open the dev harness:
 
-```
-python3 -m http.server 8000
-```
-
-Then open `http://localhost:8000/dev/`. The harness stands in for StreamElements, so you can add goals, send new subs, resubs, single gifts and full gift bombs, type chat commands as a viewer, moderator or broadcaster, change the settings, and watch a live readout of what would be saved. The **Every setting** section at the bottom of the sidebar is generated from `fields.json`, so it offers exactly what StreamElements will, which makes it the place to try a change before relying on it. Each sound setting there has a **Use a test beep** button, so you can hear the sounds without any audio files. Reset saved state clears it all and starts fresh.
-
-It has to be served over http rather than opened as a file, and the BioRhyme font is fetched from Google Fonts, so it needs an internet connection to look right.
-
-## Tests
-
-```
-node test/test-widget.js
+```sh
+npm run dev
+# then open http://localhost:8000/dev/
 ```
 
-This runs the real `widget.js` headlessly against a small mock of the page and of StreamElements, and checks sub counting (including the gift bomb trap), adding, removing and clearing goals, permissions, unlocking and fading, the visible cap, persistence across a refresh, and the look settings. It exits non-zero if anything fails.
+The harness stands in for StreamElements. It can send new subs, resubs, single gifts, gift bombs and cheers, type chat commands as a viewer, moderator or broadcaster, and show what would be saved. The **Every setting** section is generated from `widget/fields.json`, so it offers exactly what StreamElements will, and each sound setting has a **Use a test beep** button.
 
-## Notes and limitations
+The harness must be served over http rather than opened as a file. Fonts come from Google Fonts, so an internet connection is needed for the right look.
 
-A widget can read chat but cannot speak in it, so `!incentive list` only pops the panel. If you would like the goals read out in chat, a StreamElements chatbot command can do that; `dist/incentives-commands.txt` has a line to start from.
+## Testing
 
-The sub counting follows the event shapes in the StreamElements reference, and I have not yet watched it run against live traffic. The debug setting is there for exactly that first stream.
+```sh
+npm test
+```
 
-Goals and the sub count are saved with the StreamElements store, so a browser-source refresh keeps them. A goal that is mid-celebration when the page refreshes is treated as earned and is not brought back.
+This runs the real `widget/widget.js` headlessly against a small mock of the page and of StreamElements, and exits non-zero if anything fails. It covers sub and bits counting (including the gift bomb case), commands and permissions, goals, sounds, persistence and every setting. It also checks that every field in `fields.json` is read by the widget.
 
-I hope it makes the moment a goal lands feel as good for chat as it does for you.
+## Project layout
+
+```
+widget/   the widget itself: HTML, CSS, JS and the StreamElements fields
+dev/      the local dev harness
+test/     the automated test script
+build/    builds the optional overlay import file into dist/
+docs/     screenshots used in this README
+```
+
+## Compatibility and limitations
+
+The widget uses the StreamElements events `onWidgetLoad`, `onEventReceived` with `subscriber-latest`, `cheer-latest`, `message` and `widget-button`, and `SE_API.store`. Event shapes follow the StreamElements documentation, and the Troubleshooting option is there to check them against a live stream.
+
+The JavaScript is deliberately ES5 style so it can be pasted straight into the StreamElements editor.
+
+## Contributing
+
+Contributions are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## License
+
+[MIT](LICENSE)
