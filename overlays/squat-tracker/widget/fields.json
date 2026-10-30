@@ -1,0 +1,508 @@
+{
+  "viewCommand": {
+    "type": "text",
+    "label": "Show / adjust command (anyone shows; mods can adjust, e.g. !squats -5)",
+    "value": "!squats",
+    "group": "Commands"
+  },
+  "resetCommand": {
+    "type": "text",
+    "label": "Reset command (mods)",
+    "value": "!squatsreset",
+    "group": "Commands"
+  },
+  "lockCommand": {
+    "type": "text",
+    "label": "Lock command (mods) - gifted subs stop adding, manual controls still work",
+    "value": "!squatslock",
+    "group": "Commands"
+  },
+  "unlockCommand": {
+    "type": "text",
+    "label": "Unlock command (mods) - gifted subs start adding again",
+    "value": "!squatsunlock",
+    "group": "Commands"
+  },
+  "whoCanManage": {
+    "type": "dropdown",
+    "label": "Who can lock, reset and adjust the counter",
+    "value": "mods",
+    "options": {
+      "broadcaster": "Broadcaster only",
+      "mods": "Broadcaster + moderators"
+    },
+    "group": "Commands"
+  },
+  "subsPerBlock": {
+    "type": "number",
+    "label": "Gifted subs needed per block",
+    "value": 5,
+    "min": 1,
+    "max": 100,
+    "step": 1,
+    "group": "Squat rule"
+  },
+  "squatsPerBlock": {
+    "type": "number",
+    "label": "Squats added per completed block",
+    "value": 5,
+    "min": 1,
+    "max": 100,
+    "step": 1,
+    "group": "Squat rule"
+  },
+  "startCount": {
+    "type": "number",
+    "label": "Starting squat count (applies on the very first load only)",
+    "value": 0,
+    "min": 0,
+    "max": 100000,
+    "step": 1,
+    "group": "Squat rule"
+  },
+  "carryLeftover": {
+    "type": "checkbox",
+    "label": "Carry leftover subs over: gifted subs short of a block are kept, so 3 and then 3 more make a block of 5",
+    "value": false,
+    "group": "Squat rule"
+  },
+  "countSingleGifts": {
+    "type": "checkbox",
+    "label": "Count a single gifted sub (one sub towards a block)",
+    "value": true,
+    "group": "Squat rule"
+  },
+  "countNewSubs": {
+    "type": "checkbox",
+    "label": "Also count new subs, resubs and Prime subs (one each)",
+    "value": false,
+    "group": "Squat rule"
+  },
+  "maxCount": {
+    "type": "number",
+    "label": "Highest the count can go (0 for no limit)",
+    "value": 0,
+    "min": 0,
+    "max": 100000,
+    "step": 1,
+    "group": "Squat rule"
+  },
+  "debug": {
+    "type": "checkbox",
+    "label": "Log each gifted-sub event to the browser console (for troubleshooting)",
+    "value": false,
+    "group": "Squat rule"
+  },
+  "label": {
+    "type": "text",
+    "label": "Caption under the number (leave blank for just the number, like the example)",
+    "value": "",
+    "group": "Look"
+  },
+  "showFloat": {
+    "type": "checkbox",
+    "label": "Float a little +N above the box when squats are added",
+    "value": true,
+    "group": "Look"
+  },
+  "floatPlus": {
+    "type": "text",
+    "label": "Text before the floating number when squats are added (the + in +15)",
+    "value": "+",
+    "group": "Look"
+  },
+  "floatSuffix": {
+    "type": "text",
+    "label": "Text after the floating number (for example squats)",
+    "value": "",
+    "group": "Look"
+  },
+  "showLock": {
+    "type": "checkbox",
+    "label": "Show a little padlock on the sticker while the count is locked",
+    "value": true,
+    "group": "Look"
+  },
+  "showTail": {
+    "type": "checkbox",
+    "label": "Show the little circle tail under the sticker",
+    "value": false,
+    "group": "Look"
+  },
+  "countScale": {
+    "type": "number",
+    "label": "Size of the number compared with the default (1 is the default)",
+    "value": 1,
+    "min": 0.3,
+    "max": 2,
+    "step": 0.05,
+    "group": "Sticker"
+  },
+  "labelScale": {
+    "type": "number",
+    "label": "Size of the caption compared with the default (1 is the default)",
+    "value": 1,
+    "min": 0.3,
+    "max": 3,
+    "step": 0.05,
+    "group": "Sticker"
+  },
+  "floatScale": {
+    "type": "number",
+    "label": "Size of the floating +N compared with the default (1 is the default)",
+    "value": 1,
+    "min": 0.3,
+    "max": 3,
+    "step": 0.05,
+    "group": "Sticker"
+  },
+  "radius": {
+    "type": "number",
+    "label": "Corner roundness, as a percentage of the box's smaller side",
+    "value": 14,
+    "min": 0,
+    "max": 50,
+    "step": 1,
+    "group": "Sticker"
+  },
+  "paddingV": {
+    "type": "number",
+    "label": "Space above and below the contents, as a percentage of the box's smaller side",
+    "value": 6,
+    "min": 0,
+    "max": 40,
+    "step": 1,
+    "group": "Sticker"
+  },
+  "paddingH": {
+    "type": "number",
+    "label": "Space either side of the contents, as a percentage of the box's smaller side",
+    "value": 12,
+    "min": 0,
+    "max": 40,
+    "step": 1,
+    "group": "Sticker"
+  },
+  "gap": {
+    "type": "number",
+    "label": "Space between the number and the caption, as a percentage of the box's smaller side",
+    "value": 1,
+    "min": 0,
+    "max": 20,
+    "step": 0.5,
+    "group": "Sticker"
+  },
+  "tilt": {
+    "type": "number",
+    "label": "Tilt in degrees (negative leans left, 0 is straight)",
+    "value": 0,
+    "min": -20,
+    "max": 20,
+    "step": 0.5,
+    "group": "Sticker"
+  },
+  "borderWidth": {
+    "type": "number",
+    "label": "Outline width in pixels (0 for none)",
+    "value": 0,
+    "min": 0,
+    "max": 30,
+    "step": 1,
+    "group": "Sticker"
+  },
+  "shadow": {
+    "type": "checkbox",
+    "label": "Soft shadow under the sticker",
+    "value": false,
+    "group": "Sticker"
+  },
+  "textShadow": {
+    "type": "checkbox",
+    "label": "Soft shadow behind the text, to help it read over bright scenes",
+    "value": false,
+    "group": "Sticker"
+  },
+  "countWeight": {
+    "type": "dropdown",
+    "label": "Boldness of the number",
+    "value": "800",
+    "options": {
+      "400": "Regular",
+      "500": "Medium",
+      "600": "Semi-bold",
+      "700": "Bold",
+      "800": "Extra bold"
+    },
+    "group": "Text"
+  },
+  "labelWeight": {
+    "type": "dropdown",
+    "label": "Boldness of the caption",
+    "value": "700",
+    "options": {
+      "400": "Regular",
+      "500": "Medium",
+      "600": "Semi-bold",
+      "700": "Bold",
+      "800": "Extra bold"
+    },
+    "group": "Text"
+  },
+  "floatWeight": {
+    "type": "dropdown",
+    "label": "Boldness of the floating +N",
+    "value": "700",
+    "options": {
+      "400": "Regular",
+      "500": "Medium",
+      "600": "Semi-bold",
+      "700": "Bold",
+      "800": "Extra bold"
+    },
+    "group": "Text"
+  },
+  "labelOpacity": {
+    "type": "number",
+    "label": "Caption opacity (0 is invisible, 1 is solid)",
+    "value": 1,
+    "min": 0,
+    "max": 1,
+    "step": 0.05,
+    "group": "Text"
+  },
+  "labelSpacing": {
+    "type": "number",
+    "label": "Space between the caption's letters, in em",
+    "value": 0.03,
+    "min": 0,
+    "max": 0.5,
+    "step": 0.01,
+    "group": "Text"
+  },
+  "themePreset": {
+    "type": "dropdown",
+    "label": "Style preset (pick Custom to use your own colours below)",
+    "value": "glass",
+    "options": {
+      "glass": "Soft black (default)",
+      "frost": "Soft white",
+      "midnight": "Midnight blue",
+      "sunset": "Sunset",
+      "forest": "Forest",
+      "ocean": "Ocean",
+      "rose": "Rose",
+      "neon": "Neon",
+      "cosycabin": "Cosy cabin",
+      "pastel": "Cosy summer pastel",
+      "celestial": "Celestial",
+      "pastelgoth": "Pastel goth",
+      "pastelpink": "Pastel pink",
+      "faegreen": "Fae green",
+      "pride": "Rainbow pride",
+      "progress": "Progress pride",
+      "trans": "Trans pride",
+      "bi": "Bi pride",
+      "pan": "Pan pride",
+      "enby": "Non-binary pride",
+      "lesbian": "Lesbian pride",
+      "ace": "Ace pride",
+      "custom": "Custom (use the colours below)"
+    },
+    "group": "Theme"
+  },
+  "fontFamily": {
+    "type": "googleFont",
+    "label": "Font",
+    "value": "BioRhyme",
+    "group": "Theme"
+  },
+  "colorAccent": {
+    "type": "colorpicker",
+    "label": "Box colour (used when the preset is Custom)",
+    "value": "#000000",
+    "group": "Theme"
+  },
+  "boxOpacity": {
+    "type": "number",
+    "label": "Box and floating chip opacity (used when the preset is Custom; 0 is invisible, 1 is solid)",
+    "value": 0.55,
+    "min": 0,
+    "max": 1,
+    "step": 0.05,
+    "group": "Theme"
+  },
+  "colorBg": {
+    "type": "colorpicker",
+    "label": "Light tone: the number, caption, outline and padlock (used when the preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Theme"
+  },
+  "colorCount": {
+    "type": "colorpicker",
+    "label": "Number colour (used when the preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Theme"
+  },
+  "colorLabel": {
+    "type": "colorpicker",
+    "label": "Caption colour (used when the preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Theme"
+  },
+  "colorBorder": {
+    "type": "colorpicker",
+    "label": "Outline colour (used when the preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Theme"
+  },
+  "colorLock": {
+    "type": "colorpicker",
+    "label": "Padlock colour (used when the preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Theme"
+  },
+  "colorFloat": {
+    "type": "colorpicker",
+    "label": "Floating +N text colour (used when the preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Theme"
+  },
+  "colorFloatBg": {
+    "type": "colorpicker",
+    "label": "Floating +N background colour (used when the preset is Custom)",
+    "value": "#000000",
+    "group": "Theme"
+  },
+  "animations": {
+    "type": "checkbox",
+    "label": "Animate (untick to switch every animation off)",
+    "value": true,
+    "group": "Animation"
+  },
+  "popScale": {
+    "type": "number",
+    "label": "How far the sticker swells when the count changes (1 for no swell)",
+    "value": 1.16,
+    "min": 1,
+    "max": 2,
+    "step": 0.02,
+    "group": "Animation"
+  },
+  "popSeconds": {
+    "type": "number",
+    "label": "Seconds the swell takes",
+    "value": 0.42,
+    "min": 0.1,
+    "max": 3,
+    "step": 0.02,
+    "group": "Animation"
+  },
+  "floatSeconds": {
+    "type": "number",
+    "label": "Seconds the floating +N stays on screen",
+    "value": 1.5,
+    "min": 0.3,
+    "max": 10,
+    "step": 0.1,
+    "group": "Animation"
+  },
+  "soundsEnabled": {
+    "type": "checkbox",
+    "label": "Play sounds (untick to mute everything, keeping the files)",
+    "value": true,
+    "group": "Sounds"
+  },
+  "giftSound": {
+    "type": "sound-input",
+    "label": "Sound when a gift adds squats. Leave empty for none.",
+    "value": "",
+    "group": "Sounds"
+  },
+  "giftSoundVolume": {
+    "type": "number",
+    "label": "Gift sound volume (0 to 100)",
+    "value": 70,
+    "min": 0,
+    "max": 100,
+    "step": 5,
+    "group": "Sounds"
+  },
+  "lockSound": {
+    "type": "sound-input",
+    "label": "Sound when the count is locked. Leave empty for none.",
+    "value": "",
+    "group": "Sounds"
+  },
+  "lockSoundVolume": {
+    "type": "number",
+    "label": "Lock sound volume (0 to 100)",
+    "value": 70,
+    "min": 0,
+    "max": 100,
+    "step": 5,
+    "group": "Sounds"
+  },
+  "unlockSound": {
+    "type": "sound-input",
+    "label": "Sound when the count is unlocked. Leave empty for none.",
+    "value": "",
+    "group": "Sounds"
+  },
+  "unlockSoundVolume": {
+    "type": "number",
+    "label": "Unlock sound volume (0 to 100)",
+    "value": 70,
+    "min": 0,
+    "max": 100,
+    "step": 5,
+    "group": "Sounds"
+  },
+  "btnGiftBomb": {
+    "type": "button",
+    "label": "Test: pretend someone gifted 16 subs",
+    "value": "Gift 16",
+    "group": "Manual controls"
+  },
+  "btnPlus": {
+    "type": "button",
+    "label": "Add one block of squats",
+    "value": "+ one block",
+    "group": "Manual controls"
+  },
+  "btnMinus": {
+    "type": "button",
+    "label": "Take one block of squats off",
+    "value": "- one block",
+    "group": "Manual controls"
+  },
+  "btnLock": {
+    "type": "button",
+    "label": "Lock or unlock the count (gifted subs stop or start adding)",
+    "value": "Lock / unlock",
+    "group": "Manual controls"
+  },
+  "btnReset": {
+    "type": "button",
+    "label": "Reset to 0",
+    "value": "Reset",
+    "group": "Manual controls"
+  },
+  "btnSoundGift": {
+    "type": "button",
+    "label": "Test the gift sound",
+    "value": "Play gift sound",
+    "group": "Manual controls"
+  },
+  "btnSoundLock": {
+    "type": "button",
+    "label": "Test the lock sound",
+    "value": "Play lock sound",
+    "group": "Manual controls"
+  },
+  "btnSoundUnlock": {
+    "type": "button",
+    "label": "Test the unlock sound",
+    "value": "Play unlock sound",
+    "group": "Manual controls"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "name": "squat-tracker-overlay",
+  "version": "1.0.0",
+  "description": "A StreamElements custom widget that counts squats owed from gifted sub bombs.",
+  "private": true,
+  "license": "MIT",
+  "author": "Jordan Lee",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jordan-lee-code/squat-tracker-overlay.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jordan-lee-code/squat-tracker-overlay/issues"
+  },
+  "homepage": "https://github.com/jordan-lee-code/squat-tracker-overlay#readme",
+  "keywords": [
+    "streamelements",
+    "twitch",
+    "overlay",
+    "stream-overlay",
+    "gifted-subs",
+    "widget"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "funding": "https://ko-fi.com/journeyingjordan",
+  "scripts": {
+    "test": "node test/test-widget.js",
+    "build": "node build/build-overlay.js",
+    "dev": "python3 -m http.server 8000"
+  }
+}

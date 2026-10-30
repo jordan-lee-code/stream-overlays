@@ -1,0 +1,200 @@
+/* Copyright (c) 2026 Jordan Lee (https://ko-fi.com/journeyingjordan). Released under the MIT licence: this notice must be kept in copies and substantial portions of the code. See LICENSE. */
+/* Squat Tracker. StreamElements widget styles.
+   A tiny hand-placed sticker: a warm brown box with a cream number, sized to fill
+   whatever box the streamer draws on the overlay. Nearly every value below is a CSS
+   custom property that widget.js sets from the editor Fields, so the defaults here
+   can be restyled from the settings panel without touching this file. */
+
+#squat-app {
+  --bg: #FFFFFF;
+  --text: #FFFFFF;
+  --accent: rgba(0, 0, 0, 0.55);
+  --font: "BioRhyme", "Georgia", serif;
+
+  /* The sticker and its parts. Sizes are percentages of the box's smaller side. */
+  --c-count: var(--bg);
+  --c-label: var(--bg);
+  --c-border: var(--bg);
+  --c-lock: var(--bg);
+  --c-float: #FFFFFF;
+  --c-float-bg: rgba(0, 0, 0, 0.7);
+  --count-scale: 1;
+  --label-scale: 1;
+  --float-scale: 1;
+  --count-w: 800;
+  --label-w: 700;
+  --float-w: 700;
+  --label-opacity: 1;
+  --label-spacing: 0.03em;
+  --radius-pct: 14;
+  --pad-v: 6;
+  --pad-h: 12;
+  --gap: 1;
+  --tilt: 0deg;
+  --border-w: 0px;
+  --shadow: none;
+  --text-shadow: none;
+  --tail-display: none;
+  --pop-scale: 1.16;
+  --pop-s: 0.42s;
+  --float-s: 1.5s;
+
+  /* Fill the StreamElements widget box and become the sizing reference for the
+     sticker, so the number scales to whatever box the streamer draws rather than
+     assuming the full overlay canvas. */
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  container-type: size;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8%;
+  font-family: var(--font);
+  color: var(--c-count);
+  -webkit-font-smoothing: antialiased;
+}
+
+#squat-app * { box-sizing: border-box; }
+#squat-app [hidden] { display: none !important; }
+
+/* The Animate field: when it is off, nothing moves or eases anywhere. */
+#squat-app.no-motion *,
+#squat-app.no-motion *::before,
+#squat-app.no-motion *::after {
+  animation: none !important;
+  transition: none !important;
+}
+
+/* The sticker itself: a coloured box with a soft radius, a gentle playful tilt and
+   a little circle "tail". */
+.squat-sticker {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: calc(var(--gap) * 1cqmin);
+  padding: calc(var(--pad-v) * 1cqmin) calc(var(--pad-h) * 1cqmin);
+  background: var(--accent);
+  background-image: var(--box-img, none);
+  color: var(--c-count);
+  border: var(--border-w) solid var(--c-border);
+  border-radius: calc(var(--radius-pct) * 1cqmin);
+  box-shadow: var(--shadow);
+  text-shadow: var(--text-shadow);
+  transform: rotate(var(--tilt));
+  line-height: 1;
+  max-width: 100%;
+}
+
+.squat-sticker::after {
+  content: "";
+  display: var(--tail-display);
+  background: inherit;
+  width: clamp(9px, 5cqmin, 22px);
+  height: clamp(9px, 5cqmin, 22px);
+  border-radius: 100px;
+  position: absolute;
+  bottom: -2cqmin;
+  left: 12%;
+  z-index: -1;
+}
+
+/* The number is the hero: it grows with the smaller side of the box so it stays
+   readable whether the sticker is tucked in a corner or blown up large. */
+.squat-count {
+  font-weight: var(--count-w);
+  font-size: max(14px, calc(44cqmin * var(--count-scale)));
+  color: var(--c-count);
+  letter-spacing: 0.01em;
+}
+
+.squat-label {
+  font-weight: var(--label-w);
+  font-size: max(7px, calc(11cqmin * var(--label-scale)));
+  color: var(--c-label);
+  opacity: var(--label-opacity);
+  letter-spacing: var(--label-spacing);
+}
+
+/* A small padlock in the corner while the count is locked, drawn in CSS so it
+   picks up the sticker's own colours rather than relying on an emoji font being
+   present in the browser source. It says, quietly, that gifted subs are not
+   adding to the pile right now. */
+.squat-lock {
+  position: absolute;
+  top: -2.5cqmin;
+  right: -2.5cqmin;
+  width: clamp(13px, 9cqmin, 44px);
+  height: clamp(10px, 7cqmin, 34px);
+  background: var(--c-lock);
+  border-radius: clamp(2px, 1.6cqmin, 7px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+}
+
+/* The shackle, sitting above the body. */
+.squat-lock::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 68%;
+  width: 56%;
+  height: 62%;
+  transform: translateX(-50%);
+  border: clamp(2px, 1.5cqmin, 7px) solid var(--c-lock);
+  border-bottom: none;
+  border-radius: 100px 100px 0 0;
+}
+
+/* The keyhole, punched through in the box colour. */
+.squat-lock::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 20%;
+  height: 40%;
+  transform: translate(-50%, -50%);
+  background: var(--accent);
+  border-radius: 100px;
+}
+
+/* A gentle squash-and-stretch whenever the count changes, so a bump catches the
+   eye without shouting. */
+.squat-sticker.pop { animation: squat-pop var(--pop-s) cubic-bezier(0.18, 1.5, 0.4, 1); }
+@keyframes squat-pop {
+  0%   { transform: rotate(var(--tilt)) scale(1); }
+  40%  { transform: rotate(var(--tilt)) scale(var(--pop-scale)); }
+  100% { transform: rotate(var(--tilt)) scale(1); }
+}
+
+/* A little "+15" that rises and fades when squats are added, so a gift bomb lands
+   with a small moment of its own. */
+.squat-float {
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  font-weight: var(--float-w);
+  font-size: max(9px, calc(15cqmin * var(--float-scale)));
+  color: var(--c-float);
+  background: var(--c-float-bg);
+  padding: 1cqmin 4cqmin;
+  border-radius: 100px;
+  white-space: nowrap;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.22);
+  z-index: 3;
+  animation: squat-rise var(--float-s) ease-out forwards;
+}
+@keyframes squat-rise {
+  0%   { opacity: 0; transform: translate(-50%, 10px) scale(0.7); }
+  22%  { opacity: 1; transform: translate(-50%, 0) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, -46px) scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .squat-sticker.pop, .squat-float { animation: none; }
+}
