@@ -118,6 +118,7 @@
     s.setProperty("--w-alarm", t.alarm);
     s.setProperty("--w-flag", t.flag ? flagGradient(t.flag) : t.accent);
     s.setProperty("--w-bgimg", t.bgimg || "none");
+    s.setProperty("--w-edge", t.flag ? "inset 0 0 0 1px rgba(20, 16, 38, 0.38)" : "none");
     s.setProperty("--w-font", '"' + t.font + '", Georgia, serif');
     s.setProperty("--w-radius", c.radius + "px");
     s.setProperty("--w-pad", c.pad);
