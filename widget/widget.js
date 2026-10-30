@@ -15,11 +15,16 @@
     cosycabin: { panel: "#F5ECD6", text: "#57442E", accent: "#7C6142", track: "rgba(0, 0, 0, 0.11)", alarm: "#C05746", font: "Chicle" },
     pastel: { panel: "#FFF6E9", text: "#6B4F3A", accent: "#FF8A65", track: "rgba(0, 0, 0, 0.11)", alarm: "#F4587A", font: "Baloo 2" },
     celestial: { panel: "#2E1A47", text: "#F3ECFF", accent: "#E8C06B", track: "rgba(255, 255, 255, 0.18)", alarm: "#B5495B", font: "Cinzel" },
-    pastelgoth: { panel: "#3A3340", text: "#F2E9F0", accent: "#C8B6E2", track: "rgba(255, 255, 255, 0.18)", alarm: "#C96A8E", font: "Quicksand" }
+    pastelgoth: { panel: "#3A3340", text: "#F2E9F0", accent: "#C8B6E2", track: "rgba(255, 255, 255, 0.18)", alarm: "#C96A8E", font: "Quicksand" },
+    pastelpink: { panel: "#FFE3EC", text: "#6A2E4B", accent: "#D95C8A", track: "rgba(106, 46, 75, 0.14)", alarm: "#D6456F", font: "Fredoka" },
+    faegreen: { panel: "#2C4A36", text: "#EEF5DA", accent: "#C9E265", track: "rgba(238, 245, 218, 0.2)", alarm: "#E0805A", font: "Almendra" }
   };
 
   // ---- shared by every overlay in this set ----
   function str(v, d) { return (v === undefined || v === null || v === "") ? d : String(v); }
+  // For wording where an empty field is a real choice (no tag, no currency symbol, no title).
+  // StreamElements sends "" for a cleared field, which str() would turn back into the default.
+  function txt(v, d) { return (v === undefined || v === null) ? d : String(v); }
   function num(v, d) { var n = parseFloat(v); return isNaN(n) ? d : n; }
   function bool(v, d) {
     if (v === undefined || v === null) return d;
@@ -54,7 +59,7 @@
     return {
       command: str(f.command, d.command || "!command"),
       whoCanManage: str(f.whoCanManage, "mods"),
-      title: str(f.title, d.title || ""),
+      title: txt(f.title, d.title || ""),
       showTitle: bool(f.showTitle, true),
       themePreset: str(f.themePreset, "glass"),
       colorPanel: str(f.colorPanel, "#000000"),
@@ -164,10 +169,10 @@
     c.text = { sub: str(f.textSub, "{name} subscribed"), resub: str(f.textResub, "{name} resubscribed for {months} months"), gift: str(f.textGift, "{name} gifted {count} {subs}"),
       bits: str(f.textBits, "{name} cheered {amount} bits"), tip: str(f.textTip, "{name} tipped {currency}{amount}"), follow: str(f.textFollow, "{name} followed"),
       raid: str(f.textRaid, "{name} raided with {amount} viewers") };
-    c.currency = str(f.currency, "£");
+    c.currency = txt(f.currency, "£");
     c.anonName = str(f.anonymousName, "Anonymous");
     c.showTags = bool(f.showTags, true);
-    c.tags = { sub: str(f.tagSub, "Sub"), gift: str(f.tagGift, "Gift"), bits: str(f.tagBits, "Bits"), tip: str(f.tagTip, "Tip"), follow: str(f.tagFollow, "Follow"), raid: str(f.tagRaid, "Raid") };
+    c.tags = { sub: txt(f.tagSub, "Sub"), gift: txt(f.tagGift, "Gift"), bits: txt(f.tagBits, "Bits"), tip: txt(f.tagTip, "Tip"), follow: txt(f.tagFollow, "Follow"), raid: txt(f.tagRaid, "Raid") };
     c.showTotals = bool(f.showTotals, true);
     c.totalsLabel = f.totalsLabel === undefined || f.totalsLabel === null ? "This stream" : String(f.totalsLabel);   // empty means no label
     c.totalOn = { subs: bool(f.totalSubs, true), gifts: bool(f.totalGifts, true), bits: bool(f.totalBits, true), tips: bool(f.totalTips, true), follows: bool(f.totalFollows, false), raids: bool(f.totalRaids, false) };
@@ -322,7 +327,7 @@
       for (var i = 0; i < list.length; i++) {
         var e = list[i], li = document.createElement("li");
         li.className = "ac-row type-" + e.type + (e.id === freshId ? " new" : "");
-        if (cfg.showTags) li.appendChild(span("ac-tag", cfg.tags[e.type]));
+        if (cfg.showTags && cfg.tags[e.type]) li.appendChild(span("ac-tag", cfg.tags[e.type]));
         li.appendChild(span("ac-text", describe(e)));
         el.list.appendChild(li);
       }

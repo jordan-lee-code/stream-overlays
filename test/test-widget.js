@@ -118,6 +118,11 @@ const skip = async ms => { env.fake += ms; await wait(700); };
   audioLog.length = 0; button("test_soundEvent"); ok(audioLog.length === 1, "the Test button plays");
   await load({ soundEvent: "data:audio/wav;base64,AA", mute: true }); audioLog.length = 0; follow("A"); ok(audioLog.length === 0, "mute silences everything");
 
+  section("blanking the wording");
+  await load({ tagSub: "" }); sub({ amount: 1, name: "A" }); ok(rowEls()[0].children.length === 1, "a blank tag means no tag for that kind of event");
+  await load({ currency: "" }); tip(5, "T"); ok(texts()[0] === "T tipped 5", "a blank currency symbol means none (" + texts()[0] + ")");
+  await load({ title: "" }); ok(E("ac-title").hidden, "a blank title hides the title");
+
   section("every setting is wired up");
   env.checkWired();
   env.checkNotice();
