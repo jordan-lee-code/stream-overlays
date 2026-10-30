@@ -50,6 +50,7 @@
   font-family: var(--sa-font);
   color: var(--sa-text);
   background: var(--sa-bg);
+  background-image: var(--sa-bgimg, none);
   border: var(--sa-border);
   border-radius: var(--sa-radius);
   box-shadow: var(--sa-shadow);
@@ -201,6 +202,7 @@
   overflow: hidden;
   padding: var(--pad-v) var(--pad-h);
   background: var(--panel);
+  background-image: var(--panel-img, none);
   border: var(--border-w) solid var(--border-c);
   border-radius: var(--radius);
   box-shadow: var(--shadow);

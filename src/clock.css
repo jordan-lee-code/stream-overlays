@@ -50,6 +50,7 @@
   font-family: var(--sa-font);
   color: var(--sa-text);
   background: var(--sa-bg);
+  background-image: var(--sa-bgimg, none);
   border: var(--sa-border);
   border-radius: var(--sa-radius);
   box-shadow: var(--sa-shadow);
