@@ -8,18 +8,18 @@ It was built for rounds like Two Truths and a Lie, but it suits any quick vote. 
 
 ## Features
 
-- **One line opens a poll:** `!vote Pizza, Tacos, Sushi` puts the options on screen and starts the clock. Two to eight options.
-- **Chat votes however it reaches for:** the option text, its number or its letter all count.
-- **One person, one vote,** with room to change your mind until the clock runs out.
-- **Live or blind:** show the bars filling as votes land, or hide the counts until the poll ends.
-- **Declares a result:** when the clock runs out or the poll is ended early. A tie is shown as a tie, or broken at random if you prefer.
-- **Rolls back mistakes:** restart, extend, cancel and a multi-step undo, so a mistimed poll is a quick recovery.
-- **Survives a refresh:** the clock is stored as a wall-clock time, so a reloaded browser source returns with the same votes and the right time left.
-- **Sizes itself to the poll:** the card grows to fit the longest option and shrinks only when the box runs out of room, so nothing is cut off mid-word.
-- **A matching look:** a soft see-through black card with white text in BioRhyme, the same default as the other overlays in this set, so they look like one family on a stream.
-- **Customisable:** more than 100 settings cover the shape, spacing, text, colours and fonts of every part of the card, the wording, sounds and animation.
-- **Sounds:** optional sounds when a poll opens, when a vote is counted, for each of the last seconds, and when the result is declared.
-- **Testable offline:** a local dev harness and two automated test scripts.
+- One line opens a poll: `!vote Pizza, Tacos, Sushi` puts the options on screen and starts the clock. Two to eight options.
+- Flexible votes: the option text, its number or its letter all count.
+- One person, one vote, with room to change your mind until the clock runs out.
+- Live or blind: show the bars filling as votes land, or hide the counts until the poll ends.
+- Declares a result: when the clock runs out or the poll is ended early. A tie is shown as a tie, or broken at random if you prefer.
+- Rolling back: restart, extend, cancel and a multi-step undo, so a mistimed poll is a quick fix.
+- Survives a refresh: the clock is stored as a wall-clock time, so a reloaded browser source returns with the same votes and the right time left.
+- Sizes itself to the poll: the card grows to fit the longest option and shrinks only when the box runs out of room, so nothing is cut off mid-word.
+- A shared look: the default is a see-through black card with white text in BioRhyme, the same as the other overlays in this set.
+- Customisable: more than 100 settings cover the shape, spacing, text, colours and fonts of every part of the card, the wording, sounds and animation.
+- Sounds: optional sounds when a poll opens, when a vote is counted, for each of the last seconds, and when the result is declared.
+- Testable offline: a local dev harness and two automated test scripts.
 
 ## Screenshots
 
@@ -33,7 +33,7 @@ It was built for rounds like Two Truths and a Lie, but it suits any quick vote. 
 
 ## Style presets
 
-One setting picks the look. The same twelve presets, with exactly the same colours, are in every overlay in this set, so whichever you choose, the overlays still look like one family on a stream. This is how each one looks in this overlay.
+One setting picks the look. The same twelve presets, with the same colours, are in every overlay in this set, so overlays from this set match whichever you choose. This is how each one looks in this overlay.
 
 <p><img src="docs/presets.png" alt="A grid of this overlay in each of the twelve style presets: Soft black, Soft white, Midnight blue, Sunset, Forest, Ocean, Rose, Neon, Cosy cabin, Cosy summer pastel, Celestial and Pastel goth" width="760"></p>
 
@@ -101,7 +101,7 @@ Polls go wrong in front of people: the poll opens while the rules are still bein
 
 Every step that changes or destroys a poll takes a snapshot first, so `!voteundo` can walk back through ending, cancelling or restarting a poll, and through a poll that was replaced because the next was opened too early. Press it repeatedly to climb back up the history, six deep.
 
-Undoing a poll that was ended **early** gives back the time that was left on the clock. Undoing a poll that genuinely **ran out** reopens it on a short grace window instead (15 seconds by default), because restoring an expired clock would just end it again immediately.
+Undoing a poll that was ended **early** gives back the time that was left on the clock. Undoing a poll that **ran out** reopens it on a short grace window instead (15 seconds by default), because restoring an expired clock would just end it again immediately.
 
 ## Configuration
 
@@ -190,7 +190,7 @@ docs/     screenshots used in this README
 - The poll and its undo history are saved to the StreamElements widget store, so a browser-source refresh mid-poll loses nothing. The saved payload grows with the number of voters (roughly 26 KB for two thousand), which has not been tested against a real store at much larger sizes.
 - Built for Twitch.
 
-The widget uses the StreamElements events `onWidgetLoad`, `onEventReceived` with `message` and `widget-button`, and `SE_API.store`. The JavaScript is deliberately ES5 style so it can be pasted straight into the StreamElements editor.
+The widget uses the StreamElements events `onWidgetLoad`, `onEventReceived` with `message` and `widget-button`, and `SE_API.store`. The JavaScript is plain ES5, so it can be pasted straight into the StreamElements editor.
 
 ## Related overlays
 
@@ -207,7 +207,7 @@ If this saves you time, you can support its development on Ko-fi:
 
 [![Support on Ko-fi](https://img.shields.io/badge/Ko--fi-Support%20me-ff38b8?logo=ko-fi&logoColor=white)](https://ko-fi.com/journeyingjordan)
 
-Thank you, it is genuinely appreciated.
+Thanks for using it.
 
 ## Contributing
 
