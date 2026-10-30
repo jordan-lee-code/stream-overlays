@@ -1,0 +1,6 @@
+{
+  "width": 300,
+  "height": 200,
+  "fields": {},
+  "script": "chat(\"!vote Pizza, Tacos, Sushi\");function vote(n,k,t){for(var i=0;i<n;i++)chat(t,{nick:k+i});} vote(5,\"a\",\"1\");vote(8,\"b\",\"2\");vote(3,\"c\",\"3\");"
+}

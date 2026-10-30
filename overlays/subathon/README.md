@@ -6,7 +6,7 @@ A StreamElements custom widget that runs a whole subathon: a countdown clock tha
 
 A subathon runs for days, and the clock is what everyone watches. Time that cannot go on the clock is banked and shown instead of being dropped, a gift bomb is counted once, and anything you might need to change mid-stream is a setting or a chat command.
 
-It is one widget with no dependencies and nothing to install. The sub goals are the [Sub Goals Overlay](https://github.com/jordan-lee-code/sub-goals-overlay), included as it is rather than copied, so the clock and the goals count subs the same way.
+It is one widget with no dependencies and nothing to install. The sub goals are the [Sub Goals Overlay](../sub-goals), included as it is rather than copied, so the clock and the goals count subs the same way.
 
 ## Features
 
@@ -35,7 +35,7 @@ It is one widget with no dependencies and nothing to install. The sub goals are 
 
 ## Style presets
 
-One setting picks the look, for the clock and the goals together. The same twenty-two presets, with the same colours, are in every overlay in this set, so overlays from this set match whichever you choose. This is how each one looks here.
+One setting picks the look, for the clock and the goals together. The same twenty-two presets, with the same colours, are in every overlay in this set, so overlays from this set match whichever you choose. This is how each one looks here. The presets are defined once, in the [kit](../../kit), and a test keeps this overlay in step with it.
 
 <p><img src="docs/presets.png" alt="A grid of the clock and goals in each of the twenty-two style presets: Soft black, Soft white, Midnight blue, Sunset, Forest, Ocean, Rose, Neon, Cosy cabin, Cosy summer pastel, Celestial, Pastel goth, Pastel pink, Fae green, Rainbow pride, Progress pride, Trans pride, Bi pride, Pan pride, Non-binary pride, Lesbian pride and Ace pride" width="760"></p>
 
@@ -151,7 +151,7 @@ The base word is a setting. The defaults are below, and every command needs the 
 | `!subathon day 3`, `day +1`, `day -1` | Sets the day number, or moves it by one. |
 | `!subathon reset` | Puts the clock back on the start time. Broadcaster only. |
 
-The goals have their own commands, such as `!incentive add 15 chat confessions` and `!incentive stop`. They are listed in the [Sub Goals Overlay](https://github.com/jordan-lee-code/sub-goals-overlay#chat-commands) README.
+The goals have their own commands, such as `!incentive add 15 chat confessions` and `!incentive stop`. They are listed in the [Sub Goals Overlay](../sub-goals#chat-commands) README.
 
 ## Configuration
 
@@ -175,14 +175,13 @@ The full list, with defaults, is in [`widget/fields.json`](widget/fields.json). 
 
 ## How it is built
 
-StreamElements takes one HTML, one CSS, one JavaScript and one fields file per widget, so the goals module is not loaded at run time. `npm run build` composes it into `widget/` byte for byte and adds the clock around it. Nothing in the module is edited, which means its sub counting, goals and look are exactly what that project ships, and a fix there reaches this widget by moving to its next version.
+StreamElements takes one HTML, one CSS, one JavaScript and one fields file per widget, so the goals are not loaded at run time. `npm run build` composes the [Sub Goals Overlay](../sub-goals) next to this one into `widget/` byte for byte and adds the clock around it. Nothing in the goals is edited, which means its sub counting, goals and look are exactly what that overlay ships, and a fix there reaches this widget the next time it is built.
 
-The module's settings keep their names, so a style preset chosen once styles both halves. The module is installed from GitHub at a fixed version (see `package.json`), and `widget/` is generated and committed so you can paste it straight into StreamElements without installing anything.
+The goals' settings keep their names, so a style preset chosen once styles both halves. `widget/` is generated and committed, so you can paste it straight into StreamElements without building anything.
 
 ## Local development
 
 ```sh
-npm install
 npm run dev
 # then open http://localhost:8000/dev/
 ```
@@ -222,17 +221,17 @@ A StreamElements widget can read chat but cannot write to it, so the clock canno
 
 These overlays share the same default look and the same twenty-two style presets, so they sit together on one stream.
 
-- [Sub Goals Overlay](https://github.com/jordan-lee-code/sub-goals-overlay): sub and bits goals that fill as chat reaches them.
-- [Spin Wheel Overlay](https://github.com/jordan-lee-code/spin-wheel-overlay): a wheel for giveaways, raffles and forfeits.
-- [Chat Poll Overlay](https://github.com/jordan-lee-code/chat-poll-overlay): quick polls voted on by typing an option.
-- [Squat Tracker Overlay](https://github.com/jordan-lee-code/squat-tracker-overlay): a running count driven by gifted sub bombs.
-- [Rage Bar Overlay](https://github.com/jordan-lee-code/rage-bar-overlay): a bar chat fills with subs, bits and channel points.
-- [Chat Counter Overlay](https://github.com/jordan-lee-code/counter-overlay): a counter chat commands change, for deaths, wins and anything else.
-- [Leaderboard Overlay](https://github.com/jordan-lee-code/leaderboard-overlay): top gifters, cheerers and tippers.
-- [Hype Meter Overlay](https://github.com/jordan-lee-code/hype-meter-overlay): a meter that chat activity fills, with levels.
-- [Recent Activity Overlay](https://github.com/jordan-lee-code/recent-activity-overlay): the latest subs, gifts, bits, tips, follows and raids.
-- [Stream Goals Overlay](https://github.com/jordan-lee-code/stream-goals-overlay): sub and bits goals that start again for each stream.
-- [Reminder Overlay](https://github.com/jordan-lee-code/reminder-overlay): reminders you set from chat, which stay on screen until cleared.
+- [Sub Goals Overlay](../sub-goals): sub and bits goals that fill as chat reaches them.
+- [Spin Wheel Overlay](../spin-wheel): a wheel for giveaways, raffles and forfeits.
+- [Chat Poll Overlay](../chat-poll): quick polls voted on by typing an option.
+- [Squat Tracker Overlay](../squat-tracker): a running count driven by gifted sub bombs.
+- [Rage Bar Overlay](../rage-bar): a bar chat fills with subs, bits and channel points.
+- [Chat Counter Overlay](../counter): a counter chat commands change, for deaths, wins and anything else.
+- [Leaderboard Overlay](../leaderboard): top gifters, cheerers and tippers.
+- [Hype Meter Overlay](../hype-meter): a meter that chat activity fills, with levels.
+- [Recent Activity Overlay](../recent-activity): the latest subs, gifts, bits, tips, follows and raids.
+- [Stream Goals Overlay](../stream-goals): sub and bits goals that start again for each stream.
+- [Reminder Overlay](../reminder): reminders you set from chat, which stay on screen until cleared.
 
 ## Support
 
@@ -244,8 +243,8 @@ Thanks for using it.
 
 ## Contributing
 
-Contributions are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md).
+Contributions are welcome. See [CONTRIBUTING.md](../../CONTRIBUTING.md).
 
 ## License
 
-[MIT](LICENSE). The copyright notice, including the Ko-fi link, must be kept in copies and substantial portions of the code.
+[MIT](../../LICENSE). The copyright notice, including the Ko-fi link, must be kept in copies and substantial portions of the code.

@@ -1,0 +1,8 @@
+{
+  "width": 300,
+  "height": 170,
+  "fields": {
+    "label": "squats"
+  },
+  "script": "gift(16);"
+}

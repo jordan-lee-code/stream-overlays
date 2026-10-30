@@ -1,0 +1,9 @@
+{
+  "width": 440,
+  "height": 270,
+  "fields": {
+    "unlockSeconds": 1,
+    "animations": false
+  },
+  "script": "chat(\"!incentive add 5 Karaoke stream\");chat(\"!incentive add 10 Play a game\");chat(\"!incentive add 15 Q and A\");chat(\"!incentive add 25 Art stream\");sub({bulkGifted:true,gifted:true,amount:12});"
+}

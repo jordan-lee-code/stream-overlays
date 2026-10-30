@@ -1,0 +1,10 @@
+{
+  "width": 380,
+  "height": 205,
+  "fields": {
+    "animate": false,
+    "bannerSeconds": 1,
+    "decayPerMinute": 0
+  },
+  "script": "chat('!hype level 3');chat('!hype add 120');"
+}

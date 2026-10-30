@@ -1,0 +1,11 @@
+{
+  "width": 400,
+  "height": 360,
+  "fields": {
+    "tmAnimate": false,
+    "animations": false,
+    "tmStart": "48:00:00",
+    "tmFeedSeconds": 60
+  },
+  "script": "chat('!subathon resume');chat('!incentive add 5 karaoke');chat('!incentive add 15 chat confessions');for(var i=0;i<3;i++)sub({amount:1,name:'Alice'});"
+}

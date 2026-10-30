@@ -1,0 +1,8 @@
+{
+  "width": 380,
+  "height": 140,
+  "fields": {
+    "animate": false
+  },
+  "script": "chat('!reminder 1s clean room');chat('!reminder 12m call mum');"
+}

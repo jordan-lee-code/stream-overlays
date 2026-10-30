@@ -8,14 +8,14 @@ const K = require("./presets");
 const { pyJson } = require("./format");
 
 // How each overlay writes its palette table. Anything not listed here is a clock-shaped overlay
-// whose widget is widget/widget.js.
+// whose widget is widget/widget.js. (An overlay's folder name is how it is recognised.)
 const KINDS = {
-  "sub-goals-overlay": { kind: "goals" },
-  "spin-wheel-overlay": { kind: "wheel" },
-  "chat-poll-overlay": { kind: "poll" },
-  "squat-tracker-overlay": { kind: "squat" },
-  "rage-bar-overlay": { kind: "rage" },
-  "subathon-overlay": { kind: "clock", file: "src/clock.js", ownFields: false }
+  "sub-goals": { kind: "goals" },
+  "spin-wheel": { kind: "wheel" },
+  "chat-poll": { kind: "poll" },
+  "squat-tracker": { kind: "squat" },
+  "rage-bar": { kind: "rage" },
+  "subathon": { kind: "clock", file: "src/clock.js" }
 };
 
 const read = p => fs.readFileSync(p, "utf8");

@@ -1,0 +1,6 @@
+{
+  "width": 440,
+  "height": 170,
+  "fields": {},
+  "script": "chat(\"!bar set 42\",{mod:true});"
+}

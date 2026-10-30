@@ -94,14 +94,14 @@ function tempRepo(name, kind) {
   return dir;
 }
 test("check mode reports drift and writes nothing", () => {
-  const dir = tempRepo("counter-overlay");
+  const dir = tempRepo("counter");
   const before = fs.readFileSync(path.join(dir, "widget/widget.js"), "utf8");
   const r = sync(dir, { check: true });
   assert.ok(r.changes.length >= 5);
   assert.strictEqual(fs.readFileSync(path.join(dir, "widget/widget.js"), "utf8"), before);
 });
 test("sync brings a repo in line, keeps the code around the table, and a second run changes nothing", () => {
-  const dir = tempRepo("counter-overlay");
+  const dir = tempRepo("counter");
   sync(dir);
   const widget = fs.readFileSync(path.join(dir, "widget/widget.js"), "utf8");
   assert.ok(widget.indexOf("faegreen:") !== -1 && widget.indexOf("var after = 1;") !== -1 && widget.indexOf("old: 1") === -1);
@@ -111,8 +111,8 @@ test("sync brings a repo in line, keeps the code around the table, and a second 
   assert.deepStrictEqual(sync(dir, { check: true }).changes, []);
 });
 test("each kind of overlay is recognised by name", () => {
-  assert.strictEqual(sync(tempRepo("rage-bar-overlay"), { check: true }).info.kind, "rage");
-  assert.strictEqual(sync(tempRepo("spin-wheel-overlay"), { check: true }).info.kind, "wheel");
+  assert.strictEqual(sync(tempRepo("rage-bar"), { check: true }).info.kind, "rage");
+  assert.strictEqual(sync(tempRepo("spin-wheel"), { check: true }).info.kind, "wheel");
   assert.strictEqual(sync(tempRepo("something-else"), { check: true }).info.kind, "clock");
 });
 test("a folder with no widget is refused with a clear message", () => {

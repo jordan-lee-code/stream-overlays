@@ -1,0 +1,9 @@
+{
+  "width": 340,
+  "height": 190,
+  "fields": {
+    "animate": false,
+    "mode": "gifts"
+  },
+  "script": "function bomb(n,w){sub({gifted:true,bulkGifted:true,amount:n,sender:w,tier:'1000'})}bomb(24,'Alice');bomb(15,'Bea');bomb(10,'Cass');bomb(6,'Dev');bomb(3,'Eli');"
+}

@@ -1,0 +1,30 @@
+{
+  "name": "stream-overlays",
+  "version": "1.0.0",
+  "private": true,
+  "license": "MIT",
+  "author": "Jordan Lee",
+  "description": "A set of StreamElements overlays for Twitch streams, with the design standards they share.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jordan-lee-code/stream-overlays.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jordan-lee-code/stream-overlays/issues"
+  },
+  "homepage": "https://github.com/jordan-lee-code/stream-overlays#readme",
+  "keywords": [
+    "streamelements",
+    "twitch",
+    "overlay",
+    "widget"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "funding": "https://ko-fi.com/journeyingjordan",
+  "scripts": {
+    "test": "node scripts/test-all.js",
+    "check-contrast": "node kit/bin/overlay-kit.js check-contrast"
+  }
+}

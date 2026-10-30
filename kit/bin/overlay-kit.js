@@ -6,6 +6,7 @@ const path = require("path");
 const { sync } = require("../src/sync");
 const K = require("../src/presets");
 const { checkContrast } = require("../src/contrast");
+const { gallery } = require("../src/gallery");
 
 const args = process.argv.slice(2);
 const cmd = args.shift();
@@ -17,6 +18,7 @@ function usage() {
     "overlay-kit sync-presets [dir]         bring an overlay's palette table, dropdown and tests in line with the kit",
     "overlay-kit check-presets [dir]        the same, but only report drift (exit 1 if there is any)",
     "overlay-kit check-contrast             check every preset against the contrast standards",
+    "overlay-kit gallery <dir>             render the overlay in every preset into docs/presets.png (needs Chromium)",
     "overlay-kit list                       list the presets",
     "",
     "options: --kind <goals|wheel|poll|squat|rage|clock>   --file <widget file>"
@@ -37,6 +39,12 @@ if (cmd === "sync-presets" || cmd === "check-presets") {
   const r = checkContrast();
   r.lines.forEach(l => console.log(l));
   process.exit(r.failures.length ? 1 : 0);
+} else if (cmd === "gallery") {
+  const out = flag("--out"), only = flag("--only"), chromium = flag("--chromium");
+  try {
+    const r = gallery(path.resolve(args[0] || "."), { out, only: only ? only.split(",") : null, chromium, log: l => console.log(l) });
+    console.log("Wrote " + r.target + " (" + r.tiles + " presets)");
+  } catch (e) { console.error(e.message); process.exit(2); }
 } else if (cmd === "list") {
   K.PRESETS.forEach(x => console.log(x.key.padEnd(11) + x.label + "  (" + x.font + ")" + (x.flag ? "  [flag]" : "")));
 } else { usage(); process.exit(cmd ? 2 : 0); }

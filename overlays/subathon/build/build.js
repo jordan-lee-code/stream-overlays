@@ -1,4 +1,4 @@
-/* Builds widget/ from the clock in src/ and the Sub Incentives module in node_modules/.
+/* Builds widget/ from the clock in src/ and the Sub Goals overlay in ../sub-goals/.
  *
  * StreamElements takes one HTML, one CSS, one JS and one fields file per widget, so the
  * module is not loaded at run time. It is composed in here, byte for byte, and the clock
@@ -13,7 +13,7 @@ const fs = require("fs");
 const path = require("path");
 
 const ROOT = path.join(__dirname, "..");
-const MODULE = path.join(ROOT, "node_modules", "sub-goals-overlay", "widget");
+const MODULE = path.join(ROOT, "..", "sub-goals", "widget");
 const NOTICE = "Copyright (c) 2026 Jordan Lee (https://ko-fi.com/journeyingjordan). Released under the MIT licence: this notice must be kept in copies and substantial portions of the code. See LICENSE.";
 
 function read(p) { return fs.readFileSync(p, "utf8").replace(/\r\n/g, "\n"); }
@@ -23,7 +23,7 @@ function out(name, text) {
 }
 
 if (!fs.existsSync(MODULE)) {
-  console.error("The sub-goals-overlay module is missing. Run `npm install` first.");
+  console.error("The Sub Goals overlay is missing. It is expected next to this one, at ../sub-goals.");
   process.exit(1);
 }
 

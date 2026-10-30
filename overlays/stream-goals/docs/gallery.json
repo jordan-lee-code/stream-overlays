@@ -1,0 +1,9 @@
+{
+  "width": 380,
+  "height": 185,
+  "fields": {
+    "animate": false,
+    "raiseDelay": 120
+  },
+  "script": "chat('!goals set subs 37');cheer(3200);"
+}

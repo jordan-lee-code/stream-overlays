@@ -1,0 +1,6 @@
+{
+  "width": 420,
+  "height": 250,
+  "fields": {},
+  "script": "chat(\"!spinopen\");var N=[\"alex\",\"bea\",\"charlie\",\"dana\",\"eli\",\"fern\",\"gus\",\"hana\",\"ivo\"];N.forEach(function(n,i){setTimeout(function(){chat(\"!spintowin\",{nick:n});},120*i);});"
+}

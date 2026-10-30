@@ -7,12 +7,13 @@
   "author": "Jordan Lee",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jordan-lee-code/spin-wheel-overlay.git"
+    "url": "git+https://github.com/jordan-lee-code/stream-overlays.git",
+    "directory": "overlays/spin-wheel"
   },
   "bugs": {
-    "url": "https://github.com/jordan-lee-code/spin-wheel-overlay/issues"
+    "url": "https://github.com/jordan-lee-code/stream-overlays/issues"
   },
-  "homepage": "https://github.com/jordan-lee-code/spin-wheel-overlay#readme",
+  "homepage": "https://github.com/jordan-lee-code/stream-overlays/tree/main/overlays/spin-wheel",
   "keywords": [
     "streamelements",
     "twitch",

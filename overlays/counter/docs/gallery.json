@@ -1,0 +1,10 @@
+{
+  "width": 400,
+  "height": 270,
+  "fields": {
+    "animate": false,
+    "goal": 25,
+    "flashSeconds": 60
+  },
+  "script": "chat('!count +12');"
+}

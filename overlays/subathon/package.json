@@ -7,12 +7,13 @@
   "author": "Jordan Lee",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jordan-lee-code/subathon-overlay.git"
+    "url": "git+https://github.com/jordan-lee-code/stream-overlays.git",
+    "directory": "overlays/subathon"
   },
   "bugs": {
-    "url": "https://github.com/jordan-lee-code/subathon-overlay/issues"
+    "url": "https://github.com/jordan-lee-code/stream-overlays/issues"
   },
-  "homepage": "https://github.com/jordan-lee-code/subathon-overlay#readme",
+  "homepage": "https://github.com/jordan-lee-code/stream-overlays/tree/main/overlays/subathon",
   "keywords": [
     "streamelements",
     "twitch",
@@ -28,10 +29,6 @@
   "scripts": {
     "build": "node build/build.js",
     "test": "node build/build.js && node test/test-widget.js",
-    "check": "node build/build.js && git diff --exit-code -- widget",
     "dev": "node build/build.js && python3 -m http.server 8000"
-  },
-  "dependencies": {
-    "sub-goals-overlay": "git+https://github.com/jordan-lee-code/sub-goals-overlay.git#v1.4.2"
   }
 }

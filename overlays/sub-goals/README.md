@@ -39,7 +39,7 @@ The overlay sits over your scene with a see-through panel. These are all taken f
 
 ## Style presets
 
-One setting picks the look. The same twenty-two presets, with the same colours, are in every overlay in this set, so overlays from this set match whichever you choose. This is how each one looks in this overlay.
+One setting picks the look. The same twenty-two presets, with the same colours, are in every overlay in this set, so overlays from this set match whichever you choose. This is how each one looks in this overlay. The presets are defined once, in the [kit](../../kit), and a test keeps this overlay in step with it.
 
 <p><img src="docs/presets.png" alt="A grid of this overlay in each of the twenty-two style presets: Soft black, Soft white, Midnight blue, Sunset, Forest, Ocean, Rose, Neon, Cosy cabin, Cosy summer pastel, Celestial, Pastel goth, Pastel pink, Fae green, Rainbow pride, Progress pride, Trans pride, Bi pride, Pan pride, Non-binary pride, Lesbian pride and Ace pride" width="760"></p>
 
@@ -170,11 +170,11 @@ window.addEventListener("subgoals:counted", function (e) {
 | `who` | The gifter or subscriber, or the person who cheered. |
 | `subs` | The running sub total after this event. |
 
-Nothing is announced while tracking is stopped, for subs or bits the settings do not count, or for manual corrections such as `!incentive subs +5`. The [Subathon Overlay](https://github.com/jordan-lee-code/subathon-overlay) is built this way: it embeds this widget unchanged and adds time to its clock from these announcements.
+Nothing is announced while tracking is stopped, for subs or bits the settings do not count, or for manual corrections such as `!incentive subs +5`. The [Subathon Overlay](../subathon) is built this way: it embeds this widget unchanged and adds time to its clock from these announcements.
 
 ## Local development
 
-There is no build step and no dependencies. Serve the project root and open the dev harness:
+There is no build step and no dependencies. Serve this overlay's folder and open the dev harness:
 
 ```sh
 npm run dev
@@ -215,17 +215,17 @@ The JavaScript is plain ES5, so it can be pasted straight into the StreamElement
 
 These overlays share the same default look and the same twenty-two style presets, so they sit together on one stream.
 
-- [Subathon Overlay](https://github.com/jordan-lee-code/subathon-overlay): a subathon clock with a cap, power-ups and sub goals.
-- [Spin Wheel Overlay](https://github.com/jordan-lee-code/spin-wheel-overlay): a wheel for giveaways, raffles and forfeits.
-- [Chat Poll Overlay](https://github.com/jordan-lee-code/chat-poll-overlay): quick polls voted on by typing an option.
-- [Squat Tracker Overlay](https://github.com/jordan-lee-code/squat-tracker-overlay): a running count driven by gifted sub bombs.
-- [Rage Bar Overlay](https://github.com/jordan-lee-code/rage-bar-overlay): a bar chat fills with subs, bits and channel points.
-- [Chat Counter Overlay](https://github.com/jordan-lee-code/counter-overlay): a counter chat commands change, for deaths, wins and anything else.
-- [Leaderboard Overlay](https://github.com/jordan-lee-code/leaderboard-overlay): top gifters, cheerers and tippers.
-- [Hype Meter Overlay](https://github.com/jordan-lee-code/hype-meter-overlay): a meter that chat activity fills, with levels.
-- [Recent Activity Overlay](https://github.com/jordan-lee-code/recent-activity-overlay): the latest subs, gifts, bits, tips, follows and raids.
-- [Stream Goals Overlay](https://github.com/jordan-lee-code/stream-goals-overlay): sub and bits goals that start again for each stream.
-- [Reminder Overlay](https://github.com/jordan-lee-code/reminder-overlay): reminders you set from chat, which stay on screen until cleared.
+- [Subathon Overlay](../subathon): a subathon clock with a cap, power-ups and sub goals.
+- [Spin Wheel Overlay](../spin-wheel): a wheel for giveaways, raffles and forfeits.
+- [Chat Poll Overlay](../chat-poll): quick polls voted on by typing an option.
+- [Squat Tracker Overlay](../squat-tracker): a running count driven by gifted sub bombs.
+- [Rage Bar Overlay](../rage-bar): a bar chat fills with subs, bits and channel points.
+- [Chat Counter Overlay](../counter): a counter chat commands change, for deaths, wins and anything else.
+- [Leaderboard Overlay](../leaderboard): top gifters, cheerers and tippers.
+- [Hype Meter Overlay](../hype-meter): a meter that chat activity fills, with levels.
+- [Recent Activity Overlay](../recent-activity): the latest subs, gifts, bits, tips, follows and raids.
+- [Stream Goals Overlay](../stream-goals): sub and bits goals that start again for each stream.
+- [Reminder Overlay](../reminder): reminders you set from chat, which stay on screen until cleared.
 
 ## Support
 
@@ -237,8 +237,8 @@ Thanks for using it.
 
 ## Contributing
 
-Contributions are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md).
+Contributions are welcome. See [CONTRIBUTING.md](../../CONTRIBUTING.md).
 
 ## License
 
-[MIT](LICENSE). The copyright notice, including the Ko-fi link, must be kept in copies and substantial portions of the code.
+[MIT](../../LICENSE). The copyright notice, including the Ko-fi link, must be kept in copies and substantial portions of the code.

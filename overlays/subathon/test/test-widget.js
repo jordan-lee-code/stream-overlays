@@ -450,9 +450,9 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   await load({ tmStart: "10:00:00" });
   boss("!incentive add 5 karaoke"); sub({ amount: 1 }); await settled();
   ok(E("incentive-total").textContent === "1 sub", "the goals still count the same sub that added time (" + E("incentive-total").textContent + ")");
-  const moduleJs = fs.readFileSync(ROOT + "/node_modules/sub-goals-overlay/widget/widget.js", "utf8").trim();
+  const moduleJs = fs.readFileSync(ROOT + "/../sub-goals/widget/widget.js", "utf8").trim();
   ok(src.indexOf(moduleJs) !== -1, "widget.js contains the module byte for byte");
-  const moduleCss = fs.readFileSync(ROOT + "/node_modules/sub-goals-overlay/widget/widget.css", "utf8").replace(/\r\n/g, "\n").trim();
+  const moduleCss = fs.readFileSync(ROOT + "/../sub-goals/widget/widget.css", "utf8").replace(/\r\n/g, "\n").trim();
   ok(fs.readFileSync(ROOT + "/widget/widget.css", "utf8").indexOf(moduleCss) !== -1, "and so does widget.css");
   const html = fs.readFileSync(ROOT + "/widget/widget.html", "utf8");
   ok(html.indexOf('id="incentive-app"') !== -1 && html.indexOf('id="subathon-app"') !== -1, "widget.html holds both the clock and the goals");
