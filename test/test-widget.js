@@ -334,7 +334,7 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   ok(A["--tail-display"] === "none" && A["--pill-shadow"] === "none" && A["--pill-tilt"] === "0deg" && A["--card-tilt"] === "0deg", "flat: no tails, shadows or tilt");
   ok(A["--c-pill-bg"] === "rgba(0, 0, 0, 0.55)" && A["--c-eyebrow"] === "#111111", "pills in soft black, the winner label in white");
   load({ themePreset: "cosycabin" }); await wait(5);
-  ok(A["--accent"] === "#7C6142" && A["--c-pill-bg"] === "#7C6142" && A["--c-pill"] === "#F5ECD6" && A["--c-eyebrow-bg"] === "#F5ECD6", "a coloured preset colours each part from its own tones");
+  ok(A["--accent"] === "#7C6142" && A["--c-pill-bg"] === "#F5ECD6" && A["--c-pill"] === "#57442E" && A["--c-eyebrow-bg"] === "#7C6142" && A["--c-eyebrow"] === "#F5ECD6", "a coloured preset colours each part from its own tones");
 
   // Y. wording
   console.log("\n[wording]");
@@ -482,6 +482,20 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   const unhandled = Object.keys(fields).filter(k => fields[k].type === "button" && src.indexOf('"' + k + '"') === -1);
   ok(unhandled.length === 0, "every button is handled (unhandled: " + unhandled.join(", ") + ")");
 
+
+  // ---- style presets: the same twelve, with the same colours, in every overlay
+  console.log("\n[style presets]");
+  const EXPECT = {"glass": {"text": "#FFFFFF", "accent": "#FFFFFF", "panel": "rgba(0, 0, 0, 0.55)", "font": "BioRhyme"}, "frost": {"text": "#1B2130", "accent": "#1B2130", "panel": "rgba(255, 255, 255, 0.72)", "font": "BioRhyme"}, "midnight": {"text": "#E8EEFF", "accent": "#7FA8FF", "panel": "rgba(10, 18, 46, 0.72)", "font": "BioRhyme"}, "sunset": {"text": "#FFF1E6", "accent": "#FF9A5A", "panel": "rgba(48, 18, 42, 0.72)", "font": "BioRhyme"}, "forest": {"text": "#EAF7EE", "accent": "#6FD6A0", "panel": "rgba(12, 36, 28, 0.72)", "font": "BioRhyme"}, "ocean": {"text": "#E6F8FF", "accent": "#4CD3E0", "panel": "rgba(6, 36, 50, 0.72)", "font": "BioRhyme"}, "rose": {"text": "#FFE9F1", "accent": "#FF8FB8", "panel": "rgba(58, 14, 34, 0.72)", "font": "BioRhyme"}, "neon": {"text": "#FFFFFF", "accent": "#00F0FF", "panel": "rgba(4, 4, 16, 0.82)", "font": "BioRhyme"}, "cosycabin": {"text": "#57442E", "accent": "#7C6142", "panel": "#F5ECD6", "font": "Chicle"}, "pastel": {"text": "#6B4F3A", "accent": "#FF8A65", "panel": "#FFF6E9", "font": "Baloo 2"}, "celestial": {"text": "#F3ECFF", "accent": "#E8C06B", "panel": "#2E1A47", "font": "Cinzel"}, "pastelgoth": {"text": "#F2E9F0", "accent": "#C8B6E2", "panel": "#3A3340", "font": "Quicksand"}};
+  const LABELS = {"glass": "Soft black (default)", "frost": "Soft white", "midnight": "Midnight blue", "sunset": "Sunset", "forest": "Forest", "ocean": "Ocean", "rose": "Rose", "neon": "Neon", "cosycabin": "Cosy cabin", "pastel": "Cosy summer pastel", "celestial": "Celestial", "pastelgoth": "Pastel goth", "custom": "Custom (use the colours below)"};
+  ok(JSON.stringify(Object.keys(fields.themePreset.options)) === JSON.stringify(Object.keys(LABELS)) && Object.keys(LABELS).length === 13, "the dropdown offers the twelve shared presets and Custom, in the shared order");
+  ok(Object.keys(LABELS).every(k => fields.themePreset.options[k] === LABELS[k]), "with the shared labels");
+  ok(fields.themePreset.value === "glass", "and Soft black is the default");
+  for (const key of Object.keys(EXPECT)) {
+    load({ themePreset: key }); await wait(5);
+    const S2 = elements["wheel-app"].style;
+    ok(S2["--text"] === EXPECT[key].text && S2["--accent"] === EXPECT[key].accent && S2["--bg"] === EXPECT[key].panel && S2["--font"].indexOf('"' + EXPECT[key].font + '"') !== -1,
+      key + ": panel, text, accent and font match the shared table (" + S2["--text"] + ", " + S2["--accent"] + ")");
+  }
   console.log("\n=== " + pass + " passed, " + fail + " failed ===");
   process.exit(fail ? 1 : 0);
 })();

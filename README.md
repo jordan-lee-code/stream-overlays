@@ -29,9 +29,32 @@ It started as a raffle and grew into a wheel that also runs forfeit spins, weigh
 
 <p><img src="docs/forfeits.png" alt="A full circle wheel with six forfeits in shades of white and grey" width="420"></p>
 
-**Your own look.** Every part is a setting. This one uses custom slice colours, a thicker rim, white dividers, rounder pills and a pink theme. There are also four warm presets (Cosy cabin, Cosy summer pastel, Celestial and Pastel goth) if you prefer them to the default Soft black.
+**Your own look.** Every part is a setting. This one uses custom slice colours, a thicker rim, white dividers, rounder pills and a pink theme. You can also pick any of the twelve [style presets](#style-presets) with one setting.
 
 <p><img src="docs/custom.png" alt="A full circle wheel with pastel slices, a pink rim and pointer" width="420"></p>
+
+## Style presets
+
+One setting picks the look. The same twelve presets, with exactly the same colours, are in every overlay in this set, so whichever you choose, the overlays still look like one family on a stream. This is how each one looks in this overlay.
+
+<p><img src="docs/presets.png" alt="A grid of this overlay in each of the twelve style presets: Soft black, Soft white, Midnight blue, Sunset, Forest, Ocean, Rose, Neon, Cosy cabin, Cosy summer pastel, Celestial and Pastel goth" width="760"></p>
+
+| Preset | Look |
+| --- | --- |
+| Soft black (default) | See-through black with white text. |
+| Soft white | Frosted white with dark text. |
+| Midnight blue | Deep navy with a periwinkle accent. |
+| Sunset | Deep plum with orange and coral. |
+| Forest | Deep green with a mint accent. |
+| Ocean | Deep teal with an aqua accent. |
+| Rose | Deep berry with a pink accent. |
+| Neon | Near black with cyan and magenta. |
+| Cosy cabin | Cream and brown, in Chicle. |
+| Cosy summer pastel | Warm cream and coral, in Baloo 2. |
+| Celestial | Deep purple and gold, in Cinzel. |
+| Pastel goth | Charcoal and lilac, in Quicksand. |
+
+Choose **Custom** to use the colour pickers and font instead. They are ignored while a preset is chosen.
 
 ## Quick start
 
@@ -85,8 +108,8 @@ Chat submits questions with `!spinask`, and the wheel draws one that stays on sc
 
 The default look is *Soft black*: see-through black pills and cards, white text in BioRhyme, and slices in shades of white and grey. In the **Theme** group you can:
 
-- Pick a **preset**: *Soft black*, *Cosy cabin*, *Cosy summer pastel*, *Celestial*, or *Pastel goth*. A preset sets the whole palette and font at once, and colours every part (pills, toast, winner card, goal bar, hub) from its own tones.
-- Set the preset to **Custom** to use your own colours and font. There is a colour picker for the panel (with an opacity), the text, the accent, the pointer, each of the six slices, and every individual part: pills, the joined toast, the winner card and its label, the empty-wheel message, the goal bar, the hub, the outline and the names on light and dark slices.
+- Pick a **style preset**: one of the twelve shared presets (see [Style presets](#style-presets)). A preset sets the whole palette and font at once, and colours every part (pills, toast, winner card, goal bar, hub) from its own tones.
+- Set the style preset to **Custom** to use your own colours and font. There is a colour picker for the panel (with an opacity), the text, the accent, the pointer, each of the six slices, and every individual part: pills, the joined toast, the winner card and its label, the empty-wheel message, the goal bar, the hub, the outline and the names on light and dark slices.
 - Choose the **wheel shape**: *Semicircle* (the default) shows only the top half so it takes about half the height, which suits tucking it along an edge of a scene, and *Full circle* is the classic wheel. Both spin and draw the same way.
 
 Everything scales with the box the wheel is drawn in, text included, so it looks the same at any size.
@@ -106,7 +129,7 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | Wheel | The shape, idle drift, chat-colour slices, the rim and divider thickness, the size and boldness of the names, the hub ring and a shadow. |
 | Pills and cards | The roundness, padding and tilt of pills, the toast and the winner card, the goal bar's thickness, an outline, tails and shadows. |
 | Text | The size and boldness of the empty-wheel message, toast, pills, goal label, winner label, winner name, line under the winner and lifelines. |
-| Theme | A preset or Custom colours and font, with a colour for every part. |
+| Theme | One of the twelve shared style presets (Soft black by default) or Custom colours and font, with a colour for every part. |
 | Animation | One switch for all animation, the spin and winner display times, and how long the toast, card, goal bar and countdown pulse take. |
 | Sounds | A sound and volume for someone joining, each tick and the winner, plus a master mute. |
 | Manual controls | Buttons for spin, open, close, clear, switch mode, reroll, re-show and the Truth or... controls, and to test each sound. |
@@ -117,7 +140,7 @@ The full list, with defaults, is in [`widget/fields.json`](widget/fields.json).
 
 Sounds are off until you add them, and no audio is bundled so that the sounds on a stream, and their licensing, are the streamer's own choice. Each of the three has an upload box in the **Sounds** group, so there is nothing to host: **Join sound** (someone enters the wheel), **Tick sound** (plays as slices pass the pointer) and **Winner sound** (plays on the reveal). Each has its own volume. For clips that are free to use, [freesound.org](https://freesound.org) and [pixabay.com/sound-effects](https://pixabay.com/sound-effects/) are good places to look, and each clip's licence should be read before it goes on stream. StreamElements also lets you upload audio in the widget editor and gives you a URL to paste.
 
-Fonts load from Google Fonts at run time and are chosen by the **Font** setting. Each preset brings its own, and any Google font name works.
+Fonts load from Google Fonts at run time and are chosen by the **Font** setting. Each style preset brings its own, and any Google font name works with Custom.
 
 ## Chat replies
 
