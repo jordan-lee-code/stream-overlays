@@ -4,23 +4,23 @@ A StreamElements custom widget that runs a whole subathon: a countdown clock tha
 
 <p align="center"><img src="docs/default.png" alt="A soft black rounded card showing a 48 hour countdown, a time-added chip and a cap line, with three sub goals underneath" width="440"></p>
 
-A subathon is a long promise made in public, and the clock is where everyone watches you keep it. This widget tries to make that kind of stream calmer for the person doing it: time that cannot go on the clock is never thrown away, a gift bomb is counted once, and everything you might need to fix at 3am is a setting or a chat command.
+A subathon runs for days, and the clock is what everyone watches. Time that cannot go on the clock is banked and shown instead of being dropped, a gift bomb is counted once, and anything you might need to change mid-stream is a setting or a chat command.
 
-It is one widget with no dependencies and nothing to install on your side. The sub goals are the [Sub Goals Overlay](https://github.com/jordan-lee-code/sub-goals-overlay), reused as it is rather than copied, so the two never disagree about how many subs something was worth.
+It is one widget with no dependencies and nothing to install. The sub goals are the [Sub Goals Overlay](https://github.com/jordan-lee-code/sub-goals-overlay), included as it is rather than copied, so the clock and the goals count subs the same way.
 
 ## Features
 
-- **A clock that chat tops up:** new subs and resubs, gifted subs, bits, tips, follows and raids each add an amount of time you choose, with separate values for each sub tier.
-- **Correct on gift bombs:** a gift of 30 subs adds 30 gifts' worth of time once, not once per recipient (see [How time is earned](#how-time-is-earned)).
-- **A cap that does not lose anything:** hold the whole subathon to a total length, start time included. Time beyond the cap is banked and shown, never discarded, and subtracting time hands the allowance back.
-- **Power-ups and sleep mode:** multiply what comes in for a while, or for a number of events, and slow it overnight.
-- **Lock and pause:** pause the clock, or lock it so new time is banked while you decide what to do.
-- **Chat control:** add, subtract, set, pause, resume, lock, power up and more, from chat, for the broadcaster or moderators.
-- **Sub goals underneath:** the same goals as `!incentive add 15 chat confessions`, filling as subs and bits land, in the same panel style.
-- **Twelve style presets:** one setting styles the clock and the goals together, and the same twelve presets are in every overlay in this set.
-- **Customisable:** over 160 settings cover values, commands, sizes, colours, fonts, sounds and animation.
-- **Saved:** the clock, the cap, banked time, power-ups and lock all survive a browser-source refresh, and a refresh while running keeps counting through the gap.
-- **Testable offline:** a local dev harness with a time machine, and an automated test script, so a 200 hour subathon can be tried in a minute.
+- A clock that chat tops up: new subs and resubs, gifted subs, bits, tips, follows and raids each add an amount of time you choose, with separate values for each sub tier.
+- Correct on gift bombs: a gift of 30 subs adds 30 gifts' worth of time once, not once per recipient (see [How time is earned](#how-time-is-earned)).
+- A cap that banks the overflow: hold the whole subathon to a total length, start time included. Time beyond the cap is banked and shown, never discarded, and subtracting time hands the allowance back.
+- Power-ups and sleep mode: multiply what comes in for a while, or for a number of events, and slow it overnight.
+- Lock and pause: pause the clock, or lock it so new time is banked while you decide what to do.
+- Chat control: add, subtract, set, pause, resume, lock, power up and more, from chat, for the broadcaster or moderators.
+- Sub goals underneath: the same goals as `!incentive add 15 chat confessions`, filling as subs and bits land, in the same panel style.
+- Twelve style presets: one setting styles the clock and the goals together, and the same twelve presets are in every overlay in this set.
+- Customisable: over 160 settings cover values, commands, sizes, colours, fonts, sounds and animation.
+- Saved: the clock, the cap, banked time, power-ups and lock all survive a browser-source refresh, and a refresh while running keeps counting through the gap.
+- Tests and a dev harness: a local harness with a time machine and an automated test script, so a 200 hour subathon can be tried in a minute.
 
 ## Screenshots
 
@@ -34,7 +34,7 @@ It is one widget with no dependencies and nothing to install on your side. The s
 
 ## Style presets
 
-One setting picks the look, for the clock and the goals together. The same twelve presets, with exactly the same colours, are in every overlay in this set, so whichever you choose, your overlays still look like one family on a stream. This is how each one looks here.
+One setting picks the look, for the clock and the goals together. The same twelve presets, with the same colours, are in every overlay in this set, so overlays from this set match whichever you choose. This is how each one looks here.
 
 <p><img src="docs/presets.png" alt="A grid of the clock and goals in each of the twelve style presets: Soft black, Soft white, Midnight blue, Sunset, Forest, Ocean, Rose, Neon, Cosy cabin, Cosy summer pastel, Celestial and Pastel goth" width="760"></p>
 
@@ -81,7 +81,7 @@ Every event adds a number of minutes you choose. These are the defaults, and all
 
 Times can be written as `5m`, `1h 30m`, `90`, `1:30:00` or `1d 12h`. A bare number is minutes, and `5:00` is five minutes.
 
-Subs and bits are not read from StreamElements a second time. The goals module has already worked out how many subs an event was worth, and the clock listens to that answer, so the two can never disagree. StreamElements reports a gift bomb as one announcement with the real number of subs, followed by one event per recipient carrying a streak figure such as 170. Only the announcement counts, so a gift of 30 adds 30 gifts' worth of time once.
+Subs and bits are not read from StreamElements a second time. The goals module has already worked out how many subs an event was worth, and the clock listens to that answer, so the two agree. StreamElements reports a gift bomb as one announcement with the real number of subs, followed by one event per recipient carrying a streak figure such as 170. Only the announcement counts, so a gift of 30 adds 30 gifts' worth of time once.
 
 Tips, follows and raids come straight from their own StreamElements events.
 
@@ -89,7 +89,7 @@ Tips, follows and raids come straight from their own StreamElements events.
 
 Turn on **Hold the subathon to a total length** and enter the whole commitment, start time included. If you type `200:00:00` that is two hundred hours, and the clock will stop on that number and not a minute past it.
 
-The allowance is the total length minus the time the clock started on. When an event brings more time than the allowance has room for, the clock takes what fits and the rest is **banked**. The status line shows what is banked and how much room is left, and the line under the clock says how much of each event was banked. Nothing is lost, and the clock keeps running, so nobody's money disappears quietly.
+The allowance is the total length minus the time the clock started on. When an event brings more time than the allowance has room for, the clock takes what fits and the rest is **banked**. The status line shows what is banked and how much room is left, and the line under the clock says how much of each event was banked. Nothing is discarded, and the clock keeps running.
 
 Subtracting time hands its allowance back, `!subathon release` moves banked time onto the clock as far as the allowance allows, and **Count the cap from the clock as it is now** starts the allowance afresh from wherever the clock is. Time you add by hand ignores the cap, because you are the authority on your own stream, but it still uses up the allowance.
 
@@ -178,9 +178,9 @@ docs/     screenshots used in this README
 
 ## Compatibility and limitations
 
-The widget uses the StreamElements events `onWidgetLoad` and `onEventReceived` with `message`, `subscriber-latest`, `cheer-latest`, `tip-latest`, `follower-latest`, `raid-latest` and `widget-button`, and `SE_API.store`. The JavaScript is deliberately ES5 style so it can be pasted straight into the StreamElements editor.
+The widget uses the StreamElements events `onWidgetLoad` and `onEventReceived` with `message`, `subscriber-latest`, `cheer-latest`, `tip-latest`, `follower-latest`, `raid-latest` and `widget-button`, and `SE_API.store`. The JavaScript is plain ES5, so it can be pasted straight into the StreamElements editor.
 
-Subs and bits reach the clock through the goals module, so `!incentive stop`, which pauses goal tracking before a stream begins, also stops subs and bits adding time, while tips, follows and raids still do. `!incentive start` lets them through again. Time added while the clock is paused is kept, and it is simply there when you resume.
+Subs and bits reach the clock through the goals module, so `!incentive stop`, which pauses goal tracking before a stream begins, also stops subs and bits adding time, while tips, follows and raids still do. `!incentive start` lets them through again. Time added while the clock is paused is kept, and it is still there when you resume.
 
 A StreamElements widget can read chat but cannot write to it, so the clock cannot reply. If you would like chat to see the time, add a StreamElements chatbot command that reads it out.
 
@@ -200,7 +200,7 @@ If this saves you time, you can support its development on Ko-fi:
 
 [![Support on Ko-fi](https://img.shields.io/badge/Ko--fi-Support%20me-ff38b8?logo=ko-fi&logoColor=white)](https://ko-fi.com/journeyingjordan)
 
-Thank you, it is genuinely appreciated.
+Thanks for using it.
 
 ## Contributing
 
