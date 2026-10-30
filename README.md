@@ -35,6 +35,29 @@ It is one self-contained widget in plain JavaScript, with no dependencies and no
 
 <p><img src="docs/custom.png" alt="The bar in a customised pink theme with an outline" width="500"></p>
 
+## Style presets
+
+One setting picks the look. The same twelve presets, with exactly the same colours, are in every overlay in this set, so whichever you choose, the overlays still look like one family on a stream. This is how each one looks in this overlay.
+
+<p><img src="docs/presets.png" alt="A grid of this overlay in each of the twelve style presets: Soft black, Soft white, Midnight blue, Sunset, Forest, Ocean, Rose, Neon, Cosy cabin, Cosy summer pastel, Celestial and Pastel goth" width="760"></p>
+
+| Preset | Look |
+| --- | --- |
+| Soft black (default) | See-through black with white text. |
+| Soft white | Frosted white with dark text. |
+| Midnight blue | Deep navy with a periwinkle accent. |
+| Sunset | Deep plum with orange and coral. |
+| Forest | Deep green with a mint accent. |
+| Ocean | Deep teal with an aqua accent. |
+| Rose | Deep berry with a pink accent. |
+| Neon | Near black with cyan and magenta. |
+| Cosy cabin | Cream and brown, in Chicle. |
+| Cosy summer pastel | Warm cream and coral, in Baloo 2. |
+| Celestial | Deep purple and gold, in Cinzel. |
+| Pastel goth | Charcoal and lilac, in Quicksand. |
+
+Choose **Custom** to use the colour pickers and font instead. They are ignored while a preset is chosen.
+
 ## Quick start
 
 1. In StreamElements, edit your overlay and add **+ Add Widget, Static/Custom, Custom Widget**.
@@ -191,12 +214,12 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | Wording | Every word in the line under the bar, the readouts and the floating text. |
 | Card | Corner roundness, padding, spacing, tilt, an outline, shadows, the tail and the bar's thickness. |
 | Text | The size and boldness of the heading, countdown, readout, line and floating text. |
-| Theme | A preset (Soft black, Cosy cabin, Cosy summer pastel, Celestial, Pastel goth) or Custom colours and font, with a colour for every part. |
+| Theme | One of the twelve shared style presets (Soft black by default) or Custom colours and font, with a colour for every part. |
 | Animation | One switch for all animation, and how long the fill, swell, floating text, glow, save window pulse and shake take. |
 | Sounds | A sound and volume for a contribution, a lock, a lock breaking, the bar filling, a save and a reset, plus a master mute. |
 | Manual controls | Buttons to fill, lock, unlock, save, switch on and off, reset and test each sound. |
 
-The full list, with defaults, is in [`widget/fields.json`](widget/fields.json). Preset colours apply only when the preset is not **Custom**.
+The full list, with defaults, is in [`widget/fields.json`](widget/fields.json). The colour and font pickers apply only when the style preset is **Custom**.
 
 ## Sounds
 
