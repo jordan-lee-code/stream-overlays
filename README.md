@@ -26,9 +26,32 @@ It is a single self-contained widget in plain JavaScript, with no dependencies a
 
 <p><img src="docs/locked.png" alt="The sticker with a small padlock in its corner" width="340"></p>
 
-**Your own look.** Every part is a setting. This one uses custom colours, an outline, rounder corners, a tilt, a lighter caption and a tail. There are also four warm presets (Cosy cabin, Cosy summer pastel, Celestial and Pastel goth) if you prefer them to the default Soft black.
+**Your own look.** Every part is a setting. This one uses custom colours, an outline, rounder corners, a tilt, a lighter caption and a tail. You can also pick any of the twelve [style presets](#style-presets) with one setting.
 
 <p><img src="docs/custom.png" alt="A pink sticker with a light outline, a tilt and the caption squats today" width="340"></p>
+
+## Style presets
+
+One setting picks the look. The same twelve presets, with exactly the same colours, are in every overlay in this set, so whichever you choose, the overlays still look like one family on a stream. This is how each one looks in this overlay.
+
+<p><img src="docs/presets.png" alt="A grid of this overlay in each of the twelve style presets: Soft black, Soft white, Midnight blue, Sunset, Forest, Ocean, Rose, Neon, Cosy cabin, Cosy summer pastel, Celestial and Pastel goth" width="760"></p>
+
+| Preset | Look |
+| --- | --- |
+| Soft black (default) | See-through black with white text. |
+| Soft white | Frosted white with dark text. |
+| Midnight blue | Deep navy with a periwinkle accent. |
+| Sunset | Deep plum with orange and coral. |
+| Forest | Deep green with a mint accent. |
+| Ocean | Deep teal with an aqua accent. |
+| Rose | Deep berry with a pink accent. |
+| Neon | Near black with cyan and magenta. |
+| Cosy cabin | Cream and brown, in Chicle. |
+| Cosy summer pastel | Warm cream and coral, in Baloo 2. |
+| Celestial | Deep purple and gold, in Cinzel. |
+| Pastel goth | Charcoal and lilac, in Quicksand. |
+
+Choose **Custom** to use the colour pickers and font instead. They are ignored while a preset is chosen.
 
 ## Quick start
 
@@ -85,12 +108,12 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | Look | A caption under the number, the floating `+N` (its prefix, suffix and how long it stays), the padlock, and the tail. |
 | Sticker | The size of the number, caption and floating text, corner roundness, padding, the gap between number and caption, tilt, an outline and shadows. |
 | Text | The boldness of the number, caption and floating text, and the caption's opacity and letter spacing. |
-| Theme | A preset (Soft black by default, Cosy cabin, Cosy summer pastel, Celestial, Pastel goth) or Custom colours and font, with separate colours for the box, number, caption, outline, padlock and floating text, and an opacity for the box. |
+| Theme | One of the twelve shared style presets (Soft black by default) or Custom colours and font, with separate colours for the box, number, caption, outline, padlock and floating text, and an opacity for the box. |
 | Animation | One switch for all animation, how far the sticker swells when the count changes, and how long that takes. |
 | Sounds | A sound and volume for a gift adding squats, for locking and for unlocking, plus a master mute. |
 | Manual controls | Buttons to simulate a gift, adjust, lock and reset, and to test each sound. |
 
-The full list, with defaults, is in [`widget/fields.json`](widget/fields.json). The preset colours apply only when the preset is not **Custom**.
+The full list, with defaults, is in [`widget/fields.json`](widget/fields.json). The colour and font pickers apply only when the style preset is **Custom**.
 
 ## Chat replies and reminders
 

@@ -19,18 +19,23 @@
 
   var STORE_KEY = "squat_tracker_v1";
 
-  /* Theme palettes, trimmed to the three colours a sticker needs: the box
-     (accent), the number (bg) and a spare text tone. The default, Soft black, is a
-     see-through black box with white text, matching the other overlays in this set
-     so they look like one family on a stream. A preset may also name the colour of
-     the floating chip, which otherwise borrows the box tone. */
+  /* Style presets. The same twelve, with the same colours, in every overlay in this
+     set, generated from one table so they cannot drift apart, so any preset looks
+     like one family across a whole stream. The default, Soft black, is a see-through
+     black panel with white text. */
   var PRESETS = {
-    glass:      { bg: "#FFFFFF", text: "#FFFFFF", accent: "rgba(0, 0, 0, 0.55)", font: "BioRhyme",
-                  float: "#FFFFFF", floatBg: "rgba(0, 0, 0, 0.7)" },
-    cosycabin:  { bg: "#F5ECD6", text: "#57442E", accent: "#7C6142", font: "Chicle" },
-    pastel:     { bg: "#FFF6E9", text: "#6B4F3A", accent: "#FF8A65", font: "Baloo 2" },
-    celestial:  { bg: "#F3ECFF", text: "#2E1A47", accent: "#E8C06B", font: "Cinzel" },
-    pastelgoth: { bg: "#F2E9F0", text: "#3A3340", accent: "#C8B6E2", font: "Quicksand" }
+    glass: { panel: "rgba(0, 0, 0, 0.55)", strong: "rgba(0, 0, 0, 0.7)", text: "#FFFFFF", accent: "#FFFFFF", font: "BioRhyme" },
+    frost: { panel: "rgba(255, 255, 255, 0.72)", strong: "rgba(255, 255, 255, 0.88)", text: "#1B2130", accent: "#1B2130", font: "BioRhyme" },
+    midnight: { panel: "rgba(10, 18, 46, 0.72)", strong: "rgba(10, 18, 46, 0.88)", text: "#E8EEFF", accent: "#7FA8FF", font: "BioRhyme" },
+    sunset: { panel: "rgba(48, 18, 42, 0.72)", strong: "rgba(48, 18, 42, 0.88)", text: "#FFF1E6", accent: "#FF9A5A", font: "BioRhyme" },
+    forest: { panel: "rgba(12, 36, 28, 0.72)", strong: "rgba(12, 36, 28, 0.88)", text: "#EAF7EE", accent: "#6FD6A0", font: "BioRhyme" },
+    ocean: { panel: "rgba(6, 36, 50, 0.72)", strong: "rgba(6, 36, 50, 0.88)", text: "#E6F8FF", accent: "#4CD3E0", font: "BioRhyme" },
+    rose: { panel: "rgba(58, 14, 34, 0.72)", strong: "rgba(58, 14, 34, 0.88)", text: "#FFE9F1", accent: "#FF8FB8", font: "BioRhyme" },
+    neon: { panel: "rgba(4, 4, 16, 0.82)", strong: "rgba(4, 4, 16, 0.92)", text: "#FFFFFF", accent: "#00F0FF", font: "BioRhyme" },
+    cosycabin: { panel: "#F5ECD6", strong: "#F5ECD6", text: "#57442E", accent: "#7C6142", font: "Chicle" },
+    pastel: { panel: "#FFF6E9", strong: "#FFF6E9", text: "#6B4F3A", accent: "#FF8A65", font: "Baloo 2" },
+    celestial: { panel: "#2E1A47", strong: "#2E1A47", text: "#F3ECFF", accent: "#E8C06B", font: "Cinzel" },
+    pastelgoth: { panel: "#3A3340", strong: "#3A3340", text: "#F2E9F0", accent: "#C8B6E2", font: "Quicksand" }
   };
   var BASE = PRESETS.glass;
 
@@ -163,12 +168,13 @@
         lock: cfg.colors.lock, float: cfg.colors.float, floatBg: rgba(cfg.colors.floatBg, cfg.boxOpacity)
       };
     }
-    // A preset colours the whole sticker from its three tones: the number, caption,
-    // outline and padlock take the light tone, the floating chip the box tone.
+    // A preset colours the whole sticker from its tones: the box is the panel, the
+    // number, outline, padlock and floating text take the accent so each preset
+    // reads as itself, and the caption takes the text colour.
     var p = PRESETS[cfg.themePreset] || BASE;
     return {
-      bg: p.bg, text: p.text, accent: p.accent, font: p.font,
-      count: p.bg, label: p.bg, border: p.bg, lock: p.bg, float: p.float || p.accent, floatBg: p.floatBg || p.bg
+      bg: p.text, text: p.text, accent: p.panel, font: p.font,
+      count: p.accent, label: p.text, border: p.accent, lock: p.accent, float: p.accent, floatBg: p.strong
     };
   }
 

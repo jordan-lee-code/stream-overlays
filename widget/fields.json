@@ -281,13 +281,20 @@
   },
   "themePreset": {
     "type": "dropdown",
-    "label": "Theme preset (pick Custom to use your own colours below)",
+    "label": "Style preset (pick Custom to use your own colours below)",
     "value": "glass",
     "options": {
-      "glass": "Soft black (default, matches the other overlays)",
+      "glass": "Soft black (default)",
+      "frost": "Soft white",
+      "midnight": "Midnight blue",
+      "sunset": "Sunset",
+      "forest": "Forest",
+      "ocean": "Ocean",
+      "rose": "Rose",
+      "neon": "Neon",
       "cosycabin": "Cosy cabin",
       "pastel": "Cosy summer pastel",
-      "celestial": "Celestial tarot-witchy",
+      "celestial": "Celestial",
       "pastelgoth": "Pastel goth",
       "custom": "Custom (use the colours below)"
     },

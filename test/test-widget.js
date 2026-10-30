@@ -220,9 +220,9 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   // L. theme presets
   console.log("\n[theme presets]");
   load({ themePreset: "cosycabin" }); await wait(5);
-  ok(elements["squat-app"].style["--accent"] === "#7C6142", "cosy cabin box colour (" + elements["squat-app"].style["--accent"] + ")");
+  ok(elements["squat-app"].style["--accent"] === "#F5ECD6", "cosy cabin box colour (" + elements["squat-app"].style["--accent"] + ")");
   load({ themePreset: "pastelgoth" }); await wait(5);
-  ok(elements["squat-app"].style["--accent"] === "#C8B6E2", "pastel goth changes the box colour");
+  ok(elements["squat-app"].style["--accent"] === "#3A3340", "pastel goth changes the box colour");
   load({ themePreset: "custom", colorAccent: "#123456" }); await wait(5);
   ok(elements["squat-app"].style["--accent"] === "rgba(18, 52, 86, 0.55)", "custom uses the colour picker, at the box opacity (" + elements["squat-app"].style["--accent"] + ")");
 
@@ -290,7 +290,7 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   ok(A["--shadow"] === "none" && A["--text-shadow"] === "none" && A["--tail-display"] === "none", "flat: no shadow, text shadow or tail");
   ok(A["--c-float"] === "#FFFFFF" && A["--c-float-bg"] === "rgba(0, 0, 0, 0.7)", "the floating chip is white on soft black");
   load({ themePreset: "cosycabin" }); await wait(5);
-  ok(A["--c-count"] === "#F5ECD6" && A["--c-float"] === "#7C6142" && A["--c-float-bg"] === "#F5ECD6", "a coloured preset colours every part from its tones");
+  ok(A["--c-count"] === "#7C6142" && A["--c-label"] === "#57442E" && A["--c-float"] === "#7C6142" && A["--c-float-bg"] === "#F5ECD6", "a coloured preset colours every part from its tones");
   load(); await wait(5);
   load({ radius: 20, paddingV: 8, paddingH: 12, gap: 3, tilt: 6, borderWidth: 4, shadow: false, textShadow: true, showTail: false,
     countScale: 1.5, labelScale: 2, floatScale: 0.5, countWeight: "400", labelWeight: "800", floatWeight: "600", labelOpacity: 1, labelSpacing: 0.2,
@@ -361,6 +361,20 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   const unhandled = Object.keys(fields).filter(k => fields[k].type === "button" && src.indexOf('"' + k + '"') === -1);
   ok(unhandled.length === 0, "every button is handled (unhandled: " + unhandled.join(", ") + ")");
 
+
+  // ---- style presets: the same twelve, with the same colours, in every overlay
+  console.log("\n[style presets]");
+  const EXPECT = {"glass": {"text": "#FFFFFF", "accent": "#FFFFFF", "panel": "rgba(0, 0, 0, 0.55)", "font": "BioRhyme"}, "frost": {"text": "#1B2130", "accent": "#1B2130", "panel": "rgba(255, 255, 255, 0.72)", "font": "BioRhyme"}, "midnight": {"text": "#E8EEFF", "accent": "#7FA8FF", "panel": "rgba(10, 18, 46, 0.72)", "font": "BioRhyme"}, "sunset": {"text": "#FFF1E6", "accent": "#FF9A5A", "panel": "rgba(48, 18, 42, 0.72)", "font": "BioRhyme"}, "forest": {"text": "#EAF7EE", "accent": "#6FD6A0", "panel": "rgba(12, 36, 28, 0.72)", "font": "BioRhyme"}, "ocean": {"text": "#E6F8FF", "accent": "#4CD3E0", "panel": "rgba(6, 36, 50, 0.72)", "font": "BioRhyme"}, "rose": {"text": "#FFE9F1", "accent": "#FF8FB8", "panel": "rgba(58, 14, 34, 0.72)", "font": "BioRhyme"}, "neon": {"text": "#FFFFFF", "accent": "#00F0FF", "panel": "rgba(4, 4, 16, 0.82)", "font": "BioRhyme"}, "cosycabin": {"text": "#57442E", "accent": "#7C6142", "panel": "#F5ECD6", "font": "Chicle"}, "pastel": {"text": "#6B4F3A", "accent": "#FF8A65", "panel": "#FFF6E9", "font": "Baloo 2"}, "celestial": {"text": "#F3ECFF", "accent": "#E8C06B", "panel": "#2E1A47", "font": "Cinzel"}, "pastelgoth": {"text": "#F2E9F0", "accent": "#C8B6E2", "panel": "#3A3340", "font": "Quicksand"}};
+  const LABELS = {"glass": "Soft black (default)", "frost": "Soft white", "midnight": "Midnight blue", "sunset": "Sunset", "forest": "Forest", "ocean": "Ocean", "rose": "Rose", "neon": "Neon", "cosycabin": "Cosy cabin", "pastel": "Cosy summer pastel", "celestial": "Celestial", "pastelgoth": "Pastel goth", "custom": "Custom (use the colours below)"};
+  ok(JSON.stringify(Object.keys(fields.themePreset.options)) === JSON.stringify(Object.keys(LABELS)) && Object.keys(LABELS).length === 13, "the dropdown offers the twelve shared presets and Custom, in the shared order");
+  ok(Object.keys(LABELS).every(k => fields.themePreset.options[k] === LABELS[k]), "with the shared labels");
+  ok(fields.themePreset.value === "glass", "and Soft black is the default");
+  for (const key of Object.keys(EXPECT)) {
+    load({ themePreset: key }); await wait(5);
+    const S2 = elements["squat-app"].style;
+    ok(S2["--c-count"] === EXPECT[key].accent && S2["--c-label"] === EXPECT[key].text && S2["--accent"] === EXPECT[key].panel && S2["--font"].indexOf('"' + EXPECT[key].font + '"') !== -1,
+      key + ": panel, text, accent and font match the shared table (" + S2["--c-count"] + ", " + S2["--accent"] + ")");
+  }
   console.log("\n=== " + pass + " passed, " + fail + " failed ===");
   process.exit(fail ? 1 : 0);
 })();
