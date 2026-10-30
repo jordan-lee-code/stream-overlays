@@ -107,7 +107,7 @@ Each time a run really does reset, the next bar is 1.5 times as big, and what it
 | Points to save it | 25 | 38 | 56 | 84 | 127 | 190 |
 | Points to end it outright | 500 | 500 | 500 | 500 | 1,000 | 1,000 |
 
-Only a reset that actually happens counts. A saved run keeps the same bar. A moderator's `!barreset` clears the bar without shrinking it, and `!barreset 1` (or the **Back to the first bar** button) starts the climb over; `!barreset 3` jumps to the third bar. The growth is a setting: 2 doubles each bar, and 1 means they never grow.
+Only a reset that actually happens counts. A saved run keeps the same bar. A moderator's `!bar reset` clears the bar without shrinking it, and `!bar reset 1` (or the **Back to the first bar** button) starts the climb over; `!bar reset 3` jumps to the third bar. The growth is a setting: 2 doubles each bar, and 1 means they never grow.
 
 ## The lock
 
@@ -182,7 +182,7 @@ Channel point rewards have to be created by hand on Twitch, in the Creator Dashb
 
 **Push Back the Bar** is the one thing viewers can buy that takes points off the bar, a tenth of a bar's worth each time. It only works while the bar is filling, and setting its amount to 0 turns the reward off. **Save the Run** wants no cooldown at all, since it is useless except inside the window and somebody may need to buy it more than once. Because titles are matched on their start, several rewards can share a title and pool, but each one counts as one of the five whatever it cost.
 
-An overlay widget can ignore a redemption but cannot refund one, so on streams where the bar is not in play, switch the rewards off on Twitch as well as running `!baroff`.
+An overlay widget can ignore a redemption but cannot refund one, so on streams where the bar is not in play, switch the rewards off on Twitch as well as running `!bar off`.
 
 **Before the first stream.** StreamElements has not documented channel point redemptions for custom widgets. The widget is written against the shape a working community widget produces, with the title, cost and username on `event.data` and a fallback to the raw Twitch payload underneath. So the **Log every event to the browser console** setting is on by default. Take one real redeem of each reward on a quiet stream, open the browser source console, look for the `[rage-bar]` lines, and turn the setting off once you can see the title and cost coming through. Subs, bits and donations use documented events and are not in doubt.
 
@@ -195,20 +195,20 @@ Everything can be driven from chat by the broadcaster and moderators. These skip
 | `!bar` | Anyone: draws the eye to the bar. |
 | `!bar +5` or `!bar -5` | Nudges it up or down. |
 | `!bar set 30` or `!bar =30` | Sets it outright, decimals allowed. |
-| `!barlock 60` | Locks it for a minute. A bare number is seconds, and `90s`, `5m`, `1h` and `1m30s` also work. |
-| `!barunlock` | Takes the lock straight off. |
-| `!barfill` | Fills it and starts the clock. |
-| `!barnope` | Saves the run by hand. |
-| `!barreset` | Clears everything to an empty, unlocked bar at its current size. |
-| `!barreset 1` | Goes back to the first bar (`!barreset 3` jumps to the third). |
-| `!barsub 5` | Pretends five tier 1 subs arrived, through exactly the route a real gift takes (`!barsub 3 t3` for tier 3, `!barsub -1` to take one back). |
-| `!barbits 500` | Adds 500 bits by hand, as a real cheer would (`!barbits -500` takes them back off). |
-| `!baroff` | Switches the bar off for a stream that is not this game. |
-| `!baron` | Switches it back on, carrying on from where it stopped. |
+| `!bar lock 60` | Locks it for a minute. A bare number is seconds, and `90s`, `5m`, `1h` and `1m30s` also work. |
+| `!bar unlock` | Takes the lock straight off. |
+| `!bar fill` | Fills it and starts the clock. |
+| `!bar nope` | Saves the run by hand. |
+| `!bar reset` | Clears everything to an empty, unlocked bar at its current size. |
+| `!bar reset 1` | Goes back to the first bar (`!bar reset 3` jumps to the third). |
+| `!bar sub 5` | Pretends five tier 1 subs arrived, through exactly the route a real gift takes (`!bar sub 3 t3` for tier 3, `!bar sub -1` to take one back). |
+| `!bar bits 500` | Adds 500 bits by hand, as a real cheer would (`!bar bits -500` takes them back off). |
+| `!bar off` | Switches the bar off for a stream that is not this game. |
+| `!bar on` | Switches it back on, carrying on from where it stopped. |
 
-**`!baroff` is for every other stream.** While it is off nothing chat spends reaches the bar: subs, gift bombs, bits, tips and redeems are all ignored, including a gift big enough to end a run. The card fades and says `switched off`, or disappears entirely if **Hide the bar while it is switched off** is ticked. Time stands still while it is off, so a lock with three minutes left still has three minutes left when it comes back, and the frozen state survives a browser-source refresh. Moderator commands still work while it is off.
+**`!bar off` is for every other stream.** While it is off nothing chat spends reaches the bar: subs, gift bombs, bits, tips and redeems are all ignored, including a gift big enough to end a run. The card fades and says `switched off`, or disappears entirely if **Hide the bar while it is switched off** is ticked. Time stands still while it is off, so a lock with three minutes left still has three minutes left when it comes back, and the frozen state survives a browser-source refresh. Moderator commands still work while it is off.
 
-`!barsub` makes the quickest way to rehearse the whole sequence on the real overlay: `!barsub 99`, then `!barsub` to tip it over, then a few more to save it. Whether moderators can use the commands, or only the broadcaster, is a setting.
+`!bar sub` makes the quickest way to rehearse the whole sequence on the real overlay: `!bar sub 99`, then `!bar sub` to tip it over, then a few more to save it. Whether moderators can use the commands, or only the broadcaster, is a setting.
 
 ## Configuration
 
@@ -249,7 +249,7 @@ A browser that refuses to autoplay audio is caught and ignored. The **Manual con
 
 ## When the browser source is not running
 
-If OBS is closed during the save window and comes back later, the bar returns **still full, with a fresh window and whatever chat had already chipped in**, so a run nobody paid for is not thrown away. If it is stale, `!barreset` clears it.
+If OBS is closed during the save window and comes back later, the bar returns **still full, with a fresh window and whatever chat had already chipped in**, so a run nobody paid for is not thrown away. If it is stale, `!bar reset` clears it.
 
 If two copies of the widget run at once, which happens when the StreamElements overlay editor is left open beside OBS, they answer the same events and write to the same saved state. The second to load says so in the browser source console. Close one.
 

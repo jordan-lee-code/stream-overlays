@@ -85,12 +85,7 @@
   function readConfig(f) {
     f = f || {};
     cfg = {
-      cmd: {
-        view: str(f.viewCommand, "!squats").toLowerCase().trim(),
-        reset: str(f.resetCommand, "!squatsreset").toLowerCase().trim(),
-        lock: str(f.lockCommand, "!squatslock").toLowerCase().trim(),
-        unlock: str(f.unlockCommand, "!squatsunlock").toLowerCase().trim()
-      },
+      cmd: str(f.command, "!squats").toLowerCase().trim(),
       whoCanManage: str(f.whoCanManage, "mods"),
       subsPerBlock: Math.max(1, Math.round(num(f.subsPerBlock, 5))),
       squatsPerBlock: Math.max(1, Math.round(num(f.squatsPerBlock, 5))),
@@ -410,21 +405,15 @@
     var rest = text.replace(/^\S+\s*/, "").trim();
     var roles = rolesOf(data);
 
-    if (first === cfg.cmd.reset) {
-      if (canManage(roles)) setSquats(0, "reset");
-      return;
-    }
-    if (first === cfg.cmd.lock) {
-      if (canManage(roles)) setLocked(true);
-      return;
-    }
-    if (first === cfg.cmd.unlock) {
-      if (canManage(roles)) setLocked(false);
-      return;
-    }
-    if (first === cfg.cmd.view) {
-      if (!rest) { pop(); return; }           // a plain !squats just draws the eye to it
-      if (canManage(roles)) applyAdjustment(rest);
+    if (first !== cfg.cmd) return;
+    if (!rest) { pop(); return; }             // a plain !squats just draws the eye to it
+    if (!canManage(roles)) return;
+    // One command word with verbs after it: !squats reset, !squats lock, !squats unlock, or an adjustment.
+    switch (rest.toLowerCase()) {
+      case "reset": setSquats(0, "reset"); break;
+      case "lock": setLocked(true); break;
+      case "unlock": setLocked(false); break;
+      default: applyAdjustment(rest);
     }
   }
 

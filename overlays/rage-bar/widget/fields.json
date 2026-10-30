@@ -1,62 +1,8 @@
 {
-  "viewCommand": {
+  "command": {
     "type": "text",
-    "label": "Show the bar (anyone). Mods can also adjust it: !bar +5, !bar -5, !bar set 30",
+    "label": "Command word. Anyone can type it alone to make the bar pop. Mods can adjust it (!bar +5, !bar set 42) or give it a verb: lock, unlock, nope, fill, sub, bits, on, off, reset",
     "value": "!bar",
-    "group": "Commands"
-  },
-  "lockCommand": {
-    "type": "text",
-    "label": "Lock the bar by hand (mods). A bare number is seconds, so !barlock 60 is a minute; !barlock 5m and !barlock 1h work too, and a mod's lock ignores the usual caps",
-    "value": "!barlock",
-    "group": "Commands"
-  },
-  "unlockCommand": {
-    "type": "text",
-    "label": "Take the lock off again (mods)",
-    "value": "!barunlock",
-    "group": "Commands"
-  },
-  "nopeCommand": {
-    "type": "text",
-    "label": "Save the run by hand while the clock is running (mods)",
-    "value": "!barnope",
-    "group": "Commands"
-  },
-  "fillCommand": {
-    "type": "text",
-    "label": "Fill the bar and start the clock (mods), for rehearsing the panic",
-    "value": "!barfill",
-    "group": "Commands"
-  },
-  "subCommand": {
-    "type": "text",
-    "label": "Pretend some subs just arrived, for testing (mods): !barsub 5, or !barsub 3 t3 for tier 3. A minus takes them back off as a correction: !barsub -1. Behaves exactly like a real gift, including ending the run outright if it is big enough",
-    "value": "!barsub",
-    "group": "Commands"
-  },
-  "bitsCommand": {
-    "type": "text",
-    "label": "Add a number of bits to the bar by hand (mods): !barbits 500. It behaves exactly like a real cheer. A minus takes them back off as a correction: !barbits -500",
-    "value": "!barbits",
-    "group": "Commands"
-  },
-  "onCommand": {
-    "type": "text",
-    "label": "Switch the bar on for a Getting Over It stream (mods). Anything that was counting down carries on from where it stopped",
-    "value": "!baron",
-    "group": "Commands"
-  },
-  "offCommand": {
-    "type": "text",
-    "label": "Switch the bar off for every other stream (mods). Subs, bits, tips and redeems stop counting and the clocks stand still",
-    "value": "!baroff",
-    "group": "Commands"
-  },
-  "resetCommand": {
-    "type": "text",
-    "label": "Clear everything back to an empty, unlocked bar (mods). Add a bar number to go to that bar, so !barreset 1 goes back to the first one",
-    "value": "!barreset",
     "group": "Commands"
   },
   "whoCanManage": {

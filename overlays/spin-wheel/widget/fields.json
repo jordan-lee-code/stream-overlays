@@ -1,104 +1,8 @@
 {
-  "spinCommand": {
+  "command": {
     "type": "text",
-    "label": "Spin command (streamer draws a winner)",
+    "label": "Command word. Anyone can type it alone to enter the giveaway. Mods add a verb: go [n], open, close, clear, remove name, add names, mode, lastwinner, reroll, veto, strike, resetlifelines, forfeit add/remove/clear. Anyone can use: ask question",
     "value": "!spin",
-    "group": "Commands"
-  },
-  "enterCommand": {
-    "type": "text",
-    "label": "Enter command (viewers add their name)",
-    "value": "!spintowin",
-    "group": "Commands"
-  },
-  "openCommand": {
-    "type": "text",
-    "label": "Open entries command (mods)",
-    "value": "!spinopen",
-    "group": "Commands"
-  },
-  "closeCommand": {
-    "type": "text",
-    "label": "Close entries command (mods)",
-    "value": "!spinclose",
-    "group": "Commands"
-  },
-  "clearCommand": {
-    "type": "text",
-    "label": "Clear entries command (mods)",
-    "value": "!spinclear",
-    "group": "Commands"
-  },
-  "removeCommand": {
-    "type": "text",
-    "label": "Remove one entrant command, e.g. !spinremove name (mods)",
-    "value": "!spinremove",
-    "group": "Commands"
-  },
-  "modeCommand": {
-    "type": "text",
-    "label": "Switch mode command, e.g. !spinmode forfeits (mods)",
-    "value": "!spinmode",
-    "group": "Commands"
-  },
-  "addCommand": {
-    "type": "text",
-    "label": "Add entrants by hand, e.g. !spinadd Alice, Bob (mods)",
-    "value": "!spinadd",
-    "group": "Commands"
-  },
-  "rerollCommand": {
-    "type": "text",
-    "label": "Re-roll the last draw (mods)",
-    "value": "!spinreroll",
-    "group": "Commands"
-  },
-  "lastWinnerCommand": {
-    "type": "text",
-    "label": "Re-show the last winner on screen (mods)",
-    "value": "!spinlastwinner",
-    "group": "Commands"
-  },
-  "askCommand": {
-    "type": "text",
-    "label": "Truth or...: submit a question, e.g. !spinask ... (anyone)",
-    "value": "!spinask",
-    "group": "Commands"
-  },
-  "vetoCommand": {
-    "type": "text",
-    "label": "Truth or...: veto the current question, spends a lifeline (streamer)",
-    "value": "!spinveto",
-    "group": "Commands"
-  },
-  "strikeCommand": {
-    "type": "text",
-    "label": "Truth or...: mods remove the current question, no lifeline",
-    "value": "!spinstrike",
-    "group": "Commands"
-  },
-  "resetLivesCommand": {
-    "type": "text",
-    "label": "Truth or...: reset lifelines to full (mods)",
-    "value": "!spinresetlifelines",
-    "group": "Commands"
-  },
-  "forfeitAddCommand": {
-    "type": "text",
-    "label": "Forfeits: add one or more, e.g. !spinforfeitadd Karaoke, Pyjama party (mods)",
-    "value": "!spinforfeitadd",
-    "group": "Commands"
-  },
-  "forfeitRemoveCommand": {
-    "type": "text",
-    "label": "Forfeits: remove one by name, e.g. !spinforfeitremove Karaoke (mods)",
-    "value": "!spinforfeitremove",
-    "group": "Commands"
-  },
-  "forfeitClearCommand": {
-    "type": "text",
-    "label": "Forfeits: clear all forfeits (mods)",
-    "value": "!spinforfeitclear",
     "group": "Commands"
   },
   "whoCanSpin": {
@@ -273,7 +177,7 @@
   "idleMessage": {
     "type": "text",
     "label": "Message on the empty wheel in giveaway mode",
-    "value": "Type !spintowin to enter ☀️",
+    "value": "Type !spin to enter ☀️",
     "group": "Wording"
   },
   "modeGiveawayLabel": {

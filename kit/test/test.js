@@ -92,6 +92,7 @@ test("a standard name with the wrong type or default is refused", () => {
   assert.ok(checkFields({ animate: { type: "dropdown", value: true, group: "x" } }).some(x => /should be a checkbox/.test(x)));
   assert.ok(checkFields({ mute: { type: "checkbox", value: true, group: "x" } }).some(x => /should default to false/.test(x)));
 });
+test("a second command word is refused, since one command takes verbs", () => assert.ok(checkFields({ lockCommand: { type: "text", group: "Commands" } }).some(x => /second command word/.test(x))));
 test("a setting with no group is refused", () => assert.ok(checkFields({ anything: { type: "text" } }).some(x => /not in a group/.test(x))));
 test("a documented exception is allowed, and one with no reason, or for a missing setting, is not", () => {
   const f = { debug: { type: "checkbox", value: true, group: "Troubleshooting" } };

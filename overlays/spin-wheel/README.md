@@ -1,6 +1,6 @@
 # Spin Wheel Overlay
 
-A StreamElements custom widget: a spinning wheel for giveaways, raffles and forfeits. Viewers type `!spintowin` to put their name on the wheel, and the streamer types `!spin` to draw a winner live.
+A StreamElements custom widget: a spinning wheel for giveaways, raffles and forfeits. Viewers type `!spin` to put their name on the wheel, and the streamer types `!spin go` to draw a winner live.
 
 <p align="center"><img src="docs/raffle.png" alt="A semicircle wheel in shades of white and grey with nine viewer names, status pills and a toast saying fern joined" width="480"></p>
 
@@ -8,12 +8,12 @@ It started as a raffle and grew into a wheel that also runs forfeit spins, weigh
 
 ## Features
 
-- Giveaway raffle: viewers join with `!spintowin`, their name lands on the wheel with a small toast, and `!spin` draws a winner with a reveal and confetti.
+- Giveaway raffle: viewers join with `!spin`, their name lands on the wheel with a small toast, and `!spin go` draws a winner with a reveal and confetti.
 - Forfeits mode: a wheel of things chat makes you do, starting empty and built live from chat. Forfeits can be crossed off as they are landed on, and the wheel can spin itself on a bits, subs, follows or donation trigger.
 - Truth or... mode: chat submits questions, the wheel draws one, and it stays on screen while it is answered. A set number of lifelines lets the streamer skip questions, and moderators can strike an inappropriate one for free.
 - Subscriber-weighted odds: give subscribers and VIPs extra slots, reflected both in the maths and in how wide their slice is.
 - Goal auto-spin: spin on each new sub, every N followers, or when cumulative bits or tips cross a threshold, with an optional progress bar.
-- Multi-winner draws: `!spin 3` draws several distinct winners in a row.
+- Multi-winner draws: `!spin go 3` draws several distinct winners in a row.
 - Entry countdown: optionally close entries automatically after a set number of seconds.
 - Recent-winner cooldown: keep the last few winners out of the next draws.
 - Re-roll and re-show: put the last winner back and draw again, or re-show the most recent winner.
@@ -25,7 +25,7 @@ It started as a raffle and grew into a wheel that also runs forfeit spins, weigh
 
 ## Screenshots
 
-**Forfeits mode.** A wheel of forfeits built live with `!spinforfeitadd`, shown here as a full circle. Long labels are shortened on the wheel and shown in full in the reveal.
+**Forfeits mode.** A wheel of forfeits built live with `!spin forfeit add`, shown here as a full circle. Long labels are shortened on the wheel and shown in full in the reveal.
 
 <p><img src="docs/forfeits.png" alt="A full circle wheel with six forfeits in shades of white and grey" width="420"></p>
 
@@ -84,36 +84,36 @@ Every command word is configurable. The defaults are:
 
 | Command | Who | What it does |
 | --- | --- | --- |
-| `!spintowin` | anyone | Joins the wheel (giveaway mode, while entries are open). |
-| `!spin` | broadcaster, mods | Spins and draws a winner. |
-| `!spin 3` | broadcaster, mods | Draws several winners in one go. |
-| `!spinopen` | broadcaster, mods | Opens entries. |
-| `!spinclose` | broadcaster, mods | Closes entries. |
-| `!spinclear` | broadcaster, mods | Removes everyone from the wheel. |
-| `!spinremove name` | broadcaster, mods | Removes one entrant. |
-| `!spinadd Alice, Bob` | broadcaster, mods | Adds entrants by hand, comma separated. |
-| `!spinreroll` | broadcaster, mods | Puts the last winner back and draws again. |
-| `!spinlastwinner` | broadcaster, mods | Re-shows the most recent winner. |
-| `!spinmode giveaway`, `forfeits` or `questions` | broadcaster, mods | Switches wheel mode. |
-| `!spinforfeitadd Karaoke, Pyjama party` | broadcaster, mods | Forfeits: adds one or more, comma separated. |
-| `!spinforfeitremove Karaoke` | broadcaster, mods | Forfeits: removes one by name. |
-| `!spinforfeitclear` | broadcaster, mods | Forfeits: clears the wheel. |
-| `!spinask <question>` | anyone | Truth or...: submits a question. |
-| `!spinveto` | broadcaster, mods | Truth or...: skips the current question, spending a lifeline. |
-| `!spinstrike` | mods | Truth or...: removes the current question for free. |
-| `!spinresetlifelines` | broadcaster, mods | Truth or...: tops the lifelines back up. |
+| `!spin` | anyone | Joins the wheel (giveaway mode, while entries are open). |
+| `!spin go` | broadcaster, mods | Spins and draws a winner. |
+| `!spin go 3` | broadcaster, mods | Draws several winners in one go. |
+| `!spin open` | broadcaster, mods | Opens entries. |
+| `!spin close` | broadcaster, mods | Closes entries. |
+| `!spin clear` | broadcaster, mods | Removes everyone from the wheel. |
+| `!spin remove name` | broadcaster, mods | Removes one entrant. |
+| `!spin add Alice, Bob` | broadcaster, mods | Adds entrants by hand, comma separated. |
+| `!spin reroll` | broadcaster, mods | Puts the last winner back and draws again. |
+| `!spin lastwinner` | broadcaster, mods | Re-shows the most recent winner. |
+| `!spin mode giveaway`, `forfeits` or `questions` | broadcaster, mods | Switches wheel mode. |
+| `!spin forfeit add Karaoke, Pyjama party` | broadcaster, mods | Forfeits: adds one or more, comma separated. |
+| `!spin forfeit remove Karaoke` | broadcaster, mods | Forfeits: removes one by name. |
+| `!spin forfeit clear` | broadcaster, mods | Forfeits: clears the wheel. |
+| `!spin ask <question>` | anyone | Truth or...: submits a question. |
+| `!spin veto` | broadcaster, mods | Truth or...: skips the current question, spending a lifeline. |
+| `!spin strike` | mods | Truth or...: removes the current question for free. |
+| `!spin resetlifelines` | broadcaster, mods | Truth or...: tops the lifelines back up. |
 
 Whether moderators can use the streamer commands, or only the broadcaster, is a setting.
 
 ## Forfeits mode
 
-Switch with `!spinmode forfeits`. The wheel starts empty and is built live: `!spinforfeitadd Karaoke hour, Pyjama party` adds one or more forfeits (each optionally `label|weight|#colour`), `!spinforfeitremove` takes one out and `!spinforfeitclear` empties the wheel. Forfeits are saved, so a refresh keeps what has been built. By default a forfeit is **crossed off** once it is landed on, so the wheel works like a bucket list to spin through. Turn that off if forfeits should stay and repeat.
+Switch with `!spin mode forfeits`. The wheel starts empty and is built live: `!spin forfeit add Karaoke hour, Pyjama party` adds one or more forfeits (each optionally `label|weight|#colour`), `!spin forfeit remove` takes one out and `!spin forfeit clear` empties the wheel. Forfeits are saved, so a refresh keeps what has been built. By default a forfeit is **crossed off** once it is landed on, so the wheel works like a bucket list to spin through. Turn that off if forfeits should stay and repeat.
 
 The forfeit wheel can spin itself. In the **Goal auto-spin** group, turn on auto-spin and choose a trigger: each new subscriber, every N followers, bits or a StreamElements donation. For bits and donations, **Cumulative** adds them up until they reach the threshold and then spins, carrying the remainder. **Each** spins once for every individual cheer or donation that meets the threshold. Auto-spin works in any mode.
 
 ## Truth or... mode
 
-Chat submits questions with `!spinask`, and the wheel draws one that stays on screen while it is answered. A set number of **lifelines** (4 by default) lets the streamer `!spinveto` a question to skip it, and moderators can `!spinstrike` an inappropriate one without it costing a lifeline. Showing who asked is a toggle. What happens if a question is not answered is left to the streamer, and nothing in the widget names or encourages a consequence.
+Chat submits questions with `!spin ask`, and the wheel draws one that stays on screen while it is answered. A set number of **lifelines** (4 by default) lets the streamer `!spin veto` a question to skip it, and moderators can `!spin strike` an inappropriate one without it costing a lifeline. Showing who asked is a toggle. What happens if a question is not answered is left to the streamer, and nothing in the widget names or encourages a consequence.
 
 ## Theming
 
@@ -155,7 +155,7 @@ Fonts load from Google Fonts at run time and are chosen by the **Font** setting.
 
 ## Chat replies
 
-A StreamElements widget can read chat but cannot write to it. When someone uses `!spintowin` the confirmation is visual: their name lands on the wheel and the entry count rises. If you would like chat to see a reply as well, add a StreamElements **chatbot command** with the same name and a response message. The two sit side by side, both reacting to the same message.
+A StreamElements widget can read chat but cannot write to it. When someone uses `!spin` the confirmation is visual: their name lands on the wheel and the entry count rises. If you would like chat to see a reply as well, add a StreamElements **chatbot command** with the same name and a response message. The two sit side by side, both reacting to the same message.
 
 ## Local development
 
@@ -166,7 +166,7 @@ npm run dev
 # then open http://localhost:8000/dev/
 ```
 
-The harness stands in for StreamElements. Use its panel to send `!spintowin` as different users (toggling subscriber, VIP and moderator), spin, switch modes and fire goal events. Its **Every setting** section is generated from `widget/fields.json`, so it offers exactly what StreamElements will, and each sound setting has a **Use a test beep** button. The local dev page also shows a Ko-fi support button in the corner. That button belongs to the harness only and is not part of the widget, so it never appears on stream.
+The harness stands in for StreamElements. Use its panel to send `!spin` as different users (toggling subscriber, VIP and moderator), spin, switch modes and fire goal events. Its **Every setting** section is generated from `widget/fields.json`, so it offers exactly what StreamElements will, and each sound setting has a **Use a test beep** button. The local dev page also shows a Ko-fi support button in the corner. That button belongs to the harness only and is not part of the widget, so it never appears on stream.
 
 At the top of the harness, **Look and export** switches the style preset on the live widget, and can download or copy a `fields.json` with your current settings as its defaults. Paste that into the Fields tab of a new custom widget in StreamElements and it starts out looking the way it does here.
 

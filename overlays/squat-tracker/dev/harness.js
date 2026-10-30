@@ -322,11 +322,11 @@
         '<button class="alt" data-cmd="!squats -5">!squats -5</button>' +
         '<button class="alt" data-cmd="!squats +5">!squats +5</button>' +
         '<button class="alt" data-cmd="!squats">!squats</button>' +
-        '<button class="alt" data-cmd="!squatsreset">!squatsreset</button>' +
+        '<button class="alt" data-cmd="!squats reset">!squats reset</button>' +
       '</div>' +
       '<div class="row">' +
-        '<button class="alt" data-cmd="!squatslock">!squatslock</button>' +
-        '<button class="alt" data-cmd="!squatsunlock">!squatsunlock</button>' +
+        '<button class="alt" data-cmd="!squats lock">!squats lock</button>' +
+        '<button class="alt" data-cmd="!squats unlock">!squats unlock</button>' +
       '</div>' +
       '<p class="hint">The quick buttons send as the broadcaster. Untick broadcaster and tick mod (or neither) to feel the permissions.</p>' +
       '<p class="hint">While the count is locked a padlock sits on the sticker and gift bombs ' +

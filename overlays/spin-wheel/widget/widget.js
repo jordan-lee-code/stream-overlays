@@ -240,25 +240,7 @@
   function readConfig(f) {
     f = f || {};
     cfg = {
-      cmd: {
-        spin: str(f.spinCommand, "!spin").toLowerCase().trim(),
-        enter: str(f.enterCommand, "!spintowin").toLowerCase().trim(),
-        open: str(f.openCommand, "!spinopen").toLowerCase().trim(),
-        close: str(f.closeCommand, "!spinclose").toLowerCase().trim(),
-        clear: str(f.clearCommand, "!spinclear").toLowerCase().trim(),
-        remove: str(f.removeCommand, "!spinremove").toLowerCase().trim(),
-        mode: str(f.modeCommand, "!spinmode").toLowerCase().trim(),
-        add: str(f.addCommand, "!spinadd").toLowerCase().trim(),
-        lastwinner: str(f.lastWinnerCommand, "!spinlastwinner").toLowerCase().trim(),
-        reroll: str(f.rerollCommand, "!spinreroll").toLowerCase().trim(),
-        ask: str(f.askCommand, "!spinask").toLowerCase().trim(),
-        veto: str(f.vetoCommand, "!spinveto").toLowerCase().trim(),
-        strike: str(f.strikeCommand, "!spinstrike").toLowerCase().trim(),
-        resetlives: str(f.resetLivesCommand, "!spinresetlifelines").toLowerCase().trim(),
-        forfeitadd: str(f.forfeitAddCommand, "!spinforfeitadd").toLowerCase().trim(),
-        forfeitremove: str(f.forfeitRemoveCommand, "!spinforfeitremove").toLowerCase().trim(),
-        forfeitclear: str(f.forfeitClearCommand, "!spinforfeitclear").toLowerCase().trim()
-      },
+      cmd: str(f.command, "!spin").toLowerCase().trim(),
       whoCanSpin: str(f.whoCanSpin, "mods"),
       defaultMode: str(f.defaultMode, "giveaway"),
       startOpen: bool(f.startOpen, true),
@@ -1116,7 +1098,7 @@
   function lifelineText() {
     var n = lifelinesLeft();
     return n > 0
-      ? tpl(n === 1 ? cfg.words.lifelineLeft : cfg.words.lifelinesLeft, { n: n, cmd: cfg.cmd.veto })
+      ? tpl(n === 1 ? cfg.words.lifelineLeft : cfg.words.lifelinesLeft, { n: n, cmd: cfg.cmd + " veto" })
       : cfg.words.noLifelines;
   }
   function showQuestion(q) {
@@ -1469,9 +1451,9 @@
     updateLifelines();
     if (el.idle) {
       el.idle.textContent = state.mode === "questions"
-        ? tpl(cfg.words.idleQuestions, { cmd: cfg.cmd.ask })
+        ? tpl(cfg.words.idleQuestions, { cmd: cfg.cmd + " ask" })
         : state.mode === "forfeits"
-        ? tpl(cfg.words.idleForfeits, { cmd: cfg.cmd.forfeitadd })
+        ? tpl(cfg.words.idleForfeits, { cmd: cfg.cmd + " forfeit add" })
         : cfg.idleMessage;
     }
   }
@@ -1511,26 +1493,37 @@
     var first = text.toLowerCase().split(/\s+/)[0];
     var rest = text.replace(/^\S+\s*/, "").trim();
     var roles = rolesOf(data);
-    var C = cfg.cmd;
+    if (first !== cfg.cmd) return;
 
-    if (first === C.enter) { handleEnter(data, roles); return; }
-    if (first === C.ask) { handleAsk(data, roles, rest); return; }
-    if (!canManage(roles)) return; // remaining commands are streamer/mod only
-    if (first === C.spin) triggerSpin(parseInt(rest, 10) || 1);
-    else if (first === C.open) setOpen(true);
-    else if (first === C.close) setOpen(false);
-    else if (first === C.clear) clearEntries();
-    else if (first === C.remove) removeEntrant(rest);
-    else if (first === C.add) addManualEntry(rest);
-    else if (first === C.mode) setMode(rest.toLowerCase());
-    else if (first === C.lastwinner) showLastWinner();
-    else if (first === C.reroll) reroll();
-    else if (first === C.veto) veto();
-    else if (first === C.strike) strike();
-    else if (first === C.resetlives) resetLifelines();
-    else if (first === C.forfeitadd) addForfeit(rest);
-    else if (first === C.forfeitremove) removeForfeit(rest);
-    else if (first === C.forfeitclear) clearForfeits();
+    // One command word with verbs after it. A bare word enters the giveaway, and
+    // "ask" is open to everyone; every other verb is for the broadcaster and mods.
+    var parts = /^(\S+)\s*(.*)$/.exec(rest);
+    if (!parts) { handleEnter(data, roles); return; }
+    var verb = parts[1].toLowerCase(), arg = parts[2];
+    if (verb === "ask") { handleAsk(data, roles, arg); return; }
+    if (!canManage(roles)) return;
+    var forfeit = /^forfeit\s+(add|remove|clear)\b\s*(.*)$/i.exec(rest);
+    if (forfeit) {
+      var fv = forfeit[1].toLowerCase();
+      if (fv === "add") addForfeit(forfeit[2]);
+      else if (fv === "remove") removeForfeit(forfeit[2]);
+      else clearForfeits();
+      return;
+    }
+    switch (verb) {
+      case "go": triggerSpin(parseInt(arg, 10) || 1); break;
+      case "open": setOpen(true); break;
+      case "close": setOpen(false); break;
+      case "clear": clearEntries(); break;
+      case "remove": removeEntrant(arg); break;
+      case "add": addManualEntry(arg); break;
+      case "mode": setMode(arg.toLowerCase()); break;
+      case "lastwinner": showLastWinner(); break;
+      case "reroll": reroll(); break;
+      case "veto": veto(); break;
+      case "strike": strike(); break;
+      case "resetlifelines": resetLifelines(); break;
+    }
   }
 
   function handleButton(field) {

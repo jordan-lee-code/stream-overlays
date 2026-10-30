@@ -172,7 +172,7 @@
   var cosplay = false;       // showing the joke banner in place of an outright reset
   var cosplayResumeFill = 0; // what the bar had before the banner, restored once it clears
   var ender = "";            // whoever ended it outright, for the note under the bar
-  var pausedAt = 0;          // wall clock ms when !baroff stopped time; 0 means on
+  var pausedAt = 0;          // wall clock ms when !bar off stopped time; 0 means on
   var resetCount = 0;        // successful resets so far, which is what makes each bar bigger
 
   var saveTimer = null;
@@ -264,18 +264,7 @@
       // five breaks a lock in one go. Zero means a lock cannot be broken at all.
       lockBreakSubs: Math.max(0, num(f.lockBreakSubs, 25)),
 
-      cmd: {
-        view: title(f.viewCommand) || "!bar",
-        reset: title(f.resetCommand) || "!barreset",
-        lock: title(f.lockCommand) || "!barlock",
-        unlock: title(f.unlockCommand) || "!barunlock",
-        nope: title(f.nopeCommand) || "!barnope",
-        fill: title(f.fillCommand) || "!barfill",
-        sub: title(f.subCommand) || "!barsub",
-        bits: title(f.bitsCommand) || "!barbits",
-        on: title(f.onCommand) || "!baron",
-        off: title(f.offCommand) || "!baroff"
-      },
+      cmd: title(f.command) || "!bar",
       whoCanManage: str(f.whoCanManage, "mods"),
 
       nopeRewardTitle: title(f.nopeRewardTitle),
@@ -610,7 +599,7 @@
            quietly emptying it and handing the streamer a run nobody paid for, it comes
            back full with a fresh window and whatever had already been chipped in.
            Chat gets their chance and the run gets resolved on stream, where it was
-           always supposed to happen. A mod can wave it away with !barreset. */
+           always supposed to happen. A mod can wave it away with !bar reset. */
         phase = "pending";
         nopeUntil = n + cfg.nopeSeconds * 1000;
       }
@@ -646,7 +635,7 @@
     return cfg.whoCanManage === "mods" && roles.mod;
   }
 
-  /* "!barlock 60" is a minute, not an hour. A bare number is seconds, which is the
+  /* "!bar lock 60" is a minute, not an hour. A bare number is seconds, which is the
      same reading the subathon timer uses, and anything else can be spelled out:
      90s, 5m, 1h, 1m30s. Nobody should have to remember which unit this particular
      widget decided on halfway through a tense climb. */
@@ -1070,7 +1059,7 @@
   }
 
   /* Clears the bar but keeps how far the escalation has got, so a mod waving away
-     a stale bar with !barreset does not quietly hand chat a smaller one. */
+     a stale bar with !bar reset does not quietly hand chat a smaller one. */
   function clearAll() {
     phase = "filling";
     fill = 0;
@@ -1342,13 +1331,13 @@
     else setFill(fill + n);
   }
 
-  /* !barsub 5 pretends five tier 1 subs just arrived, for testing, and it goes
+  /* !bar sub 5 pretends five tier 1 subs just arrived, for testing, and it goes
      through exactly the same door a real gift of five would. That is the point
      of it: !bar +5 moves the number, but this fills the bar, chips into a save
      during the countdown, piles up against a lock, and a big enough number ends
      the run outright, so what you see is what a real gift would do. For the
      same reason it does nothing while the bar is switched off, because real
-     subs do nothing then either. A tier can go on the end: !barsub 3 t3. */
+     subs do nothing then either. A tier can go on the end: !bar sub 3 t3. */
   function testSubs(rest, who) {
     var parts = String(rest || "").trim().toLowerCase().split(/\s+/).filter(Boolean);
     var count = 1;
@@ -1372,13 +1361,13 @@
        correcting the bar is exactly what you do between streams. */
     if (takingBack) { takeBack(count * weightForTier(tier)); return; }
     if (pausedAt) {
-      debugLog("!barsub while switched off, ignored the way a real sub would be", { count: count });
+      debugLog("!bar sub while switched off, ignored the way a real sub would be", { count: count });
       return;
     }
     handleSub({ gifted: true, bulkGifted: true, amount: count, tier: tier, sender: who });
   }
 
-  /* !barbits 500 is a cheer of 500 bits that nobody sent, for a cheer that went
+  /* !bar bits 500 is a cheer of 500 bits that nobody sent, for a cheer that went
      missing or a test. It goes through exactly the route a real one does, so it fills
      the bar, chips into a save and counts against a lock, and like a real cheer it is
      ignored while the bar is switched off. A minus takes them back off as a
@@ -1390,7 +1379,7 @@
     if (!(bits > 0)) return;
     if (m[1]) { takeBack(bits / 100 * cfg.bitsPer100); return; }
     if (pausedAt) {
-      debugLog("!barbits while switched off, ignored the way a real cheer would be", { bits: bits });
+      debugLog("!bar bits while switched off, ignored the way a real cheer would be", { bits: bits });
       return;
     }
     handleCheer({ amount: bits, name: who });
@@ -1418,39 +1407,33 @@
     var roles = rolesOf(data);
     var name = str(data.displayName, str(data.nick, ""));
 
-    if (first === cfg.cmd.sub) { if (canManage(roles)) testSubs(rest, name); return; }
-    if (first === cfg.cmd.bits) { if (canManage(roles)) testBits(rest, name); return; }
-    if (first === cfg.cmd.on) { if (canManage(roles)) switchOn(); return; }
-    if (first === cfg.cmd.off) { if (canManage(roles)) switchOff(); return; }
-    if (first === cfg.cmd.reset) {
-      if (!canManage(roles)) return;
-      /* A bare !barreset clears the bar and keeps how far the escalation has got.
-         With a bar number after it, !barreset 1 goes back to the first bar and
-         !barreset 3 jumps to the third, which is how a miscount gets put right. */
-      if (/^\d+$/.test(rest)) resetCount = clamp(parseInt(rest, 10), 1, 100) - 1;
-      clearAll();
-      return;
-    }
-    if (first === cfg.cmd.unlock) {
-      if (canManage(roles)) { lockUntil = 0; lockBreakPool = 0; saveState(); render(); }
-      return;
-    }
-    if (first === cfg.cmd.lock) {
-      if (canManage(roles)) applyLock(parseMinutes(rest, cfg.manualLockMinutes), name, true);
-      return;
-    }
-    if (first === cfg.cmd.nope) { if (canManage(roles)) nope(name); return; }
-    if (first === cfg.cmd.fill) {
-      if (canManage(roles) && phase === "filling") { fill = capacityNow(); enterPending(); }
-      return;
-    }
-    if (first === cfg.cmd.view) {
-      if (!rest) { pop(); return; }   // a bare !bar just draws the eye to it
-      if (canManage(roles)) applyAdjustment(rest);
+    // One command word with verbs after it. A bare !bar just draws the eye to the bar,
+    // for anyone; everything else is for the broadcaster and mods.
+    if (first !== cfg.cmd) return;
+    if (!rest) { pop(); return; }
+    if (!canManage(roles)) return;
+    var parts = /^(\S+)\s*(.*)$/.exec(rest), verb = parts[1].toLowerCase(), arg = parts[2];
+    switch (verb) {
+      case "sub": testSubs(arg, name); break;
+      case "bits": testBits(arg, name); break;
+      case "on": switchOn(); break;
+      case "off": switchOff(); break;
+      case "reset":
+        /* A bare !bar reset clears the bar and keeps how far the escalation has got.
+           With a bar number after it, !bar reset 1 goes back to the first bar and
+           !bar reset 3 jumps to the third, which is how a miscount gets put right. */
+        if (/^\d+$/.test(arg)) resetCount = clamp(parseInt(arg, 10), 1, 100) - 1;
+        clearAll();
+        break;
+      case "unlock": lockUntil = 0; lockBreakPool = 0; saveState(); render(); break;
+      case "lock": applyLock(parseMinutes(arg, cfg.manualLockMinutes), name, true); break;
+      case "nope": nope(name); break;
+      case "fill": if (phase === "filling") { fill = capacityNow(); enterPending(); } break;
+      default: applyAdjustment(rest);
     }
   }
 
-  /* !baroff for the streams that are not this game. Subs and cheers keep coming
+  /* !bar off for the streams that are not this game. Subs and cheers keep coming
      in on those nights, and none of them were meant as a vote on a climb the streamer is
      not doing, so while it is off nothing chat spends reaches the bar at all.
      Mod commands and the settings panel still work, because correcting the bar

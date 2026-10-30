@@ -22,7 +22,7 @@ It is a single self-contained widget in plain JavaScript, with no dependencies a
 
 ## Screenshots
 
-**Locked.** `!squatslock` stops new gifts adding to the count and shows a padlock, so chat can see why a bomb did not move the number.
+**Locked.** `!squats lock` stops new gifts adding to the count and shows a padlock, so chat can see why a bomb did not move the number.
 
 <p><img src="docs/locked.png" alt="The sticker with a small padlock in its corner" width="340"></p>
 
@@ -98,15 +98,15 @@ Every command word is configurable. The defaults are:
 | `!squats -5` | broadcaster, mods | Takes 5 off. |
 | `!squats +5` or `!squats 5` | broadcaster, mods | Adds 5. |
 | `!squats set 30` or `!squats =30` | broadcaster, mods | Sets the count to an exact number. |
-| `!squatsreset` | broadcaster, mods | Puts the count back to zero. |
-| `!squatslock` | broadcaster, mods | Stops gifted subs adding to the count. |
-| `!squatsunlock` | broadcaster, mods | Lets gifted subs count again. |
+| `!squats reset` | broadcaster, mods | Puts the count back to zero. |
+| `!squats lock` | broadcaster, mods | Stops gifted subs adding to the count. |
+| `!squats unlock` | broadcaster, mods | Lets gifted subs count again. |
 
 Any whole number works after `!squats`. Whether moderators can adjust, lock and reset, or only the broadcaster, is a setting.
 
 ## Locking the count
 
-While locked, gifted subs add nothing and a small padlock appears on the sticker. Everything done by hand keeps working: `!squats -5` takes squats off as they are completed, `!squats set 20` corrects the number, and `!squatsreset` clears it. `!squatsunlock` lets the pile grow again. The lock is saved with the count, and the padlock can be hidden in the Look group while the lock still holds.
+While locked, gifted subs add nothing and a small padlock appears on the sticker. Everything done by hand keeps working: `!squats -5` takes squats off as they are completed, `!squats set 20` corrects the number, and `!squats reset` clears it. `!squats unlock` lets the pile grow again. The lock is saved with the count, and the padlock can be hidden in the Look group while the lock still holds.
 
 ## Configuration
 

@@ -82,13 +82,13 @@ Every command word is configurable. The defaults are:
 | --- | --- | --- |
 | `!vote Pizza, Tacos, Sushi` | broadcaster, mods | Opens a poll on those options. |
 | `!vote 60s Pizza, Tacos, Sushi` | broadcaster, mods | The same, with a 60 second clock for this poll only. |
-| `!voteend` | broadcaster, mods | Stops now and declares the result. |
-| `!voteextend 20` | broadcaster, mods | Adds seconds to a running poll. Bare, it adds 15. |
-| `!voterestart` | broadcaster, mods | Same options, votes wiped, full clock again. |
-| `!votecancel` | broadcaster, mods | Bins the poll and declares nothing. |
-| `!voteundo` | broadcaster, mods | Rolls back the last thing that happened. |
-| `!voteresults` | broadcaster, mods | Puts the last result back on screen. |
-| `!votehide` | broadcaster, mods | Takes the card off screen now. |
+| `!vote end` | broadcaster, mods | Stops now and declares the result. |
+| `!vote extend 20` | broadcaster, mods | Adds seconds to a running poll. Bare, it adds 15. |
+| `!vote restart` | broadcaster, mods | Same options, votes wiped, full clock again. |
+| `!vote cancel` | broadcaster, mods | Bins the poll and declares nothing. |
+| `!vote undo` | broadcaster, mods | Rolls back the last thing that happened. |
+| `!vote results` | broadcaster, mods | Puts the last result back on screen. |
+| `!vote hide` | broadcaster, mods | Takes the card off screen now. |
 | `3`, `C` or `tacos` | anyone | Casts a vote. |
 
 Whether moderators can run polls, or only the broadcaster, is a setting.
@@ -105,12 +105,12 @@ Polls go wrong in front of people: the poll opens while the rules are still bein
 
 | Command | What it does |
 | --- | --- |
-| `!voterestart` | Same options, votes wiped, full clock. For "hang on, nobody was ready". |
-| `!voteextend 20` | Adds time to a poll that is still running. |
-| `!votecancel` | Bins the poll completely. |
-| `!voteundo` | Steps backwards through what just happened. |
+| `!vote restart` | Same options, votes wiped, full clock. For "hang on, nobody was ready". |
+| `!vote extend 20` | Adds time to a poll that is still running. |
+| `!vote cancel` | Bins the poll completely. |
+| `!vote undo` | Steps backwards through what just happened. |
 
-Every step that changes or destroys a poll takes a snapshot first, so `!voteundo` can walk back through ending, cancelling or restarting a poll, and through a poll that was replaced because the next was opened too early. Press it repeatedly to climb back up the history, six deep.
+Every step that changes or destroys a poll takes a snapshot first, so `!vote undo` can walk back through ending, cancelling or restarting a poll, and through a poll that was replaced because the next was opened too early. Press it repeatedly to climb back up the history, six deep.
 
 Undoing a poll that was ended **early** gives back the time that was left on the clock. Undoing a poll that **ran out** reopens it on a short grace window instead (15 seconds by default), because restoring an expired clock would just end it again immediately.
 
@@ -145,7 +145,7 @@ A StreamElements widget can read chat but cannot write to it, so the widget neve
 For moderators, for example as `!votecommands`:
 
 ```
-Chat Voting - Mods start a poll: !vote Pizza, Kebab, Coleslaw (45s by default, or !vote 60s A, B, C for a different clock). Chat votes by typing the letter, the number, or the option itself. Running it: !voteend declares now | !voteextend 20 adds time | !voterestart same options fresh | !votecancel bins it | !voteundo rolls back the last thing | !voteresults re-shows | !votehide clears it
+Chat Voting - Mods start a poll: !vote Pizza, Kebab, Coleslaw (45s by default, or !vote 60s A, B, C for a different clock). Chat votes by typing the letter, the number, or the option itself. Running it: !vote end declares now | !vote extend 20 adds time | !vote restart same options fresh | !vote cancel bins it | !vote undo rolls back the last thing | !vote results re-shows | !vote hide clears it
 ```
 
 For chatters, for example as `!votehelp`:

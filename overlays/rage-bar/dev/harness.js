@@ -388,7 +388,7 @@
 
       '<h2>Chat commands</h2>' +
       '<div class="row">' +
-        '<input id="chat-text" type="text" value="!barlock 60" placeholder="command" style="flex:1;min-width:150px">' +
+        '<input id="chat-text" type="text" value="!bar lock 60" placeholder="command" style="flex:1;min-width:150px">' +
         '<button id="send-chat" class="go">Send</button>' +
       '</div>' +
       '<div class="row">' +
@@ -399,25 +399,25 @@
         '<button class="alt" data-cmd="!bar">!bar</button>' +
         '<button class="alt" data-cmd="!bar +10">!bar +10</button>' +
         '<button class="alt" data-cmd="!bar set 45">!bar set 45</button>' +
-        '<button class="alt" data-cmd="!barreset">!barreset</button>' +
-        '<button class="alt" data-cmd="!barreset 1">!barreset 1</button>' +
+        '<button class="alt" data-cmd="!bar reset">!bar reset</button>' +
+        '<button class="alt" data-cmd="!bar reset 1">!bar reset 1</button>' +
       '</div>' +
       '<div class="row">' +
-        '<button class="alt" data-cmd="!barlock 60">!barlock 60</button>' +
-        '<button class="alt" data-cmd="!barlock 5m">!barlock 5m</button>' +
-        '<button class="alt" data-cmd="!barunlock">!barunlock</button>' +
+        '<button class="alt" data-cmd="!bar lock 60">!bar lock 60</button>' +
+        '<button class="alt" data-cmd="!bar lock 5m">!bar lock 5m</button>' +
+        '<button class="alt" data-cmd="!bar unlock">!bar unlock</button>' +
       '</div>' +
       '<div class="row">' +
-        '<button class="alt" data-cmd="!barsub 5">!barsub 5</button>' +
-        '<button class="alt" data-cmd="!barbits 500">!barbits 500</button>' +
-        '<button class="alt" data-cmd="!barfill">!barfill</button>' +
-        '<button class="alt" data-cmd="!barnope">!barnope</button>' +
+        '<button class="alt" data-cmd="!bar sub 5">!bar sub 5</button>' +
+        '<button class="alt" data-cmd="!bar bits 500">!bar bits 500</button>' +
+        '<button class="alt" data-cmd="!bar fill">!bar fill</button>' +
+        '<button class="alt" data-cmd="!bar nope">!bar nope</button>' +
       '</div>' +
       '<div class="row">' +
-        '<button class="alt" data-cmd="!baroff">!baroff</button>' +
-        '<button class="alt" data-cmd="!baron">!baron</button>' +
+        '<button class="alt" data-cmd="!bar off">!bar off</button>' +
+        '<button class="alt" data-cmd="!bar on">!bar on</button>' +
       '</div>' +
-      '<p class="hint">A bare number is seconds, so !barlock 60 is one minute. 90s, 5m and 1h ' +
+      '<p class="hint">A bare number is seconds, so !bar lock 60 is one minute. 90s, 5m and 1h ' +
       'all work too, and a mod\'s lock ignores the caps chat plays by. The quick buttons send as ' +
       'the broadcaster; untick it and tick mod, or neither, to feel the permissions.</p>' +
 

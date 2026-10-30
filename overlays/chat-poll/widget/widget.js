@@ -207,16 +207,7 @@
   function readConfig(f) {
     f = f || {};
     cfg = {
-      cmd: {
-        start: cmd(f.startCommand, "!vote"),
-        end: cmd(f.endCommand, "!voteend"),
-        cancel: cmd(f.cancelCommand, "!votecancel"),
-        restart: cmd(f.restartCommand, "!voterestart"),
-        extend: cmd(f.extendCommand, "!voteextend"),
-        undo: cmd(f.undoCommand, "!voteundo"),
-        show: cmd(f.showCommand, "!voteresults"),
-        hide: cmd(f.hideCommand, "!votehide")
-      },
+      cmd: cmd(f.command, "!vote"),
       whoCanManage: str(f.whoCanManage, "mods"),
       duration: clamp(Math.round(num(f.duration, 45)), 5, 600),
       allowChangeVote: bool(f.allowChangeVote, true),
@@ -1180,34 +1171,28 @@
     var rest = text.replace(/^\S+\s*/, "").trim();
     var roles = rolesOf(data);
     var manage = canManage(roles);
-    var c = cfg.cmd;
-
     // Commands first, so a poll option that happens to look like a command word
-    // can never be voted for by accident.
-    if (first === c.start) {
+    // can never be voted for by accident. One command word does everything: with
+    // options it starts a poll, and with one of these verbs on its own it runs the
+    // poll. A line is a verb only when it is exactly that verb, so
+    // "!vote End of year, Tacos" is still a poll with two options.
+    if (first === cfg.cmd) {
       if (!manage) return;
-      var parsed = parseStart(rest);
-      if (parsed) startPoll(parsed.labels, parsed.duration);
-      return;
-    }
-    if (first === c.end) { if (manage) endPoll("manual"); return; }
-    if (first === c.cancel) { if (manage) cancelPoll(); return; }
-    if (first === c.restart) { if (manage) restartPoll(); return; }
-    if (first === c.undo) { if (manage) undo(); return; }
-    if (first === c.extend) {
-      if (manage) extendPoll(num(rest, 15));
-      return;
-    }
-    if (first === c.show) {
-      if (manage && poll && poll.result) {
-        poll.status = "ended";
-        render();
-        scheduleHide();
+      var verb = rest.toLowerCase();
+      var ext = /^extend(?:\s+(\d+))?$/.exec(verb);
+      if (verb === "end") endPoll("manual");
+      else if (verb === "cancel") cancelPoll();
+      else if (verb === "restart") restartPoll();
+      else if (verb === "undo") undo();
+      else if (ext) extendPoll(ext[1] ? num(ext[1], 15) : 15);
+      else if (verb === "results") {
+        if (poll && poll.result) { poll.status = "ended"; render(); scheduleHide(); }
+      } else if (verb === "hide") {
+        if (poll) { poll.status = "hidden"; stopTicking(); saveState(); render(); }
+      } else {
+        var parsed = parseStart(rest);
+        if (parsed) startPoll(parsed.labels, parsed.duration);
       }
-      return;
-    }
-    if (first === c.hide) {
-      if (manage && poll) { poll.status = "hidden"; stopTicking(); saveState(); render(); }
       return;
     }
 

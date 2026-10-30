@@ -137,7 +137,7 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   gift({ bulkGifted: true, amount: 10 });          // 10
   chat("!squats -5", { nick: "Randomer" });
   ok(count() === "10", "a viewer's adjust is ignored (" + count() + ")");
-  chat("!squatsreset", { nick: "Randomer" });
+  chat("!squats reset", { nick: "Randomer" });
   ok(count() === "10", "a viewer's reset is ignored (" + count() + ")");
   chat("!squats", { nick: "Randomer" });
   ok(count() === "10", "a plain !squats does not change the count (" + count() + ")");
@@ -155,14 +155,14 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   console.log("\n[reset]");
   load(); await wait(5);
   gift({ bulkGifted: true, amount: 25 });
-  chat("!squatsreset", { mod: true });
+  chat("!squats reset", { mod: true });
   ok(count() === "0", "mod reset zeroes the count (" + count() + ")");
 
   // I. the lock: gifts stop counting, hands still do
   console.log("\n[lock]");
   load(); await wait(5);
   gift({ bulkGifted: true, amount: 20 });           // 20
-  chat("!squatslock", { mod: true });
+  chat("!squats lock", { mod: true });
   ok(elements["squat-lock"].hidden === false, "the padlock shows while locked");
   gift({ bulkGifted: true, amount: 20 });
   ok(count() === "20", "a gift bomb adds nothing while locked (" + count() + ")");
@@ -170,16 +170,16 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   ok(count() === "15", "manual deductions still work while locked (" + count() + ")");
   chat("!squats +5", { broadcaster: true });
   ok(count() === "20", "so do manual additions (" + count() + ")");
-  chat("!squatsreset", { mod: true });
+  chat("!squats reset", { mod: true });
   ok(count() === "0", "and the reset (" + count() + ")");
-  chat("!squatsunlock", { mod: true });
+  chat("!squats unlock", { mod: true });
   ok(elements["squat-lock"].hidden === true, "the padlock goes away on unlock");
   gift({ bulkGifted: true, amount: 20 });
   ok(count() === "20", "gifts count again once unlocked (" + count() + ")");
 
   console.log("\n[lock permissions, button and persistence]");
   load(); await wait(5);
-  chat("!squatslock", { nick: "Randomer" });
+  chat("!squats lock", { nick: "Randomer" });
   gift({ bulkGifted: true, amount: 10 });
   ok(count() === "10", "a viewer cannot lock the count (" + count() + ")");
   button("btnLock");
@@ -196,7 +196,7 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
 
   console.log("\n[hiding the padlock]");
   load({ showLock: false }); await wait(5);
-  chat("!squatslock", { mod: true });
+  chat("!squats lock", { mod: true });
   ok(elements["squat-lock"].hidden === true, "the padlock stays hidden when turned off");
   gift({ bulkGifted: true, amount: 10 });
   ok(count() === "0", "but the lock itself is still in force (" + count() + ")");
@@ -247,7 +247,7 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   reload(); await wait(10);
   gift({ bulkGifted: true, amount: 4 });
   ok(count() === "10", "the carried amount survives a refresh (" + count() + ")");
-  chat("!squatsreset", { mod: true }); gift({ bulkGifted: true, amount: 4 });
+  chat("!squats reset", { mod: true }); gift({ bulkGifted: true, amount: 4 });
   ok(count() === "0", "and a reset forgets it (" + count() + ")");
   load({ carryLeftover: true, subsPerBlock: 1, squatsPerBlock: 2 }); await wait(5);
   gift({ gifted: true, amount: 1 }); gift({ gifted: true, amount: 1 });
@@ -325,20 +325,20 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   const clearLog = () => { audioLog.length = 0; };
   const withSounds = (o) => Object.assign({ giftSound: "data:gift", lockSound: "data:lock", unlockSound: "data:unlock" }, o || {});
   load(); await wait(5); clearLog();
-  gift({ bulkGifted: true, amount: 5 }); chat("!squatslock", { mod: true });
+  gift({ bulkGifted: true, amount: 5 }); chat("!squats lock", { mod: true });
   ok(played().length === 0, "no sound plays when none are chosen");
   load(withSounds()); await wait(5); clearLog();
   gift({ bulkGifted: true, amount: 5 });
   ok(played().join() === "gift", "a gift that adds squats plays the gift sound (" + played() + ")");
   clearLog(); gift({ bulkGifted: true, amount: 2 });
   ok(played().length === 0, "a gift that adds nothing is silent (" + played() + ")");
-  clearLog(); chat("!squatslock", { mod: true });
+  clearLog(); chat("!squats lock", { mod: true });
   ok(played().join() === "lock", "locking plays the lock sound (" + played() + ")");
-  clearLog(); chat("!squatslock", { mod: true });
+  clearLog(); chat("!squats lock", { mod: true });
   ok(played().length === 0, "locking twice is silent (" + played() + ")");
   clearLog(); gift({ bulkGifted: true, amount: 5 });
   ok(played().length === 0, "and a gift while locked is silent (" + played() + ")");
-  clearLog(); chat("!squatsunlock", { mod: true });
+  clearLog(); chat("!squats unlock", { mod: true });
   ok(played().join() === "unlock", "unlocking plays the unlock sound (" + played() + ")");
   clearLog(); chat("!squats +5", { mod: true });
   ok(played().length === 0, "manual changes are silent (" + played() + ")");
@@ -347,7 +347,7 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   load(withSounds({ giftSoundVolume: 900 })); await wait(5); clearLog(); gift({ bulkGifted: true, amount: 5 });
   ok(audioLog[0].volume === 1, "held to the 0 to 1 range");
   load(withSounds({ mute: true })); await wait(5); clearLog();
-  gift({ bulkGifted: true, amount: 5 }); chat("!squatslock", { mod: true });
+  gift({ bulkGifted: true, amount: 5 }); chat("!squats lock", { mod: true });
   ok(played().length === 0, "unticking Play sounds mutes everything");
   load(withSounds()); await wait(5); clearLog();
   button("btnSoundGift"); button("btnSoundLock"); button("btnSoundUnlock");

@@ -30,5 +30,10 @@
     "build": "node build/build.js",
     "test": "node build/build.js && node test/test-widget.js",
     "dev": "node build/build.js && python3 -m http.server 8000"
+  },
+  "overlay-kit": {
+    "exceptions": {
+      "tmCommand": "The Subathon is two widgets in one: command is the goals half (!incentive) and tmCommand is the clock (!subathon), so each half keeps its own base word."
+    }
   }
 }

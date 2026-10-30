@@ -169,7 +169,7 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   load(); await wait(5);
   chat("!vote Truth A, Truth B, The lie", boss); await wait(5);
   chat("3", { nick: "ann" }); chat("3", { nick: "ben" }); chat("1", { nick: "cat" });
-  chat("!voteend", boss); await wait(5);
+  chat("!vote end", boss); await wait(5);
   ok(winners() === 1, "one winner is highlighted (" + winners() + ")");
   ok(html().indexOf('data-votes="2"') > -1, "the winning option kept its two votes");
   ok(eyebrow() === "Chat says", "the result tag reads Chat says (" + eyebrow() + ")");
@@ -180,25 +180,43 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   load(); await wait(5);
   chat("!vote Truth A, Truth B", boss); await wait(5);
   chat("1", { nick: "ann" }); chat("2", { nick: "ben" });
-  chat("!voteend", boss); await wait(5);
+  chat("!vote end", boss); await wait(5);
   ok(winners() === 2, "a tie highlights both options (" + winners() + ")");
   ok(eyebrow() === "It's a tie", "the tie tag shows (" + eyebrow() + ")");
   load({ tieBreak: "random" }); await wait(5);
   chat("!vote Truth A, Truth B", boss); await wait(5);
   chat("1", { nick: "ann" }); chat("2", { nick: "ben" });
-  chat("!voteend", boss); await wait(5);
+  chat("!vote end", boss); await wait(5);
   ok(winners() === 1, "random tiebreak picks exactly one (" + winners() + ")");
   load(); await wait(5);
   chat("!vote Truth A, Truth B", boss); await wait(5);
-  chat("!voteend", boss); await wait(5);
+  chat("!vote end", boss); await wait(5);
   ok(winners() === 0 && eyebrow() === "Nobody voted", "an empty poll declares nobody, not a false winner");
+
+  // H2. one command word: options start a poll, a lone verb runs it
+  console.log("\n[one command word]");
+  load(); await wait(5);
+  chat("!vote End of year, Tacos", boss); await wait(5);
+  ok(elements["vote-hint"].textContent === "type A or B in chat", "a first option that begins with a verb word still starts a poll (" + elements["vote-hint"].textContent + ")");
+  chat("1", { nick: "ann" }); chat("!vote end", boss); await wait(5);
+  ok(winners() === 1 && eyebrow() === "Chat says", "while a line that is only the verb ends it (" + eyebrow() + ")");
+  load(); await wait(5);
+  chat("!vote Cancel the stream, Keep going", boss); await wait(5);
+  ok(elements["vote-hint"].textContent === "type A or B in chat", "so a poll about cancelling is not a cancel");
+  chat("!vote cancel", { nick: "viewer" }); await wait(5);
+  ok(elements["vote-hint"].textContent === "type A or B in chat", "and a viewer typing the verb changes nothing");
+  chat("!vote extend 20", boss); chat("!vote extend", boss); await wait(5);
+  ok(true, "extend takes a number, or none (15 seconds)");
+  load({ command: "!poll" }); await wait(5);
+  chat("!poll One, Two", boss); chat("!vote Three, Four", boss); await wait(5);
+  ok(elements["vote-hint"].textContent === "type A or B in chat", "the command word is a setting");
 
   // I. cancel: chat was not ready, bin it entirely
   console.log("\n[cancel]");
   load(); await wait(5);
   chat("!vote Truth A, Truth B", boss); await wait(5);
   chat("1", { nick: "ann" });
-  chat("!votecancel", boss); await wait(5);
+  chat("!vote cancel", boss); await wait(5);
   ok(!shown(), "cancelling takes the card off screen with nothing declared");
 
   // J. restart: same options, clean slate
@@ -206,7 +224,7 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   load(); await wait(5);
   chat("!vote 60s Truth A, Truth B, The lie", boss); await wait(5);
   chat("1", { nick: "ann" }); chat("2", { nick: "ben" });
-  chat("!voterestart", boss); await wait(5);
+  chat("!vote restart", boss); await wait(5);
   ok(shown(), "the card stays up after a restart");
   ok(votes().join(",") === "0,0,0", "restart wipes the votes (" + votes().join(",") + ")");
   ok(labels().join("|") === "Truth A|Truth B|The lie", "restart keeps the same options");
@@ -218,9 +236,9 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   console.log("\n[extend]");
   load(); await wait(5);
   chat("!vote Truth A, Truth B", boss); await wait(5);
-  chat("!voteextend 20", boss); await wait(5);
+  chat("!vote extend 20", boss); await wait(5);
   ok(timer() === 65, "20 seconds are added to the clock (" + timer() + ")");
-  chat("!voteextend", boss); await wait(5);
+  chat("!vote extend", boss); await wait(5);
   ok(timer() === 80, "a bare extend adds the default 15 (" + timer() + ")");
 
   // L. undo, the actual rollback
@@ -228,9 +246,9 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   load(); await wait(5);
   chat("!vote Truth A, Truth B, The lie", boss); await wait(5);
   chat("3", { nick: "ann" }); chat("3", { nick: "ben" });
-  chat("!voteend", boss); await wait(5);
+  chat("!vote end", boss); await wait(5);
   ok(winners() === 1, "poll ended and declared");
-  chat("!voteundo", boss); await wait(5);
+  chat("!vote undo", boss); await wait(5);
   ok(winners() === 0, "undo takes the result back off");
   ok(votes().join(",") === "0,0,2", "undo keeps the votes that were cast (" + votes().join(",") + ")");
   ok(timer() > 40 && timer() <= 45, "undoing an early end gives back the time that was left (" + timer() + ")");
@@ -241,9 +259,9 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   load(); await wait(5);
   chat("!vote Truth A, Truth B", boss); await wait(5);
   chat("1", { nick: "ann" });
-  chat("!votecancel", boss); await wait(5);
+  chat("!vote cancel", boss); await wait(5);
   ok(!shown(), "cancelled");
-  chat("!voteundo", boss); await wait(5);
+  chat("!vote undo", boss); await wait(5);
   ok(shown() && votes().join(",") === "1,0", "undo brings a cancelled poll back with its votes");
 
   console.log("\n[undo a replaced poll]");
@@ -252,7 +270,7 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   chat("1", { nick: "ann" });
   chat("!vote Second A, Second B", boss); await wait(5);
   ok(labels()[0] === "Second A", "a new poll replaces the old one");
-  chat("!voteundo", boss); await wait(5);
+  chat("!vote undo", boss); await wait(5);
   ok(labels()[0] === "First A" && votes().join(",") === "1,0", "undo restores the poll that was replaced");
 
   // M. blind polls
@@ -263,7 +281,7 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   ok(elements["vote-card"].classList.contains("blind"), "a blind poll hides its counts while running");
   ok(html().indexOf("50%") === -1, "no percentages leak into the row while blind");
   ok(total().indexOf("1 vote in") === 0, "the total still shows that votes are landing (" + total() + ")");
-  chat("!voteend", boss); await wait(5);
+  chat("!vote end", boss); await wait(5);
   ok(!elements["vote-card"].classList.contains("blind"), "the counts open up when it ends");
   ok(votes().join(",") === "1,0", "the votes were being counted all along");
 
@@ -272,10 +290,10 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   load(); await wait(5);
   chat("!vote Truth A, Truth B", boss); await wait(5);
   chat("1", { nick: "ann" });
-  chat("!voteend", boss); await wait(5);
-  chat("!votehide", boss); await wait(5);
+  chat("!vote end", boss); await wait(5);
+  chat("!vote hide", boss); await wait(5);
   ok(!shown(), "hide takes the card away");
-  chat("!voteresults", boss); await wait(5);
+  chat("!vote results", boss); await wait(5);
   ok(shown() && winners() === 1, "the result can be put back up");
 
   // O. a browser-source refresh mid-poll
@@ -301,7 +319,7 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   await wait(5400);
   ok(winners() === 1, "the poll declared itself when the clock ran out");
   ok(eyebrow() === "Chat says", "and tagged the result");
-  chat("!voteundo", boss); await wait(5);
+  chat("!vote undo", boss); await wait(5);
   ok(winners() === 0 && timer() > 0 && timer() <= 15,
     "undoing a poll that genuinely ran out reopens it on the grace window (" + timer() + ")");
   ok(votes().join(",") === "1,0", "with the votes it already had (" + votes().join(",") + ")");
@@ -538,7 +556,7 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   const clearLog = () => { audioLog.length = 0; };
   const withSounds = (o) => Object.assign({ openSound: "data:open", voteSound: "data:vote", tickSound: "data:tick", resultSound: "data:result" }, o || {});
   load(); await wait(5); clearLog();
-  chat("!vote One, Two", boss); chat("1", { nick: "a" }); chat("!voteend", boss);
+  chat("!vote One, Two", boss); chat("1", { nick: "a" }); chat("!vote end", boss);
   ok(played().length === 0, "no sound plays when none are chosen");
   load(withSounds()); await wait(5); clearLog();
   chat("!vote One, Two", boss); await wait(5);
@@ -547,7 +565,7 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   ok(played().join() === "vote", "a counted vote plays the vote sound (" + played() + ")");
   clearLog(); chat("1", { nick: "a" }); chat("banana", { nick: "b" });
   ok(played().length === 0, "a repeated vote or a non-vote is silent (" + played() + ")");
-  clearLog(); chat("!voteend", boss);
+  clearLog(); chat("!vote end", boss);
   ok(played().join() === "result", "ending plays the result sound (" + played() + ")");
   load(withSounds({ urgentSeconds: 60 })); await wait(5); clearLog();
   chat("!vote One, Two", boss); await wait(5);
@@ -559,7 +577,7 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   chat("!vote One, Two", boss); chat("1", { nick: "a" });
   ok(audioLog.filter(a => a.src === "data:vote")[0].volume === 0.25, "each sound has its own volume");
   load(withSounds({ mute: true })); await wait(5); clearLog();
-  chat("!vote One, Two", boss); chat("1", { nick: "a" }); chat("!voteend", boss);
+  chat("!vote One, Two", boss); chat("1", { nick: "a" }); chat("!vote end", boss);
   ok(played().length === 0, "unticking Play sounds mutes everything");
   load(withSounds()); await wait(5); clearLog();
   button("btnSoundOpen"); button("btnSoundVote"); button("btnSoundTick"); button("btnSoundResult");

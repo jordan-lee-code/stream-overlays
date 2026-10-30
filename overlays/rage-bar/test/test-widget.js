@@ -663,7 +663,7 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   ok(timerText() === "60s", "channel points chip in without adding time (" + timerText() + ")");
   bomb(2);
   ok(timerText() === "65s", "a gift bomb is one event, so it adds five seconds once and not once per recipient (" + timerText() + ")");
-  chat("!barsub 1", { mod: true });
+  chat("!bar sub 1", { mod: true });
   ok(timerText() === "70s", "and the mod test command behaves like a real sub (" + timerText() + ")");
   advance(70 * 1000);
   ok(has("is-reset"), "and the extra time really is on the clock, not just the label");
@@ -724,14 +724,14 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   ok(readout() === "20 / 50 points", "with what chat had already chipped in still on the save bar (" + readout() + ")");
   ok(note() === "3 subs / 3,000 bits / £150.00 to save", "and still counted (" + note() + ")");
   ok(timerText() === "60s", "on a fresh clock, so they get their chance (" + timerText() + ")");
-  chat("!barreset", { mod: true });
+  chat("!bar reset", { mod: true });
   ok(!has("is-pending") && readout() === "0 / 100", "and a mod can wave it away if it is stale (" + readout() + ")");
 
   // W. switched off between Getting Over It streams
-  console.log("\n[!baroff and !baron]");
+  console.log("\n[!bar off and !bar on]");
   await load();
   sub({ tier: "1000", name: "GenerousViewer" });
-  chat("!baroff", { mod: true });
+  chat("!bar off", { mod: true });
   ok(has("is-off") && note() === "switched off", "switching off says so under the bar (" + note() + ")");
   sub({ tier: "3000", name: "Rowan" });
   bomb(5);
@@ -743,7 +743,7 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   ok(!has("is-reset") && readout() === "10 / 100", "even a gift big enough to end a run outright (" + readout() + ")");
   redeem("Lock the Bar", 10000, "Sage");
   ok(!has("is-locked"), "and chat cannot lock it either");
-  chat("!baron", { mod: true });
+  chat("!bar on", { mod: true });
   ok(!has("is-off") && note() === "9 subs / 9,000 bits / £450.00 to go", "switching back on picks up where it was (" + note() + ")");
   sub({ tier: "1000", name: "GenerousViewer" });
   ok(readout() === "20 / 100", "and it counts again (" + readout() + ")");
@@ -754,12 +754,12 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   redeem("Lock the Bar", 10000, "Sage");
   advance(2 * 60 * 1000);
   ok(timerText() === "3:00", "three minutes left on a lock (" + timerText() + ")");
-  chat("!baroff", { mod: true });
+  chat("!bar off", { mod: true });
   advance(3 * 24 * 60 * 60 * 1000);   // three days between streams
   ok(timerText() === "3:00", "three days later the lock has not moved (" + timerText() + ")");
   await reload();
   ok(has("is-off") && timerText() === "3:00", "not even across a browser source refresh (" + timerText() + ")");
-  chat("!baron", { mod: true });
+  chat("!bar on", { mod: true });
   ok(has("is-locked") && timerText() === "3:00", "and switching on resumes it at three minutes (" + timerText() + ")");
   advance(3 * 60 * 1000 + 300);
   ok(!has("is-locked"), "then it runs out on schedule");
@@ -768,38 +768,38 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   button("btnFillBar");
   advance(20 * 1000);
   sub({ tier: "1000", name: "GenerousViewer" });
-  chat("!baroff", { mod: true });
+  chat("!bar off", { mod: true });
   advance(60 * 60 * 1000);
   ok(has("is-pending") && timerText() === "45s", "a nope window survives an hour off, with the sub's five seconds (" + timerText() + ")");
   ok(note() === "switched off", "while saying it is off (" + note() + ")");
   sub({ tier: "1000", name: "Rowan" });
-  chat("!baron", { mod: true });
+  chat("!bar on", { mod: true });
   ok(readout() === "10 / 50 points", "chipping in while off did not count, and the pot kept what it had (" + readout() + ")");
   ok(timerText() === "45s", "and the clock resumes from where it was, the sub sent while off adding no time (" + timerText() + ")");
 
   console.log("\n[switching off: the edges]");
   await load();
-  chat("!baroff", { nick: "Randomer" });
+  chat("!bar off", { nick: "Randomer" });
   ok(!has("is-off"), "a viewer cannot switch it off");
-  chat("!baroff", { mod: true });
-  chat("!baron", { nick: "Randomer" });
+  chat("!bar off", { mod: true });
+  chat("!bar on", { nick: "Randomer" });
   ok(has("is-off"), "or back on");
   chat("!bar set 40", { mod: true });
   ok(readout() === "40 / 100" && has("is-off"), "mods can still correct it while it is off (" + readout() + ")");
-  chat("!barreset", { mod: true });
+  chat("!bar reset", { mod: true });
   ok(readout() === "0 / 100" && has("is-off"), "and a reset clears it without switching it back on (" + readout() + ")");
   button("btnOn");
   ok(!has("is-off"), "the settings panel has an on button");
   button("btnOff");
   ok(has("is-off"), "and an off button");
-  chat("!baroff", { mod: true });
-  chat("!baron", { mod: true });
-  chat("!baron", { mod: true });
+  chat("!bar off", { mod: true });
+  chat("!bar on", { mod: true });
+  chat("!bar on", { mod: true });
   ok(!has("is-off"), "saying it twice does nothing strange");
 
   await load({ hideWhenOff: true });
   ok(!elements["rage-app"].classList.contains("is-hidden"), "shown while on");
-  chat("!baroff", { mod: true });
+  chat("!bar off", { mod: true });
   ok(elements["rage-app"].classList.contains("is-hidden"), "and hidden while off when that is what is wanted");
 
   // T. mod commands
@@ -816,82 +816,82 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   chat("!bar -500", { mod: true });
   ok(readout() === "0 / 100", "and it floors at nothing (" + readout() + ")");
 
-  console.log("\n[!barsub for testing]");
+  console.log("\n[!bar sub for testing]");
   await load();   // baseline: a tier 1 sub is 10 on a bar of 100
-  chat("!barsub", { mod: true });
-  ok(readout() === "10 / 100", "!barsub on its own is one sub (" + readout() + ")");
-  chat("!barsub 3", { mod: true });
-  ok(readout() === "40 / 100", "!barsub 3 is three (" + readout() + ")");
-  chat("!barsub 2 t3", { mod: true });
+  chat("!bar sub", { mod: true });
+  ok(readout() === "10 / 100", "!bar sub on its own is one sub (" + readout() + ")");
+  chat("!bar sub 3", { mod: true });
+  ok(readout() === "40 / 100", "!bar sub 3 is three (" + readout() + ")");
+  chat("!bar sub 2 t3", { mod: true });
   ok(readout() === "90 / 100", "and a tier can go on the end (" + readout() + ")");
-  chat("!barsub 1 tier 2", { mod: true });
+  chat("!bar sub 1 tier 2", { mod: true });
   ok(has("is-pending"), "written out in full too, and it fills the bar like the real thing");
-  chat("!barsub 2", { mod: true });
+  chat("!bar sub 2", { mod: true });
   ok(readout() === "20 / 50 points", "during the countdown it chips into the save (" + readout() + ")");
 
   await load({ lockBreakSubs: 50 });
   redeem("Lock the Bar", 10000, "Sage");
-  chat("!barsub", { mod: true });
+  chat("!bar sub", { mod: true });
   ok(has("is-locked") && note() === "4 subs / 4,000 bits / £200.00 to break", "against a lock it piles up rather than filling (" + note() + ")");
-  chat("!barsub 4", { mod: true });
+  chat("!bar sub 4", { mod: true });
   ok(!has("is-locked"), "and enough of them break it");
 
   await load();
-  chat("!barsub 20", { mod: true });
+  chat("!bar sub 20", { mod: true });
   ok(has("is-reset") && titleText() === "NO SAVING THIS ONE", "and a big enough one ends the run outright, like a real gift would");
 
   await load();
-  chat("!barsub 5", { nick: "Randomer" });
+  chat("!bar sub 5", { nick: "Randomer" });
   ok(readout() === "0 / 100", "a viewer cannot use it (" + readout() + ")");
-  chat("!barsub lots", { mod: true });
-  chat("!barsub 0", { mod: true });
-  chat("!barsub 3 t9", { mod: true });
+  chat("!bar sub lots", { mod: true });
+  chat("!bar sub 0", { mod: true });
+  chat("!bar sub 3 t9", { mod: true });
   ok(readout() === "0 / 100", "and nonsense does nothing rather than guessing (" + readout() + ")");
-  chat("!baroff", { mod: true });
-  chat("!barsub 5", { mod: true });
+  chat("!bar off", { mod: true });
+  chat("!bar sub 5", { mod: true });
   ok(readout() === "0 / 100", "while switched off it is ignored, the same as real subs (" + readout() + ")");
 
-  console.log("\n[!barlock and its units]");
+  console.log("\n[!bar lock and its units]");
   await load();
-  chat("!barlock 60", { mod: true });
+  chat("!bar lock 60", { mod: true });
   ok(timerText() === "1:00", "a bare 60 is a minute, not an hour (" + timerText() + ")");
   await load();
-  chat("!barlock 90s", { mod: true });
+  chat("!bar lock 90s", { mod: true });
   ok(timerText() === "1:30", "90s is ninety seconds (" + timerText() + ")");
   await load();
-  chat("!barlock 5m", { mod: true });
+  chat("!bar lock 5m", { mod: true });
   ok(timerText() === "5:00", "5m is five minutes (" + timerText() + ")");
   await load();
-  chat("!barlock 1m30s", { mod: true });
+  chat("!bar lock 1m30s", { mod: true });
   ok(timerText() === "1:30", "and the parts add up (" + timerText() + ")");
   await load();
-  chat("!barlock", { mod: true });
+  chat("!bar lock", { mod: true });
   ok(timerText() === "5:00", "no number falls back to the Field default (" + timerText() + ")");
   await load();
-  chat("!barlock 1h", { mod: true });
+  chat("!bar lock 1h", { mod: true });
   ok(timerText() === "60:00", "a mod's lock ignores the caps chat plays by (" + timerText() + ")");
-  chat("!barunlock", { mod: true });
+  chat("!bar unlock", { mod: true });
   ok(!has("is-locked"), "and unlock takes it straight off");
 
   console.log("\n[the rest of the commands]");
   await load();
-  chat("!barfill", { mod: true });
-  ok(has("is-pending"), "!barfill starts the clock");
-  chat("!barnope", { mod: true });
-  ok(!has("is-pending") && readout() === "0 / 100", "!barnope saves it outright (" + readout() + ")");
+  chat("!bar fill", { mod: true });
+  ok(has("is-pending"), "!bar fill starts the clock");
+  chat("!bar nope", { mod: true });
+  ok(!has("is-pending") && readout() === "0 / 100", "!bar nope saves it outright (" + readout() + ")");
   chat("!bar set 60", { mod: true });
-  chat("!barlock 5m", { mod: true });
-  chat("!barreset", { mod: true });
-  ok(!has("is-locked") && readout() === "0 / 100", "!barreset clears everything, lock included (" + readout() + ")");
+  chat("!bar lock 5m", { mod: true });
+  chat("!bar reset", { mod: true });
+  ok(!has("is-locked") && readout() === "0 / 100", "!bar reset clears everything, lock included (" + readout() + ")");
 
   console.log("\n[command permissions]");
   await load();
   chat("!bar set 40", { mod: true });
   chat("!bar +10", { nick: "Randomer" });
   ok(readout() === "40 / 100", "a viewer cannot move the bar (" + readout() + ")");
-  chat("!barreset", { nick: "Randomer" });
+  chat("!bar reset", { nick: "Randomer" });
   ok(readout() === "40 / 100", "nor reset it (" + readout() + ")");
-  chat("!barlock 5m", { nick: "Randomer" });
+  chat("!bar lock 5m", { nick: "Randomer" });
   ok(!has("is-locked"), "nor lock it");
   chat("!bar", { nick: "Randomer" });
   ok(readout() === "40 / 100", "and a bare !bar just draws the eye to it (" + readout() + ")");
@@ -1038,24 +1038,24 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   bomb(20);
   ok(has("is-pending") && !has("is-reset"), "setting the multiplier to zero turns the whole thing off");
 
-  // !barsub with a minus is a manual correction.
-  console.log("\n[!barsub as a correction]");
+  // !bar sub with a minus is a manual correction.
+  console.log("\n[!bar sub as a correction]");
   await load();
-  chat("!barsub 3", { mod: true });
+  chat("!bar sub 3", { mod: true });
   ok(readout() === "30 / 100", "three subs in (" + readout() + ")");
-  chat("!barsub -1", { mod: true });
-  ok(readout() === "20 / 100", "!barsub -1 takes one back off (" + readout() + ")");
-  chat("!barsub -1", { nick: "viewer" });
+  chat("!bar sub -1", { mod: true });
+  ok(readout() === "20 / 100", "!bar sub -1 takes one back off (" + readout() + ")");
+  chat("!bar sub -1", { nick: "viewer" });
   ok(readout() === "20 / 100", "and a viewer cannot do it (" + readout() + ")");
-  chat("!barsub -1 t3", { mod: true });
+  chat("!bar sub -1 t3", { mod: true });
   ok(readout() === "0 / 100", "a tier can be named, and it never goes below empty (" + readout() + ")");
-  chat("!barsub -0", { mod: true });
-  chat("!barsub -banana", { mod: true });
+  chat("!bar sub -0", { mod: true });
+  chat("!bar sub -banana", { mod: true });
   ok(readout() === "0 / 100", "nonsense is ignored");
-  chat("!barsub 5", { mod: true });
-  chat("!barsub -2", { mod: true });
+  chat("!bar sub 5", { mod: true });
+  chat("!bar sub -2", { mod: true });
   ok(readout() === "30 / 100", "and it takes the count you give it (" + readout() + ")");
-  chat("!barsub -1 tier 2", { mod: true });
+  chat("!bar sub -1 tier 2", { mod: true });
   ok(readout() === "15 / 100", "written out in full too (" + readout() + ")");
 
   await load();
@@ -1064,73 +1064,73 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   sub({ tier: "1000", name: "GenerousViewer" });
   sub({ tier: "1000", name: "Rowan" });
   ok(readout() === "20 / 50 points" && timerText() === "60s", "two subs in the save pot, each adding five seconds (" + readout() + ")");
-  chat("!barsub -1", { mod: true });
+  chat("!bar sub -1", { mod: true });
   ok(has("is-pending") && readout() === "10 / 50 points", "during the window it comes off the pot and the window carries on (" + readout() + ")");
   ok(timerText() === "60s", "with the clock untouched (" + timerText() + ")");
   advance(65 * 1000);
   ok(has("is-reset"), "the window runs out");
   sub({ tier: "1000", name: "Sage" });
   sub({ tier: "1000", name: "Sage" });
-  chat("!barsub -1", { mod: true });
+  chat("!bar sub -1", { mod: true });
   advance(10 * 1000);
   ok(readout() === "10 / 100", "during the banner it comes off what is banked for the next bar (" + readout() + ")");
 
   await load();
-  chat("!barsub 4", { mod: true });
-  chat("!baroff", { mod: true });
-  chat("!barsub -1", { mod: true });
-  chat("!baron", { mod: true });
+  chat("!bar sub 4", { mod: true });
+  chat("!bar off", { mod: true });
+  chat("!bar sub -1", { mod: true });
+  chat("!bar on", { mod: true });
   ok(readout() === "30 / 100", "a correction works while the bar is switched off (" + readout() + ")");
   await load();
-  chat("!barsub 4", { mod: true });
+  chat("!bar sub 4", { mod: true });
   advance(400);
-  chat("!barsub -1", { mod: true });
+  chat("!bar sub -1", { mod: true });
   advance(400);
   await reload();
   ok(readout() === "30 / 100", "and it survives a refresh (" + readout() + ")");
 
-  // !barbits adds bits by hand.
-  console.log("\n[!barbits]");
+  // !bar bits adds bits by hand.
+  console.log("\n[!bar bits]");
   await load();
-  chat("!barbits 500", { mod: true });
-  ok(readout() === "5 / 100", "!barbits 500 is 500 bits, which is 5 points at this baseline (" + readout() + ")");
-  chat("!barbits 1,000", { mod: true });
+  chat("!bar bits 500", { mod: true });
+  ok(readout() === "5 / 100", "!bar bits 500 is 500 bits, which is 5 points at this baseline (" + readout() + ")");
+  chat("!bar bits 1,000", { mod: true });
   ok(readout() === "15 / 100", "a comma in the number is fine (" + readout() + ")");
-  chat("!barbits 500", { nick: "viewer" });
+  chat("!bar bits 500", { nick: "viewer" });
   ok(readout() === "15 / 100", "and a viewer cannot use it (" + readout() + ")");
-  chat("!barbits -500", { mod: true });
+  chat("!bar bits -500", { mod: true });
   ok(readout() === "10 / 100", "a minus takes them back off as a correction (" + readout() + ")");
-  chat("!barbits -99999", { mod: true });
+  chat("!bar bits -99999", { mod: true });
   ok(readout() === "0 / 100", "and it never goes below empty (" + readout() + ")");
-  chat("!barbits", { mod: true });
-  chat("!barbits banana", { mod: true });
-  chat("!barbits 0", { mod: true });
-  chat("!barbits 5.5", { mod: true });
+  chat("!bar bits", { mod: true });
+  chat("!bar bits banana", { mod: true });
+  chat("!bar bits 0", { mod: true });
+  chat("!bar bits 5.5", { mod: true });
   ok(readout() === "0 / 100", "nothing, nonsense, zero and decimals are all ignored");
-  chat("!barbits 5000", { mod: true });
+  chat("!bar bits 5000", { mod: true });
   ok(readout() === "50 / 100" && !has("is-pending"), "a bigger one is just a bigger cheer (" + readout() + ")");
-  chat("!barbits 5000", { mod: true });
+  chat("!bar bits 5000", { mod: true });
   ok(has("is-pending"), "and it can fill the bar and start the clock");
 
   await load();
   button("btnFillBar");
   advance(10 * 1000);
-  chat("!barbits 500", { mod: true });
+  chat("!bar bits 500", { mod: true });
   ok(readout() === "5 / 50 points" && timerText() === "55s", "in a save window it chips in and adds five seconds like a cheer (" + readout() + ", " + timerText() + ")");
-  chat("!barbits -300", { mod: true });
+  chat("!bar bits -300", { mod: true });
   ok(readout() === "2 / 50 points", "and a minus comes off the pot (" + readout() + ")");
 
   await load({ lockBreakSubs: 50 });
   redeem("Lock the Bar", 10000, "Sage");
-  chat("!barbits 2000", { mod: true });
+  chat("!bar bits 2000", { mod: true });
   ok(has("is-locked") && readout() === "0 / 100" && note() === "3 subs / 3,000 bits / £150.00 to break", "against a lock it counts towards breaking it (" + note() + ")");
 
   await load();
-  chat("!barbits 1000", { mod: true });
-  chat("!baroff", { mod: true });
-  chat("!barbits 1000", { mod: true });
-  chat("!barbits -300", { mod: true });
-  chat("!baron", { mod: true });
+  chat("!bar bits 1000", { mod: true });
+  chat("!bar off", { mod: true });
+  chat("!bar bits 1000", { mod: true });
+  chat("!bar bits -300", { mod: true });
+  chat("!bar on", { mod: true });
   ok(readout() === "7 / 100", "switched off, adding is ignored like a real cheer and a correction still works (" + readout() + ")");
 
   // Subs do not count towards a save in the first ten seconds after the bar fills.
@@ -1140,7 +1140,7 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   button("btnFillBar");
   sub({ tier: "1000", name: "GenerousViewer" });
   ok(has("is-pending") && readout() === "0 / 50 points" && timerText() === "60s", "a sub right after the bar fills does nothing at all (" + readout() + ", " + timerText() + ")");
-  chat("!barsub 3", { mod: true });
+  chat("!bar sub 3", { mod: true });
   ok(readout() === "0 / 50 points", "including a gift, so a bomb's overflow cannot save the run (" + readout() + ")");
   cheer({ amount: 1000, name: "Rowan" });
   ok(readout() === "10 / 50 points", "but a cheer counts straight away (" + readout() + ")");
@@ -1215,7 +1215,7 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
 
   await load({ moneySavesRun: false });
   button("btnFillBar");
-  chat("!barnope", { mod: true });
+  chat("!bar nope", { mod: true });
   ok(!has("is-pending"), "a mod can still save it by hand");
 
   await load({ moneySavesRun: false });
@@ -1325,9 +1325,9 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
 
   await load({ pushBackAmount: 25 });
   sub({ tier: "1000", name: "GenerousViewer" });
-  chat("!baroff", { mod: true });
+  chat("!bar off", { mod: true });
   redeem("Push Back the Bar", 10000, "Juniper");
-  chat("!baron", { mod: true });
+  chat("!bar on", { mod: true });
   ok(readout() === "10 / 100", "and it does nothing while the bar is switched off (" + readout() + ")");
 
   await load({ pushBackAmount: 25 });
@@ -1522,24 +1522,24 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   for (let i = 0; i < 5; i++) redeem("Save the Run", 10000, "GenerousViewer");
   ok(readout() === "0 / 100", "and so does one chat paid to save (" + readout() + ")");
 
-  // !barreset with a bar number goes to that bar, and 1 is the way back to the start.
+  // !bar reset with a bar number goes to that bar, and 1 is the way back to the start.
   await loadShipped();
   for (let i = 0; i < 3; i++) { button("btnFillBar"); advance(101 * 1000); }
   ok(readout() === "0 / 338", "three resets in, the fourth bar is 270 (" + readout() + ")");
-  chat("!barreset 1", { nick: "viewer" });
+  chat("!bar reset 1", { nick: "viewer" });
   ok(readout() === "0 / 338", "a viewer cannot send the bar back to the start (" + readout() + ")");
-  chat("!barreset 1", { mod: true });
-  ok(readout() === "0 / 100", "!barreset 1 goes back to the first bar (" + readout() + ")");
-  chat("!barreset 3", { mod: true });
-  ok(readout() === "0 / 225", "!barreset 3 jumps to the third (" + readout() + ")");
+  chat("!bar reset 1", { mod: true });
+  ok(readout() === "0 / 100", "!bar reset 1 goes back to the first bar (" + readout() + ")");
+  chat("!bar reset 3", { mod: true });
+  ok(readout() === "0 / 225", "!bar reset 3 jumps to the third (" + readout() + ")");
   sub({ tier: "1000", name: "GenerousViewer" });
-  chat("!barreset", { mod: true });
-  ok(readout() === "0 / 225", "and a bare !barreset still only clears the bar (" + readout() + ")");
-  chat("!barreset 0", { mod: true });
+  chat("!bar reset", { mod: true });
+  ok(readout() === "0 / 225", "and a bare !bar reset still only clears the bar (" + readout() + ")");
+  chat("!bar reset 0", { mod: true });
   ok(readout() === "0 / 100", "zero is treated as the first bar (" + readout() + ")");
-  chat("!barreset banana", { mod: true });
+  chat("!bar reset banana", { mod: true });
   ok(readout() === "0 / 100", "and something that is not a number just clears it (" + readout() + ")");
-  chat("!barreset 3", { mod: true });
+  chat("!bar reset 3", { mod: true });
   advance(400);
   await reload();
   ok(readout() === "0 / 225", "the bar it was sent to survives a refresh (" + readout() + ")");
@@ -1549,8 +1549,8 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   button("btnFillBar");
   advance(101 * 1000);
   ok(readout() === "0 / 150", "the second bar is bigger (" + readout() + ")");
-  chat("!barreset", { mod: true });
-  ok(readout() === "0 / 150", "!barreset clears the bar but keeps the size it has grown to (" + readout() + ")");
+  chat("!bar reset", { mod: true });
+  ok(readout() === "0 / 150", "!bar reset clears the bar but keeps the size it has grown to (" + readout() + ")");
   button("btnReset");
   ok(readout() === "0 / 150", "and so does the Reset button (" + readout() + ")");
   button("btnRestartEscalation");
@@ -1755,6 +1755,21 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   await load({ themePreset: "cosycabin" });
   ok(R["--accent"] === "#7C6142" && R["--c-float"] === "#57442E" && R["--c-float-bg"] === "#F5ECD6" && R["--c-track"] === "rgba(0, 0, 0, 0.11)", "a coloured preset colours each part from its own tones");
 
+  // ---- one command word
+  console.log("\n[one command word]");
+  await load({ command: "!rage" });
+  chat("!rage off", { mod: true });
+  ok(note() === "switched off", "the command word is a setting, and the verbs follow it (" + note() + ")");
+  chat("!bar on", { mod: true });
+  ok(note() === "switched off", "the old word is not the command once it is changed");
+  chat("!rage on", { mod: true });
+  ok(note() !== "switched off", "and the verb switches it back on (" + note() + ")");
+  await load();
+  chat("!baroff", { mod: true });
+  ok(note() !== "switched off", "a separate word per action, like !baroff, is no longer a command (" + note() + ")");
+  chat("!bar off", { nick: "viewer" });
+  ok(note() !== "switched off", "and a viewer typing a verb changes nothing");
+
   // ---- wording
   console.log("\n[wording]");
   await load({ subWord: "gift", subsWord: "gifts", bitsWord: "cheers", toGoText: "left" });
@@ -1762,10 +1777,10 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   await load({ readoutBarText: "{n} of {total}" });
   ok(readout() === "0 of 100", "the readout template (" + readout() + ")");
   await load({ offNote: "napping" });
-  chat("!baroff", { mod: true });
+  chat("!bar off", { mod: true });
   ok(note() === "napping", "the switched-off line (" + note() + ")");
   await load({ offNote: "" });
-  chat("!baroff", { mod: true });
+  chat("!bar off", { mod: true });
   ok(note() === "", "a blank switched-off line stays blank (" + JSON.stringify(note()) + ")");
   await load({ secondsSuffix: "" });
   button("btnFillBar");

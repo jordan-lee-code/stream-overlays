@@ -175,7 +175,7 @@
   function askRandom() {
     var name = NAMES[Math.floor(Math.random() * NAMES.length)] + Math.floor(Math.random() * 900 + 10);
     var q = QUESTIONS[Math.floor(Math.random() * QUESTIONS.length)];
-    sendChat((fieldData.askCommand || "!spinask") + " " + q, {
+    sendChat((fieldData.askCommand || "!spin ask") + " " + q, {
       nick: name,
       color: CHAT_COLORS[Math.floor(Math.random() * CHAT_COLORS.length)]
     });
@@ -184,7 +184,7 @@
     for (var i = 0; i < n; i++) {
       var name = NAMES[Math.floor(Math.random() * NAMES.length)] + Math.floor(Math.random() * 900 + 10);
       var roll = Math.random();
-      sendChat(fieldData.enterCommand || "!spintowin", {
+      sendChat(fieldData.enterCommand || "!spin", {
         nick: name,
         sub: roll > 0.6,
         vip: roll > 0.9,
@@ -325,7 +325,7 @@
       '<div class="row">' +
         '<input id="chat-user" type="text" value="Viewer" placeholder="username">' +
         '<input id="chat-color" type="color" value="#9146ff" title="chat colour">' +
-        '<input id="chat-text" type="text" value="!spintowin" placeholder="message / command">' +
+        '<input id="chat-text" type="text" value="!spin" placeholder="message / command">' +
       '</div>' +
       '<div class="row">' +
         '<label><input type="checkbox" id="r-broadcaster"> broadcaster</label>' +
@@ -334,7 +334,7 @@
         '<label><input type="checkbox" id="r-vip"> vip</label>' +
       '</div>' +
       '<div class="row"><button id="send-chat" class="go">Send message</button></div>' +
-      '<p class="hint">Try !spintowin, then !spin as broadcaster. Mod commands: !spinopen, !spinclose, !spinclear, !spinremove name, !spinmode forfeits.</p>' +
+      '<p class="hint">Try !spin, then !spin go as broadcaster. Mod commands: !spin open, !spin close, !spin clear, !spin remove name, !spin mode forfeits.</p>' +
 
       '<h2>Quick entrants</h2>' +
       '<div class="row">' +
@@ -372,7 +372,7 @@
         '<button data-btn="btnStrike" class="alt">Strike</button>' +
         '<button data-btn="btnResetLives" class="alt">Reset lives</button>' +
       '</div>' +
-      '<p class="hint">Switch the wheel to Truth or... first (Switch mode, or the mode setting below). Chatters use !spinask your question.</p>' +
+      '<p class="hint">Switch the wheel to Truth or... first (Switch mode, or the mode setting below). Chatters use !spin ask your question.</p>' +
 
       '<h2>Forfeits</h2>' +
       '<div class="row">' +
@@ -410,14 +410,14 @@
       sendChat(document.getElementById("chat-text").value, opts());
     };
     document.getElementById("spin3").onclick = function () {
-      sendChat((fieldData.spinCommand || "!spin") + " 3", { nick: "Streamer", broadcaster: true });
+      sendChat((fieldData.spinCommand || "!spin go") + " 3", { nick: "Streamer", broadcaster: true });
     };
     document.getElementById("ask-random").onclick = askRandom;
     document.getElementById("forfeit-add").onclick = function () {
-      sendChat((fieldData.forfeitAddCommand || "!spinforfeitadd") + " " + document.getElementById("forfeit-text").value, { nick: "Streamer", broadcaster: true });
+      sendChat((fieldData.forfeitAddCommand || "!spin forfeit add") + " " + document.getElementById("forfeit-text").value, { nick: "Streamer", broadcaster: true });
     };
     document.getElementById("forfeit-remove").onclick = function () {
-      sendChat((fieldData.forfeitRemoveCommand || "!spinforfeitremove") + " " + document.getElementById("forfeit-text").value, { nick: "Streamer", broadcaster: true });
+      sendChat((fieldData.forfeitRemoveCommand || "!spin forfeit remove") + " " + document.getElementById("forfeit-text").value, { nick: "Streamer", broadcaster: true });
     };
     document.getElementById("chat-text").addEventListener("keydown", function (e) {
       if (e.key === "Enter") sendChat(this.value, opts());

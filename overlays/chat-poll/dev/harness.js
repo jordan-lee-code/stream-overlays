@@ -373,17 +373,17 @@
 
       '<h2>Running the poll</h2>' +
       '<div class="row">' +
-        '<button class="alt" data-cmd="!voteextend 20">+20 seconds</button>' +
-        '<button class="alt" data-cmd="!voteend">End now</button>' +
+        '<button class="alt" data-cmd="!vote extend 20">+20 seconds</button>' +
+        '<button class="alt" data-cmd="!vote end">End now</button>' +
       '</div>' +
       '<div class="row">' +
-        '<button class="alt" data-cmd="!voterestart">Restart</button>' +
-        '<button class="alt" data-cmd="!votecancel">Cancel</button>' +
-        '<button class="alt" data-cmd="!voteundo">Undo</button>' +
+        '<button class="alt" data-cmd="!vote restart">Restart</button>' +
+        '<button class="alt" data-cmd="!vote cancel">Cancel</button>' +
+        '<button class="alt" data-cmd="!vote undo">Undo</button>' +
       '</div>' +
       '<div class="row">' +
-        '<button class="alt" data-cmd="!voteresults">Re-show result</button>' +
-        '<button class="alt" data-cmd="!votehide">Hide</button>' +
+        '<button class="alt" data-cmd="!vote results">Re-show result</button>' +
+        '<button class="alt" data-cmd="!vote hide">Hide</button>' +
       '</div>' +
       '<p class="hint">Undo walks backwards through everything: ending, cancelling, restarting, ' +
       'and a poll being replaced by a newer one. Press it a few times in a row and watch it ' +

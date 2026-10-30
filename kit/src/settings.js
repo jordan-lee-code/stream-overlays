@@ -55,6 +55,7 @@ function checkFields(fields, exceptions) {
     const f = fields[key];
     if (LEGACY[key]) problems.push(key + ": is the old name for " + LEGACY[key]);
     if (!f.group) problems.push(key + ": is not in a group");
+    if (/Command$/i.test(key) && key !== "command" && !(typeof exceptions[key] === "string" && exceptions[key].length >= 20)) problems.push(key + ": is a second command word; use the one command setting with verbs after it");
     const std = STANDARD[key];
     if (!std) return;
     if (f.type !== std.type) problems.push(key + ": should be a " + std.type + ", not a " + f.type);

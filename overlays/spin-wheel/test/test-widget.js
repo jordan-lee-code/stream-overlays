@@ -106,53 +106,53 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   // A. giveaway entries + dedupe
   console.log("\n[giveaway entries + dedupe]");
   load(); await wait(5);
-  chat("!spintowin", { nick: "Alice" });
-  chat("!spintowin", { nick: "Bob", sub: true });
-  chat("!spintowin", { nick: "Carol" });
-  chat("!spintowin", { nick: "Alice" });
+  chat("!spin", { nick: "Alice" });
+  chat("!spin", { nick: "Bob", sub: true });
+  chat("!spin", { nick: "Carol" });
+  chat("!spin", { nick: "Alice" });
   ok(entryCount() === "3 entries", "three unique entrants, duplicate ignored (" + entryCount() + ")");
   ok(hasCls("state-open") && hasCls("mode-giveaway"), "giveaway mode, entries open");
 
   // B. permissions
   console.log("\n[permissions]");
   elements["winner-name"].textContent = "\u2014";
-  chat("!spin", { nick: "Nobody" });
+  chat("!spin go", { nick: "Nobody" });
   await wait(20);
-  ok(winnerName() === "\u2014", "non-mod !spin ignored");
+  ok(winnerName() === "\u2014", "non-mod !spin go ignored");
 
   // C. spin + removeWinner
   console.log("\n[spin + removeWinner]");
-  chat("!spin", { broadcaster: true });
+  chat("!spin go", { broadcaster: true });
   await wait(40); ok(winnerName() && winnerName() !== "\u2014", "winner revealed: " + winnerName());
   await wait(850); ok(entryCount() === "2 entries", "winner removed after reveal (" + entryCount() + ")");
 
   // D. mod controls
   console.log("\n[mod controls]");
-  chat("!spinclose", { mod: true }); ok(hasCls("state-closed"), "mod closed entries");
-  chat("!spintowin", { nick: "Dave" }); ok(entryCount() === "2 entries", "entries ignored while closed");
-  chat("!spinopen", { mod: true }); chat("!spintowin", { nick: "Dave" }); ok(entryCount() === "3 entries", "entry after reopen");
-  chat("!spinremove Dave", { mod: true }); ok(entryCount() === "2 entries", "mod removed one");
-  chat("!spinclear", { mod: true }); ok(entryCount() === "0 entries", "mod cleared");
+  chat("!spin close", { mod: true }); ok(hasCls("state-closed"), "mod closed entries");
+  chat("!spin", { nick: "Dave" }); ok(entryCount() === "2 entries", "entries ignored while closed");
+  chat("!spin open", { mod: true }); chat("!spin", { nick: "Dave" }); ok(entryCount() === "3 entries", "entry after reopen");
+  chat("!spin remove Dave", { mod: true }); ok(entryCount() === "2 entries", "mod removed one");
+  chat("!spin clear", { mod: true }); ok(entryCount() === "0 entries", "mod cleared");
 
   // E. mod adds entrants
   console.log("\n[mod adds entrants]");
-  chat("!spinadd Alice, Bob, Carol", { mod: true }); ok(entryCount() === "3 entries", "mod added three (" + entryCount() + ")");
-  chat("!spinadd Alice", { mod: true }); ok(entryCount() === "3 entries", "duplicate manual add ignored");
+  chat("!spin add Alice, Bob, Carol", { mod: true }); ok(entryCount() === "3 entries", "mod added three (" + entryCount() + ")");
+  chat("!spin add Alice", { mod: true }); ok(entryCount() === "3 entries", "duplicate manual add ignored");
 
   // F. forfeits mode add + spin + cross-off (default)
   console.log("\n[forfeits: add, spin, cross-off]");
   load({ defaultMode: "forfeits" }); await wait(5);
-  chat("!spinforfeitadd Alpha, Beta, Gamma", { broadcaster: true });
+  chat("!spin forfeit add Alpha, Beta, Gamma", { broadcaster: true });
   ok(entryCount() === "3 forfeits" && hasCls("mode-forfeits"), "three forfeits added (" + entryCount() + ")");
-  chat("!spin", { broadcaster: true });
+  chat("!spin go", { broadcaster: true });
   await wait(40); ok(["Alpha", "Beta", "Gamma"].indexOf(winnerName()) >= 0, "forfeit drawn: " + winnerName());
   await wait(850); ok(entryCount() === "2 forfeits", "landed forfeit crossed off by default (" + entryCount() + ")");
 
   // G. subscriber weighting
   console.log("\n[weighting]");
   load({ subscriberWeight: 5 }); await wait(5);
-  chat("!spintowin", { nick: "Plainviewer" });
-  chat("!spintowin", { nick: "Subby", sub: true });
+  chat("!spin", { nick: "Plainviewer" });
+  chat("!spin", { nick: "Subby", sub: true });
   await wait(450);
   const saved = storeData[KEY];
   ok(saved.entries.find(e => e.nick === "subby").weight === 5, "subscriber got 5 slots");
@@ -161,7 +161,7 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   // H. goal auto-spin on each sub
   console.log("\n[goal auto-spin: sub]");
   load({ enableAutoSpin: true, triggerType: "sub" }); await wait(5);
-  chat("!spintowin", { nick: "Ada" }); chat("!spintowin", { nick: "Bea" });
+  chat("!spin", { nick: "Ada" }); chat("!spin", { nick: "Bea" });
   elements["winner-name"].textContent = "\u2014";
   event("subscriber-latest", 1);
   await wait(40); ok(winnerName() && winnerName() !== "\u2014", "new sub auto-spun: " + winnerName());
@@ -170,7 +170,7 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   // I. bits goal threshold
   console.log("\n[goal auto-spin: bits threshold]");
   load({ enableAutoSpin: true, triggerType: "bits", threshold: 500 }); await wait(5);
-  chat("!spintowin", { nick: "Cleo" });
+  chat("!spin", { nick: "Cleo" });
   elements["winner-name"].textContent = "\u2014";
   event("cheer-latest", 200); await wait(20); ok(winnerName() === "\u2014", "200 bits below 500, no spin");
   event("cheer-latest", 400); await wait(40); ok(winnerName() !== "\u2014", "crossing bits threshold spun: " + winnerName());
@@ -179,7 +179,7 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   // J. persistence across reload
   console.log("\n[persistence]");
   load(); await wait(5);
-  chat("!spintowin", { nick: "Remembered" });
+  chat("!spin", { nick: "Remembered" });
   await wait(450);
   elements["entry-count"].textContent = "";
   reload(); await wait(10);
@@ -188,77 +188,77 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   // K. multi-winner draw
   console.log("\n[multi-winner draw]");
   load(); await wait(5);
-  chat("!spinadd GenerousViewer, Marigold, Sunny, Pebble, Clover", { broadcaster: true });
-  chat("!spin 3", { broadcaster: true });
+  chat("!spin add GenerousViewer, Marigold, Sunny, Pebble, Clover", { broadcaster: true });
+  chat("!spin go 3", { broadcaster: true });
   await wait(40); ok(winnerName() && winnerName() !== "\u2014", "draw 1: " + winnerName());
   await wait(2700); ok(entryCount() === "2 entries", "three distinct winners removed (" + entryCount() + ")");
 
   // L. recent-winner cooldown
   console.log("\n[winner cooldown]");
   load({ removeWinner: false, winnerCooldown: 1 }); await wait(5);
-  chat("!spinadd Ruby, Opal", { broadcaster: true });
-  chat("!spin", { broadcaster: true }); await wait(40); const first = winnerName(); await wait(850);
-  chat("!spin", { broadcaster: true }); await wait(40); const second = winnerName(); await wait(850);
+  chat("!spin add Ruby, Opal", { broadcaster: true });
+  chat("!spin go", { broadcaster: true }); await wait(40); const first = winnerName(); await wait(850);
+  chat("!spin go", { broadcaster: true }); await wait(40); const second = winnerName(); await wait(850);
   ok(first && second && first !== second, "cooldown forced a different winner (" + first + " then " + second + ")");
 
   // M. reroll
   console.log("\n[reroll]");
   load(); await wait(5);
-  chat("!spinadd Ash, Birch, Cedar", { broadcaster: true });
-  chat("!spin", { broadcaster: true }); await wait(40); await wait(850);
+  chat("!spin add Ash, Birch, Cedar", { broadcaster: true });
+  chat("!spin go", { broadcaster: true }); await wait(40); await wait(850);
   ok(entryCount() === "2 entries", "one winner removed before reroll");
-  chat("!spinreroll", { broadcaster: true });
+  chat("!spin reroll", { broadcaster: true });
   await wait(40); ok(winnerName() && winnerName() !== "\u2014", "reroll drew again: " + winnerName());
   await wait(850); ok(entryCount() === "2 entries", "reroll restored then removed (" + entryCount() + ")");
 
   // N. lastwinner re-show
   console.log("\n[last winner re-show]");
   load(); await wait(5);
-  chat("!spinadd Fern, Gorse", { broadcaster: true });
-  chat("!spin", { broadcaster: true }); await wait(40); const champ = winnerName(); await wait(850);
+  chat("!spin add Fern, Gorse", { broadcaster: true });
+  chat("!spin go", { broadcaster: true }); await wait(40); const champ = winnerName(); await wait(850);
   elements["winner-name"].textContent = "\u2014";
-  chat("!spinlastwinner", { mod: true });
+  chat("!spin lastwinner", { mod: true });
   ok(winnerName() === champ, "last winner re-shown: " + winnerName());
   await wait(850);
 
   // O. entry countdown auto-close
   console.log("\n[entry countdown]");
   load({ entrySeconds: 1 }); await wait(5);
-  chat("!spinclose", { mod: true }); chat("!spinopen", { mod: true });
+  chat("!spin close", { mod: true }); chat("!spin open", { mod: true });
   ok(hasCls("state-open"), "opened with a 1s timer");
   await wait(1300); ok(hasCls("state-closed"), "auto-closed after the countdown");
 
   // P. Truth or...
   console.log("\n[truth or...]");
   load({ lifelineCount: 1 }); await wait(5);
-  chat("!spinmode questions", { broadcaster: true });
-  chat("!spinask What is your biggest fear?", { nick: "GenerousViewer" });
-  chat("!spinask Best concert ever?", { nick: "Marigold" });
-  chat("!spinask Weirdest food combo?", { nick: "Sunny" });
+  chat("!spin mode questions", { broadcaster: true });
+  chat("!spin ask What is your biggest fear?", { nick: "GenerousViewer" });
+  chat("!spin ask Best concert ever?", { nick: "Marigold" });
+  chat("!spin ask Weirdest food combo?", { nick: "Sunny" });
   ok(entryCount() === "3 questions" && hasCls("mode-questions"), "three questions (" + entryCount() + ")");
-  chat("!spin", { broadcaster: true });
+  chat("!spin go", { broadcaster: true });
   await wait(40);
   const q1 = winnerName();
   ok(q1 && q1.length > 3, "question revealed: " + q1.slice(0, 24));
   ok(elements["winner-overlay"].hidden === false, "question card stays up");
   ok(elements["lifelines"].hidden === false && elements["lifelines"].textContent.indexOf("♥") >= 0, "lifelines shown");
-  chat("!spinveto", { broadcaster: true });
+  chat("!spin veto", { broadcaster: true });
   await wait(40); ok(entryCount() === "2 questions", "vetoed question removed (" + entryCount() + ")");
   ok(winnerName() !== q1, "fresh question after veto");
-  chat("!spinveto", { broadcaster: true }); await wait(10);
+  chat("!spin veto", { broadcaster: true }); await wait(10);
   ok(elements["winner-sub"].textContent.toLowerCase().indexOf("no more skips") >= 0, "veto refused at 0 lifelines");
   ok(entryCount() === "2 questions", "refused veto removed nothing");
-  chat("!spinstrike", { mod: true }); await wait(40); ok(entryCount() === "1 question", "mod strike removed one free (" + entryCount() + ")");
-  chat("!spinresetlifelines", { mod: true }); ok(elements["lifelines"].textContent === "Lifelines ♥", "lifelines reset");
-  chat("!spinmode giveaway", { broadcaster: true });
+  chat("!spin strike", { mod: true }); await wait(40); ok(entryCount() === "1 question", "mod strike removed one free (" + entryCount() + ")");
+  chat("!spin resetlifelines", { mod: true }); ok(elements["lifelines"].textContent === "Lifelines ♥", "lifelines reset");
+  chat("!spin mode giveaway", { broadcaster: true });
   const before = entryCount();
-  chat("!spinask ignored now", { nick: "Late" });
-  ok(entryCount() === before, "!spinask ignored outside questions mode");
+  chat("!spin ask ignored now", { nick: "Late" });
+  ok(entryCount() === before, "!spin ask ignored outside questions mode");
 
   // Q. questions persistence
   console.log("\n[questions persistence]");
   load({ defaultMode: "questions" }); await wait(5);
-  chat("!spinask a remembered question?", { nick: "Echo" });
+  chat("!spin ask a remembered question?", { nick: "Echo" });
   await wait(450);
   elements["entry-count"].textContent = "";
   reload(); await wait(10);
@@ -281,15 +281,15 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   console.log("\n[dynamic forfeits]");
   load({ defaultMode: "forfeits" }); await wait(5);
   ok(entryCount() === "0 forfeits", "forfeits start blank (" + entryCount() + ")");
-  chat("!spinforfeitadd Karaoke, Pyjama party", { mod: true }); ok(entryCount() === "2 forfeits", "added two (" + entryCount() + ")");
-  chat("!spinforfeitadd Karaoke", { mod: true }); ok(entryCount() === "2 forfeits", "duplicate ignored");
-  chat("!spinforfeitremove Karaoke", { mod: true }); ok(entryCount() === "1 forfeit", "removed one (" + entryCount() + ")");
-  chat("!spinforfeitclear", { mod: true }); ok(entryCount() === "0 forfeits", "cleared");
+  chat("!spin forfeit add Karaoke, Pyjama party", { mod: true }); ok(entryCount() === "2 forfeits", "added two (" + entryCount() + ")");
+  chat("!spin forfeit add Karaoke", { mod: true }); ok(entryCount() === "2 forfeits", "duplicate ignored");
+  chat("!spin forfeit remove Karaoke", { mod: true }); ok(entryCount() === "1 forfeit", "removed one (" + entryCount() + ")");
+  chat("!spin forfeit clear", { mod: true }); ok(entryCount() === "0 forfeits", "cleared");
 
   // T. forfeit auto-spin on cumulative bits (cross-off off, so pool stable)
   console.log("\n[forfeit auto-spin: cumulative bits]");
   load({ defaultMode: "forfeits", enableAutoSpin: true, triggerType: "bits", threshold: 100, triggerCount: "cumulative", forfeitCrossOff: false }); await wait(5);
-  chat("!spinforfeitadd Alpha, Beta, Gamma", { broadcaster: true });
+  chat("!spin forfeit add Alpha, Beta, Gamma", { broadcaster: true });
   elements["winner-name"].textContent = "\u2014";
   event("cheer-latest", 50); await wait(20); ok(winnerName() === "\u2014", "50 bits below threshold, no spin");
   event("cheer-latest", 60); await wait(40); ok(["Alpha", "Beta", "Gamma"].indexOf(winnerName()) >= 0, "bits threshold spun a forfeit: " + winnerName());
@@ -298,7 +298,7 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   // U. forfeit auto-spin on each donation
   console.log("\n[forfeit auto-spin: each donation]");
   load({ defaultMode: "forfeits", enableAutoSpin: true, triggerType: "tips", threshold: 5, triggerCount: "each" }); await wait(5);
-  chat("!spinforfeitadd Alpha, Beta, Gamma", { broadcaster: true });
+  chat("!spin forfeit add Alpha, Beta, Gamma", { broadcaster: true });
   elements["winner-name"].textContent = "\u2014";
   event("tip-latest", 3); await wait(20); ok(winnerName() === "\u2014", "donation below threshold, no spin");
   event("tip-latest", 5); await wait(40); ok(winnerName() !== "\u2014", "qualifying donation spun: " + winnerName());
@@ -307,19 +307,19 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   // V. entry toast
   console.log("\n[entry toast]");
   load(); await wait(5);
-  chat("!spintowin", { nick: "GenerousViewer" });
+  chat("!spin", { nick: "GenerousViewer" });
   ok(elements["entry-toast"].hidden === false, "toast shown on entry");
   ok(/GenerousViewer joined/i.test(elements["entry-toast"].textContent), "toast text: " + elements["entry-toast"].textContent);
   load({ showEntryToast: false }); await wait(5);
   elements["entry-toast"].hidden = true;
-  chat("!spintowin", { nick: "Bob" });
+  chat("!spin", { nick: "Bob" });
   ok(elements["entry-toast"].hidden === true, "no toast when disabled");
 
   // W. forfeit cross-off off keeps the forfeit
   console.log("\n[forfeit cross-off off]");
   load({ defaultMode: "forfeits", forfeitCrossOff: false }); await wait(5);
-  chat("!spinforfeitadd A, B, C, D", { broadcaster: true });
-  chat("!spin", { broadcaster: true });
+  chat("!spin forfeit add A, B, C, D", { broadcaster: true });
+  chat("!spin go", { broadcaster: true });
   await wait(40); await wait(850);
   ok(entryCount() === "4 forfeits", "forfeit kept when cross-off off (" + entryCount() + ")");
 
@@ -339,44 +339,44 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   // Y. wording
   console.log("\n[wording]");
   load({ modeGiveawayLabel: "Raffle", entryWord: "name", entriesWord: "names", openLabel: "Come in!", closedLabel: "Shut", toastSuffix: " is in!", idleMessage: "Say hello" }); await wait(5);
-  chat("!spintowin", { nick: "Alice" });
+  chat("!spin", { nick: "Alice" });
   ok(elements["mode-badge"].textContent === "Raffle" && entryCount() === "1 name" && elements["open-badge"].textContent === "Come in!", "badges and nouns (" + elements["mode-badge"].textContent + ", " + entryCount() + ", " + elements["open-badge"].textContent + ")");
-  chat("!spintowin", { nick: "Bob" });
+  chat("!spin", { nick: "Bob" });
   ok(entryCount() === "2 names", "plural noun (" + entryCount() + ")");
   // Toasts come one at a time from a queue, so wait for this one to reach the screen.
   for (let i = 0; i < 60 && !/ is in!$/.test(elements["entry-toast"].textContent); i++) await wait(100);
   ok(/ is in!$/.test(elements["entry-toast"].textContent), "joined toast wording (" + elements["entry-toast"].textContent + ")");
-  chat("!spinclose", { mod: true });
+  chat("!spin close", { mod: true });
   ok(elements["open-badge"].textContent === "Shut", "closed badge");
-  chat("!spinclear", { mod: true });
+  chat("!spin clear", { mod: true });
   ok(elements["idle-message"].textContent === "Say hello", "idle message (" + elements["idle-message"].textContent + ")");
   load({ defaultMode: "forfeits", modeForfeitsLabel: "Dares", forfeitWord: "dare", forfeitsWord: "dares", idleForfeitsText: "Nothing yet. {cmd}!" }); await wait(5);
   ok(elements["mode-badge"].textContent === "Dares" && entryCount() === "0 dares", "forfeit badge and noun (" + entryCount() + ")");
-  ok(elements["idle-message"].textContent === "Nothing yet. !spinforfeitadd!", "forfeit idle text fills in the command (" + elements["idle-message"].textContent + ")");
-  chat("!spinforfeitadd Solo", { broadcaster: true });
+  ok(elements["idle-message"].textContent === "Nothing yet. !spin forfeit add!", "forfeit idle text fills in the command (" + elements["idle-message"].textContent + ")");
+  chat("!spin forfeit add Solo", { broadcaster: true });
   ok(entryCount() === "1 dare", "singular forfeit noun (" + entryCount() + ")");
   load({ defaultMode: "questions", modeQuestionsLabel: "Ask me", questionWord: "ask", questionsWord: "asks", idleQuestionsText: "Send {cmd} now", lifelinesLabel: "Skips", heartFull: "X", heartEmpty: "o", lifelineCount: 3 }); await wait(5);
   ok(elements["mode-badge"].textContent === "Ask me" && entryCount() === "0 asks", "question badge and noun");
-  ok(elements["idle-message"].textContent === "Send !spinask now", "question idle text (" + elements["idle-message"].textContent + ")");
+  ok(elements["idle-message"].textContent === "Send !spin ask now", "question idle text (" + elements["idle-message"].textContent + ")");
   ok(elements["lifelines"].textContent === "Skips XXX", "lifelines label and symbols (" + elements["lifelines"].textContent + ")");
   load({ winnerLabel: "Champion", winnerOfLabel: "No. {n} of {total}" }); await wait(5);
-  chat("!spintowin", { nick: "Alice" }); chat("!spintowin", { nick: "Bob" });
-  chat("!spin", { broadcaster: true }); await wait(40);
+  chat("!spin", { nick: "Alice" }); chat("!spin", { nick: "Bob" });
+  chat("!spin go", { broadcaster: true }); await wait(40);
   ok(elements["winner-eyebrow"].textContent === "Champion", "winner label (" + elements["winner-eyebrow"].textContent + ")");
   await wait(900);
   load({ winnerOfLabel: "No. {n} of {total}", spinDuration: 100 }); await wait(5);
-  chat("!spintowin", { nick: "Alice" }); chat("!spintowin", { nick: "Bob" }); chat("!spintowin", { nick: "Cara" });
-  chat("!spin 2", { broadcaster: true }); await wait(40);
+  chat("!spin", { nick: "Alice" }); chat("!spin", { nick: "Bob" }); chat("!spin", { nick: "Cara" });
+  chat("!spin go 2", { broadcaster: true }); await wait(40);
   ok(/^No\. 1 of 2$/.test(elements["winner-eyebrow"].textContent), "several winners wording (" + elements["winner-eyebrow"].textContent + ")");
   await wait(1500);
   load({ goalSubLabel: "Subs to go", enableAutoSpin: true, triggerType: "sub" }); await wait(5);
   ok(/^Subs to go: /.test(elements["goal-text"].textContent), "goal bar label (" + elements["goal-text"].textContent + ")");
   load({ timerPrefix: "Closing in ", timerSuffix: " secs", entrySeconds: 30 }); await wait(5);
-  chat("!spinopen", { mod: true });
+  chat("!spin open", { mod: true });
   ok(/^Closing in \d+ secs$/.test(elements["entry-timer"].textContent), "entry countdown wording (" + elements["entry-timer"].textContent + ")");
 
   load({ timerPrefix: "", timerSuffix: "", entrySeconds: 30 }); await wait(5);
-  chat("!spinopen", { mod: true });
+  chat("!spin open", { mod: true });
   ok(/^\d+$/.test(elements["entry-timer"].textContent), "blank countdown words leave just the number (" + elements["entry-timer"].textContent + ")");
   load({ idleMessage: "" }); await wait(5);
   ok(elements["idle-message"].textContent === "", "a blank idle message stays blank instead of bringing the default back (" + JSON.stringify(elements["idle-message"].textContent) + ")");
@@ -419,28 +419,28 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   const widths = () => ctxLog.filter(x => x[0] === "lineWidth").map(x => x[1]);
   const fonts = () => ctxLog.filter(x => x[0] === "font").map(x => x[1]);
   load(); await wait(5); ctxLog.length = 0;
-  chat("!spintowin", { nick: "Alice" }); chat("!spintowin", { nick: "Bob" }); chat("!spintowin", { nick: "Cara" });
+  chat("!spin", { nick: "Alice" }); chat("!spin", { nick: "Bob" }); chat("!spin", { nick: "Cara" });
   ok(widths().indexOf(8) !== -1 && widths().indexOf(2) !== -1, "the rim is 8 and the dividers 2 by default (" + widths().slice(-4) + ")");
   ok(fonts().some(f => /^700 /.test(f)) && ctxLog.some(x => x[0] === "fillText" && x[1] === "Alice"), "names are drawn in bold");
   load({ rimWidth: 14, dividerWidth: 5 }); await wait(5); ctxLog.length = 0;
-  chat("!spintowin", { nick: "Alice" }); chat("!spintowin", { nick: "Bob" });
+  chat("!spin", { nick: "Alice" }); chat("!spin", { nick: "Bob" });
   ok(widths().indexOf(14) !== -1 && widths().indexOf(5) !== -1 && widths().indexOf(8) === -1, "rim and divider widths are configurable (" + widths().slice(-4) + ")");
   load({ rimWidth: 0, dividerWidth: 0 }); await wait(5); ctxLog.length = 0;
-  chat("!spintowin", { nick: "Alice" }); chat("!spintowin", { nick: "Bob" });
+  chat("!spin", { nick: "Alice" }); chat("!spin", { nick: "Bob" });
   ok(widths().length === 0, "and can be switched off (" + widths() + ")");
   load({ labelWeight: "400" }); await wait(5); ctxLog.length = 0;
-  chat("!spintowin", { nick: "Alice" }); chat("!spintowin", { nick: "Bob" });
+  chat("!spin", { nick: "Alice" }); chat("!spin", { nick: "Bob" });
   ok(fonts().some(f => /^400 /.test(f)) && !fonts().some(f => /^700 /.test(f)), "name boldness is configurable (" + fonts().slice(-1) + ")");
   load({ themePreset: "custom", colorLabelDark: "#010203", colorLabelLight: "#040506" }); await wait(5); ctxLog.length = 0;
-  chat("!spintowin", { nick: "Alice" }); chat("!spintowin", { nick: "Bob" });
+  chat("!spin", { nick: "Alice" }); chat("!spin", { nick: "Bob" });
   const fills = ctxLog.filter(x => x[0] === "fillStyle").map(x => x[1]);
   ok(fills.indexOf("#010203") !== -1 || fills.indexOf("#040506") !== -1, "Custom name colours reach the canvas (" + fills.slice(-3) + ")");
   load({ labelScale: 2 }); await wait(5); ctxLog.length = 0;
-  chat("!spintowin", { nick: "Alice" }); chat("!spintowin", { nick: "Bob" });
+  chat("!spin", { nick: "Alice" }); chat("!spin", { nick: "Bob" });
   const size = f => parseFloat(String(f).replace(/^\d+ /, ""));
   const big = Math.max.apply(null, fonts().map(size));
   load({ labelScale: 1 }); await wait(5); ctxLog.length = 0;
-  chat("!spintowin", { nick: "Alice" }); chat("!spintowin", { nick: "Bob" });
+  chat("!spin", { nick: "Alice" }); chat("!spin", { nick: "Bob" });
   ok(big > Math.max.apply(null, fonts().map(size)), "name size scales (" + big + " against " + Math.max.apply(null, fonts().map(size)) + ")");
 
   // AB. animation
@@ -456,25 +456,25 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   const clearLog = () => { audioLog.length = 0; };
   const withSounds = (o) => Object.assign({ enterSound: "data:enter", tickSound: "data:tick", winSound: "data:win" }, o || {});
   load(); await wait(5); clearLog();
-  chat("!spintowin", { nick: "Alice" }); chat("!spintowin", { nick: "Bob" }); chat("!spin", { broadcaster: true }); await wait(60);
+  chat("!spin", { nick: "Alice" }); chat("!spin", { nick: "Bob" }); chat("!spin go", { broadcaster: true }); await wait(60);
   ok(played().length === 0, "no sound plays when none are chosen");
   await wait(900);
   load(withSounds()); await wait(5); clearLog();
-  chat("!spintowin", { nick: "Alice" });
+  chat("!spin", { nick: "Alice" });
   ok(played().join() === "enter", "joining plays the join sound (" + played() + ")");
-  clearLog(); chat("!spintowin", { nick: "Alice" });
+  clearLog(); chat("!spin", { nick: "Alice" });
   ok(played().length === 0, "a repeat join is silent (" + played() + ")");
-  chat("!spintowin", { nick: "Bob" }); clearLog();
-  chat("!spin", { broadcaster: true }); await wait(60);
+  chat("!spin", { nick: "Bob" }); clearLog();
+  chat("!spin go", { broadcaster: true }); await wait(60);
   ok(played().indexOf("win") !== -1, "the winner plays the winner sound (" + played().join() + ")");
   await wait(900);
   load(withSounds({ enterSoundVolume: 25 })); await wait(5); clearLog();
-  chat("!spintowin", { nick: "Alice" });
+  chat("!spin", { nick: "Alice" });
   ok(audioLog[0].volume === 0.25, "each sound has its own volume (" + audioLog[0].volume + ")");
-  load(withSounds({ enterSoundVolume: 900 })); await wait(5); clearLog(); chat("!spintowin", { nick: "Alice" });
+  load(withSounds({ enterSoundVolume: 900 })); await wait(5); clearLog(); chat("!spin", { nick: "Alice" });
   ok(audioLog[0].volume === 1, "held to the 0 to 1 range");
   load(withSounds({ enableSounds: false })); await wait(5); clearLog();
-  chat("!spintowin", { nick: "Alice" });
+  chat("!spin", { nick: "Alice" });
   ok(played().length === 0, "unticking Play sounds mutes everything");
   load(withSounds()); await wait(5); clearLog();
   button("btnSoundEnter"); button("btnSoundTick"); button("btnSoundWin");

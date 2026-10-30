@@ -1,50 +1,8 @@
 {
-  "startCommand": {
+  "command": {
     "type": "text",
-    "label": "Start a poll (e.g. !vote Truth A, Truth B, The lie)",
+    "label": "Command word. A mod types it with the options to start a poll (!vote Truth A, Truth B, The lie), or with a verb: end, cancel, restart, undo, extend 20, results, hide",
     "value": "!vote",
-    "group": "Commands"
-  },
-  "endCommand": {
-    "type": "text",
-    "label": "End the poll early and declare",
-    "value": "!voteend",
-    "group": "Commands"
-  },
-  "cancelCommand": {
-    "type": "text",
-    "label": "Cancel the poll and declare nothing",
-    "value": "!votecancel",
-    "group": "Commands"
-  },
-  "restartCommand": {
-    "type": "text",
-    "label": "Run the same options again from scratch (chat wasn't ready)",
-    "value": "!voterestart",
-    "group": "Commands"
-  },
-  "extendCommand": {
-    "type": "text",
-    "label": "Add seconds to a running poll (e.g. !voteextend 20)",
-    "value": "!voteextend",
-    "group": "Commands"
-  },
-  "undoCommand": {
-    "type": "text",
-    "label": "Roll back the last thing that happened to the poll",
-    "value": "!voteundo",
-    "group": "Commands"
-  },
-  "showCommand": {
-    "type": "text",
-    "label": "Re-show the last result",
-    "value": "!voteresults",
-    "group": "Commands"
-  },
-  "hideCommand": {
-    "type": "text",
-    "label": "Hide the card straight away",
-    "value": "!votehide",
     "group": "Commands"
   },
   "whoCanManage": {

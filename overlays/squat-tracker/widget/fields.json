@@ -1,26 +1,8 @@
 {
-  "viewCommand": {
+  "command": {
     "type": "text",
-    "label": "Show / adjust command (anyone shows; mods can adjust, e.g. !squats -5)",
+    "label": "Command word. Anyone can type it alone to make the sticker pop. Mods can adjust it: !squats -5, !squats set 30, !squats reset, !squats lock, !squats unlock",
     "value": "!squats",
-    "group": "Commands"
-  },
-  "resetCommand": {
-    "type": "text",
-    "label": "Reset command (mods)",
-    "value": "!squatsreset",
-    "group": "Commands"
-  },
-  "lockCommand": {
-    "type": "text",
-    "label": "Lock command (mods) - gifted subs stop adding, manual controls still work",
-    "value": "!squatslock",
-    "group": "Commands"
-  },
-  "unlockCommand": {
-    "type": "text",
-    "label": "Unlock command (mods) - gifted subs start adding again",
-    "value": "!squatsunlock",
     "group": "Commands"
   },
   "whoCanManage": {
