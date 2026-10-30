@@ -45,6 +45,7 @@
   font-family: var(--w-font);
   color: var(--w-text);
   background: var(--w-bg);
+  background-image: var(--w-bgimg, none);
   border: var(--w-border);
   border-radius: var(--w-radius);
   box-shadow: var(--w-shadow);
