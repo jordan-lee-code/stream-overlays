@@ -14,7 +14,7 @@
 
   var STORE_KEY = "spin_wheel_v1";
 
-  /* Style presets. The same twelve, with the same colours, in every overlay in this
+  /* Style presets. The same fourteen, with the same colours, in every overlay in this
      set, generated from one table so they cannot drift apart, so any preset looks
      like one family across a whole stream. The default, Soft black, is a see-through
      black panel with white text. */
@@ -90,6 +90,18 @@
       segs: ["#C8B6E2", "#D9A7C7", "#A88FC0", "#8E7B9E", "#6E6080", "#B695C8"],
       font: "Quicksand",
       parts: {"pillBg": "#3A3340", "pill": "#F2E9F0", "toastBg": "#3A3340", "toast": "#F2E9F0", "cardBg": "#3A3340", "card": "#F2E9F0", "eyebrowBg": "#C8B6E2", "eyebrow": "#3A3340", "idle": "#F2E9F0", "goal": "#F2E9F0", "goalTrack": "rgba(255, 255, 255, 0.18)", "goalFrom": "#D9A7C7", "goalTo": "#C8B6E2", "hub": "#3A3340", "hubRing": "#C8B6E2", "spent": "#C96A8E", "refused": "#C96A8E", "labelDark": "#111111", "labelLight": "#FFFFFF", "divider": "rgba(255, 255, 255, 0.35)", "border": "transparent"}
+    },
+    pastelpink: {
+      bg: "#FFE3EC", text: "#6A2E4B", accent: "#D95C8A", pointer: "#D95C8A",
+      segs: ["#F7A8C6", "#FFC8DD", "#E0679A", "#FBB1BD", "#D98BB0", "#FFD6E6"],
+      font: "Fredoka",
+      parts: {"pillBg": "#FFE3EC", "pill": "#6A2E4B", "toastBg": "#FFE3EC", "toast": "#6A2E4B", "cardBg": "#FFE3EC", "card": "#6A2E4B", "eyebrowBg": "#D95C8A", "eyebrow": "#FFF5F9", "idle": "#6A2E4B", "goal": "#6A2E4B", "goalTrack": "rgba(106, 46, 75, 0.14)", "goalFrom": "#F7A8C6", "goalTo": "#E0679A", "hub": "#FFE3EC", "hubRing": "#D95C8A", "spent": "#D6456F", "refused": "#D6456F", "labelDark": "#4a1d33", "labelLight": "#FFFFFF", "divider": "rgba(255, 255, 255, 0.75)", "border": "transparent"}
+    },
+    faegreen: {
+      bg: "#2C4A36", text: "#EEF5DA", accent: "#C9E265", pointer: "#C9E265",
+      segs: ["#C9E265", "#8FB84E", "#E6F29A", "#6E9A45", "#F2F7C0", "#A8CB62"],
+      font: "Almendra",
+      parts: {"pillBg": "#2C4A36", "pill": "#EEF5DA", "toastBg": "#2C4A36", "toast": "#EEF5DA", "cardBg": "#2C4A36", "card": "#EEF5DA", "eyebrowBg": "#C9E265", "eyebrow": "#2C4A36", "idle": "#EEF5DA", "goal": "#EEF5DA", "goalTrack": "rgba(238, 245, 218, 0.2)", "goalFrom": "#8FB84E", "goalTo": "#D7EE7A", "hub": "#2C4A36", "hubRing": "#C9E265", "spent": "#E0805A", "refused": "#E0805A", "labelDark": "#1F3326", "labelLight": "#FFFFFF", "divider": "rgba(44, 74, 54, 0.45)", "border": "transparent"}
     }
   };
   // The baseline the colour fields default to; a preset shows through only until

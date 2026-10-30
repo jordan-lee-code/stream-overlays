@@ -273,7 +273,7 @@
   "idleMessage": {
     "type": "text",
     "label": "Message on the empty wheel in giveaway mode",
-    "value": "Type !spintowin to enter \u2600\ufe0f",
+    "value": "Type !spintowin to enter ☀️",
     "group": "Wording"
   },
   "modeGiveawayLabel": {
@@ -393,13 +393,13 @@
   "heartFull": {
     "type": "text",
     "label": "Symbol for a lifeline left",
-    "value": "\u2665",
+    "value": "♥",
     "group": "Wording"
   },
   "heartEmpty": {
     "type": "text",
     "label": "Symbol for a lifeline spent",
-    "value": "\u2661",
+    "value": "♡",
     "group": "Wording"
   },
   "lifelineLeftText": {
@@ -417,7 +417,7 @@
   "noLifelinesText": {
     "type": "text",
     "label": "Line when no lifelines are left",
-    "value": "No lifelines left, no more skips! \ud83d\ude48",
+    "value": "No lifelines left, no more skips! 🙈",
     "group": "Wording"
   },
   "asksSuffix": {
@@ -435,7 +435,7 @@
   "idleQuestionsText": {
     "type": "text",
     "label": "Message on the empty wheel in Truth or... mode ({cmd} is filled in)",
-    "value": "Type {cmd} your question \u2600\ufe0f",
+    "value": "Type {cmd} your question ☀️",
     "group": "Wording"
   },
   "idleForfeitsText": {
@@ -909,6 +909,8 @@
       "pastel": "Cosy summer pastel",
       "celestial": "Celestial",
       "pastelgoth": "Pastel goth",
+      "pastelpink": "Pastel pink",
+      "faegreen": "Fae green",
       "custom": "Custom (use the colours below)"
     },
     "group": "Theme"
