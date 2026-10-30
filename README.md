@@ -27,9 +27,32 @@ It was built for rounds like Two Truths and a Lie, but it suits any quick vote. 
 
 <p><img src="docs/result.png" alt="A finished poll with the winning option highlighted under the label Chat says" width="340"></p>
 
-**Your own look.** Every part of the card is a setting. This one uses custom colours, an outline, a different font for the heading and pink option colours. There are also four warm presets (Cosy cabin, Cosy summer pastel, Celestial and Pastel goth) if you prefer them to the default Soft black.
+**Your own look.** Every part of the card is a setting. This one uses custom colours, an outline, a different font for the heading and pink option colours. You can also pick any of the twelve [style presets](#style-presets) with one setting.
 
 <p><img src="docs/custom.png" alt="A poll card in a customised pink theme with a script heading" width="340"></p>
+
+## Style presets
+
+One setting picks the look. The same twelve presets, with exactly the same colours, are in every overlay in this set, so whichever you choose, the overlays still look like one family on a stream. This is how each one looks in this overlay.
+
+<p><img src="docs/presets.png" alt="A grid of this overlay in each of the twelve style presets: Soft black, Soft white, Midnight blue, Sunset, Forest, Ocean, Rose, Neon, Cosy cabin, Cosy summer pastel, Celestial and Pastel goth" width="760"></p>
+
+| Preset | Look |
+| --- | --- |
+| Soft black (default) | See-through black with white text. |
+| Soft white | Frosted white with dark text. |
+| Midnight blue | Deep navy with a periwinkle accent. |
+| Sunset | Deep plum with orange and coral. |
+| Forest | Deep green with a mint accent. |
+| Ocean | Deep teal with an aqua accent. |
+| Rose | Deep berry with a pink accent. |
+| Neon | Near black with cyan and magenta. |
+| Cosy cabin | Cream and brown, in Chicle. |
+| Cosy summer pastel | Warm cream and coral, in Baloo 2. |
+| Celestial | Deep purple and gold, in Cinzel. |
+| Pastel goth | Charcoal and lilac, in Quicksand. |
+
+Choose **Custom** to use the colour pickers and font instead. They are ignored while a preset is chosen.
 
 ## Quick start
 
@@ -91,12 +114,12 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | Copy | The heading, the result and tie labels, the hint line, the words for vote and votes, and a troubleshooting overlay. |
 | Card | **Size of everything**, corner roundness, padding, spacing, an outline, shadows, the tail and tilt of the timer and result label, and the size of each option's bar. |
 | Text | The size and boldness of the heading, countdown, result label, options, letter chips, counts and footer, an own font for the heading, and the opacity of counts, footer and options that did not win. |
-| Theme | A preset (Soft black by default, Cosy cabin, Cosy summer pastel, Celestial, Pastel goth) or Custom colours and font, with a colour for every part and each of the eight options, and an opacity for the panel. |
+| Theme | One of the twelve shared style presets (Soft black by default) or Custom colours and font, with a colour for every part and each of the eight options, and an opacity for the panel. |
 | Animation | One switch for all animation, and how long the bars, the card and the pulse take. |
 | Sounds | A sound and volume for a poll opening, a vote, each of the last seconds and the result, plus a master mute. |
 | Manual controls | Buttons to start a demo poll, add time, end, restart, cancel and undo, and to test each sound. |
 
-The full list, with defaults, is in [`widget/fields.json`](widget/fields.json). Preset colours apply only when the preset is not **Custom**.
+The full list, with defaults, is in [`widget/fields.json`](widget/fields.json). The colour and font pickers apply only when the style preset is **Custom**.
 
 **Size of everything** is a ceiling, not a fixed size. The card can never be wider than the widget box, so a generous setting with a wordy poll is brought down to whatever fits, down to half the card's natural size. A short poll gets the full size you asked for.
 

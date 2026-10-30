@@ -19,38 +19,80 @@
 
   var STORE_KEY = "chat_poll_v1";
 
-  /* Warm theme palettes. `segs` colours the keyword
-     chip and bar for each option in turn, so the options are told apart by
-     colour as well as by letter. */
+  /* Style presets. The same twelve, with the same colours, in every overlay in this
+     set, generated from one table so they cannot drift apart, so any preset looks
+     like one family across a whole stream. The default, Soft black, is a see-through
+     black panel with white text. */
   var PRESETS = {
-    /* The default: a soft see-through black panel with white text, matching the
-       other overlays in this set so they look like one family on a stream. The
-       option chips and bars are shades of white and grey, so the options are told
-       apart by letter and by tone. `onAccent` is the text colour that sits on top
-       of the accent, and `row` and `track` are the row and bar-track tints. */
     glass: {
       bg: "rgba(0, 0, 0, 0.55)", text: "#FFFFFF", accent: "#FFFFFF", onAccent: "#111111",
       row: "rgba(255, 255, 255, 0.12)", track: "rgba(255, 255, 255, 0.2)",
       segs: ["#FFFFFF", "#D9D9D9", "#BFBFBF", "#EDEDED", "#A6A6A6", "#CCCCCC", "#F5F5F5", "#B3B3B3"],
       font: "BioRhyme"
     },
+    frost: {
+      bg: "rgba(255, 255, 255, 0.72)", text: "#1B2130", accent: "#1B2130", onAccent: "#FFFFFF",
+      row: "rgba(0, 0, 0, 0.07)", track: "rgba(0, 0, 0, 0.14)",
+      segs: ["#1B2130", "#3A4256", "#5B6478", "#2A3248", "#7A839A", "#454E64", "#1F2840", "#69728A"],
+      font: "BioRhyme"
+    },
+    midnight: {
+      bg: "rgba(10, 18, 46, 0.72)", text: "#E8EEFF", accent: "#7FA8FF", onAccent: "#0A122E",
+      row: "rgba(127, 168, 255, 0.12)", track: "rgba(127, 168, 255, 0.22)",
+      segs: ["#7FA8FF", "#4F77D6", "#A9C4FF", "#3A5BB0", "#C9DAFF", "#6A90E8", "#8FB0FF", "#2B4690"],
+      font: "BioRhyme"
+    },
+    sunset: {
+      bg: "rgba(48, 18, 42, 0.72)", text: "#FFF1E6", accent: "#FF9A5A", onAccent: "#30122A",
+      row: "rgba(255, 154, 90, 0.12)", track: "rgba(255, 154, 90, 0.24)",
+      segs: ["#FF9A5A", "#FF6B8A", "#FFC27A", "#E0508F", "#FFD9A0", "#FF7F6B", "#F4A261", "#C44581"],
+      font: "BioRhyme"
+    },
+    forest: {
+      bg: "rgba(12, 36, 28, 0.72)", text: "#EAF7EE", accent: "#6FD6A0", onAccent: "#0C241C",
+      row: "rgba(111, 214, 160, 0.12)", track: "rgba(111, 214, 160, 0.22)",
+      segs: ["#6FD6A0", "#3FAE7C", "#9BEBC1", "#2E8C62", "#C4F5DA", "#59C48C", "#7FE0AE", "#237052"],
+      font: "BioRhyme"
+    },
+    ocean: {
+      bg: "rgba(6, 36, 50, 0.72)", text: "#E6F8FF", accent: "#4CD3E0", onAccent: "#06242F",
+      row: "rgba(76, 211, 224, 0.12)", track: "rgba(76, 211, 224, 0.22)",
+      segs: ["#4CD3E0", "#2FA4B8", "#8FEAF2", "#1F7F96", "#B8F3F8", "#3DBBCB", "#6BDDE8", "#16647A"],
+      font: "BioRhyme"
+    },
+    rose: {
+      bg: "rgba(58, 14, 34, 0.72)", text: "#FFE9F1", accent: "#FF8FB8", onAccent: "#3A0E22",
+      row: "rgba(255, 143, 184, 0.12)", track: "rgba(255, 143, 184, 0.24)",
+      segs: ["#FF8FB8", "#E0558C", "#FFB3D1", "#C23C74", "#FFD3E3", "#F06FA2", "#FF9DC3", "#A82B62"],
+      font: "BioRhyme"
+    },
+    neon: {
+      bg: "rgba(4, 4, 16, 0.82)", text: "#FFFFFF", accent: "#00F0FF", onAccent: "#040410",
+      row: "rgba(0, 240, 255, 0.10)", track: "rgba(0, 240, 255, 0.2)",
+      segs: ["#00F0FF", "#FF2BD6", "#B6FF00", "#FFB300", "#7A5CFF", "#00FF9C", "#FF4D4D", "#4DA3FF"],
+      font: "BioRhyme"
+    },
     cosycabin: {
-      bg: "#F5ECD6", text: "#57442E", accent: "#7C6142",
+      bg: "#F5ECD6", text: "#57442E", accent: "#7C6142", onAccent: "#F5ECD6",
+      row: "rgba(255, 255, 255, 0.42)", track: "rgba(0, 0, 0, 0.11)",
       segs: ["#CB9265", "#9A7A4E", "#DFBD7B", "#6E5636", "#E2C79B", "#8B6F47", "#B8834F", "#7A5C3A"],
       font: "Chicle"
     },
     pastel: {
-      bg: "#FFF6E9", text: "#6B4F3A", accent: "#FF8A65",
+      bg: "#FFF6E9", text: "#6B4F3A", accent: "#FF8A65", onAccent: "#FFF6E9",
+      row: "rgba(255, 255, 255, 0.42)", track: "rgba(0, 0, 0, 0.11)",
       segs: ["#FF8A65", "#F7B5CA", "#A8E6CF", "#9BD3E3", "#FFD1A9", "#C7B9E8", "#FFE08A", "#F49BA5"],
       font: "Baloo 2"
     },
     celestial: {
-      bg: "#2E1A47", text: "#F3ECFF", accent: "#E8C06B",
+      bg: "#2E1A47", text: "#F3ECFF", accent: "#E8C06B", onAccent: "#2E1A47",
+      row: "rgba(255, 255, 255, 0.12)", track: "rgba(255, 255, 255, 0.18)",
       segs: ["#8E7CC3", "#E8C06B", "#5B4A8A", "#C9B6E4", "#6D5BA6", "#3B2A5E", "#B39DDB", "#D4AF37"],
       font: "Cinzel"
     },
     pastelgoth: {
-      bg: "#3A3340", text: "#F2E9F0", accent: "#C8B6E2",
+      bg: "#3A3340", text: "#F2E9F0", accent: "#C8B6E2", onAccent: "#3A3340",
+      row: "rgba(255, 255, 255, 0.12)", track: "rgba(255, 255, 255, 0.18)",
       segs: ["#C8B6E2", "#D9A7C7", "#A88FC0", "#8E7B9E", "#6E6080", "#B695C8", "#E0BBD4", "#4F4658"],
       font: "Quicksand"
     }
