@@ -74,5 +74,17 @@
     <div id="controls"></div>
   </div>
   <script src="harness.js"></script>
+  <!-- Ko-fi support button. It is part of this local dev page only, not the widget, so it never appears on stream. -->
+  <script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
+  <script>
+    if (window.kofiWidgetOverlay) {
+      kofiWidgetOverlay.draw('journeyingjordan', {
+        'type': 'floating-chat',
+        'floating-chat.donateButton.text': 'Support me',
+        'floating-chat.donateButton.background-color': '#ff38b8',
+        'floating-chat.donateButton.text-color': '#fff'
+      });
+    }
+  </script>
 </body>
 </html>

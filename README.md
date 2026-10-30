@@ -125,7 +125,7 @@ npm run dev
 
 The harness stands in for StreamElements. It can send new subs, resubs, single gifts, gift bombs and cheers, type chat commands as a viewer, moderator or broadcaster, and show what would be saved. The **Every setting** section is generated from `widget/fields.json`, so it offers exactly what StreamElements will, and each sound setting has a **Use a test beep** button.
 
-The harness must be served over http rather than opened as a file. Fonts come from Google Fonts, so an internet connection is needed for the right look.
+The harness must be served over http rather than opened as a file. Fonts come from Google Fonts, so an internet connection is needed for the right look. The local dev page also shows a Ko-fi support button in the corner. That button belongs to the harness only and is not part of the widget, so it never appears on stream.
 
 ## Testing
 
@@ -151,10 +151,27 @@ The widget uses the StreamElements events `onWidgetLoad`, `onEventReceived` with
 
 The JavaScript is deliberately ES5 style so it can be pasted straight into the StreamElements editor.
 
+## Related overlays
+
+These overlays share the same default look, so they sit together on one stream.
+
+- [Spin Wheel Overlay](https://github.com/jordan-lee-code/spin-wheel-overlay): a wheel for giveaways, raffles and forfeits.
+- [Chat Poll Overlay](https://github.com/jordan-lee-code/chat-poll-overlay): quick polls voted on by typing an option.
+- [Squat Tracker Overlay](https://github.com/jordan-lee-code/squat-tracker-overlay): a counter driven by gifted sub bombs.
+- [Rage Bar Overlay](https://github.com/jordan-lee-code/rage-bar-overlay): a bar chat fills with subs, bits and channel points.
+
+## Support
+
+If this saves you time, you can support its development on Ko-fi:
+
+[![Support on Ko-fi](https://img.shields.io/badge/Ko--fi-Support%20me-ff38b8?logo=ko-fi&logoColor=white)](https://ko-fi.com/journeyingjordan)
+
+Thank you, it is genuinely appreciated.
+
 ## Contributing
 
 Contributions are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## License
 
-[MIT](LICENSE)
+[MIT](LICENSE). The copyright notice, including the Ko-fi link, must be kept in copies and substantial portions of the code.

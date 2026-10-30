@@ -28,5 +28,6 @@
     "test": "node test/test-widget.js",
     "build": "node build/build-overlay.js",
     "dev": "python3 -m http.server 8000"
-  }
+  },
+  "funding": "https://ko-fi.com/journeyingjordan"
 }

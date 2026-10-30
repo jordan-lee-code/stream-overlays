@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Jordan Lee (https://ko-fi.com/journeyingjordan). Released under the MIT licence: this notice must be kept in copies and substantial portions of the code. See LICENSE. */
 /* Sub Incentives. StreamElements custom widget logic.
  *
  * A rounded, softly transparent black panel that lists the sub goals chat is
