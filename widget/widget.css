@@ -245,6 +245,7 @@
   left: 50%;
   z-index: 7;
   background: var(--c-toast-bg);
+  background-image: var(--flag-img, none);
   color: var(--c-toast);
   font-size: max(8px, calc(20 * var(--u) * var(--toast-scale)));
   font-weight: var(--toast-w);
@@ -289,6 +290,7 @@
   padding: calc(var(--pill-pad-v) * var(--u)) calc(var(--pill-pad-h) * var(--u));
   border-radius: calc(var(--pill-radius) * var(--u));
   background: var(--c-pill-bg);
+  background-image: var(--flag-img, none);
   color: var(--c-pill);
   box-shadow: var(--pill-shadow);
   text-shadow: var(--text-shadow);
@@ -351,6 +353,8 @@
   width: 0%;
   border-radius: 999px;
   background: linear-gradient(90deg, var(--c-goal-from), var(--c-goal-to));
+  background-image: var(--goal-flag, linear-gradient(90deg, var(--c-goal-from), var(--c-goal-to)));
+  box-shadow: var(--flag-edge, none);
   transition: width var(--goal-s) ease;
 }
 
@@ -378,6 +382,7 @@
   padding: calc(var(--card-pad-v) * var(--u)) calc(var(--card-pad-h) * var(--u));
   border-radius: calc(var(--card-radius) * var(--u));
   background: var(--c-card-bg);
+  background-image: var(--flag-img, none);
   color: var(--c-card);
   border: var(--card-border) solid var(--c-border);
   box-shadow: var(--card-shadow);

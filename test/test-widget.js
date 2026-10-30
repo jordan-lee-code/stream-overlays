@@ -502,6 +502,13 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
     ok(S2["--text"] === EXPECT[key].text && S2["--accent"] === EXPECT[key].accent && S2["--bg"] === EXPECT[key].panel && S2["--font"].indexOf('"' + EXPECT[key].font + '"') !== -1,
       key + ": panel, text, accent and font match the shared table (" + S2["--text"] + ", " + S2["--accent"] + ")");
   }
+  console.log("\n[pride flags]");
+  load({ themePreset: "trans" }); await wait(5);
+  const FW = elements["wheel-app"].style;
+  ok(FW["--flag-img"] === "linear-gradient(135deg, #5BCEFA, #F5A9B8, #FFFFFF, #F5A9B8, #5BCEFA)", "the trans preset puts its flag behind the pills, toast and winner card (" + FW["--flag-img"] + ")");
+  ok(FW["--goal-flag"] === "linear-gradient(180deg, #5BCEFA 0% 20%, #F5A9B8 20% 40%, #FFFFFF 40% 60%, #F5A9B8 60% 80%, #5BCEFA 80% 100%)" && FW["--flag-edge"] === "inset 0 0 0 1px rgba(20, 16, 38, 0.38)", "and stripes the goal bar like its flag, outlined so the white stripe keeps its edge");
+  load({ themePreset: "glass" }); await wait(5);
+  ok(FW["--flag-img"] === "none" && FW["--goal-flag"] === "" && FW["--flag-edge"] === "none", "every other preset keeps its plain panels and its two colour goal bar");
   console.log("\n=== " + pass + " passed, " + fail + " failed ===");
   process.exit(fail ? 1 : 0);
 })();

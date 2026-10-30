@@ -107,48 +107,64 @@
       bg: "rgba(194, 168, 154, 0.9)", text: "#1A1426", accent: "#1A1426", pointer: "#1A1426",
       segs: ["#E50000", "#FF8D00", "#FFEE00", "#028121", "#004CFF", "#770088"],
       font: "Fredoka",
+      flag: ["#E50000", "#FF8D00", "#FFEE00", "#028121", "#004CFF", "#770088"],
+      bgimg: "linear-gradient(rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0.45)), linear-gradient(135deg, #E50000, #FF8D00, #FFEE00, #028121, #004CFF, #770088)",
       parts: {"pillBg": "rgba(194, 168, 154, 0.9)", "pill": "#1A1426", "toastBg": "rgba(194, 168, 154, 0.96)", "toast": "#1A1426", "cardBg": "rgba(194, 168, 154, 0.96)", "card": "#1A1426", "eyebrowBg": "#1A1426", "eyebrow": "#FFFFFF", "idle": "#1A1426", "goal": "#1A1426", "goalTrack": "rgba(26, 20, 38, 0.34)", "goalFrom": "#E50000", "goalTo": "#004CFF", "hub": "rgba(194, 168, 154, 0.96)", "hubRing": "#1A1426", "spent": "#B3123A", "refused": "#B3123A", "labelDark": "#111111", "labelLight": "#FFFFFF", "divider": "rgba(255, 255, 255, 0.45)", "border": "transparent"}
     },
     progress: {
       bg: "rgba(194, 168, 154, 0.9)", text: "#1A1426", accent: "#1A1426", pointer: "#1A1426",
       segs: ["#E50000", "#FF8D00", "#FFEE00", "#028121", "#004CFF", "#770088"],
       font: "Fredoka",
+      flag: ["#E50000", "#FF8D00", "#FFEE00", "#028121", "#004CFF", "#770088"],
+      bgimg: "linear-gradient(rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0.45)), linear-gradient(135deg, #E50000, #FF8D00, #FFEE00, #028121, #004CFF, #770088)",
       parts: {"pillBg": "rgba(194, 168, 154, 0.9)", "pill": "#1A1426", "toastBg": "rgba(194, 168, 154, 0.96)", "toast": "#1A1426", "cardBg": "rgba(194, 168, 154, 0.96)", "card": "#1A1426", "eyebrowBg": "#1A1426", "eyebrow": "#FFFFFF", "idle": "#1A1426", "goal": "#1A1426", "goalTrack": "rgba(26, 20, 38, 0.34)", "goalFrom": "#F5A9B8", "goalTo": "#5BCEFA", "hub": "rgba(194, 168, 154, 0.96)", "hubRing": "#1A1426", "spent": "#B3123A", "refused": "#B3123A", "labelDark": "#111111", "labelLight": "#FFFFFF", "divider": "rgba(255, 255, 255, 0.45)", "border": "transparent"}
     },
     trans: {
       bg: "rgba(185, 201, 225, 0.9)", text: "#1A1426", accent: "#1A1426", pointer: "#1A1426",
       segs: ["#5BCEFA", "#F5A9B8", "#FFFFFF", "#5BCEFA", "#F5A9B8", "#FFFFFF"],
       font: "Fredoka",
+      flag: ["#5BCEFA", "#F5A9B8", "#FFFFFF", "#F5A9B8", "#5BCEFA"],
+      bgimg: "linear-gradient(135deg, #5BCEFA, #F5A9B8, #FFFFFF, #F5A9B8, #5BCEFA)",
       parts: {"pillBg": "rgba(185, 201, 225, 0.9)", "pill": "#1A1426", "toastBg": "rgba(185, 201, 225, 0.96)", "toast": "#1A1426", "cardBg": "rgba(185, 201, 225, 0.96)", "card": "#1A1426", "eyebrowBg": "#1A1426", "eyebrow": "#FFFFFF", "idle": "#1A1426", "goal": "#1A1426", "goalTrack": "rgba(26, 20, 38, 0.34)", "goalFrom": "#5BCEFA", "goalTo": "#F5A9B8", "hub": "rgba(185, 201, 225, 0.96)", "hubRing": "#1A1426", "spent": "#B3123A", "refused": "#B3123A", "labelDark": "#111111", "labelLight": "#FFFFFF", "divider": "rgba(255, 255, 255, 0.45)", "border": "transparent"}
     },
     bi: {
       bg: "rgba(117, 39, 142, 0.9)", text: "#FFFFFF", accent: "#FFFFFF", pointer: "#FFFFFF",
       segs: ["#D60270", "#9B4F96", "#0038A8", "#D60270", "#9B4F96", "#0038A8"],
       font: "Fredoka",
+      flag: ["#D60270", "#D60270", "#9B4F96", "#0038A8", "#0038A8"],
+      bgimg: "linear-gradient(135deg, #D60270, #D60270, #9B4F96, #0038A8, #0038A8)",
       parts: {"pillBg": "rgba(117, 39, 142, 0.9)", "pill": "#FFFFFF", "toastBg": "rgba(117, 39, 142, 0.96)", "toast": "#FFFFFF", "cardBg": "rgba(117, 39, 142, 0.96)", "card": "#FFFFFF", "eyebrowBg": "#FFFFFF", "eyebrow": "#1A1426", "idle": "#FFFFFF", "goal": "#FFFFFF", "goalTrack": "rgba(255, 255, 255, 0.24)", "goalFrom": "#D60270", "goalTo": "#0038A8", "hub": "rgba(117, 39, 142, 0.96)", "hubRing": "#FFFFFF", "spent": "#FF6B6B", "refused": "#FF6B6B", "labelDark": "#111111", "labelLight": "#FFFFFF", "divider": "rgba(0, 0, 0, 0.3)", "border": "transparent"}
     },
     pan: {
       bg: "rgba(181, 142, 132, 0.9)", text: "#1A1426", accent: "#1A1426", pointer: "#1A1426",
       segs: ["#FF218C", "#FFD800", "#21B1FF", "#FF218C", "#FFD800", "#21B1FF"],
       font: "Fredoka",
+      flag: ["#FF218C", "#FFD800", "#21B1FF"],
+      bgimg: "linear-gradient(135deg, #FF218C, #FFD800, #21B1FF)",
       parts: {"pillBg": "rgba(181, 142, 132, 0.9)", "pill": "#1A1426", "toastBg": "rgba(181, 142, 132, 0.96)", "toast": "#1A1426", "cardBg": "rgba(181, 142, 132, 0.96)", "card": "#1A1426", "eyebrowBg": "#1A1426", "eyebrow": "#FFFFFF", "idle": "#1A1426", "goal": "#1A1426", "goalTrack": "rgba(26, 20, 38, 0.34)", "goalFrom": "#FF218C", "goalTo": "#21B1FF", "hub": "rgba(181, 142, 132, 0.96)", "hubRing": "#1A1426", "spent": "#B3123A", "refused": "#B3123A", "labelDark": "#111111", "labelLight": "#FFFFFF", "divider": "rgba(255, 255, 255, 0.45)", "border": "transparent"}
     },
     enby: {
       bg: "rgba(212, 202, 192, 0.9)", text: "#1A1426", accent: "#2D2D2D", pointer: "#2D2D2D",
       segs: ["#FFF433", "#FFFFFF", "#9B59D0", "#2D2D2D", "#FFF433", "#FFFFFF"],
       font: "Fredoka",
+      flag: ["#FFF433", "#FFFFFF", "#9B59D0", "#2D2D2D"],
+      bgimg: "linear-gradient(rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0.45)), linear-gradient(135deg, #FFF433, #FFFFFF, #9B59D0, #2D2D2D)",
       parts: {"pillBg": "rgba(212, 202, 192, 0.9)", "pill": "#1A1426", "toastBg": "rgba(212, 202, 192, 0.96)", "toast": "#1A1426", "cardBg": "rgba(212, 202, 192, 0.96)", "card": "#1A1426", "eyebrowBg": "#2D2D2D", "eyebrow": "#FFFFFF", "idle": "#1A1426", "goal": "#1A1426", "goalTrack": "rgba(26, 20, 38, 0.34)", "goalFrom": "#FFF433", "goalTo": "#9B59D0", "hub": "rgba(212, 202, 192, 0.96)", "hubRing": "#2D2D2D", "spent": "#B3123A", "refused": "#B3123A", "labelDark": "#111111", "labelLight": "#FFFFFF", "divider": "rgba(255, 255, 255, 0.45)", "border": "transparent"}
     },
     lesbian: {
       bg: "rgba(232, 167, 169, 0.9)", text: "#1A1426", accent: "#1A1426", pointer: "#1A1426",
       segs: ["#D52D00", "#EF7627", "#FF9A56", "#FFFFFF", "#D162A4", "#B55690"],
       font: "Fredoka",
+      flag: ["#D52D00", "#EF7627", "#FF9A56", "#FFFFFF", "#D162A4", "#B55690", "#A30262"],
+      bgimg: "linear-gradient(rgba(255, 255, 255, 0.40), rgba(255, 255, 255, 0.40)), linear-gradient(135deg, #D52D00, #EF7627, #FF9A56, #FFFFFF, #D162A4, #B55690, #A30262)",
       parts: {"pillBg": "rgba(232, 167, 169, 0.9)", "pill": "#1A1426", "toastBg": "rgba(232, 167, 169, 0.96)", "toast": "#1A1426", "cardBg": "rgba(232, 167, 169, 0.96)", "card": "#1A1426", "eyebrowBg": "#1A1426", "eyebrow": "#FFFFFF", "idle": "#1A1426", "goal": "#1A1426", "goalTrack": "rgba(26, 20, 38, 0.34)", "goalFrom": "#D52D00", "goalTo": "#A30262", "hub": "rgba(232, 167, 169, 0.96)", "hubRing": "#1A1426", "spent": "#B3123A", "refused": "#B3123A", "labelDark": "#111111", "labelLight": "#FFFFFF", "divider": "rgba(255, 255, 255, 0.45)", "border": "transparent"}
     },
     ace: {
       bg: "rgba(202, 187, 202, 0.9)", text: "#1A1426", accent: "#000000", pointer: "#000000",
       segs: ["#A3A3A3", "#FFFFFF", "#800080", "#000000", "#A3A3A3", "#FFFFFF"],
       font: "Fredoka",
+      flag: ["#000000", "#A3A3A3", "#FFFFFF", "#800080"],
+      bgimg: "linear-gradient(rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0.55)), linear-gradient(135deg, #000000, #A3A3A3, #FFFFFF, #800080)",
       parts: {"pillBg": "rgba(202, 187, 202, 0.9)", "pill": "#1A1426", "toastBg": "rgba(202, 187, 202, 0.96)", "toast": "#1A1426", "cardBg": "rgba(202, 187, 202, 0.96)", "card": "#1A1426", "eyebrowBg": "#000000", "eyebrow": "#FFFFFF", "idle": "#1A1426", "goal": "#1A1426", "goalTrack": "rgba(26, 20, 38, 0.34)", "goalFrom": "#A3A3A3", "goalTo": "#800080", "hub": "rgba(202, 187, 202, 0.96)", "hubRing": "#000000", "spent": "#B3123A", "refused": "#B3123A", "labelDark": "#111111", "labelLight": "#FFFFFF", "divider": "rgba(255, 255, 255, 0.45)", "border": "transparent"}
     }
   };
@@ -403,7 +419,7 @@
     Object.keys(over).forEach(function (k) { parts[k] = over[k]; });
     return {
       bg: p.bg, text: p.text, accent: p.accent, pointer: p.pointer,
-      segs: p.segs.slice(), font: p.font, parts: parts
+      segs: p.segs.slice(), font: p.font, parts: parts, bgimg: p.bgimg || "", flag: p.flag || null
     };
   }
 
@@ -422,6 +438,13 @@
   }
   if (typeof document !== "undefined" && document.fonts && typeof document.fonts.addEventListener === "function") {
     document.fonts.addEventListener("loadingdone", onFontsReady);
+  }
+
+  // A flag is a list of stripes, top to bottom. A bar can wear it as horizontal bands.
+  function flagGradient(stripes) {
+    var n = stripes.length, parts = [];
+    for (var i = 0; i < n; i++) parts.push(stripes[i] + " " + (i * 100 / n) + "% " + ((i + 1) * 100 / n) + "%");
+    return "linear-gradient(180deg, " + parts.join(", ") + ")";
   }
 
   function applyTheme() {
@@ -444,6 +467,10 @@
     set("--c-eyebrow-bg", P.eyebrowBg); set("--c-eyebrow", P.eyebrow);
     set("--c-idle", P.idle); set("--c-goal", P.goal); set("--c-goal-track", P.goalTrack);
     set("--c-goal-from", P.goalFrom); set("--c-goal-to", P.goalTo);
+    // A flag preset puts its flag behind the pills, the toast and the winner card, and stripes the goal bar.
+    set("--flag-img", t.bgimg || "none");
+    set("--goal-flag", t.flag ? flagGradient(t.flag) : "");
+    set("--flag-edge", t.flag ? "inset 0 0 0 1px rgba(20, 16, 38, 0.38)" : "none");
     set("--c-life-bg", P.pillBg); set("--c-life", P.pill);
     set("--c-spent", P.spent); set("--c-refused", P.refused);
     set("--c-hub", P.hub); set("--c-hub-ring", P.hubRing); set("--c-border", P.border);
