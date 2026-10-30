@@ -15,7 +15,7 @@ It is a single self-contained widget in plain JavaScript, with no dependencies a
 - Hard to miss: the border pulses while a reminder is showing, and a sound can play again every few seconds until you deal with it.
 - Waiting reminders: optionally show what is coming, with a countdown.
 - Moderator control: the streamer, and by default moderators, can set and clear them. Viewers cannot.
-- Customisable: around 50 settings cover the wording, sizes, shape, outline, colours, fonts, sounds and animation.
+- Customisable: around 40 settings cover the wording, sizes, shape, outline, colours, fonts, sounds and animation.
 - Saved: reminders, waiting and showing, survive a browser-source refresh.
 - Tests and a dev harness: a local harness with a time machine and an automated test script, so a reminder fifteen minutes away can be tried in a click.
 
