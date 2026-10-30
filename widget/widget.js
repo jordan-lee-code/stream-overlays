@@ -109,52 +109,60 @@
       font: "Almendra"
     },
     pride: {
-      bg: "rgba(20, 16, 34, 0.8)", text: "#FFFFFF", accent: "#FFEE00", onAccent: "#141022",
-      row: "rgba(255, 255, 255, 0.12)", track: "rgba(255, 255, 255, 0.2)",
+      bg: "rgba(194, 168, 154, 0.9)", text: "#1A1426", accent: "#1A1426", onAccent: "#FFFFFF",
+      row: "rgba(0, 0, 0, 0.08)", track: "rgba(26, 20, 38, 0.34)",
       segs: ["#E50000", "#FF8D00", "#FFEE00", "#028121", "#004CFF", "#770088", "#E50000", "#FF8D00"],
-      font: "Fredoka"
+      font: "Fredoka",
+      bgimg: "linear-gradient(rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0.45)), linear-gradient(135deg, #E50000, #FF8D00, #FFEE00, #028121, #004CFF, #770088)"
     },
     progress: {
-      bg: "rgba(22, 16, 30, 0.8)", text: "#FFFFFF", accent: "#5BCEFA", onAccent: "#101820",
-      row: "rgba(255, 255, 255, 0.12)", track: "rgba(255, 255, 255, 0.2)",
+      bg: "rgba(194, 168, 154, 0.9)", text: "#1A1426", accent: "#1A1426", onAccent: "#FFFFFF",
+      row: "rgba(0, 0, 0, 0.08)", track: "rgba(26, 20, 38, 0.34)",
       segs: ["#E50000", "#FF8D00", "#FFEE00", "#028121", "#004CFF", "#770088", "#F5A9B8", "#5BCEFA"],
-      font: "Fredoka"
+      font: "Fredoka",
+      bgimg: "linear-gradient(rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0.45)), linear-gradient(135deg, #E50000, #FF8D00, #FFEE00, #028121, #004CFF, #770088)"
     },
     trans: {
-      bg: "rgba(18, 28, 44, 0.82)", text: "#FFFFFF", accent: "#F5A9B8", onAccent: "#14202E",
-      row: "rgba(255, 255, 255, 0.12)", track: "rgba(255, 255, 255, 0.2)",
+      bg: "rgba(185, 201, 225, 0.9)", text: "#1A1426", accent: "#1A1426", onAccent: "#FFFFFF",
+      row: "rgba(0, 0, 0, 0.08)", track: "rgba(26, 20, 38, 0.34)",
       segs: ["#5BCEFA", "#F5A9B8", "#FFFFFF", "#5BCEFA", "#F5A9B8", "#FFFFFF", "#5BCEFA", "#F5A9B8"],
-      font: "Fredoka"
+      font: "Fredoka",
+      bgimg: "linear-gradient(135deg, #5BCEFA, #F5A9B8, #FFFFFF, #F5A9B8, #5BCEFA)"
     },
     bi: {
-      bg: "rgba(30, 14, 36, 0.82)", text: "#FFFFFF", accent: "#E0559F", onAccent: "#1E0E24",
-      row: "rgba(255, 255, 255, 0.12)", track: "rgba(255, 255, 255, 0.2)",
+      bg: "rgba(117, 39, 142, 0.9)", text: "#FFFFFF", accent: "#FFFFFF", onAccent: "#1A1426",
+      row: "rgba(255, 255, 255, 0.14)", track: "rgba(255, 255, 255, 0.24)",
       segs: ["#D60270", "#9B4F96", "#0038A8", "#D60270", "#9B4F96", "#0038A8", "#D60270", "#9B4F96"],
-      font: "Fredoka"
+      font: "Fredoka",
+      bgimg: "linear-gradient(135deg, #D60270, #D60270, #9B4F96, #0038A8, #0038A8)"
     },
     pan: {
-      bg: "rgba(24, 20, 40, 0.82)", text: "#FFFFFF", accent: "#FFD800", onAccent: "#181428",
-      row: "rgba(255, 255, 255, 0.12)", track: "rgba(255, 255, 255, 0.2)",
+      bg: "rgba(181, 142, 132, 0.9)", text: "#1A1426", accent: "#1A1426", onAccent: "#FFFFFF",
+      row: "rgba(0, 0, 0, 0.08)", track: "rgba(26, 20, 38, 0.34)",
       segs: ["#FF218C", "#FFD800", "#21B1FF", "#FF218C", "#FFD800", "#21B1FF", "#FF218C", "#FFD800"],
-      font: "Fredoka"
+      font: "Fredoka",
+      bgimg: "linear-gradient(135deg, #FF218C, #FFD800, #21B1FF)"
     },
     enby: {
-      bg: "rgba(24, 24, 28, 0.86)", text: "#FFFFFF", accent: "#FFF433", onAccent: "#181818",
-      row: "rgba(255, 255, 255, 0.12)", track: "rgba(255, 255, 255, 0.2)",
+      bg: "rgba(212, 202, 192, 0.9)", text: "#1A1426", accent: "#2D2D2D", onAccent: "#FFFFFF",
+      row: "rgba(0, 0, 0, 0.08)", track: "rgba(26, 20, 38, 0.34)",
       segs: ["#FFF433", "#FFFFFF", "#9B59D0", "#2D2D2D", "#FFF433", "#FFFFFF", "#9B59D0", "#2D2D2D"],
-      font: "Fredoka"
+      font: "Fredoka",
+      bgimg: "linear-gradient(rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0.45)), linear-gradient(135deg, #FFF433, #FFFFFF, #9B59D0, #2D2D2D)"
     },
     lesbian: {
-      bg: "rgba(40, 16, 20, 0.82)", text: "#FFFFFF", accent: "#FF9A56", onAccent: "#2A1014",
-      row: "rgba(255, 255, 255, 0.12)", track: "rgba(255, 255, 255, 0.2)",
+      bg: "rgba(232, 167, 169, 0.9)", text: "#1A1426", accent: "#1A1426", onAccent: "#FFFFFF",
+      row: "rgba(0, 0, 0, 0.08)", track: "rgba(26, 20, 38, 0.34)",
       segs: ["#D52D00", "#EF7627", "#FF9A56", "#FFFFFF", "#D162A4", "#B55690", "#A30262", "#EF7627"],
-      font: "Fredoka"
+      font: "Fredoka",
+      bgimg: "linear-gradient(rgba(255, 255, 255, 0.40), rgba(255, 255, 255, 0.40)), linear-gradient(135deg, #D52D00, #EF7627, #FF9A56, #FFFFFF, #D162A4, #B55690, #A30262)"
     },
     ace: {
-      bg: "rgba(16, 16, 22, 0.86)", text: "#F1F1F1", accent: "#B075C9", onAccent: "#101016",
-      row: "rgba(255, 255, 255, 0.12)", track: "rgba(255, 255, 255, 0.2)",
+      bg: "rgba(202, 187, 202, 0.9)", text: "#1A1426", accent: "#000000", onAccent: "#FFFFFF",
+      row: "rgba(0, 0, 0, 0.08)", track: "rgba(26, 20, 38, 0.34)",
       segs: ["#A3A3A3", "#FFFFFF", "#800080", "#000000", "#A3A3A3", "#FFFFFF", "#800080", "#000000"],
-      font: "Fredoka"
+      font: "Fredoka",
+      bgimg: "linear-gradient(rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0.55)), linear-gradient(135deg, #000000, #A3A3A3, #FFFFFF, #800080)"
     }
   };
   var BASE = PRESETS.glass;
@@ -333,7 +341,7 @@
     return {
       bg: p.bg, text: p.text, accent: p.accent, onAccent: p.onAccent || p.bg,
       row: p.row || "rgba(255, 255, 255, 0.42)", track: p.track || "rgba(0, 0, 0, 0.11)",
-      segs: p.segs, font: p.font
+      segs: p.segs, font: p.font, bgimg: p.bgimg || ""
     };
   }
 
@@ -342,6 +350,7 @@
     var root = el.app;
     if (!root) return;
     root.style.setProperty("--bg", t.bg);
+    root.style.setProperty("--bg-img", t.bgimg || "none");
     root.style.setProperty("--text", t.text);
     root.style.setProperty("--accent", t.accent);
     root.style.setProperty("--font", '"' + t.font + '", "Baloo 2", "Segoe UI", sans-serif');

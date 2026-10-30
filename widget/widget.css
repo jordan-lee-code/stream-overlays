@@ -124,6 +124,7 @@
   gap: calc(var(--gap) * 1em);
   padding: calc(var(--pad-v) * 1em) calc(var(--pad-h) * 1em) calc(var(--pad-v) * 0.8em);
   background: var(--bg);
+  background-image: var(--bg-img, none);
   border: calc(var(--border-w) * 1em) solid var(--c-border);
   border-radius: calc(var(--radius) * 1em);
   box-shadow: var(--shadow);
