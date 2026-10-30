@@ -1764,6 +1764,14 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   await load({ offNote: "napping" });
   chat("!baroff", { mod: true });
   ok(note() === "napping", "the switched-off line (" + note() + ")");
+  await load({ offNote: "" });
+  chat("!baroff", { mod: true });
+  ok(note() === "", "a blank switched-off line stays blank (" + JSON.stringify(note()) + ")");
+  await load({ secondsSuffix: "" });
+  button("btnFillBar");
+  ok(/^\d+$/.test(timerText()), "a blank countdown suffix leaves just the number (" + timerText() + ")");
+  await load({ currencySymbol: "" });
+  ok(note().indexOf("\u00a3") === -1 && /\d+\.\d\d/.test(note()), "a blank currency symbol means none (" + note() + ")");
   await load({ secondsSuffix: " secs" });
   button("btnFillBar");
   ok(/^\d+ secs$/.test(timerText()), "the save countdown suffix (" + timerText() + ")");

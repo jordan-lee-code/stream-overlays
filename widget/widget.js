@@ -147,6 +147,11 @@
   function str(v, dflt) {
     return (v === undefined || v === null || v === "") ? dflt : String(v);
   }
+  // For wording where an empty field is a real choice. StreamElements sends "" for a cleared
+  // field, which str() would turn back into the default.
+  function txt(v, dflt) {
+    return (v === undefined || v === null) ? dflt : String(v);
+  }
   function clamp(v, lo, hi) {
     return v < lo ? lo : (v > hi ? hi : v);
   }
@@ -193,7 +198,7 @@
       // Direct donations, in whatever currency the channel takes them in. This is
       // how much counts as one tier 1 sub's worth, so twenty of them, or fifty, fill the first bar.
       tipPerSub: Math.max(0.01, num(f.tipPerSub, 2.5)),
-      currencySymbol: str(f.currencySymbol, "£"),
+      currencySymbol: txt(f.currencySymbol, "£"),
       fillRewardTitle: title(f.fillRewardTitle),
       pushBackRewardTitle: title(f.pushBackRewardTitle),
       // Zero switches the reward off. It grows with the bar, like the cost of a save.
@@ -316,13 +321,13 @@
       },
       words: {
         sub: str(f.subWord, "sub"), subs: str(f.subsWord, "subs"), bits: str(f.bitsWord, "bits"),
-        toGo: str(f.toGoText, "to go"), toBreak: str(f.toBreakText, "to break"), toSave: str(f.toSaveText, "to save"),
-        off: str(f.offNote, "switched off"), endedBy: str(f.endedByText, "ended by {who}"),
+        toGo: txt(f.toGoText, "to go"), toBreak: txt(f.toBreakText, "to break"), toSave: txt(f.toSaveText, "to save"),
+        off: txt(f.offNote, "switched off"), endedBy: str(f.endedByText, "ended by {who}"),
         redeem: str(f.redeemWord, "redeem"), redeems: str(f.redeemsWord, "redeems"), points: str(f.pointsWord, "points"),
-        seconds: str(f.secondsSuffix, "s"),
+        seconds: txt(f.secondsSuffix, "s"),
         readoutBar: str(f.readoutBarText, "{n} / {total}"), readoutRedeems: str(f.readoutRedeemsText, "{n} / {total} redeems"),
         readoutPoints: str(f.readoutPointsText, "{n} / {total} points"),
-        banked: str(f.bankedText, "banked"),
+        banked: txt(f.bankedText, "banked"),
         lockBrokenBy: str(f.lockBrokenByText, "LOCK BROKEN BY {who}"), lockBroken: str(f.lockBrokenText, "LOCK BROKEN"),
         lockedBy: str(f.lockedByText, "LOCKED BY {who}"), locked: str(f.lockedText, "LOCKED"),
         savedBy: str(f.savedByText, "SAVED BY {who}"), saved: str(f.savedText, "SAVED")
