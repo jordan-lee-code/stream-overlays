@@ -115,15 +115,15 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
 
   // B. permissions
   console.log("\n[permissions]");
-  elements["winner-name"].textContent = "—";
+  elements["winner-name"].textContent = "\u2014";
   chat("!spin", { nick: "Nobody" });
   await wait(20);
-  ok(winnerName() === "—", "non-mod !spin ignored");
+  ok(winnerName() === "\u2014", "non-mod !spin ignored");
 
   // C. spin + removeWinner
   console.log("\n[spin + removeWinner]");
   chat("!spin", { broadcaster: true });
-  await wait(40); ok(winnerName() && winnerName() !== "—", "winner revealed: " + winnerName());
+  await wait(40); ok(winnerName() && winnerName() !== "\u2014", "winner revealed: " + winnerName());
   await wait(850); ok(entryCount() === "2 entries", "winner removed after reveal (" + entryCount() + ")");
 
   // D. mod controls
@@ -162,18 +162,18 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   console.log("\n[goal auto-spin: sub]");
   load({ enableAutoSpin: true, triggerType: "sub" }); await wait(5);
   chat("!spintowin", { nick: "Ada" }); chat("!spintowin", { nick: "Bea" });
-  elements["winner-name"].textContent = "—";
+  elements["winner-name"].textContent = "\u2014";
   event("subscriber-latest", 1);
-  await wait(40); ok(winnerName() && winnerName() !== "—", "new sub auto-spun: " + winnerName());
+  await wait(40); ok(winnerName() && winnerName() !== "\u2014", "new sub auto-spun: " + winnerName());
   await wait(850);
 
   // I. bits goal threshold
   console.log("\n[goal auto-spin: bits threshold]");
   load({ enableAutoSpin: true, triggerType: "bits", threshold: 500 }); await wait(5);
   chat("!spintowin", { nick: "Cleo" });
-  elements["winner-name"].textContent = "—";
-  event("cheer-latest", 200); await wait(20); ok(winnerName() === "—", "200 bits below 500, no spin");
-  event("cheer-latest", 400); await wait(40); ok(winnerName() !== "—", "crossing bits threshold spun: " + winnerName());
+  elements["winner-name"].textContent = "\u2014";
+  event("cheer-latest", 200); await wait(20); ok(winnerName() === "\u2014", "200 bits below 500, no spin");
+  event("cheer-latest", 400); await wait(40); ok(winnerName() !== "\u2014", "crossing bits threshold spun: " + winnerName());
   await wait(850);
 
   // J. persistence across reload
@@ -190,7 +190,7 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   load(); await wait(5);
   chat("!spinadd GenerousViewer, Marigold, Sunny, Pebble, Clover", { broadcaster: true });
   chat("!spin 3", { broadcaster: true });
-  await wait(40); ok(winnerName() && winnerName() !== "—", "draw 1: " + winnerName());
+  await wait(40); ok(winnerName() && winnerName() !== "\u2014", "draw 1: " + winnerName());
   await wait(2700); ok(entryCount() === "2 entries", "three distinct winners removed (" + entryCount() + ")");
 
   // L. recent-winner cooldown
@@ -208,7 +208,7 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   chat("!spin", { broadcaster: true }); await wait(40); await wait(850);
   ok(entryCount() === "2 entries", "one winner removed before reroll");
   chat("!spinreroll", { broadcaster: true });
-  await wait(40); ok(winnerName() && winnerName() !== "—", "reroll drew again: " + winnerName());
+  await wait(40); ok(winnerName() && winnerName() !== "\u2014", "reroll drew again: " + winnerName());
   await wait(850); ok(entryCount() === "2 entries", "reroll restored then removed (" + entryCount() + ")");
 
   // N. lastwinner re-show
@@ -216,7 +216,7 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   load(); await wait(5);
   chat("!spinadd Fern, Gorse", { broadcaster: true });
   chat("!spin", { broadcaster: true }); await wait(40); const champ = winnerName(); await wait(850);
-  elements["winner-name"].textContent = "—";
+  elements["winner-name"].textContent = "\u2014";
   chat("!spinlastwinner", { mod: true });
   ok(winnerName() === champ, "last winner re-shown: " + winnerName());
   await wait(850);
@@ -290,8 +290,8 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   console.log("\n[forfeit auto-spin: cumulative bits]");
   load({ defaultMode: "forfeits", enableAutoSpin: true, triggerType: "bits", threshold: 100, triggerCount: "cumulative", forfeitCrossOff: false }); await wait(5);
   chat("!spinforfeitadd Alpha, Beta, Gamma", { broadcaster: true });
-  elements["winner-name"].textContent = "—";
-  event("cheer-latest", 50); await wait(20); ok(winnerName() === "—", "50 bits below threshold, no spin");
+  elements["winner-name"].textContent = "\u2014";
+  event("cheer-latest", 50); await wait(20); ok(winnerName() === "\u2014", "50 bits below threshold, no spin");
   event("cheer-latest", 60); await wait(40); ok(["Alpha", "Beta", "Gamma"].indexOf(winnerName()) >= 0, "bits threshold spun a forfeit: " + winnerName());
   await wait(850); ok(entryCount() === "3 forfeits", "cross-off off keeps forfeits (" + entryCount() + ")");
 
@@ -299,9 +299,9 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   console.log("\n[forfeit auto-spin: each donation]");
   load({ defaultMode: "forfeits", enableAutoSpin: true, triggerType: "tips", threshold: 5, triggerCount: "each" }); await wait(5);
   chat("!spinforfeitadd Alpha, Beta, Gamma", { broadcaster: true });
-  elements["winner-name"].textContent = "—";
-  event("tip-latest", 3); await wait(20); ok(winnerName() === "—", "donation below threshold, no spin");
-  event("tip-latest", 5); await wait(40); ok(winnerName() !== "—", "qualifying donation spun: " + winnerName());
+  elements["winner-name"].textContent = "\u2014";
+  event("tip-latest", 3); await wait(20); ok(winnerName() === "\u2014", "donation below threshold, no spin");
+  event("tip-latest", 5); await wait(40); ok(winnerName() !== "\u2014", "qualifying donation spun: " + winnerName());
   await wait(850);
 
   // V. entry toast
