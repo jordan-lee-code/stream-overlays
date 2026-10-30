@@ -28,7 +28,7 @@ Anything about the goals themselves (how subs are counted, the panel, the comman
 4. When you add a clock setting, add it to `src/fields.json` with a `tm` prefix and a "Clock: " group, and read it in `src/clock.js`.
 5. Add or update tests in `test/`, and make sure `npm test` passes.
 6. If behaviour changes, update the README.
-7. The twelve style presets are shared by every overlay in this set, with identical colours, so they look cohesive on one stream. If you change a palette, make the same change in the other overlays and regenerate the gallery in `docs/presets.png`.
+7. The fourteen style presets are shared by every overlay in this set, with identical colours, so they look cohesive on one stream. If you change a palette, make the same change in the other overlays and regenerate the gallery in `docs/presets.png`.
 
 ## Reporting a bug
 

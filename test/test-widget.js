@@ -427,6 +427,12 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   button("tmResume"); fake += 60000; await reload(); await settled();
   ok(other() === "Elapsed 00:02:30" || other() === "Elapsed 00:02:31", "and a refresh while running counts the gap too (" + other() + ")");
 
+  console.log("\n[blanking the wording]");
+  await load({ tmTitle: "" }); ok(E("subathon-title").hidden, "a blank title hides the title instead of bringing the default back");
+  await load({ tmStart: "1m", tmEndedText: "" }); button("tmResume"); await advance(61000); ok(has("ended") && status() === "", "a blank time's up text shows nothing, though the clock still ends (" + status() + ")");
+  await load({ tmStart: "10:00:00", tmShowOther: true, tmElapsedLabel: "" }); ok(other() === "00:00:00", "a blank elapsed label leaves just the time (" + other() + ")");
+  await load({ tmStart: "10:00:00", tmShowDay: true, tmDayLabel: "", tmDayMode: "manual" }); ok(/^1\b/.test(status()), "a blank day word leaves just the number (" + status() + ")");
+
   console.log("\n[saving]");
   await load({ tmStart: "10:00:00" });
   button("tmResume"); sub({ amount: 1 }); await advance(30000);
@@ -457,7 +463,7 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
 
   console.log("\n[style presets, shared with the other overlays]");
   const opts = fields.themePreset.options, keys = Object.keys(opts);
-  ok(keys.length === Object.keys(expectedPresets).length + 1 && keys[keys.length - 1] === "custom", "the dropdown has the twelve shared presets and Custom (" + keys.length + ")");
+  ok(keys.length === Object.keys(expectedPresets).length + 1 && keys[keys.length - 1] === "custom", "the dropdown has the fourteen shared presets and Custom (" + keys.length + ")");
   ok(fields.themePreset.value === "glass", "Soft black is the default");
   let allMatch = true;
   for (const key of Object.keys(expectedPresets)) {

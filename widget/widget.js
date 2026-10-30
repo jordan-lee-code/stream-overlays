@@ -63,6 +63,12 @@
     return (v === undefined || v === null || v === "") ? dflt : String(v);
   }
 
+  // For wording where an empty field is a real choice. StreamElements sends "" for a cleared
+  // field, which str() would turn back into the default.
+  function txt(v, dflt) {
+    return (v === undefined || v === null) ? dflt : String(v);
+  }
+
   function clamp(n, lo, hi) { return Math.min(hi, Math.max(lo, n)); }
   // A command word is a single lower-case token, so "Add" and " add " both work.
   function word(v, dflt) { return str(v, dflt).toLowerCase().trim().split(/\s+/)[0]; }
@@ -106,9 +112,9 @@
       showTotal: bool(f.showTotal, true),
       unitSingular: str(f.unitSingular, "sub"),
       unitPlural: str(f.unitPlural, "subs"),
-      unlockedText: str(f.unlockedText, "Unlocked!"),
-      doneText: str(f.doneText, "- unlocked"),
-      pausedText: str(f.pausedText, "(paused)"),
+      unlockedText: txt(f.unlockedText, "Unlocked!"),
+      doneText: txt(f.doneText, "- unlocked"),
+      pausedText: txt(f.pausedText, "(paused)"),
 
       look: {
         panel: str(f.colorPanel, "#000000"),
@@ -153,7 +159,7 @@
         fillSeconds: clamp(num(f.fillSeconds, 0.9), 0, 10)
       },
       showThanks: bool(f.showThanks, true),
-      thanksText: str(f.thanksText, "Thank you for your generosity! <3"),
+      thanksText: txt(f.thanksText, "Thank you for your generosity! <3"),
       thanksBar: bool(f.thanksBar, false),
       sounds: {
         enabled: bool(f.soundsEnabled, true),
@@ -203,7 +209,7 @@
 
   var ALIGN = { top: "flex-start", middle: "center", bottom: "flex-end" };
 
-  /* Style presets. The same twelve, with the same colours, in every overlay in this
+  /* Style presets. The same fourteen, with the same colours, in every overlay in this
      set, generated from one table so they cannot drift apart, so any preset looks
      like one family across a whole stream. The default, Soft black, is a see-through
      black panel with white text. Custom uses the colour pickers instead. */
@@ -219,7 +225,9 @@
     cosycabin: { panel: "#F5ECD6", text: "#57442E", accent: "#7C6142", track: "rgba(0, 0, 0, 0.11)", glow: "#7C6142", font: "Chicle" },
     pastel: { panel: "#FFF6E9", text: "#6B4F3A", accent: "#FF8A65", track: "rgba(0, 0, 0, 0.11)", glow: "#FF8A65", font: "Baloo 2" },
     celestial: { panel: "#2E1A47", text: "#F3ECFF", accent: "#E8C06B", track: "rgba(255, 255, 255, 0.18)", glow: "#E8C06B", font: "Cinzel" },
-    pastelgoth: { panel: "#3A3340", text: "#F2E9F0", accent: "#C8B6E2", track: "rgba(255, 255, 255, 0.18)", glow: "#C8B6E2", font: "Quicksand" }
+    pastelgoth: { panel: "#3A3340", text: "#F2E9F0", accent: "#C8B6E2", track: "rgba(255, 255, 255, 0.18)", glow: "#C8B6E2", font: "Quicksand" },
+    pastelpink: { panel: "#FFE3EC", text: "#6A2E4B", accent: "#D95C8A", track: "rgba(106, 46, 75, 0.14)", glow: "#D95C8A", font: "Fredoka" },
+    faegreen: { panel: "#2C4A36", text: "#EEF5DA", accent: "#C9E265", track: "rgba(238, 245, 218, 0.2)", glow: "#C9E265", font: "Almendra" }
   };
 
   // The colours the panel is actually drawn with: a preset's own, or the pickers'
@@ -1161,7 +1169,9 @@
     cosycabin: { panel: "#F5ECD6", text: "#57442E", accent: "#7C6142", track: "rgba(0, 0, 0, 0.11)", alarm: "#C05746", font: "Chicle" },
     pastel: { panel: "#FFF6E9", text: "#6B4F3A", accent: "#FF8A65", track: "rgba(0, 0, 0, 0.11)", alarm: "#F4587A", font: "Baloo 2" },
     celestial: { panel: "#2E1A47", text: "#F3ECFF", accent: "#E8C06B", track: "rgba(255, 255, 255, 0.18)", alarm: "#B5495B", font: "Cinzel" },
-    pastelgoth: { panel: "#3A3340", text: "#F2E9F0", accent: "#C8B6E2", track: "rgba(255, 255, 255, 0.18)", alarm: "#C96A8E", font: "Quicksand" }
+    pastelgoth: { panel: "#3A3340", text: "#F2E9F0", accent: "#C8B6E2", track: "rgba(255, 255, 255, 0.18)", alarm: "#C96A8E", font: "Quicksand" },
+    pastelpink: { panel: "#FFE3EC", text: "#6A2E4B", accent: "#D95C8A", track: "rgba(106, 46, 75, 0.14)", alarm: "#D6456F", font: "Fredoka" },
+    faegreen: { panel: "#2C4A36", text: "#EEF5DA", accent: "#C9E265", track: "rgba(238, 245, 218, 0.2)", alarm: "#E0805A", font: "Almendra" }
   };
 
   var el = {};
@@ -1177,6 +1187,9 @@
   // ---------------------------------------------------------------------------
   function now() { return Date.now(); }
   function str(v, d) { return (v === undefined || v === null || v === "") ? d : String(v); }
+  // For wording where an empty field is a real choice. StreamElements sends "" for a cleared
+  // field, which str() would turn back into the default.
+  function txt(v, d) { return (v === undefined || v === null) ? d : String(v); }
   function num(v, d) { var n = parseFloat(v); return isNaN(n) ? d : n; }
   function bool(v, d) {
     if (v === undefined || v === null) return d;
@@ -1649,8 +1662,8 @@
 
   function statusLine() {
     var bits = [];
-    if (cfg.showDay) bits.push(cfg.dayLabel + " " + dayNumber());
-    if (state.ended) bits.push(cfg.endedText);
+    if (cfg.showDay) bits.push((cfg.dayLabel ? cfg.dayLabel + " " : "") + dayNumber());
+    if (state.ended) { if (cfg.endedText) bits.push(cfg.endedText); }
     else if (!state.running) bits.push("paused");
     if (state.locked) bits.push("locked");
     if (powerActive()) {
@@ -1679,7 +1692,7 @@
       el.clock.textContent = text;
       lastClockText = text;
     }
-    el.elapsed.textContent = showsElapsed ? cfg.remainingLabel + " " + remainingText : cfg.elapsedLabel + " " + elapsedText;
+    el.elapsed.textContent = showsElapsed ? (cfg.remainingLabel ? cfg.remainingLabel + " " : "") + remainingText : (cfg.elapsedLabel ? cfg.elapsedLabel + " " : "") + elapsedText;
     el.elapsed.hidden = !cfg.showOther;
     el.app.classList.toggle("long", text.length > 8);
     el.app.classList.toggle("warn", !state.ended && cfg.warnMs > 0 && rem <= cfg.warnMs);
@@ -1703,7 +1716,7 @@
       start: str(f.tmStart, "24:00:00"),
       warnMs: durationField(f.tmWarn, 3600000),
       lockAtZero: bool(f.tmLockAtZero, true),
-      endedText: str(f.tmEndedText, "Time's up!"),
+      endedText: txt(f.tmEndedText, "Time's up!"),
       capEnabled: bool(f.tmCapEnabled, false),
       capMs: durationField(f.tmCap, NaN),
       showCap: bool(f.tmShowCap, true),
@@ -1718,15 +1731,15 @@
       powerEvents: Math.max(0, Math.floor(num(f.tmPowerEvents, 0))),
       sleepMult: Math.max(0, num(f.tmSleepMult, 0.5)),
       manual: str(f.tmManual, "10m"),
-      title: str(f.tmTitle, "Subathon"),
+      title: txt(f.tmTitle, "Subathon"),
       showTitle: bool(f.tmShowTitle, true),
       showStatus: bool(f.tmShowStatus, true),
       clockShows: str(f.tmClockShows, "remaining"),
       showOther: bool(f.tmShowOther, false),
-      elapsedLabel: str(f.tmElapsedLabel, "Elapsed"),
-      remainingLabel: str(f.tmRemainingLabel, "Remaining"),
+      elapsedLabel: txt(f.tmElapsedLabel, "Elapsed"),
+      remainingLabel: txt(f.tmRemainingLabel, "Remaining"),
       showDay: bool(f.tmShowDay, false),
-      dayLabel: str(f.tmDayLabel, "Day"),
+      dayLabel: txt(f.tmDayLabel, "Day"),
       dayMode: str(f.tmDayMode, "calendar"),
       dayRollover: Math.max(0, Math.min(23, Math.floor(num(f.tmDayRollover, 4)))),
       showGoals: bool(f.tmShowGoals, true),
