@@ -25,6 +25,10 @@ cd overlays/counter && npm run dev   # an overlay's dev harness, at http://local
 
 The presets are defined once, in [`kit/src/presets.js`](kit/src/presets.js), and every preset has to pass the contrast standards in [`kit/docs/STANDARDS.md`](kit/docs/STANDARDS.md). After changing one, run `node kit/bin/overlay-kit.js sync-presets overlays/<name>` for each overlay, regenerate its picture with `node kit/bin/overlay-kit.js gallery overlays/<name>` (it needs Chromium), and commit. `npm test` fails for an overlay that is out of step.
 
+## Pull requests
+
+Every pull request runs `npm test` on Node 18, 20 and 22, which is the same command you run locally, so a green check means the whole repository still passes. If a check fails, the log shows which overlay and which test, and `node scripts/test-all.js <overlay>` reproduces it on its own. A change to a style preset also needs `npm run check-contrast` to pass, and that is part of `npm test`.
+
 ## Licence
 
 By contributing you agree that your contribution is licensed under the [MIT License](LICENSE).
