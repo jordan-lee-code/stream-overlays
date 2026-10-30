@@ -27,7 +27,7 @@
      later why the bar went backwards. */
   var INSTANCE = Math.random().toString(36).slice(2, 10);
 
-  /* Style presets. The same fourteen, with the same colours, in every overlay in this
+  /* Style presets. The same twenty-two, with the same colours, in every overlay in this
      set, generated from one table so they cannot drift apart, so any preset looks
      like one family across a whole stream. The default, Soft black, is a see-through
      black panel with white text. */
@@ -101,6 +101,46 @@
       bg: "#2C4A36", text: "#EEF5DA", accent: "#C9E265", font: "Almendra",
       fillFrom: "#8FB84E", fillTo: "#D7EE7A", alarm: "#E0805A",
       parts: {"title": "#EEF5DA", "timer": "#EEF5DA", "readout": "#EEF5DA", "note": "#EEF5DA", "border": "#C9E265", "track": "rgba(238, 245, 218, 0.2)", "lock": "#C9E265", "lockHole": "#2C4A36", "float": "#EEF5DA", "floatBg": "#2C4A36", "alert": "#FFFFFF", "alertFill": "#FFFFFF", "alertTrack": "rgba(0, 0, 0, 0.22)"}
+    },
+    pride: {
+      bg: "rgba(20, 16, 34, 0.8)", text: "#FFFFFF", accent: "#FFEE00", font: "Fredoka",
+      fillFrom: "#E50000", fillTo: "#004CFF", alarm: "#FF5C5C",
+      parts: {"title": "#FFFFFF", "timer": "#FFFFFF", "readout": "#FFFFFF", "note": "#FFFFFF", "border": "#FFEE00", "track": "rgba(255, 255, 255, 0.2)", "lock": "#FFEE00", "lockHole": "rgba(20, 16, 34, 0.92)", "float": "#FFFFFF", "floatBg": "rgba(20, 16, 34, 0.92)", "alert": "#FFFFFF", "alertFill": "#FFFFFF", "alertTrack": "rgba(0, 0, 0, 0.22)"}
+    },
+    progress: {
+      bg: "rgba(22, 16, 30, 0.8)", text: "#FFFFFF", accent: "#5BCEFA", font: "Fredoka",
+      fillFrom: "#F5A9B8", fillTo: "#5BCEFA", alarm: "#FF5C5C",
+      parts: {"title": "#FFFFFF", "timer": "#FFFFFF", "readout": "#FFFFFF", "note": "#FFFFFF", "border": "#5BCEFA", "track": "rgba(255, 255, 255, 0.2)", "lock": "#5BCEFA", "lockHole": "rgba(22, 16, 30, 0.92)", "float": "#FFFFFF", "floatBg": "rgba(22, 16, 30, 0.92)", "alert": "#FFFFFF", "alertFill": "#FFFFFF", "alertTrack": "rgba(0, 0, 0, 0.22)"}
+    },
+    trans: {
+      bg: "rgba(18, 28, 44, 0.82)", text: "#FFFFFF", accent: "#F5A9B8", font: "Fredoka",
+      fillFrom: "#5BCEFA", fillTo: "#F5A9B8", alarm: "#FF5C5C",
+      parts: {"title": "#FFFFFF", "timer": "#FFFFFF", "readout": "#FFFFFF", "note": "#FFFFFF", "border": "#F5A9B8", "track": "rgba(255, 255, 255, 0.2)", "lock": "#F5A9B8", "lockHole": "rgba(18, 28, 44, 0.92)", "float": "#FFFFFF", "floatBg": "rgba(18, 28, 44, 0.92)", "alert": "#FFFFFF", "alertFill": "#FFFFFF", "alertTrack": "rgba(0, 0, 0, 0.22)"}
+    },
+    bi: {
+      bg: "rgba(30, 14, 36, 0.82)", text: "#FFFFFF", accent: "#E0559F", font: "Fredoka",
+      fillFrom: "#D60270", fillTo: "#0038A8", alarm: "#FF5C5C",
+      parts: {"title": "#FFFFFF", "timer": "#FFFFFF", "readout": "#FFFFFF", "note": "#FFFFFF", "border": "#E0559F", "track": "rgba(255, 255, 255, 0.2)", "lock": "#E0559F", "lockHole": "rgba(30, 14, 36, 0.92)", "float": "#FFFFFF", "floatBg": "rgba(30, 14, 36, 0.92)", "alert": "#FFFFFF", "alertFill": "#FFFFFF", "alertTrack": "rgba(0, 0, 0, 0.22)"}
+    },
+    pan: {
+      bg: "rgba(24, 20, 40, 0.82)", text: "#FFFFFF", accent: "#FFD800", font: "Fredoka",
+      fillFrom: "#FF218C", fillTo: "#21B1FF", alarm: "#FF5C5C",
+      parts: {"title": "#FFFFFF", "timer": "#FFFFFF", "readout": "#FFFFFF", "note": "#FFFFFF", "border": "#FFD800", "track": "rgba(255, 255, 255, 0.2)", "lock": "#FFD800", "lockHole": "rgba(24, 20, 40, 0.92)", "float": "#FFFFFF", "floatBg": "rgba(24, 20, 40, 0.92)", "alert": "#FFFFFF", "alertFill": "#FFFFFF", "alertTrack": "rgba(0, 0, 0, 0.22)"}
+    },
+    enby: {
+      bg: "rgba(24, 24, 28, 0.86)", text: "#FFFFFF", accent: "#FFF433", font: "Fredoka",
+      fillFrom: "#FFF433", fillTo: "#9B59D0", alarm: "#FF5C5C",
+      parts: {"title": "#FFFFFF", "timer": "#FFFFFF", "readout": "#FFFFFF", "note": "#FFFFFF", "border": "#FFF433", "track": "rgba(255, 255, 255, 0.2)", "lock": "#FFF433", "lockHole": "rgba(24, 24, 28, 0.94)", "float": "#FFFFFF", "floatBg": "rgba(24, 24, 28, 0.94)", "alert": "#FFFFFF", "alertFill": "#FFFFFF", "alertTrack": "rgba(0, 0, 0, 0.22)"}
+    },
+    lesbian: {
+      bg: "rgba(40, 16, 20, 0.82)", text: "#FFFFFF", accent: "#FF9A56", font: "Fredoka",
+      fillFrom: "#D52D00", fillTo: "#A30262", alarm: "#FF5C5C",
+      parts: {"title": "#FFFFFF", "timer": "#FFFFFF", "readout": "#FFFFFF", "note": "#FFFFFF", "border": "#FF9A56", "track": "rgba(255, 255, 255, 0.2)", "lock": "#FF9A56", "lockHole": "rgba(40, 16, 20, 0.92)", "float": "#FFFFFF", "floatBg": "rgba(40, 16, 20, 0.92)", "alert": "#FFFFFF", "alertFill": "#FFFFFF", "alertTrack": "rgba(0, 0, 0, 0.22)"}
+    },
+    ace: {
+      bg: "rgba(16, 16, 22, 0.86)", text: "#F1F1F1", accent: "#B075C9", font: "Fredoka",
+      fillFrom: "#A3A3A3", fillTo: "#800080", alarm: "#FF5C5C",
+      parts: {"title": "#F1F1F1", "timer": "#F1F1F1", "readout": "#F1F1F1", "note": "#F1F1F1", "border": "#B075C9", "track": "rgba(255, 255, 255, 0.2)", "lock": "#B075C9", "lockHole": "rgba(16, 16, 22, 0.94)", "float": "#F1F1F1", "floatBg": "rgba(16, 16, 22, 0.94)", "alert": "#FFFFFF", "alertFill": "#FFFFFF", "alertTrack": "rgba(0, 0, 0, 0.22)"}
     }
   };
   var BASE = PRESETS.glass;
