@@ -21,7 +21,7 @@
     "label": "Midnight blue",
     "panel": "rgba(10, 18, 46, 0.72)",
     "text": "#E8EEFF",
-    "accent": "#7FA8FF",
+    "accent": "#89AFFF",
     "font": "BioRhyme",
     "flag": null,
     "bgimg": null
@@ -57,7 +57,7 @@
     "label": "Rose",
     "panel": "rgba(58, 14, 34, 0.72)",
     "text": "#FFE9F1",
-    "accent": "#FF8FB8",
+    "accent": "#FF98BE",
     "font": "BioRhyme",
     "flag": null,
     "bgimg": null
@@ -84,7 +84,7 @@
     "label": "Cosy summer pastel",
     "panel": "#FFF6E9",
     "text": "#6B4F3A",
-    "accent": "#FF8A65",
+    "accent": "#BF684C",
     "font": "Baloo 2",
     "flag": null,
     "bgimg": null
@@ -111,7 +111,7 @@
     "label": "Pastel pink",
     "panel": "#FFE3EC",
     "text": "#6A2E4B",
-    "accent": "#D95C8A",
+    "accent": "#BF5179",
     "font": "Fredoka",
     "flag": null,
     "bgimg": null
