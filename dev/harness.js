@@ -26,7 +26,27 @@
   var names = ["Alice", "Bea", "Cass", "Dev", "Eli", "Fern", "Gus", "Hana"];
   var n = 0; function who() { return names[n++ % names.length]; }
 
-  function load() { fire("onWidgetLoad", { fieldData: fieldData, channel: { username: "tester" } }); }
+  function load() { fire("onWidgetLoad", { fieldData: fieldData, channel: { username: "tester" } }); syncLook(); }
+
+  // StreamElements takes each setting's starting value from `value` in fields.json, so the
+  // export is fields.json with the current values filled in. A widget that already has saved
+  // settings keeps them, so paste it into a new custom widget.
+  function exportText() {
+    var out = {};
+    Object.keys(fieldDefs).forEach(function (k) {
+      var d = JSON.parse(JSON.stringify(fieldDefs[k]));
+      if (d.type !== "button" && d.type !== "sound-input" && fieldData.hasOwnProperty(k)) d.value = fieldData[k];
+      out[k] = d;
+    });
+    return JSON.stringify(out, null, 2) + "\n";
+  }
+  function syncLook() {
+    var sel = document.getElementById("look-preset");
+    if (sel && fieldData.themePreset !== undefined) sel.value = fieldData.themePreset;
+    var box = document.getElementById("export-text");
+    if (box) box.value = exportText();
+  }
+
 
   function el(tag, attrs, kids) {
     var e = document.createElement(tag);
@@ -41,6 +61,42 @@
     c.innerHTML = "";
     c.appendChild(el("h1", { text: "Subathon Overlay" }));
     c.appendChild(el("p", { "class": "hint", text: "Fire the events StreamElements would send, and watch the clock and goals respond." }));
+
+    c.appendChild(el("h2", { text: "Look and export" }));
+    if (fieldDefs.themePreset) {
+      var row = el("div", { "class": "row" }, [el("label", { text: "Style preset" })]);
+      var sel = el("select", { id: "look-preset" });
+      Object.keys(fieldDefs.themePreset.options).forEach(function (k) { sel.appendChild(el("option", { value: k, text: fieldDefs.themePreset.options[k] })); });
+      sel.addEventListener("change", function () {
+        fieldData.themePreset = sel.value;
+        var host = document.getElementById("all-settings");
+        var open = [];
+        Array.prototype.forEach.call(host.querySelectorAll("details"), function (d) { if (d.open) open.push(d.querySelector("summary").textContent); });
+        host.innerHTML = ""; renderSettings(host);
+        Array.prototype.forEach.call(host.querySelectorAll("details"), function (d) { if (open.indexOf(d.querySelector("summary").textContent) !== -1) d.open = true; });
+        load();
+      });
+      row.appendChild(sel); c.appendChild(row);
+      c.appendChild(el("p", { "class": "hint", text: "The same twelve presets are in every overlay in this set, and one choice styles the clock and the goals together. Custom uses the colour settings below." }));
+    }
+    var msg = el("p", { "class": "hint", id: "export-msg" });
+    c.appendChild(btn("Download fields.json", function () {
+      var a = document.createElement("a");
+      a.href = URL.createObjectURL(new Blob([exportText()], { type: "application/json" }));
+      a.download = "fields.json"; document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      msg.textContent = "Downloaded fields.json.";
+    }));
+    c.appendChild(btn("Copy fields.json", function () {
+      var text = exportText(), box = document.getElementById("export-text");
+      var fallback = function () { box.value = text; box.select(); try { document.execCommand("copy"); msg.textContent = "Copied fields.json."; } catch (e) { msg.textContent = "Select the JSON below and copy it."; } };
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(function () { msg.textContent = "Copied fields.json."; }, fallback); else fallback();
+    }));
+    c.appendChild(el("p", { "class": "hint", text: "Your current settings as a fields.json for StreamElements. Paste it into the Fields tab of a new custom widget and it starts out as you see it here." }));
+    c.appendChild(msg);
+    var det = el("details", {}, [el("summary", { text: "Show the JSON" })]);
+    var ta = el("textarea", { id: "export-text", readonly: "readonly", style: "width:100%;height:110px;font-size:11px" });
+    det.appendChild(ta); c.appendChild(det);
+    syncLook();
 
     c.appendChild(el("h2", { text: "Time machine" }));
     c.appendChild(el("p", { "class": "hint", text: "Skips the clock forward so you do not have to wait. Resume the clock first." }));
@@ -89,6 +145,12 @@
 
     c.appendChild(el("h2", { text: "Every setting" }));
     c.appendChild(el("p", { "class": "hint", text: "Generated from widget/fields.json, so it offers exactly what StreamElements will. Changes apply at once. Buttons act as the editor buttons." }));
+    var settingsHost = el("div", { id: "all-settings" });
+    c.appendChild(settingsHost);
+    renderSettings(settingsHost);
+  }
+
+  function renderSettings(host) {
     var groups = {};
     Object.keys(fieldDefs).forEach(function (k) { var g = fieldDefs[k].group || "Other"; (groups[g] = groups[g] || []).push(k); });
     Object.keys(groups).forEach(function (g) {
@@ -121,7 +183,7 @@
         }
         d.appendChild(row);
       });
-      c.appendChild(d);
+      host.appendChild(d);
     });
   }
 
