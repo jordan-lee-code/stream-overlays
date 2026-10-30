@@ -2,7 +2,7 @@
 
 ## 1.0.0
 
-The first release. It holds what the twelve overlays in this set had been sharing without anywhere to keep it.
+The first release. It holds what the twelve overlays had been sharing without anywhere to keep it, and now lives in the same repository as they do.
 
 - The twenty-two style presets, as one table, with a generator for the shape each overlay's code uses.
 - The eight pride presets, designed from the stripes of their flags, with the weakest scrim that keeps the text readable worked out and not chosen by eye.

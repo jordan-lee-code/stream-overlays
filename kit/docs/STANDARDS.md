@@ -99,11 +99,9 @@ Each overlay has a harness for trying it without going live: it fires the events
 
 ## Releases
 
-Going forward:
-
-- A release is a git tag, and the package version moves with it.
-- Anything people paste into StreamElements gets a line in a changelog, because they decide by that whether to update.
-- An overlay built on another by composition, as the Subathon Overlay is on the Sub Goals Overlay, pins it by tag. This one is already true.
+- The repository has one version, and a release is a git tag on it. Each overlay's `package.json` carries the same version.
+- A change anyone pasting a widget into StreamElements would care about gets a line in the root `CHANGELOG.md`, because they decide by that whether to update.
+- The Subathon is built from the Sub Goals overlay next to it, so a fix to the goals reaches the subathon the next time it is built.
 
 ## Known differences
 
@@ -112,5 +110,4 @@ The standards above came from the newer overlays and then the older ones were br
 - **Older overlays' setting names.** The Sub Goals, Spin Wheel, Chat Poll, Squat Tracker and Rage Bar overlays use their own names for some Custom colours and have groups called Theme or Panel. Renaming a setting would reset the saved settings of anyone using it, so it needs a migration, not a rename.
 - **Command words.** The Spin Wheel, Chat Poll and Rage Bar overlays use a separate word for each action (`!spinopen`, `!voteend`, `!barlock`) and not one word with verbs. Changing it would break people's chat habits.
 - **Helpers.** The older overlays each carry their own copy of the small helper functions. The newer ones share one block, kept as [`shared/common.js`](../shared/common.js).
-- **Releases.** Only the Sub Goals Overlay, which the Subathon Overlay depends on, has tags. The others are still at version 1.0.0 with no changelog.
 - **The wheel's pills** carry the flag as a background but are small, so a flag shows only as colour on them.
