@@ -32,10 +32,10 @@
       parts: {"pillBg": "rgba(255, 255, 255, 0.72)", "pill": "#1B2130", "toastBg": "rgba(255, 255, 255, 0.88)", "toast": "#1B2130", "cardBg": "rgba(255, 255, 255, 0.88)", "card": "#1B2130", "eyebrowBg": "#1B2130", "eyebrow": "#FFFFFF", "idle": "#1B2130", "goal": "#1B2130", "goalTrack": "rgba(0, 0, 0, 0.14)", "goalFrom": "#5B6478", "goalTo": "#1B2130", "hub": "rgba(255, 255, 255, 0.88)", "hubRing": "#1B2130", "spent": "#C0392B", "refused": "#C0392B", "labelDark": "#111111", "labelLight": "#FFFFFF", "divider": "rgba(255, 255, 255, 0.5)", "border": "transparent"}
     },
     midnight: {
-      bg: "rgba(10, 18, 46, 0.72)", text: "#E8EEFF", accent: "#7FA8FF", pointer: "#7FA8FF",
+      bg: "rgba(10, 18, 46, 0.72)", text: "#E8EEFF", accent: "#89AFFF", pointer: "#89AFFF",
       segs: ["#7FA8FF", "#4F77D6", "#A9C4FF", "#3A5BB0", "#C9DAFF", "#6A90E8"],
       font: "BioRhyme",
-      parts: {"pillBg": "rgba(10, 18, 46, 0.72)", "pill": "#E8EEFF", "toastBg": "rgba(10, 18, 46, 0.88)", "toast": "#E8EEFF", "cardBg": "rgba(10, 18, 46, 0.88)", "card": "#E8EEFF", "eyebrowBg": "#7FA8FF", "eyebrow": "#0A122E", "idle": "#E8EEFF", "goal": "#E8EEFF", "goalTrack": "rgba(127, 168, 255, 0.22)", "goalFrom": "#4F77D6", "goalTo": "#A9C4FF", "hub": "rgba(10, 18, 46, 0.88)", "hubRing": "#7FA8FF", "spent": "#FF6B6B", "refused": "#FF6B6B", "labelDark": "#111111", "labelLight": "#FFFFFF", "divider": "rgba(10, 18, 46, 0.35)", "border": "transparent"}
+      parts: {"pillBg": "rgba(10, 18, 46, 0.72)", "pill": "#E8EEFF", "toastBg": "rgba(10, 18, 46, 0.88)", "toast": "#E8EEFF", "cardBg": "rgba(10, 18, 46, 0.88)", "card": "#E8EEFF", "eyebrowBg": "#89AFFF", "eyebrow": "#0A122E", "idle": "#E8EEFF", "goal": "#E8EEFF", "goalTrack": "rgba(127, 168, 255, 0.22)", "goalFrom": "#4F77D6", "goalTo": "#A9C4FF", "hub": "rgba(10, 18, 46, 0.88)", "hubRing": "#89AFFF", "spent": "#FF6B6B", "refused": "#FF6B6B", "labelDark": "#111111", "labelLight": "#FFFFFF", "divider": "rgba(10, 18, 46, 0.35)", "border": "transparent"}
     },
     sunset: {
       bg: "rgba(48, 18, 42, 0.72)", text: "#FFF1E6", accent: "#FF9A5A", pointer: "#FF9A5A",
@@ -56,10 +56,10 @@
       parts: {"pillBg": "rgba(6, 36, 50, 0.72)", "pill": "#E6F8FF", "toastBg": "rgba(6, 36, 50, 0.88)", "toast": "#E6F8FF", "cardBg": "rgba(6, 36, 50, 0.88)", "card": "#E6F8FF", "eyebrowBg": "#4CD3E0", "eyebrow": "#06242F", "idle": "#E6F8FF", "goal": "#E6F8FF", "goalTrack": "rgba(76, 211, 224, 0.22)", "goalFrom": "#2FA4B8", "goalTo": "#8FEAF2", "hub": "rgba(6, 36, 50, 0.88)", "hubRing": "#4CD3E0", "spent": "#FF6B6B", "refused": "#FF6B6B", "labelDark": "#111111", "labelLight": "#FFFFFF", "divider": "rgba(6, 36, 50, 0.35)", "border": "transparent"}
     },
     rose: {
-      bg: "rgba(58, 14, 34, 0.72)", text: "#FFE9F1", accent: "#FF8FB8", pointer: "#FF8FB8",
+      bg: "rgba(58, 14, 34, 0.72)", text: "#FFE9F1", accent: "#FF98BE", pointer: "#FF98BE",
       segs: ["#FF8FB8", "#E0558C", "#FFB3D1", "#C23C74", "#FFD3E3", "#F06FA2"],
       font: "BioRhyme",
-      parts: {"pillBg": "rgba(58, 14, 34, 0.72)", "pill": "#FFE9F1", "toastBg": "rgba(58, 14, 34, 0.88)", "toast": "#FFE9F1", "cardBg": "rgba(58, 14, 34, 0.88)", "card": "#FFE9F1", "eyebrowBg": "#FF8FB8", "eyebrow": "#3A0E22", "idle": "#FFE9F1", "goal": "#FFE9F1", "goalTrack": "rgba(255, 143, 184, 0.24)", "goalFrom": "#E0558C", "goalTo": "#FFB3D1", "hub": "rgba(58, 14, 34, 0.88)", "hubRing": "#FF8FB8", "spent": "#FF4D6D", "refused": "#FF4D6D", "labelDark": "#111111", "labelLight": "#FFFFFF", "divider": "rgba(58, 14, 34, 0.35)", "border": "transparent"}
+      parts: {"pillBg": "rgba(58, 14, 34, 0.72)", "pill": "#FFE9F1", "toastBg": "rgba(58, 14, 34, 0.88)", "toast": "#FFE9F1", "cardBg": "rgba(58, 14, 34, 0.88)", "card": "#FFE9F1", "eyebrowBg": "#FF98BE", "eyebrow": "#3A0E22", "idle": "#FFE9F1", "goal": "#FFE9F1", "goalTrack": "rgba(255, 143, 184, 0.24)", "goalFrom": "#E0558C", "goalTo": "#FFB3D1", "hub": "rgba(58, 14, 34, 0.88)", "hubRing": "#FF98BE", "spent": "#FF4D6D", "refused": "#FF4D6D", "labelDark": "#111111", "labelLight": "#FFFFFF", "divider": "rgba(58, 14, 34, 0.35)", "border": "transparent"}
     },
     neon: {
       bg: "rgba(4, 4, 16, 0.82)", text: "#FFFFFF", accent: "#00F0FF", pointer: "#00F0FF",
@@ -74,10 +74,10 @@
       parts: {"pillBg": "#F5ECD6", "pill": "#57442E", "toastBg": "#F5ECD6", "toast": "#57442E", "cardBg": "#F5ECD6", "card": "#57442E", "eyebrowBg": "#7C6142", "eyebrow": "#F5ECD6", "idle": "#57442E", "goal": "#57442E", "goalTrack": "rgba(0, 0, 0, 0.11)", "goalFrom": "#E2C79B", "goalTo": "#7C6142", "hub": "#F5ECD6", "hubRing": "#7C6142", "spent": "#C05746", "refused": "#C05746", "labelDark": "#3a2a1d", "labelLight": "#ffffff", "divider": "rgba(255, 255, 255, 0.7)", "border": "transparent"}
     },
     pastel: {
-      bg: "#FFF6E9", text: "#6B4F3A", accent: "#FF8A65", pointer: "#FF8A65",
+      bg: "#FFF6E9", text: "#6B4F3A", accent: "#BF684C", pointer: "#BF684C",
       segs: ["#FF8A65", "#F7B5CA", "#A8E6CF", "#9BD3E3", "#FFD1A9", "#C7B9E8"],
       font: "Baloo 2",
-      parts: {"pillBg": "#FFF6E9", "pill": "#6B4F3A", "toastBg": "#FFF6E9", "toast": "#6B4F3A", "cardBg": "#FFF6E9", "card": "#6B4F3A", "eyebrowBg": "#FF8A65", "eyebrow": "#FFF6E9", "idle": "#6B4F3A", "goal": "#6B4F3A", "goalTrack": "rgba(0, 0, 0, 0.11)", "goalFrom": "#FFD1A9", "goalTo": "#FF8A65", "hub": "#FFF6E9", "hubRing": "#FF8A65", "spent": "#F4587A", "refused": "#F4587A", "labelDark": "#3a2a1d", "labelLight": "#FFFFFF", "divider": "rgba(255, 255, 255, 0.7)", "border": "transparent"}
+      parts: {"pillBg": "#FFF6E9", "pill": "#6B4F3A", "toastBg": "#FFF6E9", "toast": "#6B4F3A", "cardBg": "#FFF6E9", "card": "#6B4F3A", "eyebrowBg": "#BF684C", "eyebrow": "#FFF6E9", "idle": "#6B4F3A", "goal": "#6B4F3A", "goalTrack": "rgba(0, 0, 0, 0.11)", "goalFrom": "#FFD1A9", "goalTo": "#FF8A65", "hub": "#FFF6E9", "hubRing": "#BF684C", "spent": "#F4587A", "refused": "#F4587A", "labelDark": "#3a2a1d", "labelLight": "#FFFFFF", "divider": "rgba(255, 255, 255, 0.7)", "border": "transparent"}
     },
     celestial: {
       bg: "#2E1A47", text: "#F3ECFF", accent: "#E8C06B", pointer: "#E8C06B",
@@ -92,10 +92,10 @@
       parts: {"pillBg": "#3A3340", "pill": "#F2E9F0", "toastBg": "#3A3340", "toast": "#F2E9F0", "cardBg": "#3A3340", "card": "#F2E9F0", "eyebrowBg": "#C8B6E2", "eyebrow": "#3A3340", "idle": "#F2E9F0", "goal": "#F2E9F0", "goalTrack": "rgba(255, 255, 255, 0.18)", "goalFrom": "#D9A7C7", "goalTo": "#C8B6E2", "hub": "#3A3340", "hubRing": "#C8B6E2", "spent": "#C96A8E", "refused": "#C96A8E", "labelDark": "#111111", "labelLight": "#FFFFFF", "divider": "rgba(255, 255, 255, 0.35)", "border": "transparent"}
     },
     pastelpink: {
-      bg: "#FFE3EC", text: "#6A2E4B", accent: "#D95C8A", pointer: "#D95C8A",
+      bg: "#FFE3EC", text: "#6A2E4B", accent: "#BF5179", pointer: "#BF5179",
       segs: ["#F7A8C6", "#FFC8DD", "#E0679A", "#FBB1BD", "#D98BB0", "#FFD6E6"],
       font: "Fredoka",
-      parts: {"pillBg": "#FFE3EC", "pill": "#6A2E4B", "toastBg": "#FFE3EC", "toast": "#6A2E4B", "cardBg": "#FFE3EC", "card": "#6A2E4B", "eyebrowBg": "#D95C8A", "eyebrow": "#FFF5F9", "idle": "#6A2E4B", "goal": "#6A2E4B", "goalTrack": "rgba(106, 46, 75, 0.14)", "goalFrom": "#F7A8C6", "goalTo": "#E0679A", "hub": "#FFE3EC", "hubRing": "#D95C8A", "spent": "#D6456F", "refused": "#D6456F", "labelDark": "#4a1d33", "labelLight": "#FFFFFF", "divider": "rgba(255, 255, 255, 0.75)", "border": "transparent"}
+      parts: {"pillBg": "#FFE3EC", "pill": "#6A2E4B", "toastBg": "#FFE3EC", "toast": "#6A2E4B", "cardBg": "#FFE3EC", "card": "#6A2E4B", "eyebrowBg": "#BF5179", "eyebrow": "#FFF5F9", "idle": "#6A2E4B", "goal": "#6A2E4B", "goalTrack": "rgba(106, 46, 75, 0.14)", "goalFrom": "#F7A8C6", "goalTo": "#E0679A", "hub": "#FFE3EC", "hubRing": "#BF5179", "spent": "#D6456F", "refused": "#D6456F", "labelDark": "#4a1d33", "labelLight": "#FFFFFF", "divider": "rgba(255, 255, 255, 0.75)", "border": "transparent"}
     },
     faegreen: {
       bg: "#2C4A36", text: "#EEF5DA", accent: "#C9E265", pointer: "#C9E265",
