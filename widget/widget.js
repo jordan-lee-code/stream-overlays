@@ -15,11 +15,16 @@
     cosycabin: { panel: "#F5ECD6", text: "#57442E", accent: "#7C6142", track: "rgba(0, 0, 0, 0.11)", alarm: "#C05746", font: "Chicle" },
     pastel: { panel: "#FFF6E9", text: "#6B4F3A", accent: "#FF8A65", track: "rgba(0, 0, 0, 0.11)", alarm: "#F4587A", font: "Baloo 2" },
     celestial: { panel: "#2E1A47", text: "#F3ECFF", accent: "#E8C06B", track: "rgba(255, 255, 255, 0.18)", alarm: "#B5495B", font: "Cinzel" },
-    pastelgoth: { panel: "#3A3340", text: "#F2E9F0", accent: "#C8B6E2", track: "rgba(255, 255, 255, 0.18)", alarm: "#C96A8E", font: "Quicksand" }
+    pastelgoth: { panel: "#3A3340", text: "#F2E9F0", accent: "#C8B6E2", track: "rgba(255, 255, 255, 0.18)", alarm: "#C96A8E", font: "Quicksand" },
+    pastelpink: { panel: "#FFE3EC", text: "#6A2E4B", accent: "#D95C8A", track: "rgba(106, 46, 75, 0.14)", alarm: "#D6456F", font: "Fredoka" },
+    faegreen: { panel: "#2C4A36", text: "#EEF5DA", accent: "#C9E265", track: "rgba(238, 245, 218, 0.2)", alarm: "#E0805A", font: "Almendra" }
   };
 
   // ---- shared by every overlay in this set ----
   function str(v, d) { return (v === undefined || v === null || v === "") ? d : String(v); }
+  // For wording where an empty field is a real choice (no tag, no currency symbol, no title).
+  // StreamElements sends "" for a cleared field, which str() would turn back into the default.
+  function txt(v, d) { return (v === undefined || v === null) ? d : String(v); }
   function num(v, d) { var n = parseFloat(v); return isNaN(n) ? d : n; }
   function bool(v, d) {
     if (v === undefined || v === null) return d;
@@ -54,7 +59,7 @@
     return {
       command: str(f.command, d.command || "!command"),
       whoCanManage: str(f.whoCanManage, "mods"),
-      title: str(f.title, d.title || ""),
+      title: txt(f.title, d.title || ""),
       showTitle: bool(f.showTitle, true),
       themePreset: str(f.themePreset, "glass"),
       colorPanel: str(f.colorPanel, "#000000"),
@@ -159,9 +164,9 @@
     c.levels = clamp(Math.floor(num(f.levels, 5)), 1, 12);
     c.base = Math.max(1, num(f.basePoints, 100));
     c.growth = Math.max(1, num(f.growth, 1.5));
-    c.names = String(str(f.levelNames, "Warming up, Heating up, Hyped, On fire, Legendary")).split(",").map(function (s) { return s.replace(/^\s+|\s+$/g, ""); });
+    c.names = String(txt(f.levelNames, "Warming up, Heating up, Hyped, On fire, Legendary")).split(",").map(function (s) { return s.replace(/^\s+|\s+$/g, ""); });
     c.levelWord = str(f.levelWord, "Level");
-    c.maxText = str(f.maxText, "MAX");
+    c.maxText = txt(f.maxText, "MAX");
     c.canDrop = bool(f.canDropLevel, false);
     c.pMessage = Math.max(0, num(f.pointsMessage, 1));
     c.cooldownMs = Math.max(0, num(f.userCooldown, 10)) * 1000;
@@ -178,7 +183,7 @@
     c.showPoints = bool(f.showPoints, true);
     c.showPips = bool(f.showPips, true);
     c.showLevelNumber = bool(f.showLevelNumber, true);
-    c.bannerText = str(f.bannerText, "Level up: {name}");
+    c.bannerText = txt(f.bannerText, "Level up: {name}");
     c.bannerMs = Math.max(1, num(f.bannerSeconds, 5)) * 1000;
     c.textSize = Math.max(2, num(f.textSize, 7));
     c.titleScale = Math.max(0.5, num(f.titleScale, 1));
@@ -313,6 +318,7 @@
     return s;
   }
   function showBanner() {
+    if (!cfg.bannerText) return;
     el.banner.textContent = cfg.bannerText.split("{name}").join(nameOf(state.level));
     el.banner.hidden = false;
     if (el.app.classList) { el.app.classList.remove("levelup"); void el.app.offsetWidth; el.app.classList.add("levelup"); }

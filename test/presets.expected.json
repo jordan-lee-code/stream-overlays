@@ -82,5 +82,19 @@
     "text": "#F2E9F0",
     "accent": "#C8B6E2",
     "font": "Quicksand"
+  },
+  "pastelpink": {
+    "label": "Pastel pink",
+    "panel": "#FFE3EC",
+    "text": "#6A2E4B",
+    "accent": "#D95C8A",
+    "font": "Fredoka"
+  },
+  "faegreen": {
+    "label": "Fae green",
+    "panel": "#2C4A36",
+    "text": "#EEF5DA",
+    "accent": "#C9E265",
+    "font": "Almendra"
   }
 }

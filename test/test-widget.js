@@ -134,6 +134,11 @@ const pipsOn = () => E("hy-pips").children.filter(p => p.className.indexOf("on")
   audioLog.length = 0; button("test_soundLevel"); ok(audioLog.length === 1, "the Test buttons play");
   await load({ soundLevel: "data:audio/wav;base64,AA", mute: true }); audioLog.length = 0; boss("!hype add 100"); ok(audioLog.length === 0, "mute silences everything");
 
+  section("blanking the wording");
+  await load({ bannerText: "" }); boss("!hype add 100"); ok(level() === "Heating up" && E("hy-banner").hidden, "a blank banner text means no banner, and the level-up still happens");
+  await load({ levels: 1, maxText: "" }); boss("!hype add 500"); ok(pts() === "", "a blank top text shows nothing");
+  await load({ levelNames: "" }); ok(level() === "Level 1", "blank level names fall back to the level word, not the default names (" + level() + ")");
+
   section("every setting is wired up");
   env.checkWired();
   env.checkNotice();

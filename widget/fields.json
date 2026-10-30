@@ -287,7 +287,7 @@
   },
   "themePreset": {
     "type": "dropdown",
-    "label": "Style preset (the same twelve are in every overlay in this set)",
+    "label": "Style preset (the same fourteen are in every overlay in this set)",
     "value": "glass",
     "options": {
       "glass": "Soft black (default)",
@@ -302,6 +302,8 @@
       "pastel": "Cosy summer pastel",
       "celestial": "Celestial",
       "pastelgoth": "Pastel goth",
+      "pastelpink": "Pastel pink",
+      "faegreen": "Fae green",
       "custom": "Custom (use the colours below)"
     },
     "group": "Look"
