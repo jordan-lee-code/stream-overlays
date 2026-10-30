@@ -1,0 +1,440 @@
+{
+  "command": {
+    "type": "text",
+    "label": "Command word",
+    "value": "!count",
+    "group": "Commands"
+  },
+  "whoCanManage": {
+    "type": "dropdown",
+    "label": "Who can use it",
+    "value": "mods",
+    "options": {
+      "broadcaster": "Broadcaster only",
+      "mods": "Broadcaster + moderators"
+    },
+    "group": "Commands"
+  },
+  "startCount": {
+    "type": "number",
+    "label": "Starting value (used the first time, and on Reset)",
+    "value": 0,
+    "step": 1,
+    "group": "Counter"
+  },
+  "step": {
+    "type": "number",
+    "label": "Amount for a bare !count + or !count -",
+    "value": 1,
+    "min": 1,
+    "max": 1000,
+    "step": 1,
+    "group": "Counter"
+  },
+  "allowNegative": {
+    "type": "checkbox",
+    "label": "Allow the count to go below zero",
+    "value": false,
+    "group": "Counter"
+  },
+  "maxCount": {
+    "type": "number",
+    "label": "Highest value (0 for no limit)",
+    "value": 0,
+    "min": 0,
+    "step": 1,
+    "group": "Counter"
+  },
+  "goal": {
+    "type": "number",
+    "label": "Goal (0 for none)",
+    "value": 0,
+    "min": 0,
+    "step": 1,
+    "group": "Counter"
+  },
+  "goalText": {
+    "type": "text",
+    "label": "Text when the goal is reached",
+    "value": "Goal reached!",
+    "group": "Counter"
+  },
+  "showGoal": {
+    "type": "checkbox",
+    "label": "Show the goal under the number",
+    "value": true,
+    "group": "Counter"
+  },
+  "showBar": {
+    "type": "checkbox",
+    "label": "Show a progress bar towards the goal",
+    "value": true,
+    "group": "Counter"
+  },
+  "milestoneEvery": {
+    "type": "number",
+    "label": "Celebrate every this many (0 for never)",
+    "value": 0,
+    "min": 0,
+    "step": 1,
+    "group": "Counter"
+  },
+  "milestoneText": {
+    "type": "text",
+    "label": "Milestone text",
+    "value": "Milestone!",
+    "group": "Counter"
+  },
+  "milestoneSeconds": {
+    "type": "number",
+    "label": "Seconds the milestone text stays",
+    "value": 4,
+    "min": 1,
+    "max": 60,
+    "step": 1,
+    "group": "Counter"
+  },
+  "lockedText": {
+    "type": "text",
+    "label": "Text shown while locked",
+    "value": "locked",
+    "group": "Counter"
+  },
+  "prefix": {
+    "type": "text",
+    "label": "Text before the number",
+    "value": "",
+    "group": "Number"
+  },
+  "suffix": {
+    "type": "text",
+    "label": "Text after the number",
+    "value": "",
+    "group": "Number"
+  },
+  "digits": {
+    "type": "number",
+    "label": "Pad with zeros to this many digits (0 for none)",
+    "value": 0,
+    "min": 0,
+    "max": 10,
+    "step": 1,
+    "group": "Number"
+  },
+  "layout": {
+    "type": "dropdown",
+    "label": "Layout",
+    "value": "stacked",
+    "options": {
+      "stacked": "Title above the number",
+      "inline": "Title beside the number"
+    },
+    "group": "Number"
+  },
+  "numberSize": {
+    "type": "number",
+    "label": "Number size (percent of the box width)",
+    "value": 22,
+    "min": 4,
+    "max": 60,
+    "step": 0.5,
+    "group": "Number"
+  },
+  "titleScale": {
+    "type": "number",
+    "label": "Title size (share of the number size)",
+    "value": 0.28,
+    "min": 0.1,
+    "max": 1,
+    "step": 0.02,
+    "group": "Number"
+  },
+  "goalScale": {
+    "type": "number",
+    "label": "Goal and note size (share of the number size)",
+    "value": 0.22,
+    "min": 0.08,
+    "max": 0.8,
+    "step": 0.01,
+    "group": "Number"
+  },
+  "flash": {
+    "type": "checkbox",
+    "label": "Show a +1 chip when the number changes",
+    "value": true,
+    "group": "Number"
+  },
+  "flashSeconds": {
+    "type": "number",
+    "label": "Seconds the chip stays",
+    "value": 1.5,
+    "min": 0.5,
+    "max": 10,
+    "step": 0.5,
+    "group": "Number"
+  },
+  "btnPlus": {
+    "type": "button",
+    "label": "Add one step",
+    "group": "Manual controls"
+  },
+  "btnMinus": {
+    "type": "button",
+    "label": "Subtract one step",
+    "group": "Manual controls"
+  },
+  "btnUndo": {
+    "type": "button",
+    "label": "Undo the last change",
+    "group": "Manual controls"
+  },
+  "btnReset": {
+    "type": "button",
+    "label": "Reset to the starting value",
+    "group": "Manual controls"
+  },
+  "btnLock": {
+    "type": "button",
+    "label": "Lock",
+    "group": "Manual controls"
+  },
+  "btnUnlock": {
+    "type": "button",
+    "label": "Unlock",
+    "group": "Manual controls"
+  },
+  "title": {
+    "type": "text",
+    "label": "Title",
+    "value": "Deaths",
+    "group": "Look"
+  },
+  "showTitle": {
+    "type": "checkbox",
+    "label": "Show the title",
+    "value": true,
+    "group": "Look"
+  },
+  "themePreset": {
+    "type": "dropdown",
+    "label": "Style preset (the same twenty-two are in every overlay in this set)",
+    "value": "glass",
+    "options": {
+      "glass": "Soft black (default)",
+      "frost": "Soft white",
+      "midnight": "Midnight blue",
+      "sunset": "Sunset",
+      "forest": "Forest",
+      "ocean": "Ocean",
+      "rose": "Rose",
+      "neon": "Neon",
+      "cosycabin": "Cosy cabin",
+      "pastel": "Cosy summer pastel",
+      "celestial": "Celestial",
+      "pastelgoth": "Pastel goth",
+      "pastelpink": "Pastel pink",
+      "faegreen": "Fae green",
+      "pride": "Rainbow pride",
+      "progress": "Progress pride",
+      "trans": "Trans pride",
+      "bi": "Bi pride",
+      "pan": "Pan pride",
+      "enby": "Non-binary pride",
+      "lesbian": "Lesbian pride",
+      "ace": "Ace pride",
+      "custom": "Custom (use the colours below)"
+    },
+    "group": "Look"
+  },
+  "fontFamily": {
+    "type": "googleFont",
+    "label": "Font (used when the style preset is Custom)",
+    "value": "BioRhyme",
+    "group": "Look"
+  },
+  "weight": {
+    "type": "number",
+    "label": "Boldness (100 to 900)",
+    "value": 800,
+    "min": 100,
+    "max": 900,
+    "step": 100,
+    "group": "Look"
+  },
+  "radius": {
+    "type": "number",
+    "label": "Corner roundness, in pixels",
+    "value": 24,
+    "min": 0,
+    "max": 100,
+    "step": 1,
+    "group": "Look"
+  },
+  "pad": {
+    "type": "number",
+    "label": "Padding above and below",
+    "value": 0.5,
+    "min": 0,
+    "max": 3,
+    "step": 0.05,
+    "group": "Look"
+  },
+  "borderWidth": {
+    "type": "number",
+    "label": "Outline width, in pixels",
+    "value": 0,
+    "min": 0,
+    "max": 20,
+    "step": 1,
+    "group": "Look"
+  },
+  "borderColor": {
+    "type": "colorpicker",
+    "label": "Outline colour",
+    "value": "#FFFFFF",
+    "group": "Look"
+  },
+  "shadow": {
+    "type": "checkbox",
+    "label": "Shadow",
+    "value": false,
+    "group": "Look"
+  },
+  "animate": {
+    "type": "checkbox",
+    "label": "Animate",
+    "value": true,
+    "group": "Look"
+  },
+  "colorPanel": {
+    "type": "colorpicker",
+    "label": "Panel colour (used when the style preset is Custom)",
+    "value": "#000000",
+    "group": "Custom colours"
+  },
+  "panelOpacity": {
+    "type": "number",
+    "label": "Panel opacity, 0 to 1 (used when the style preset is Custom)",
+    "value": 0.55,
+    "min": 0,
+    "max": 1,
+    "step": 0.05,
+    "group": "Custom colours"
+  },
+  "cText": {
+    "type": "colorpicker",
+    "label": "Text (used when the style preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Custom colours"
+  },
+  "cAccent": {
+    "type": "colorpicker",
+    "label": "Accent (used when the style preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Custom colours"
+  },
+  "cTrack": {
+    "type": "colorpicker",
+    "label": "Bars and chips (used when the style preset is Custom)",
+    "value": "#444444",
+    "group": "Custom colours"
+  },
+  "cWarn": {
+    "type": "colorpicker",
+    "label": "Alert colour (used when the style preset is Custom)",
+    "value": "#D64545",
+    "group": "Custom colours"
+  },
+  "soundUp": {
+    "type": "sound-input",
+    "label": "The number goes up",
+    "value": "",
+    "group": "Sounds"
+  },
+  "soundUpVol": {
+    "type": "number",
+    "label": "Volume for that sound (0 to 100)",
+    "value": 60,
+    "min": 0,
+    "max": 100,
+    "step": 5,
+    "group": "Sounds"
+  },
+  "test_soundUp": {
+    "type": "button",
+    "label": "Test it",
+    "group": "Sounds"
+  },
+  "soundDown": {
+    "type": "sound-input",
+    "label": "The number goes down",
+    "value": "",
+    "group": "Sounds"
+  },
+  "soundDownVol": {
+    "type": "number",
+    "label": "Volume for that sound (0 to 100)",
+    "value": 60,
+    "min": 0,
+    "max": 100,
+    "step": 5,
+    "group": "Sounds"
+  },
+  "test_soundDown": {
+    "type": "button",
+    "label": "Test it",
+    "group": "Sounds"
+  },
+  "soundMilestone": {
+    "type": "sound-input",
+    "label": "A milestone is reached",
+    "value": "",
+    "group": "Sounds"
+  },
+  "soundMilestoneVol": {
+    "type": "number",
+    "label": "Volume for that sound (0 to 100)",
+    "value": 80,
+    "min": 0,
+    "max": 100,
+    "step": 5,
+    "group": "Sounds"
+  },
+  "test_soundMilestone": {
+    "type": "button",
+    "label": "Test it",
+    "group": "Sounds"
+  },
+  "soundGoal": {
+    "type": "sound-input",
+    "label": "The goal is reached",
+    "value": "",
+    "group": "Sounds"
+  },
+  "soundGoalVol": {
+    "type": "number",
+    "label": "Volume for that sound (0 to 100)",
+    "value": 80,
+    "min": 0,
+    "max": 100,
+    "step": 5,
+    "group": "Sounds"
+  },
+  "test_soundGoal": {
+    "type": "button",
+    "label": "Test it",
+    "group": "Sounds"
+  },
+  "mute": {
+    "type": "checkbox",
+    "label": "Mute every sound",
+    "value": false,
+    "group": "Sounds"
+  },
+  "debug": {
+    "type": "checkbox",
+    "label": "Log every event to the browser-source console",
+    "value": false,
+    "group": "Troubleshooting"
+  }
+}
