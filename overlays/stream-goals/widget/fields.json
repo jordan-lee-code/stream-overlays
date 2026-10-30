@@ -1,0 +1,428 @@
+{
+  "command": {
+    "type": "text",
+    "label": "Command word",
+    "value": "!goals",
+    "group": "Commands"
+  },
+  "whoCanManage": {
+    "type": "dropdown",
+    "label": "Who can use it",
+    "value": "mods",
+    "options": {
+      "broadcaster": "Broadcaster only",
+      "mods": "Broadcaster + moderators"
+    },
+    "group": "Commands"
+  },
+  "resetMode": {
+    "type": "dropdown",
+    "label": "When the goals start again",
+    "value": "gap",
+    "options": {
+      "gap": "Automatically for a new stream (after a quiet gap)",
+      "manual": "Only when I reset them",
+      "load": "Every time the widget loads"
+    },
+    "group": "Resetting"
+  },
+  "gapHours": {
+    "type": "number",
+    "label": "Hours of quiet that mean a new stream",
+    "value": 6,
+    "min": 1,
+    "max": 72,
+    "step": 0.5,
+    "group": "Resetting"
+  },
+  "showSubs": {
+    "type": "checkbox",
+    "label": "Show the sub goal",
+    "value": true,
+    "group": "Subs goal"
+  },
+  "labelSubs": {
+    "type": "text",
+    "label": "Label",
+    "value": "Sub goal",
+    "group": "Subs goal"
+  },
+  "targetSubs": {
+    "type": "number",
+    "label": "Goal",
+    "value": 50,
+    "min": 1,
+    "step": 1,
+    "group": "Subs goal"
+  },
+  "raiseSubs": {
+    "type": "number",
+    "label": "When it is reached, raise the goal by this much (0 to stop at the goal)",
+    "value": 25,
+    "min": 0,
+    "step": 1,
+    "group": "Subs goal"
+  },
+  "showBits": {
+    "type": "checkbox",
+    "label": "Show the bits goal",
+    "value": true,
+    "group": "Bits goal"
+  },
+  "labelBits": {
+    "type": "text",
+    "label": "Label",
+    "value": "Bits goal",
+    "group": "Bits goal"
+  },
+  "targetBits": {
+    "type": "number",
+    "label": "Goal",
+    "value": 5000,
+    "min": 1,
+    "step": 1,
+    "group": "Bits goal"
+  },
+  "raiseBits": {
+    "type": "number",
+    "label": "When it is reached, raise the goal by this much (0 to stop at the goal)",
+    "value": 2500,
+    "min": 0,
+    "step": 1,
+    "group": "Bits goal"
+  },
+  "showTips": {
+    "type": "checkbox",
+    "label": "Show the tip goal",
+    "value": false,
+    "group": "Tips goal"
+  },
+  "labelTips": {
+    "type": "text",
+    "label": "Label",
+    "value": "Tip goal",
+    "group": "Tips goal"
+  },
+  "targetTips": {
+    "type": "number",
+    "label": "Goal",
+    "value": 50,
+    "min": 1,
+    "step": 1,
+    "group": "Tips goal"
+  },
+  "raiseTips": {
+    "type": "number",
+    "label": "When it is reached, raise the goal by this much (0 to stop at the goal)",
+    "value": 0,
+    "min": 0,
+    "step": 1,
+    "group": "Tips goal"
+  },
+  "showFollows": {
+    "type": "checkbox",
+    "label": "Show the follow goal",
+    "value": false,
+    "group": "Follows goal"
+  },
+  "labelFollows": {
+    "type": "text",
+    "label": "Label",
+    "value": "Follow goal",
+    "group": "Follows goal"
+  },
+  "targetFollows": {
+    "type": "number",
+    "label": "Goal",
+    "value": 100,
+    "min": 1,
+    "step": 1,
+    "group": "Follows goal"
+  },
+  "raiseFollows": {
+    "type": "number",
+    "label": "When it is reached, raise the goal by this much (0 to stop at the goal)",
+    "value": 50,
+    "min": 0,
+    "step": 1,
+    "group": "Follows goal"
+  },
+  "subPoints": {
+    "type": "checkbox",
+    "label": "Count Twitch sub points (tier 2 is 2, tier 3 is 6) instead of one per sub",
+    "value": false,
+    "group": "Counting"
+  },
+  "format": {
+    "type": "text",
+    "label": "How a count reads ({n} and {target})",
+    "value": "{n} / {target}",
+    "group": "Counting"
+  },
+  "currency": {
+    "type": "text",
+    "label": "Currency symbol for tips",
+    "value": "£",
+    "group": "Counting"
+  },
+  "reachedText": {
+    "type": "text",
+    "label": "Text when a goal is reached",
+    "value": "Goal reached!",
+    "group": "Counting"
+  },
+  "raiseDelay": {
+    "type": "number",
+    "label": "Seconds a reached goal shows before it is raised",
+    "value": 6,
+    "min": 1,
+    "max": 120,
+    "step": 1,
+    "group": "Counting"
+  },
+  "textSize": {
+    "type": "number",
+    "label": "Text size (percent of the box width)",
+    "value": 5.5,
+    "min": 2,
+    "max": 20,
+    "step": 0.25,
+    "group": "Sizes"
+  },
+  "titleScale": {
+    "type": "number",
+    "label": "Title size (share of the text size)",
+    "value": 1.2,
+    "min": 0.5,
+    "max": 3,
+    "step": 0.05,
+    "group": "Sizes"
+  },
+  "barHeight": {
+    "type": "number",
+    "label": "Bar thickness (share of the text size)",
+    "value": 0.55,
+    "min": 0.2,
+    "max": 2,
+    "step": 0.05,
+    "group": "Sizes"
+  },
+  "rowGap": {
+    "type": "number",
+    "label": "Space between goals",
+    "value": 0.7,
+    "min": 0,
+    "max": 3,
+    "step": 0.05,
+    "group": "Sizes"
+  },
+  "btnReset": {
+    "type": "button",
+    "label": "Start every goal again",
+    "group": "Manual controls"
+  },
+  "btnPause": {
+    "type": "button",
+    "label": "Pause counting",
+    "group": "Manual controls"
+  },
+  "btnResume": {
+    "type": "button",
+    "label": "Resume counting",
+    "group": "Manual controls"
+  },
+  "title": {
+    "type": "text",
+    "label": "Title",
+    "value": "Stream goals",
+    "group": "Look"
+  },
+  "showTitle": {
+    "type": "checkbox",
+    "label": "Show the title",
+    "value": true,
+    "group": "Look"
+  },
+  "themePreset": {
+    "type": "dropdown",
+    "label": "Style preset (the same twenty-two are in every overlay in this set)",
+    "value": "glass",
+    "options": {
+      "glass": "Soft black (default)",
+      "frost": "Soft white",
+      "midnight": "Midnight blue",
+      "sunset": "Sunset",
+      "forest": "Forest",
+      "ocean": "Ocean",
+      "rose": "Rose",
+      "neon": "Neon",
+      "cosycabin": "Cosy cabin",
+      "pastel": "Cosy summer pastel",
+      "celestial": "Celestial",
+      "pastelgoth": "Pastel goth",
+      "pastelpink": "Pastel pink",
+      "faegreen": "Fae green",
+      "pride": "Rainbow pride",
+      "progress": "Progress pride",
+      "trans": "Trans pride",
+      "bi": "Bi pride",
+      "pan": "Pan pride",
+      "enby": "Non-binary pride",
+      "lesbian": "Lesbian pride",
+      "ace": "Ace pride",
+      "custom": "Custom (use the colours below)"
+    },
+    "group": "Look"
+  },
+  "fontFamily": {
+    "type": "googleFont",
+    "label": "Font (used when the style preset is Custom)",
+    "value": "BioRhyme",
+    "group": "Look"
+  },
+  "weight": {
+    "type": "number",
+    "label": "Boldness (100 to 900)",
+    "value": 800,
+    "min": 100,
+    "max": 900,
+    "step": 100,
+    "group": "Look"
+  },
+  "radius": {
+    "type": "number",
+    "label": "Corner roundness, in pixels",
+    "value": 24,
+    "min": 0,
+    "max": 100,
+    "step": 1,
+    "group": "Look"
+  },
+  "pad": {
+    "type": "number",
+    "label": "Padding above and below",
+    "value": 0.5,
+    "min": 0,
+    "max": 3,
+    "step": 0.05,
+    "group": "Look"
+  },
+  "borderWidth": {
+    "type": "number",
+    "label": "Outline width, in pixels",
+    "value": 0,
+    "min": 0,
+    "max": 20,
+    "step": 1,
+    "group": "Look"
+  },
+  "borderColor": {
+    "type": "colorpicker",
+    "label": "Outline colour",
+    "value": "#FFFFFF",
+    "group": "Look"
+  },
+  "shadow": {
+    "type": "checkbox",
+    "label": "Shadow",
+    "value": false,
+    "group": "Look"
+  },
+  "animate": {
+    "type": "checkbox",
+    "label": "Animate",
+    "value": true,
+    "group": "Look"
+  },
+  "colorPanel": {
+    "type": "colorpicker",
+    "label": "Panel colour (used when the style preset is Custom)",
+    "value": "#000000",
+    "group": "Custom colours"
+  },
+  "panelOpacity": {
+    "type": "number",
+    "label": "Panel opacity, 0 to 1 (used when the style preset is Custom)",
+    "value": 0.55,
+    "min": 0,
+    "max": 1,
+    "step": 0.05,
+    "group": "Custom colours"
+  },
+  "cText": {
+    "type": "colorpicker",
+    "label": "Text (used when the style preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Custom colours"
+  },
+  "cAccent": {
+    "type": "colorpicker",
+    "label": "Accent (used when the style preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Custom colours"
+  },
+  "cTrack": {
+    "type": "colorpicker",
+    "label": "Bars and chips (used when the style preset is Custom)",
+    "value": "#444444",
+    "group": "Custom colours"
+  },
+  "cWarn": {
+    "type": "colorpicker",
+    "label": "Alert colour (used when the style preset is Custom)",
+    "value": "#D64545",
+    "group": "Custom colours"
+  },
+  "soundProgress": {
+    "type": "sound-input",
+    "label": "Progress is made",
+    "value": "",
+    "group": "Sounds"
+  },
+  "soundProgressVol": {
+    "type": "number",
+    "label": "Volume for that sound (0 to 100)",
+    "value": 50,
+    "min": 0,
+    "max": 100,
+    "step": 5,
+    "group": "Sounds"
+  },
+  "test_soundProgress": {
+    "type": "button",
+    "label": "Test it",
+    "group": "Sounds"
+  },
+  "soundReached": {
+    "type": "sound-input",
+    "label": "A goal is reached",
+    "value": "",
+    "group": "Sounds"
+  },
+  "soundReachedVol": {
+    "type": "number",
+    "label": "Volume for that sound (0 to 100)",
+    "value": 80,
+    "min": 0,
+    "max": 100,
+    "step": 5,
+    "group": "Sounds"
+  },
+  "test_soundReached": {
+    "type": "button",
+    "label": "Test it",
+    "group": "Sounds"
+  },
+  "mute": {
+    "type": "checkbox",
+    "label": "Mute every sound",
+    "value": false,
+    "group": "Sounds"
+  },
+  "debug": {
+    "type": "checkbox",
+    "label": "Log every event to the browser-source console",
+    "value": false,
+    "group": "Troubleshooting"
+  }
+}

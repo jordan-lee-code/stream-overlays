@@ -1,0 +1,87 @@
+/* Copyright (c) 2026 Jordan Lee (https://ko-fi.com/journeyingjordan). Released under the MIT licence: this notice must be kept in copies and substantial portions of the code. See LICENSE. */
+/* Every value below is a custom property that widget.js sets from the editor fields, so
+   the defaults can be restyled from the settings panel without touching this file. */
+
+#sg-root {
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  /* The width reference for the cqw sizes below. A container's own cqw units resolve
+     against its parent, so the card cannot be the container itself. */
+  container-type: inline-size;
+  -webkit-font-smoothing: antialiased;
+}
+#sg-root * { box-sizing: border-box; }
+#sg-root [hidden] { display: none !important; }
+
+/* The Animate field: when it is off, nothing moves or eases. */
+#sg-root.no-motion,
+#sg-root.no-motion * {
+  animation: none !important;
+  transition: none !important;
+}
+
+#sg-app {
+  --w-bg: rgba(0, 0, 0, 0.55);
+  --w-text: #FFFFFF;
+  --w-accent: #FFFFFF;
+  --w-track: #444444;
+  --w-alarm: #D64545;
+  --w-font: "BioRhyme", Georgia, serif;
+  --w-radius: 24px;
+  --w-pad: 0.5;
+  --w-weight: 800;
+  --w-border: 0 solid #FFFFFF;
+  --w-shadow: none;
+
+  flex: 0 0 auto;
+  width: 100%;
+  padding: calc(var(--w-pad) * 1em) 3cqw;
+  font-family: var(--w-font);
+  color: var(--w-text);
+  background: var(--w-bg);
+  background-image: var(--w-bgimg, none);
+  border: var(--w-border);
+  border-radius: var(--w-radius);
+  box-shadow: var(--w-shadow);
+  line-height: 1.15;
+}
+
+@keyframes sg-pop {
+  0% { transform: scale(0.88); }
+  55% { transform: scale(1.07); }
+  100% { transform: scale(1); }
+}
+
+#sg-app {
+  font-size: var(--sg-size, 5.5cqw);
+  text-align: left;
+}
+.sg-title {
+  font-size: calc(1em * var(--sg-title, 1.2));
+  font-weight: var(--w-weight);
+  letter-spacing: 0.03em;
+  text-align: center;
+}
+.sg-title.pop { animation: sg-pop 0.4s ease; }
+.sg-row { margin-top: var(--sg-gap, 0.7em); }
+.sg-top { display: flex; justify-content: space-between; align-items: baseline; gap: 0.6em; font-weight: 700; }
+.sg-label { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sg-count { font-variant-numeric: tabular-nums; white-space: nowrap; opacity: 0.9; }
+.sg-bar {
+  height: var(--sg-bar, 0.55em);
+  margin-top: 0.2em;
+  background: var(--w-track);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.sg-fill { height: 100%; width: 0; background: var(--w-flag, var(--w-accent)); box-shadow: var(--w-edge, none); border-radius: inherit; transition: width 0.6s ease; }
+.sg-row.bump .sg-top { animation: sg-pop 0.45s ease; }
+.sg-row.reached .sg-count { color: var(--w-accent); opacity: 1; letter-spacing: 0.03em; }
+.sg-status { margin-top: 0.4em; font-size: 0.7em; font-weight: 700; color: var(--w-alarm); text-align: center; }
+#sg-app.paused .sg-fill { opacity: 0.6; }
