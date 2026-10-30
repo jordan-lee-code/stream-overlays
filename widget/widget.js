@@ -156,6 +156,11 @@
   function str(v, dflt) {
     return (v === undefined || v === null || v === "") ? dflt : String(v);
   }
+  // For wording where an empty field is a real choice. StreamElements sends "" for a cleared
+  // field, which str() would turn back into the default.
+  function txt(v, dflt) {
+    return (v === undefined || v === null) ? dflt : String(v);
+  }
   function validHex(v) {
     return (typeof v === "string" && /^#([0-9a-f]{3}|[0-9a-f]{6})$/i.test(v.trim())) ? v.trim() : "";
   }
@@ -286,17 +291,17 @@
         forfeit: str(f.forfeitWord, "forfeit"), forfeits: str(f.forfeitsWord, "forfeits"),
         question: str(f.questionWord, "question"), questions: str(f.questionsWord, "questions"),
         open: str(f.openLabel, "Entries open"), closed: str(f.closedLabel, "Entries closed"),
-        timerPrefix: str(f.timerPrefix, "Entries close in "), timerSuffix: str(f.timerSuffix, "s"),
-        toastSuffix: str(f.toastSuffix, " joined!"),
+        timerPrefix: txt(f.timerPrefix, "Entries close in "), timerSuffix: txt(f.timerSuffix, "s"),
+        toastSuffix: txt(f.toastSuffix, " joined!"),
         winner: str(f.winnerLabel, "Winner"), winnerOf: str(f.winnerOfLabel, "Winner {n} of {total}"),
-        lastWinner: str(f.lastWinnerLabel, "Last winner"), drawnFrom: str(f.drawnFromText, "drawn from {n} entries"),
+        lastWinner: str(f.lastWinnerLabel, "Last winner"), drawnFrom: txt(f.drawnFromText, "drawn from {n} entries"),
         lifelines: str(f.lifelinesLabel, "Lifelines"), heartFull: str(f.heartFull, "♥"), heartEmpty: str(f.heartEmpty, "♡"),
         lifelineLeft: str(f.lifelineLeftText, "{n} lifeline left, {cmd} to skip"),
         lifelinesLeft: str(f.lifelinesLeftText, "{n} lifelines left, {cmd} to skip"),
         noLifelines: str(f.noLifelinesText, "No lifelines left, no more skips! 🙈"),
-        asks: str(f.asksSuffix, " asks"), anonymousEyebrow: str(f.anonymousEyebrow, "Truth or..."),
-        idleQuestions: str(f.idleQuestionsText, "Type {cmd} your question ☀️"),
-        idleForfeits: str(f.idleForfeitsText, "No forfeits yet, {cmd} to add some"),
+        asks: txt(f.asksSuffix, " asks"), anonymousEyebrow: str(f.anonymousEyebrow, "Truth or..."),
+        idleQuestions: txt(f.idleQuestionsText, "Type {cmd} your question ☀️"),
+        idleForfeits: txt(f.idleForfeitsText, "No forfeits yet, {cmd} to add some"),
         goalSub: str(f.goalSubLabel, "Sub goal"), goalFollows: str(f.goalFollowsLabel, "Follower goal"),
         goalBits: str(f.goalBitsLabel, "Bits goal"), goalTips: str(f.goalTipsLabel, "Tip goal"),
         goalDefault: str(f.goalDefaultLabel, "Goal")
@@ -307,7 +312,7 @@
         win: { url: str(f.winSound, ""), vol: clamp(num(f.winSoundVolume, 80), 0, 100) }
       },
       enableSounds: bool(f.enableSounds, true),
-      idleMessage: str(f.idleMessage, "Type !spintowin to enter"),
+      idleMessage: txt(f.idleMessage, "Type !spintowin to enter"),
       spinDuration: Math.max(800, num(f.spinDuration, 6000)),
       winnerDisplayDuration: Math.max(800, num(f.winnerDisplayDuration, 6000))
     };

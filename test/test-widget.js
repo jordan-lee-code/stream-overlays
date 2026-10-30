@@ -375,6 +375,12 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   chat("!spinopen", { mod: true });
   ok(/^Closing in \d+ secs$/.test(elements["entry-timer"].textContent), "entry countdown wording (" + elements["entry-timer"].textContent + ")");
 
+  load({ timerPrefix: "", timerSuffix: "", entrySeconds: 30 }); await wait(5);
+  chat("!spinopen", { mod: true });
+  ok(/^\d+$/.test(elements["entry-timer"].textContent), "blank countdown words leave just the number (" + elements["entry-timer"].textContent + ")");
+  load({ idleMessage: "" }); await wait(5);
+  ok(elements["idle-message"].textContent === "", "a blank idle message stays blank instead of bringing the default back (" + JSON.stringify(elements["idle-message"].textContent) + ")");
+
   // Z. look settings
   console.log("\n[look settings]");
   load({ pillRadius: 20, pillPaddingV: 8, pillPaddingH: 24, pillTilt: 3, toastRadius: 6, toastTilt: -4, cardRadius: 50, cardTilt: 2, cardPaddingV: 20, cardPaddingH: 30,
