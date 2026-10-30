@@ -105,48 +105,56 @@
     pride: {
       bg: "rgba(194, 168, 154, 0.9)", text: "#1A1426", accent: "#1A1426", font: "Fredoka",
       bgimg: "linear-gradient(rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0.45)), linear-gradient(135deg, #E50000, #FF8D00, #FFEE00, #028121, #004CFF, #770088)",
+      flag: ["#E50000", "#FF8D00", "#FFEE00", "#028121", "#004CFF", "#770088"],
       fillFrom: "#E50000", fillTo: "#004CFF", alarm: "#B3123A",
       parts: {"title": "#1A1426", "timer": "#1A1426", "readout": "#1A1426", "note": "#1A1426", "border": "#1A1426", "track": "rgba(26, 20, 38, 0.34)", "lock": "#1A1426", "lockHole": "rgba(194, 168, 154, 0.96)", "float": "#1A1426", "floatBg": "rgba(194, 168, 154, 0.96)", "alert": "#FFFFFF", "alertFill": "#FFFFFF", "alertTrack": "rgba(0, 0, 0, 0.22)"}
     },
     progress: {
       bg: "rgba(194, 168, 154, 0.9)", text: "#1A1426", accent: "#1A1426", font: "Fredoka",
       bgimg: "linear-gradient(rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0.45)), linear-gradient(135deg, #E50000, #FF8D00, #FFEE00, #028121, #004CFF, #770088)",
+      flag: ["#E50000", "#FF8D00", "#FFEE00", "#028121", "#004CFF", "#770088"],
       fillFrom: "#F5A9B8", fillTo: "#5BCEFA", alarm: "#B3123A",
       parts: {"title": "#1A1426", "timer": "#1A1426", "readout": "#1A1426", "note": "#1A1426", "border": "#1A1426", "track": "rgba(26, 20, 38, 0.34)", "lock": "#1A1426", "lockHole": "rgba(194, 168, 154, 0.96)", "float": "#1A1426", "floatBg": "rgba(194, 168, 154, 0.96)", "alert": "#FFFFFF", "alertFill": "#FFFFFF", "alertTrack": "rgba(0, 0, 0, 0.22)"}
     },
     trans: {
       bg: "rgba(185, 201, 225, 0.9)", text: "#1A1426", accent: "#1A1426", font: "Fredoka",
       bgimg: "linear-gradient(135deg, #5BCEFA, #F5A9B8, #FFFFFF, #F5A9B8, #5BCEFA)",
+      flag: ["#5BCEFA", "#F5A9B8", "#FFFFFF", "#F5A9B8", "#5BCEFA"],
       fillFrom: "#5BCEFA", fillTo: "#F5A9B8", alarm: "#B3123A",
       parts: {"title": "#1A1426", "timer": "#1A1426", "readout": "#1A1426", "note": "#1A1426", "border": "#1A1426", "track": "rgba(26, 20, 38, 0.34)", "lock": "#1A1426", "lockHole": "rgba(185, 201, 225, 0.96)", "float": "#1A1426", "floatBg": "rgba(185, 201, 225, 0.96)", "alert": "#FFFFFF", "alertFill": "#FFFFFF", "alertTrack": "rgba(0, 0, 0, 0.22)"}
     },
     bi: {
       bg: "rgba(117, 39, 142, 0.9)", text: "#FFFFFF", accent: "#FFFFFF", font: "Fredoka",
       bgimg: "linear-gradient(135deg, #D60270, #D60270, #9B4F96, #0038A8, #0038A8)",
+      flag: ["#D60270", "#D60270", "#9B4F96", "#0038A8", "#0038A8"],
       fillFrom: "#D60270", fillTo: "#0038A8", alarm: "#FF6B6B",
       parts: {"title": "#FFFFFF", "timer": "#FFFFFF", "readout": "#FFFFFF", "note": "#FFFFFF", "border": "#FFFFFF", "track": "rgba(255, 255, 255, 0.24)", "lock": "#FFFFFF", "lockHole": "rgba(117, 39, 142, 0.96)", "float": "#FFFFFF", "floatBg": "rgba(117, 39, 142, 0.96)", "alert": "#FFFFFF", "alertFill": "#FFFFFF", "alertTrack": "rgba(0, 0, 0, 0.22)"}
     },
     pan: {
       bg: "rgba(181, 142, 132, 0.9)", text: "#1A1426", accent: "#1A1426", font: "Fredoka",
       bgimg: "linear-gradient(135deg, #FF218C, #FFD800, #21B1FF)",
+      flag: ["#FF218C", "#FFD800", "#21B1FF"],
       fillFrom: "#FF218C", fillTo: "#21B1FF", alarm: "#B3123A",
       parts: {"title": "#1A1426", "timer": "#1A1426", "readout": "#1A1426", "note": "#1A1426", "border": "#1A1426", "track": "rgba(26, 20, 38, 0.34)", "lock": "#1A1426", "lockHole": "rgba(181, 142, 132, 0.96)", "float": "#1A1426", "floatBg": "rgba(181, 142, 132, 0.96)", "alert": "#FFFFFF", "alertFill": "#FFFFFF", "alertTrack": "rgba(0, 0, 0, 0.22)"}
     },
     enby: {
       bg: "rgba(212, 202, 192, 0.9)", text: "#1A1426", accent: "#2D2D2D", font: "Fredoka",
       bgimg: "linear-gradient(rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0.45)), linear-gradient(135deg, #FFF433, #FFFFFF, #9B59D0, #2D2D2D)",
+      flag: ["#FFF433", "#FFFFFF", "#9B59D0", "#2D2D2D"],
       fillFrom: "#FFF433", fillTo: "#9B59D0", alarm: "#B3123A",
       parts: {"title": "#1A1426", "timer": "#1A1426", "readout": "#1A1426", "note": "#1A1426", "border": "#2D2D2D", "track": "rgba(26, 20, 38, 0.34)", "lock": "#2D2D2D", "lockHole": "rgba(212, 202, 192, 0.96)", "float": "#1A1426", "floatBg": "rgba(212, 202, 192, 0.96)", "alert": "#FFFFFF", "alertFill": "#FFFFFF", "alertTrack": "rgba(0, 0, 0, 0.22)"}
     },
     lesbian: {
       bg: "rgba(232, 167, 169, 0.9)", text: "#1A1426", accent: "#1A1426", font: "Fredoka",
       bgimg: "linear-gradient(rgba(255, 255, 255, 0.40), rgba(255, 255, 255, 0.40)), linear-gradient(135deg, #D52D00, #EF7627, #FF9A56, #FFFFFF, #D162A4, #B55690, #A30262)",
+      flag: ["#D52D00", "#EF7627", "#FF9A56", "#FFFFFF", "#D162A4", "#B55690", "#A30262"],
       fillFrom: "#D52D00", fillTo: "#A30262", alarm: "#B3123A",
       parts: {"title": "#1A1426", "timer": "#1A1426", "readout": "#1A1426", "note": "#1A1426", "border": "#1A1426", "track": "rgba(26, 20, 38, 0.34)", "lock": "#1A1426", "lockHole": "rgba(232, 167, 169, 0.96)", "float": "#1A1426", "floatBg": "rgba(232, 167, 169, 0.96)", "alert": "#FFFFFF", "alertFill": "#FFFFFF", "alertTrack": "rgba(0, 0, 0, 0.22)"}
     },
     ace: {
       bg: "rgba(202, 187, 202, 0.9)", text: "#1A1426", accent: "#000000", font: "Fredoka",
       bgimg: "linear-gradient(rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0.55)), linear-gradient(135deg, #000000, #A3A3A3, #FFFFFF, #800080)",
+      flag: ["#000000", "#A3A3A3", "#FFFFFF", "#800080"],
       fillFrom: "#A3A3A3", fillTo: "#800080", alarm: "#B3123A",
       parts: {"title": "#1A1426", "timer": "#1A1426", "readout": "#1A1426", "note": "#1A1426", "border": "#000000", "track": "rgba(26, 20, 38, 0.34)", "lock": "#000000", "lockHole": "rgba(202, 187, 202, 0.96)", "float": "#1A1426", "floatBg": "rgba(202, 187, 202, 0.96)", "alert": "#FFFFFF", "alertFill": "#FFFFFF", "alertTrack": "rgba(0, 0, 0, 0.22)"}
     }
@@ -428,8 +436,16 @@
     Object.keys(over).forEach(function (k) { parts[k] = over[k]; });
     return {
       bg: p.bg, text: p.text, accent: p.accent,
-      fillFrom: p.fillFrom, fillTo: p.fillTo, alarm: p.alarm, font: p.font, parts: parts, bgimg: p.bgimg || ""
+      fillFrom: p.fillFrom, fillTo: p.fillTo, alarm: p.alarm, font: p.font, parts: parts, bgimg: p.bgimg || "",
+      flag: p.flag || null
     };
+  }
+
+  // A flag is a list of stripes, top to bottom. A bar can wear it as horizontal bands.
+  function flagGradient(stripes) {
+    var n = stripes.length, parts = [];
+    for (var i = 0; i < n; i++) parts.push(stripes[i] + " " + (i * 100 / n) + "% " + ((i + 1) * 100 / n) + "%");
+    return "linear-gradient(180deg, " + parts.join(", ") + ")";
   }
 
   function applyTheme() {
@@ -440,6 +456,9 @@
     root.style.setProperty("--bg-img", t.bgimg || "none");
     root.style.setProperty("--text", t.text);
     root.style.setProperty("--accent", t.accent);
+    // A flag preset fills the bar with the stripes of its flag, outlined so a pale one keeps its edge.
+    root.style.setProperty("--flag-fill", t.flag ? flagGradient(t.flag) : "");
+    root.style.setProperty("--flag-edge", t.flag ? "inset 0 0 0 1px rgba(20, 16, 38, 0.38)" : "none");
     root.style.setProperty("--fill-from", t.fillFrom);
     root.style.setProperty("--fill-to", t.fillTo);
     root.style.setProperty("--alarm", t.alarm);

@@ -1889,10 +1889,12 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   console.log("\n[pride flags behind the card]");
   await load({ themePreset: "trans" }); 
   ok(elements["rage-app"].style["--bg-img"] === "linear-gradient(135deg, #5BCEFA, #F5A9B8, #FFFFFF, #F5A9B8, #5BCEFA)", "the trans preset puts its flag behind the card (" + elements["rage-app"].style["--bg-img"] + ")");
+  ok(elements["rage-app"].style["--flag-fill"] === "linear-gradient(180deg, #5BCEFA 0% 20%, #F5A9B8 20% 40%, #FFFFFF 40% 60%, #F5A9B8 60% 80%, #5BCEFA 80% 100%)" && elements["rage-app"].style["--flag-edge"] === "inset 0 0 0 1px rgba(20, 16, 38, 0.38)", "and fills the bar with the stripes of its flag, outlined so the white one keeps its edge");
   await load({ themePreset: "ace" }); 
   ok(/^linear-gradient\(rgba\(255, 255, 255, 0\.\d+\), rgba\(255, 255, 255, 0\.\d+\)\), linear-gradient\(135deg, #000000, #A3A3A3, #FFFFFF, #800080\)$/.test(elements["rage-app"].style["--bg-img"]), "a flag with a black stripe gets a light wash over it, so the dark text stays readable");
   await load({ themePreset: "glass" }); 
   ok(elements["rage-app"].style["--bg-img"] === "none", "and every other preset leaves the card plain");
+  ok(elements["rage-app"].style["--flag-fill"] === "" && elements["rage-app"].style["--flag-edge"] === "none", "and keeps its two colour fill, with no outline");
   console.log("\n=== " + pass + " passed, " + fail + " failed ===");
   process.exit(fail ? 1 : 0);
 })();

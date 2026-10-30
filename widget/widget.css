@@ -171,6 +171,8 @@
   width: 0%;
   border-radius: 999px;
   background: linear-gradient(90deg, var(--fill-from), var(--fill-to));
+  background-image: var(--flag-fill, linear-gradient(90deg, var(--fill-from), var(--fill-to)));
+  box-shadow: var(--flag-edge, none);
   transition: width var(--fill-s) cubic-bezier(0.18, 1.4, 0.4, 1);
 }
 
