@@ -74,6 +74,13 @@
 #subathon-app.paused .subathon-clock { opacity: 0.75; }
 #subathon-app.ended .subathon-clock { color: var(--sa-alarm); }
 
+.subathon-elapsed {
+  font-size: calc(1em * var(--sa-status-scale) * 1.15);
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  opacity: 0.8;
+  font-variant-numeric: tabular-nums;
+}
 .subathon-status {
   font-size: calc(1em * var(--sa-status-scale));
   font-weight: 700;

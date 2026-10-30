@@ -14,11 +14,12 @@ It is one widget with no dependencies and nothing to install. The sub goals are 
 - Correct on gift bombs: a gift of 30 subs adds 30 gifts' worth of time once, not once per recipient (see [How time is earned](#how-time-is-earned)).
 - A cap that banks the overflow: hold the whole subathon to a total length, start time included. Time beyond the cap is banked and shown, never discarded, and subtracting time hands the allowance back.
 - Power-ups and sleep mode: multiply what comes in for a while, or for a number of events, and slow it overnight.
+- Elapsed time and day number: the big clock can count up instead of down, or show the other time on a line under it, and the status line can say which day it is (see [Elapsed time and the day number](#elapsed-time-and-the-day-number)).
 - Lock and pause: pause the clock, or lock it so new time is banked while you decide what to do.
 - Chat control: add, subtract, set, pause, resume, lock, power up and more, from chat, for the broadcaster or moderators.
 - Sub goals underneath: the same goals as `!incentive add 15 chat confessions`, filling as subs and bits land, in the same panel style.
 - Twelve style presets: one setting styles the clock and the goals together, and the same twelve presets are in every overlay in this set.
-- Customisable: over 160 settings cover values, commands, sizes, colours, fonts, sounds and animation.
+- Customisable: over 170 settings cover values, commands, sizes, colours, fonts, sounds and animation.
 - Saved: the clock, the cap, banked time, power-ups and lock all survive a browser-source refresh, and a refresh while running keeps counting through the gap.
 - Tests and a dev harness: a local harness with a time machine and an automated test script, so a 200 hour subathon can be tried in a minute.
 
@@ -99,6 +100,25 @@ A power-up multiplies everything that comes in. Start one from chat with `!subat
 
 Sleep mode is a second, steadier multiplier (0.5 by default) for the hours when fewer people are around. It is switched on with `!subathon sleep` and off with `!subathon wake`, and it multiplies with a power-up, so double time while asleep at half speed is a plain 1x.
 
+## Elapsed time and the day number
+
+By default the clock counts down, but two options show how long the subathon has been going.
+
+- **What the big clock shows** can be *Time elapsed*, so the big digits count up (`53:27:14`) and the countdown moves to the line underneath.
+- **Show the other time on a line under the clock** adds a small line with the other one, for example `Elapsed 53:27:14` under a countdown. Both labels are settings.
+
+Elapsed time is how long the clock has actually been running. Time while it was paused does not count, nothing counts after it reaches zero, and adding or subtracting time leaves it alone. Applying the start time sets it back to zero.
+
+<p><img src="docs/elapsed.png" alt="The clock reading 106:32:46 with a small line saying Elapsed 53:27:14 and a status of Day 3" width="380"></p>
+
+**The day number.** Tick **Show the day number in the status line** for a `Day 3` beside the status. What a day means differs from one subathon to the next, so **How the day number counts** has three choices:
+
+- *Each calendar day the clock runs* (the default) is for a subathon streamed a few hours at a time over several days. The first day the clock runs is Day 1, and the next day it runs is Day 2. A day when the clock does not run does not count, so skipping a Tuesday does not make Wednesday Day 4. A new day starts at the **rollover hour** (4 by default, meaning 4am) rather than at midnight, so a stream that runs past midnight is still the same day. The date comes from the computer running the overlay.
+- *Every 24 hours of running time* is for one long continuous stream, where Day 2 starts after 24 hours elapsed.
+- *Only when I change it* never changes by itself.
+
+In every mode you can set it by hand with `!subathon day 3`, `!subathon day +1` or `!subathon day -1`, or with the **Next day** and **Previous day** buttons, and it never goes below 1. Applying the start time puts it back to Day 1.
+
 ## Chat commands
 
 The base word is a setting. The defaults are below, and every command needs the broadcaster or, by default, a moderator.
@@ -115,6 +135,7 @@ The base word is a setting. The defaults are below, and every command needs the 
 | `!subathon powerup 2 30m [events]` | Starts a power-up. |
 | `!subathon powerup off` | Ends it. |
 | `!subathon sleep` and `!subathon wake` | Sleep mode on and off. |
+| `!subathon day 3`, `day +1`, `day -1` | Sets the day number, or moves it by one. |
 | `!subathon reset` | Puts the clock back on the start time. Broadcaster only. |
 
 The goals have their own commands, such as `!incentive add 15 chat confessions` and `!incentive stop`. They are listed in the [Sub Goals Overlay](https://github.com/jordan-lee-code/sub-goals-overlay#chat-commands) README.
@@ -130,9 +151,9 @@ Every setting has a plain label in StreamElements. The clock's settings sit unde
 | Clock: Cap | The cap, whether to show the room left, and the buttons to count the cap afresh and release banked time. |
 | Clock: Time per event | Minutes for each sub tier, gifted sub, 100 bits, unit of tip, follow and raid. |
 | Clock: Power-ups and sleep | The power-up multiplier, length and event count with Start and End buttons, and the sleep multiplier with its buttons. |
-| Clock: Look | Title, which parts are shown, order, clock size, boldness, spacing, the gap to the goals, how long the time-added line stays, and Animate. |
+| Clock: Look | Title, which parts are shown, order, whether the big clock counts down or up, the elapsed line and its labels, the day number and how it counts, clock size, boldness, spacing, the gap to the goals, how long the time-added line stays, and Animate. |
 | Clock: Custom colours | Colours for the digits, status line, time-added chip and warning, used when the style preset is Custom. |
-| Clock: Manual controls | Buttons to resume, pause, add, subtract, lock and unlock. |
+| Clock: Manual controls | Buttons to resume, pause, add, subtract, lock, unlock, and move the day number. |
 | Clock: Sounds | Sounds and volumes for time added, reaching zero and a power-up starting, with Test buttons and a master mute. |
 | Clock: Troubleshooting | A debug log of every event to the browser-source console. |
 | Goals: Panel and the rest | The style preset, the panel, text, bars, sounds, the thank-you message and everything else from the goals module. |
@@ -163,7 +184,7 @@ At the top of the harness, **Look and export** switches the style preset on the 
 npm test
 ```
 
-This builds the widget, then runs the real `widget/widget.js` headlessly against a small mock of the page and StreamElements with a clock the test controls. It covers every way time is earned, the gift bomb case, the cap and banked time, locking, power-ups and sleep, reaching zero, every chat command and permission, saving across a refresh, the style presets against the shared palette, the sounds, and that the goals module is included unchanged. It also checks that every clock setting is read by the widget and every clock button does something.
+This builds the widget, then runs the real `widget/widget.js` headlessly against a small mock of the page and StreamElements with a clock the test controls. It covers every way time is earned, elapsed time and the day number (in every timezone), the gift bomb case, the cap and banked time, locking, power-ups and sleep, reaching zero, every chat command and permission, saving across a refresh, the style presets against the shared palette, the sounds, and that the goals module is included unchanged. It also checks that every clock setting is read by the widget and every clock button does something.
 
 ## Project layout
 

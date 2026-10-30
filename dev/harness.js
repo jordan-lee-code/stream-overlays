@@ -128,7 +128,7 @@
     ["broadcaster", "mod", "viewer"].forEach(function (r) { c.appendChild(btn("Send as " + r, function () { chat(box.value, r); })); });
     c.appendChild(el("p", { "class": "hint", text: "Quick commands:" }));
     ["!subathon pause", "!subathon resume", "!subathon add 30m", "!subathon subtract 10m", "!subathon powerup 2 30m", "!subathon powerup off",
-      "!subathon sleep", "!subathon wake", "!subathon lock", "!subathon unlock", "!subathon release",
+      "!subathon sleep", "!subathon wake", "!subathon lock", "!subathon unlock", "!subathon release", "!subathon day 3", "!subathon day +1",
       "!incentive add 5 karaoke", "!incentive add 10 play a game", "!incentive add 15 chat confessions", "!incentive stop", "!incentive start"
     ].forEach(function (t) { c.appendChild(btn(t, function () { chat(t, "broadcaster"); })); });
 

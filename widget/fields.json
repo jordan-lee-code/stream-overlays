@@ -203,6 +203,66 @@
     "value": true,
     "group": "Clock: Look"
   },
+  "tmClockShows": {
+    "type": "dropdown",
+    "label": "What the big clock shows",
+    "value": "remaining",
+    "options": {
+      "remaining": "Time remaining (counting down)",
+      "elapsed": "Time elapsed (counting up)"
+    },
+    "group": "Clock: Look"
+  },
+  "tmShowOther": {
+    "type": "checkbox",
+    "label": "Show the other time on a line under the clock",
+    "value": false,
+    "group": "Clock: Look"
+  },
+  "tmElapsedLabel": {
+    "type": "text",
+    "label": "Label for the elapsed time",
+    "value": "Elapsed",
+    "group": "Clock: Look"
+  },
+  "tmRemainingLabel": {
+    "type": "text",
+    "label": "Label for the remaining time",
+    "value": "Remaining",
+    "group": "Clock: Look"
+  },
+  "tmShowDay": {
+    "type": "checkbox",
+    "label": "Show the day number in the status line",
+    "value": false,
+    "group": "Clock: Look"
+  },
+  "tmDayMode": {
+    "type": "dropdown",
+    "label": "How the day number counts",
+    "value": "calendar",
+    "options": {
+      "calendar": "Each calendar day the clock runs (days in a row)",
+      "elapsed": "Every 24 hours of running time (one long stream)",
+      "manual": "Only when I change it"
+    },
+    "group": "Clock: Look"
+  },
+  "tmDayRollover": {
+    "type": "number",
+    "label": "Hour a new day starts, for calendar days (4 means 4am, so a stream past midnight is the same day)",
+    "value": 4,
+    "min": 0,
+    "max": 23,
+    "step": 1,
+    "group": "Clock: Look"
+  },
+  "tmDayLabel": {
+    "type": "text",
+    "label": "Word before the day number",
+    "value": "Day",
+    "group": "Clock: Look"
+  },
   "tmShowGoals": {
     "type": "checkbox",
     "label": "Show the sub goals under the clock",
@@ -346,6 +406,16 @@
   "tmUnlock": {
     "type": "button",
     "label": "Unlock",
+    "group": "Clock: Manual controls"
+  },
+  "tmDayNext": {
+    "type": "button",
+    "label": "Next day",
+    "group": "Clock: Manual controls"
+  },
+  "tmDayPrev": {
+    "type": "button",
+    "label": "Previous day",
     "group": "Clock: Manual controls"
   },
   "tmSoundAdd": {

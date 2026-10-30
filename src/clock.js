@@ -86,6 +86,12 @@
     var h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60);
     return pad(h) + ":" + pad(m) + ":" + pad(s % 60);
   }
+  // The same layout for time that has gone by, rounding down so it never runs ahead.
+  function formatElapsed(ms) {
+    var s = Math.max(0, Math.floor(ms / 1000));
+    var h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60);
+    return pad(h) + ":" + pad(m) + ":" + pad(s % 60);
+  }
   // 5:00 or 1:30:00, for the short chips and the feed line.
   function formatShort(ms) {
     var s = Math.max(0, Math.round(ms / 1000));
@@ -98,7 +104,7 @@
   function blankState() {
     return {
       remaining: 0, at: 0, running: false, ended: false, locked: false,
-      added: 0, capBase: 0, banked: 0, sleeping: false, power: null, last: null
+      added: 0, capBase: 0, banked: 0, sleeping: false, power: null, last: null, elapsed: 0, day: 1, dayStamp: ""
     };
   }
 
@@ -109,8 +115,15 @@
     if (!state.running) return state.remaining;
     return Math.max(0, state.remaining - (now() - state.at));
   }
+  // How long the clock has actually been running, which is what a subathon's "hour 61"
+  // means. Paused time does not count, and neither does anything after it reached zero.
+  function elapsedNow() {
+    if (!state.running) return state.elapsed;
+    return state.elapsed + Math.max(0, Math.min(now() - state.at, state.remaining));
+  }
   // Fold the time that has passed into the stored value, so a change starts from "now".
   function settle() {
+    state.elapsed = elapsedNow();
     state.remaining = remainingNow();
     state.at = now();
   }
@@ -129,6 +142,34 @@
     if (powerActive()) m *= state.power.mult;
     if (state.sleeping) m *= cfg.sleepMult;
     return m;
+  }
+
+  // The day number. By default each calendar day the clock runs is a new day, so a
+  // subathon streamed a few hours at a time over a week reads Day 1 to Day 7, and a day with
+  // no streaming does not count. The new day starts at the rollover hour rather than at
+  // midnight, so a stream that runs past midnight is still the same day.
+  function dayStamp(t) {
+    var d = new Date(t - cfg.dayRollover * 3600000);
+    return d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
+  }
+  function updateDay() {
+    if (cfg.dayMode !== "calendar" || !state.running) return;
+    var stamp = dayStamp(now());
+    if (!state.dayStamp) { state.dayStamp = stamp; save(); }
+    else if (stamp !== state.dayStamp) { state.day++; state.dayStamp = stamp; save(); }
+  }
+  function dayNumber() {
+    return cfg.dayMode === "elapsed" ? Math.floor(elapsedNow() / 86400000) + 1 : state.day;
+  }
+  function setDay(n) {
+    state.day = Math.max(1, Math.floor(n));
+    state.dayStamp = dayStamp(now());
+    save(); render();
+  }
+  function parseDay(text) {
+    var m = /^([+-])(\d+)$/.exec(text);
+    if (m) return state.day + (m[1] === "-" ? -1 : 1) * parseInt(m[2], 10);
+    return /^\d+$/.test(text) ? parseInt(text, 10) : NaN;
   }
 
   function credit(ms) {
@@ -176,6 +217,7 @@
 
   function checkEnd() {
     if (state.running && remainingNow() <= 0) {
+      state.elapsed += state.remaining;
       state.remaining = 0; state.running = false; state.ended = true; state.at = now();
       playSound("zero");
       save();
@@ -188,7 +230,7 @@
     var start = durationField(cfg.start, 24 * 3600000);
     state.remaining = start; state.at = now(); state.running = false; state.ended = start <= 0;
     state.added = 0; state.capBase = start; state.banked = 0; state.power = null;
-    state.sleeping = false; state.last = null;
+    state.sleeping = false; state.last = null; state.elapsed = 0; state.day = 1; state.dayStamp = "";
     save(); render(); showFeed();
   }
   function resetCap() {
@@ -306,6 +348,7 @@
       case "release": release(); break;
       case "capreset": resetCap(); break;
       case "reset": if (roles.broadcaster) applyStart(); break;
+      case "day": var dn = parseDay(args[0] || ""); if (!isNaN(dn)) setDay(dn); break;
       case "sleep": state.sleeping = true; save(); render(); break;
       case "wake": state.sleeping = false; save(); render(); break;
       case "powerup": case "power":
@@ -337,6 +380,8 @@
       case "tmPowerStop": stopPower(); break;
       case "tmSleep": state.sleeping = true; save(); render(); break;
       case "tmWake": state.sleeping = false; save(); render(); break;
+      case "tmDayNext": setDay(state.day + 1); break;
+      case "tmDayPrev": setDay(state.day - 1); break;
       case "tmTestZero": playSound("zero"); break;
       case "tmTestAdd": playSound("add"); break;
       case "tmTestPower": playSound("power"); break;
@@ -380,6 +425,9 @@
       s.capBase = num(saved.capBase, s.remaining);
       s.banked = Math.max(0, num(saved.banked, 0));
       s.sleeping = bool(saved.sleeping, false);
+      s.elapsed = Math.max(0, num(saved.elapsed, 0));
+      s.day = Math.max(1, Math.floor(num(saved.day, 1)));
+      s.dayStamp = str(saved.dayStamp, "");
       if (saved.power && num(saved.power.mult, 0) > 0) {
         s.power = { mult: num(saved.power.mult, 1), until: num(saved.power.until, 0), left: num(saved.power.left, 0) };
       }
@@ -460,6 +508,7 @@
 
   function statusLine() {
     var bits = [];
+    if (cfg.showDay) bits.push(cfg.dayLabel + " " + dayNumber());
     if (state.ended) bits.push(cfg.endedText);
     else if (!state.running) bits.push("paused");
     if (state.locked) bits.push("locked");
@@ -480,11 +529,17 @@
     if (!el.app) return;
     var rem = remainingNow();
     if (state.running && rem <= 0) checkEnd();
-    var text = formatClock(rem);
+    updateDay();
+    var elapsedText = formatElapsed(elapsedNow());
+    var remainingText = formatClock(rem);
+    var showsElapsed = cfg.clockShows === "elapsed";
+    var text = showsElapsed ? elapsedText : remainingText;
     if (text !== lastClockText) {
       el.clock.textContent = text;
       lastClockText = text;
     }
+    el.elapsed.textContent = showsElapsed ? cfg.remainingLabel + " " + remainingText : cfg.elapsedLabel + " " + elapsedText;
+    el.elapsed.hidden = !cfg.showOther;
     el.app.classList.toggle("long", text.length > 8);
     el.app.classList.toggle("warn", !state.ended && cfg.warnMs > 0 && rem <= cfg.warnMs);
     el.app.classList.toggle("ended", state.ended);
@@ -525,6 +580,14 @@
       title: str(f.tmTitle, "Subathon"),
       showTitle: bool(f.tmShowTitle, true),
       showStatus: bool(f.tmShowStatus, true),
+      clockShows: str(f.tmClockShows, "remaining"),
+      showOther: bool(f.tmShowOther, false),
+      elapsedLabel: str(f.tmElapsedLabel, "Elapsed"),
+      remainingLabel: str(f.tmRemainingLabel, "Remaining"),
+      showDay: bool(f.tmShowDay, false),
+      dayLabel: str(f.tmDayLabel, "Day"),
+      dayMode: str(f.tmDayMode, "calendar"),
+      dayRollover: Math.max(0, Math.min(23, Math.floor(num(f.tmDayRollover, 4)))),
       showGoals: bool(f.tmShowGoals, true),
       order: str(f.tmOrder, "clock"),
       clockSize: Math.max(4, num(f.tmClockSize, 15)),
@@ -557,7 +620,7 @@
 
   function bind() {
     var ids = { root: "subathon-root", app: "subathon-app", title: "subathon-title", clock: "subathon-clock",
-      status: "subathon-status", feed: "subathon-feed", goals: "subathon-goals" };
+      status: "subathon-status", elapsed: "subathon-elapsed", feed: "subathon-feed", goals: "subathon-goals" };
     for (var k in ids) { if (ids.hasOwnProperty(k)) el[k] = byId(ids[k]); }
   }
 
