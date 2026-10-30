@@ -82,7 +82,7 @@
 .hy-fill {
   height: 100%;
   width: 0;
-  background: var(--w-accent);
+  background: var(--w-flag, var(--w-accent));
   border-radius: inherit;
   transition: width 0.4s ease;
 }
