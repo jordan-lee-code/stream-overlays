@@ -15,11 +15,16 @@
     cosycabin: { panel: "#F5ECD6", text: "#57442E", accent: "#7C6142", track: "rgba(0, 0, 0, 0.11)", alarm: "#C05746", font: "Chicle" },
     pastel: { panel: "#FFF6E9", text: "#6B4F3A", accent: "#FF8A65", track: "rgba(0, 0, 0, 0.11)", alarm: "#F4587A", font: "Baloo 2" },
     celestial: { panel: "#2E1A47", text: "#F3ECFF", accent: "#E8C06B", track: "rgba(255, 255, 255, 0.18)", alarm: "#B5495B", font: "Cinzel" },
-    pastelgoth: { panel: "#3A3340", text: "#F2E9F0", accent: "#C8B6E2", track: "rgba(255, 255, 255, 0.18)", alarm: "#C96A8E", font: "Quicksand" }
+    pastelgoth: { panel: "#3A3340", text: "#F2E9F0", accent: "#C8B6E2", track: "rgba(255, 255, 255, 0.18)", alarm: "#C96A8E", font: "Quicksand" },
+    pastelpink: { panel: "#FFE3EC", text: "#6A2E4B", accent: "#D95C8A", track: "rgba(106, 46, 75, 0.14)", alarm: "#D6456F", font: "Fredoka" },
+    faegreen: { panel: "#2C4A36", text: "#EEF5DA", accent: "#C9E265", track: "rgba(238, 245, 218, 0.2)", alarm: "#E0805A", font: "Almendra" }
   };
 
   // ---- shared by every overlay in this set ----
   function str(v, d) { return (v === undefined || v === null || v === "") ? d : String(v); }
+  // For wording where an empty field is a real choice (no tag, no currency symbol, no title).
+  // StreamElements sends "" for a cleared field, which str() would turn back into the default.
+  function txt(v, d) { return (v === undefined || v === null) ? d : String(v); }
   function num(v, d) { var n = parseFloat(v); return isNaN(n) ? d : n; }
   function bool(v, d) {
     if (v === undefined || v === null) return d;
@@ -54,7 +59,7 @@
     return {
       command: str(f.command, d.command || "!command"),
       whoCanManage: str(f.whoCanManage, "mods"),
-      title: str(f.title, d.title || ""),
+      title: txt(f.title, d.title || ""),
       showTitle: bool(f.showTitle, true),
       themePreset: str(f.themePreset, "glass"),
       colorPanel: str(f.colorPanel, "#000000"),
@@ -157,15 +162,15 @@
     c.allowNegative = bool(f.allowNegative, false);
     c.max = Math.max(0, Math.floor(num(f.maxCount, 0)));
     c.goal = Math.max(0, Math.floor(num(f.goal, 0)));
-    c.goalText = str(f.goalText, "Goal reached!");
+    c.goalText = txt(f.goalText, "Goal reached!");
     c.showGoal = bool(f.showGoal, true);
     c.showBar = bool(f.showBar, true);
     c.milestone = Math.max(0, Math.floor(num(f.milestoneEvery, 0)));
-    c.milestoneText = str(f.milestoneText, "Milestone!");
+    c.milestoneText = txt(f.milestoneText, "Milestone!");
     c.milestoneSeconds = Math.max(1, num(f.milestoneSeconds, 4));
-    c.lockedText = str(f.lockedText, "locked");
-    c.prefix = str(f.prefix, "");
-    c.suffix = str(f.suffix, "");
+    c.lockedText = txt(f.lockedText, "locked");
+    c.prefix = txt(f.prefix, "");
+    c.suffix = txt(f.suffix, "");
     c.digits = clamp(Math.floor(num(f.digits, 0)), 0, 10);
     c.layout = str(f.layout, "stacked");
     c.numberSize = Math.max(4, num(f.numberSize, 22));
@@ -303,7 +308,7 @@
     el.app.classList.toggle("inline", cfg.layout === "inline");
     el.app.classList.toggle("locked", state.locked);
     if (!noteTimer) {
-      el.note.hidden = !state.locked;
+      el.note.hidden = !state.locked || !cfg.lockedText;
       if (state.locked) el.note.textContent = cfg.lockedText;
     }
   }

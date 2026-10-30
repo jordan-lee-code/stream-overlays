@@ -123,6 +123,13 @@ const flash = () => E("ct-flash").hidden ? "" : E("ct-flash").textContent;
   await load({ soundUp: "data:audio/wav;base64,AA", mute: true }); audioLog.length = 0; boss("!count +1");
   ok(audioLog.length === 0, "mute silences everything");
 
+  section("blanking the wording");
+  await load({ title: "" }); ok(E("ct-title").hidden, "a blank title hides the title, and does not bring the default back");
+  await load({ lockedText: "" }); boss("!count lock"); ok(note() === "" && E("ct-app").classList.contains("locked"), "a blank locked text shows nothing, though it is still locked");
+  await load({ goal: 5, goalText: "" }); boss("!count +5"); ok(note() === "", "a blank goal text shows no message");
+  await load({ milestoneEvery: 5, milestoneText: "" }); boss("!count +5"); ok(note() === "", "and a blank milestone text shows none");
+  await load({ prefix: "", suffix: "" }); boss("!count +7"); ok(value() === "7", "blank text around the number leaves just the number");
+
   section("every setting is wired up");
   env.checkWired();
   env.checkNotice();
