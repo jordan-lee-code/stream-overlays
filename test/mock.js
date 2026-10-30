@@ -135,7 +135,7 @@ module.exports = function createEnv(root) {
     checkNotice(root2) {
       const html = fs.readFileSync(path.join(root, "widget/widget.html"), "utf8");
       env.ok(/ko-fi\.com\/journeyingjordan/.test(src.slice(0, 400)) && /ko-fi\.com\/journeyingjordan/.test(html.slice(0, 300)), "the licence notice is in the widget files");
-      const bad = ["README.md", "CONTRIBUTING.md"].filter(f => fs.existsSync(path.join(root, f)) && /[–—]/.test(fs.readFileSync(path.join(root, f), "utf8")));
+      const bad = ["README.md", "CONTRIBUTING.md"].filter(f => fs.existsSync(path.join(root, f)) && /[\u2013\u2014]/.test(fs.readFileSync(path.join(root, f), "utf8")));
       env.ok(bad.length === 0, "the docs use no em or en dashes");
     },
     finish() { console.log("\n=== " + pass + " passed, " + fail + " failed ==="); process.exit(fail ? 1 : 0); }
