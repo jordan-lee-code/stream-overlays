@@ -1,0 +1,492 @@
+/* Copyright (c) 2026 Jordan Lee (https://ko-fi.com/journeyingjordan). Released under the MIT licence: this notice must be kept in copies and substantial portions of the code. See LICENSE. */
+/* Spinning Wheel. StreamElements widget styles.
+   All colours and the font are driven by CSS custom properties that widget.js
+   sets from the editor Fields, so the cosy-cabin defaults below can be restyled
+   entirely from the settings panel without touching this file. */
+
+#wheel-app {
+  --bg: rgba(0, 0, 0, 0.55);
+  --text: #FFFFFF;
+  --accent: #FFFFFF;
+  --pointer: #FFFFFF;
+  --seg-a: #FFFFFF;
+  --seg-b: #D9D9D9;
+  --seg-c: #BFBFBF;
+  --seg-d: #EDEDED;
+  --seg-e: #A6A6A6;
+  --seg-f: #CCCCCC;
+  --font: "BioRhyme", "Georgia", serif;
+
+  /* Colours of the parts that sit over the scene. Each follows the theme unless
+     the preset is Custom, where every one has its own picker. */
+  --c-pill-bg: var(--bg);
+  --c-pill: var(--text);
+  --c-toast-bg: var(--bg);
+  --c-toast: var(--text);
+  --c-card-bg: var(--bg);
+  --c-card: var(--text);
+  --c-eyebrow-bg: #FFFFFF;
+  --c-eyebrow: #111111;
+  --c-idle: var(--text);
+  --c-goal: var(--text);
+  --c-goal-track: rgba(255, 255, 255, 0.2);
+  --c-goal-from: #D9D9D9;
+  --c-goal-to: #FFFFFF;
+  --c-life-bg: var(--bg);
+  --c-life: var(--text);
+  --c-spent: #ff8a8a;
+  --c-refused: #ff8a8a;
+  --c-hub: var(--bg);
+  --c-hub-ring: var(--accent);
+  --c-border: transparent;
+
+  /* Sizes are written as a number of design pixels times --u, which is the wheel's
+     diameter divided by 620, so every piece of text and every gap scales with the
+     box the wheel is drawn in. The multipliers below are the Fields. */
+  --idle-scale: 1;     --idle-w: 700;
+  --toast-scale: 1;    --toast-w: 700;
+  --pill-scale: 1;     --pill-w: 700;
+  --goal-scale: 1;     --goal-w: 700;
+  --eyebrow-scale: 1;  --eyebrow-w: 700;  --eyebrow-spacing: 2;  --eyebrow-case: uppercase;
+  --name-scale: 1;     --name-w: 800;
+  --sub-scale: 1;      --sub-w: 600;
+  --life-scale: 1;     --life-w: 800;
+  --question-scale: 1;
+  --pill-radius: 14;   --pill-tilt: 0deg;     --pill-pad-v: 6;   --pill-pad-h: 16;
+  --toast-tilt: 0deg;  --toast-radius: 14;
+  --card-radius: 30;   --card-tilt: 0deg;     --card-pad-v: 34;  --card-pad-h: 48;  --card-border: 0px;
+  --goal-h: 18;
+  --hub-ring: 6;
+  --tail-display: none;
+  --pill-shadow: none;
+  --card-shadow: none;
+  --wheel-shadow: none;
+  --text-shadow: none;
+  --toast-s: 0.45s;
+  --card-s: 0.55s;
+  --goal-s: 0.6s;
+  --pulse-s: 1s;
+  --overlay-s: 0.3s;
+
+  /* Fill the StreamElements widget box (not the whole overlay) and become the
+     sizing reference for the wheel, so the layout adapts to whatever box the
+     streamer draws instead of assuming the full 1920x1080 canvas. */
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  container-type: size;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 16px;
+  font-family: var(--font);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+
+#wheel-app * { box-sizing: border-box; }
+
+/* The design unit. container query units resolve against #wheel-app, so they have
+   to be read on its children rather than on itself. */
+#wheel-app > * {
+  --d: clamp(160px, min(92cqw, 82cqh), 620px);
+  --u: calc(var(--d) / 620);
+}
+
+/* The Animate field: when it is off, nothing moves or eases anywhere. */
+#wheel-app.no-motion *,
+#wheel-app.no-motion *::before,
+#wheel-app.no-motion *::after {
+  animation: none !important;
+  transition: none !important;
+}
+
+/* The `hidden` attribute must win over the display rules below, otherwise the
+   winner reveal and goal bar show on load instead of staying tucked away. */
+#wheel-app [hidden] { display: none !important; }
+
+/* ---- Wheel stage ----
+   The wheel is always drawn and spun as a full disc. In semicircle mode the
+   `.wheel-clip` keeps only the top half on screen while the disc rotates behind
+   it, so all the spin/geometry logic stays identical and just the framing changes. */
+.wheel-stage {
+  /* Fallback for browsers without container queries: cap to the box width and
+     the overlay's smaller side. */
+  --d: min(620px, 92%, 78vmin);
+  /* Preferred: fit the widget box in both directions, floored so it can never
+     collapse to nothing and capped so it stays crisp. */
+  --d: clamp(160px, min(92cqw, 82cqh), 620px);
+  position: relative;
+  width: var(--d);
+  height: var(--d);
+}
+
+.wheel-clip {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+#wheel-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  filter: var(--wheel-shadow);
+  transition: opacity 0.3s ease;
+  transform-origin: 50% 50%;
+}
+
+.wheel-hub {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 16%;
+  height: 16%;
+  border-radius: 50%;
+  background: var(--c-hub);
+  border: calc(var(--hub-ring) * var(--u)) solid var(--c-hub-ring);
+  box-shadow: var(--pill-shadow);
+  z-index: 2;
+}
+
+.wheel-hub::after {
+  content: "";
+  position: absolute;
+  inset: 22%;
+  border-radius: 50%;
+  background: var(--c-hub-ring);
+  opacity: 0.85;
+}
+
+/* Pointer sits at the top, dipping into the rim, nib facing down. */
+.wheel-pointer {
+  position: absolute;
+  top: -2%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: calc(26 * var(--u)) solid transparent;
+  border-right: calc(26 * var(--u)) solid transparent;
+  border-top: calc(46 * var(--u)) solid var(--pointer);
+  filter: var(--card-shadow);
+  z-index: 3;
+}
+
+.wheel-pointer::after {
+  content: "";
+  position: absolute;
+  top: calc(-58 * var(--u));
+  left: calc(-16 * var(--u));
+  width: calc(32 * var(--u));
+  height: calc(32 * var(--u));
+  border-radius: 50%;
+  background: var(--pointer);
+  box-shadow: var(--pill-shadow);
+}
+
+/* Idle / empty state shown over the wheel when there is nothing to spin. */
+.wheel-empty {
+  position: absolute;
+  inset: 18%;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  border-radius: 50%;
+  padding: 8%;
+  pointer-events: none;
+}
+
+#wheel-app.is-empty .wheel-empty { display: flex; }
+#wheel-app.is-empty .wheel-hub { display: none; }
+
+/* ---- Semicircle layout: same disc, only the top half framed on screen ---- */
+#wheel-app.shape-semicircle .wheel-stage { height: calc(var(--d) / 2); }
+#wheel-app.shape-semicircle .wheel-clip { height: 100%; overflow: hidden; }
+#wheel-app.shape-semicircle #wheel-canvas { height: auto; aspect-ratio: 1 / 1; }
+#wheel-app.shape-semicircle .wheel-hub {
+  top: auto;
+  bottom: 0;
+  transform: translate(-50%, 0);
+  width: 13%;
+  height: 26%;
+}
+#wheel-app.shape-semicircle .wheel-empty {
+  /* Centre the message in the visual middle of the dome. The hub is hidden while
+     empty, so it can sit a touch lower where the dome is widest and reads centred. */
+  inset: 10% 6% 0 6%;
+  border-radius: 0;
+  padding: 4% 6%;
+}
+
+.idle-message {
+  font-size: max(9px, calc(24 * var(--u) * var(--idle-scale)));
+  font-weight: var(--idle-w);
+  line-height: 1.3;
+  color: var(--c-idle);
+  text-shadow: var(--text-shadow);
+}
+
+/* ---- Entry toast: a sticker pill that pops in when someone joins ---- */
+.entry-toast {
+  position: absolute;
+  top: 6px;
+  left: 50%;
+  z-index: 7;
+  background: var(--c-toast-bg);
+  color: var(--c-toast);
+  font-size: max(8px, calc(20 * var(--u) * var(--toast-scale)));
+  font-weight: var(--toast-w);
+  padding: calc(8 * var(--u)) calc(20 * var(--u));
+  border-radius: calc(var(--toast-radius) * var(--u));
+  white-space: nowrap;
+  box-shadow: var(--pill-shadow);
+  text-shadow: var(--text-shadow);
+  transform: translateX(-50%) rotate(var(--toast-tilt));
+  animation: toast-pop var(--toast-s) cubic-bezier(0.18, 1.4, 0.4, 1) both;
+}
+.entry-toast::after {
+  content: "";
+  display: var(--tail-display);
+  background: inherit;
+  width: 14px;
+  height: 14px;
+  border-radius: 100px;
+  position: absolute;
+  bottom: -4px;
+  left: 18px;
+  z-index: -1;
+}
+@keyframes toast-pop {
+  from { transform: translateX(-50%) translateY(-16px) rotate(var(--toast-tilt)) scale(0.6); opacity: 0; }
+  to { transform: translateX(-50%) translateY(0) rotate(var(--toast-tilt)) scale(1); opacity: 1; }
+}
+
+/* ---- Status pills ---- */
+.status-bar {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* Sticker badges: cream pill with a little circle "tail", gently hand-placed,
+   echoing div.bubble.small in the Bubblepop reference. */
+.pill {
+  font-size: max(8px, calc(18 * var(--u) * var(--pill-scale)));
+  font-weight: var(--pill-w);
+  padding: calc(var(--pill-pad-v) * var(--u)) calc(var(--pill-pad-h) * var(--u));
+  border-radius: calc(var(--pill-radius) * var(--u));
+  background: var(--c-pill-bg);
+  color: var(--c-pill);
+  box-shadow: var(--pill-shadow);
+  text-shadow: var(--text-shadow);
+  position: relative;
+  transform: rotate(var(--pill-tilt));
+}
+.pill::after {
+  content: "";
+  display: var(--tail-display);
+  background: inherit;
+  width: 14px;
+  height: 14px;
+  border-radius: 100px;
+  position: absolute;
+  bottom: -4px;
+  left: 10px;
+  z-index: -1;
+}
+.status-bar .pill:nth-child(even) { transform: rotate(calc(var(--pill-tilt) * -1)); }
+.status-bar .pill:nth-child(even)::after { left: auto; right: 10px; }
+
+.entry-timer {
+  animation: timer-pulse var(--pulse-s) ease-in-out infinite;
+}
+
+@keyframes timer-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.72; }
+}
+
+#wheel-app.mode-forfeits.state-open .open-badge,
+#wheel-app.mode-forfeits .open-badge { display: none; }
+
+/* ---- Goal bar ---- */
+.goal-wrap {
+  width: min(620px, 78vmin);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.goal-label {
+  font-size: max(8px, calc(16 * var(--u) * var(--goal-scale)));
+  font-weight: var(--goal-w);
+  color: var(--c-goal);
+  text-shadow: var(--text-shadow);
+  text-align: center;
+  opacity: 0.85;
+}
+
+.goal-track {
+  height: calc(var(--goal-h) * var(--u));
+  border-radius: 999px;
+  background: var(--c-goal-track);
+  overflow: hidden;
+}
+
+.goal-fill {
+  height: 100%;
+  width: 0%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--c-goal-from), var(--c-goal-to));
+  transition: width var(--goal-s) ease;
+}
+
+/* ---- Winner reveal ---- */
+.winner-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;   /* no dimming box, so only the card shows over the scene */
+  z-index: 5;
+  animation: overlay-in var(--overlay-s) ease both;
+}
+
+@keyframes overlay-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Sticker reveal card: warm brown surface, cream text, big soft radius, a gentle
+   playful tilt, matching the rounded cards in the Bubblepop reference. */
+.winner-card {
+  text-align: center;
+  padding: calc(var(--card-pad-v) * var(--u)) calc(var(--card-pad-h) * var(--u));
+  border-radius: calc(var(--card-radius) * var(--u));
+  background: var(--c-card-bg);
+  color: var(--c-card);
+  border: var(--card-border) solid var(--c-border);
+  box-shadow: var(--card-shadow);
+  text-shadow: var(--text-shadow);
+  animation: card-pop var(--card-s) cubic-bezier(0.18, 1.4, 0.4, 1) both;
+  max-width: 86%;
+}
+
+@keyframes card-pop {
+  from { transform: scale(0.5) rotate(calc(var(--card-tilt) - 4deg)); opacity: 0; }
+  to { transform: scale(1) rotate(var(--card-tilt)); opacity: 1; }
+}
+
+/* Eyebrow as a small cream pill tag, tilted, like the hrs/min/sec labels. */
+.winner-eyebrow {
+  display: inline-block;
+  font-size: max(8px, calc(18 * var(--u) * var(--eyebrow-scale)));
+  font-weight: var(--eyebrow-w);
+  letter-spacing: calc(var(--eyebrow-spacing) * var(--u));
+  text-transform: var(--eyebrow-case);
+  color: var(--c-eyebrow);
+  background: var(--c-eyebrow-bg);
+  padding: calc(3 * var(--u)) calc(15 * var(--u)) calc(2 * var(--u));
+  border-radius: 100px;
+  max-width: 96%;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  text-shadow: none;
+}
+
+.winner-overlay.is-question .winner-eyebrow {
+  letter-spacing: 1px;
+}
+
+.winner-name {
+  font-size: max(12px, calc(56 * var(--u) * var(--name-scale)));
+  font-weight: var(--name-w);
+  line-height: 1.1;
+  margin: calc(12 * var(--u)) 0 calc(8 * var(--u));
+  color: var(--c-card);
+  white-space: nowrap;
+}
+
+.winner-sub {
+  font-size: max(8px, calc(20 * var(--u) * var(--sub-scale)));
+  font-weight: var(--sub-w);
+  color: var(--c-card);
+  opacity: 0.85;
+  min-height: 1em;
+}
+
+.winner-sub.refused {
+  color: var(--c-refused);
+  opacity: 1;
+  animation: refused-shake 0.5s ease;
+}
+
+@keyframes refused-shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-6px); }
+  75% { transform: translateX(6px); }
+}
+
+/* ---- Lifelines (Truth or... question mode) ---- */
+.lifelines {
+  font-size: max(8px, calc(22 * var(--u) * var(--life-scale)));
+  font-weight: var(--life-w);
+  letter-spacing: calc(2 * var(--u));
+  color: var(--c-life);
+  background: var(--c-life-bg);
+  padding: calc(5 * var(--u)) calc(18 * var(--u));
+  border-radius: calc(var(--pill-radius) * var(--u));
+  position: relative;
+  transform: rotate(var(--pill-tilt));
+  box-shadow: var(--pill-shadow);
+  text-shadow: var(--text-shadow);
+}
+.lifelines::after {
+  content: "";
+  display: var(--tail-display);
+  background: inherit;
+  width: 14px;
+  height: 14px;
+  border-radius: 100px;
+  position: absolute;
+  bottom: -4px;
+  left: 14px;
+  z-index: -1;
+}
+.lifelines.spent { color: var(--c-spent); }
+
+/* ---- Question reveal: wrap the text instead of shrinking to one line ---- */
+.winner-overlay.is-question .winner-card { max-width: 82%; }
+.winner-overlay.is-question .winner-name {
+  white-space: normal;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  font-size: max(11px, calc(34 * var(--u) * var(--question-scale)));
+  line-height: 1.3;
+  max-height: 60vh;
+  overflow: hidden;
+}
+
+/* ---- Confetti ---- */
+.confetti-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 6;
+}

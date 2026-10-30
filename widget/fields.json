@@ -1,0 +1,1308 @@
+{
+  "spinCommand": {
+    "type": "text",
+    "label": "Spin command (streamer draws a winner)",
+    "value": "!spin",
+    "group": "Commands"
+  },
+  "enterCommand": {
+    "type": "text",
+    "label": "Enter command (viewers add their name)",
+    "value": "!spintowin",
+    "group": "Commands"
+  },
+  "openCommand": {
+    "type": "text",
+    "label": "Open entries command (mods)",
+    "value": "!spinopen",
+    "group": "Commands"
+  },
+  "closeCommand": {
+    "type": "text",
+    "label": "Close entries command (mods)",
+    "value": "!spinclose",
+    "group": "Commands"
+  },
+  "clearCommand": {
+    "type": "text",
+    "label": "Clear entries command (mods)",
+    "value": "!spinclear",
+    "group": "Commands"
+  },
+  "removeCommand": {
+    "type": "text",
+    "label": "Remove one entrant command, e.g. !spinremove name (mods)",
+    "value": "!spinremove",
+    "group": "Commands"
+  },
+  "modeCommand": {
+    "type": "text",
+    "label": "Switch mode command, e.g. !spinmode forfeits (mods)",
+    "value": "!spinmode",
+    "group": "Commands"
+  },
+  "addCommand": {
+    "type": "text",
+    "label": "Add entrants by hand, e.g. !spinadd Alice, Bob (mods)",
+    "value": "!spinadd",
+    "group": "Commands"
+  },
+  "rerollCommand": {
+    "type": "text",
+    "label": "Re-roll the last draw (mods)",
+    "value": "!spinreroll",
+    "group": "Commands"
+  },
+  "lastWinnerCommand": {
+    "type": "text",
+    "label": "Re-show the last winner on screen (mods)",
+    "value": "!spinlastwinner",
+    "group": "Commands"
+  },
+  "askCommand": {
+    "type": "text",
+    "label": "Truth or...: submit a question, e.g. !spinask ... (anyone)",
+    "value": "!spinask",
+    "group": "Commands"
+  },
+  "vetoCommand": {
+    "type": "text",
+    "label": "Truth or...: veto the current question, spends a lifeline (streamer)",
+    "value": "!spinveto",
+    "group": "Commands"
+  },
+  "strikeCommand": {
+    "type": "text",
+    "label": "Truth or...: mods remove the current question, no lifeline",
+    "value": "!spinstrike",
+    "group": "Commands"
+  },
+  "resetLivesCommand": {
+    "type": "text",
+    "label": "Truth or...: reset lifelines to full (mods)",
+    "value": "!spinresetlifelines",
+    "group": "Commands"
+  },
+  "forfeitAddCommand": {
+    "type": "text",
+    "label": "Forfeits: add one or more, e.g. !spinforfeitadd Karaoke, Pyjama party (mods)",
+    "value": "!spinforfeitadd",
+    "group": "Commands"
+  },
+  "forfeitRemoveCommand": {
+    "type": "text",
+    "label": "Forfeits: remove one by name, e.g. !spinforfeitremove Karaoke (mods)",
+    "value": "!spinforfeitremove",
+    "group": "Commands"
+  },
+  "forfeitClearCommand": {
+    "type": "text",
+    "label": "Forfeits: clear all forfeits (mods)",
+    "value": "!spinforfeitclear",
+    "group": "Commands"
+  },
+  "whoCanSpin": {
+    "type": "dropdown",
+    "label": "Who can use the spin / mod commands",
+    "value": "mods",
+    "options": {
+      "broadcaster": "Broadcaster only",
+      "mods": "Broadcaster + moderators"
+    },
+    "group": "Rules"
+  },
+  "defaultMode": {
+    "type": "dropdown",
+    "label": "Mode the wheel starts in",
+    "value": "giveaway",
+    "options": {
+      "giveaway": "Giveaway raffle (chatter names)",
+      "forfeits": "Forfeits (things chat makes you do)",
+      "questions": "Truth or... (chat questions)"
+    },
+    "group": "Rules"
+  },
+  "startOpen": {
+    "type": "checkbox",
+    "label": "Open entries automatically on load",
+    "value": true,
+    "group": "Rules"
+  },
+  "oneEntryPerUser": {
+    "type": "checkbox",
+    "label": "One entry per user (ignore duplicate names)",
+    "value": true,
+    "group": "Rules"
+  },
+  "showEntryToast": {
+    "type": "checkbox",
+    "label": "Pop a toast when someone joins the giveaway",
+    "value": true,
+    "group": "Rules"
+  },
+  "subscriberOnly": {
+    "type": "checkbox",
+    "label": "Only subscribers may enter",
+    "value": false,
+    "group": "Rules"
+  },
+  "maxEntriesCap": {
+    "type": "number",
+    "label": "Maximum entries (0 = unlimited)",
+    "value": 0,
+    "min": 0,
+    "max": 1000,
+    "step": 1,
+    "group": "Rules"
+  },
+  "entrySeconds": {
+    "type": "number",
+    "label": "Auto-close entries after N seconds (0 = off)",
+    "value": 0,
+    "min": 0,
+    "max": 3600,
+    "step": 5,
+    "group": "Rules"
+  },
+  "subscriberWeight": {
+    "type": "number",
+    "label": "Slots given to subscribers (higher = better odds)",
+    "value": 1,
+    "min": 1,
+    "max": 20,
+    "step": 1,
+    "group": "Odds"
+  },
+  "vipWeight": {
+    "type": "number",
+    "label": "Slots given to VIPs (higher = better odds)",
+    "value": 1,
+    "min": 1,
+    "max": 20,
+    "step": 1,
+    "group": "Odds"
+  },
+  "removeWinner": {
+    "type": "checkbox",
+    "label": "Giveaway: remove the winner from the wheel after a draw",
+    "value": true,
+    "group": "Odds"
+  },
+  "forfeitCrossOff": {
+    "type": "checkbox",
+    "label": "Forfeits: cross a forfeit off the wheel once you land on it",
+    "value": true,
+    "group": "Odds"
+  },
+  "winnerCooldown": {
+    "type": "number",
+    "label": "Keep the last N winners out of the next draws (0 = off)",
+    "value": 0,
+    "min": 0,
+    "max": 50,
+    "step": 1,
+    "group": "Odds"
+  },
+  "lifelineCount": {
+    "type": "number",
+    "label": "Lifelines (how many questions you may veto)",
+    "value": 4,
+    "min": 0,
+    "max": 20,
+    "step": 1,
+    "group": "Truth or..."
+  },
+  "questionsAnonymous": {
+    "type": "checkbox",
+    "label": "Hide who asked (anonymous questions)",
+    "value": false,
+    "group": "Truth or..."
+  },
+  "maxQuestionLen": {
+    "type": "number",
+    "label": "Maximum question length (characters)",
+    "value": 200,
+    "min": 20,
+    "max": 500,
+    "step": 10,
+    "group": "Truth or..."
+  },
+  "enableAutoSpin": {
+    "type": "checkbox",
+    "label": "Spin automatically on the trigger below (works in any mode, incl. forfeits)",
+    "value": false,
+    "group": "Goal auto-spin"
+  },
+  "triggerType": {
+    "type": "dropdown",
+    "label": "What triggers an automatic spin",
+    "value": "sub",
+    "options": {
+      "sub": "Each new subscriber",
+      "follows": "Every N new followers",
+      "bits": "Bits (cheer)",
+      "tips": "StreamElements donation / tip"
+    },
+    "group": "Goal auto-spin"
+  },
+  "triggerCount": {
+    "type": "dropdown",
+    "label": "For bits/donations: count how?",
+    "value": "cumulative",
+    "options": {
+      "cumulative": "Add up until they reach the threshold, then spin",
+      "each": "Each bits/donation of at least the threshold spins once"
+    },
+    "group": "Goal auto-spin"
+  },
+  "threshold": {
+    "type": "number",
+    "label": "Threshold (followers to count / bits or donation amount)",
+    "value": 10,
+    "min": 1,
+    "max": 100000,
+    "step": 1,
+    "group": "Goal auto-spin"
+  },
+  "showGoalBar": {
+    "type": "checkbox",
+    "label": "Show the goal progress bar",
+    "value": true,
+    "group": "Goal auto-spin"
+  },
+  "idleMessage": {
+    "type": "text",
+    "label": "Message on the empty wheel in giveaway mode",
+    "value": "Type !spintowin to enter \u2600\ufe0f",
+    "group": "Wording"
+  },
+  "modeGiveawayLabel": {
+    "type": "text",
+    "label": "Badge text in giveaway mode",
+    "value": "Giveaway",
+    "group": "Wording"
+  },
+  "modeForfeitsLabel": {
+    "type": "text",
+    "label": "Badge text in forfeits mode",
+    "value": "Forfeits",
+    "group": "Wording"
+  },
+  "modeQuestionsLabel": {
+    "type": "text",
+    "label": "Badge text in Truth or... mode",
+    "value": "Truth or...",
+    "group": "Wording"
+  },
+  "entryWord": {
+    "type": "text",
+    "label": "Word for one entry (1 entry)",
+    "value": "entry",
+    "group": "Wording"
+  },
+  "entriesWord": {
+    "type": "text",
+    "label": "Word for several entries (9 entries)",
+    "value": "entries",
+    "group": "Wording"
+  },
+  "forfeitWord": {
+    "type": "text",
+    "label": "Word for one forfeit",
+    "value": "forfeit",
+    "group": "Wording"
+  },
+  "forfeitsWord": {
+    "type": "text",
+    "label": "Word for several forfeits",
+    "value": "forfeits",
+    "group": "Wording"
+  },
+  "questionWord": {
+    "type": "text",
+    "label": "Word for one question",
+    "value": "question",
+    "group": "Wording"
+  },
+  "questionsWord": {
+    "type": "text",
+    "label": "Word for several questions",
+    "value": "questions",
+    "group": "Wording"
+  },
+  "openLabel": {
+    "type": "text",
+    "label": "Badge text while entries are open",
+    "value": "Entries open",
+    "group": "Wording"
+  },
+  "closedLabel": {
+    "type": "text",
+    "label": "Badge text while entries are closed",
+    "value": "Entries closed",
+    "group": "Wording"
+  },
+  "timerPrefix": {
+    "type": "text",
+    "label": "Text before the entry countdown number",
+    "value": "Entries close in ",
+    "group": "Wording"
+  },
+  "timerSuffix": {
+    "type": "text",
+    "label": "Text after the entry countdown number",
+    "value": "s",
+    "group": "Wording"
+  },
+  "toastSuffix": {
+    "type": "text",
+    "label": "Text after a name in the joined toast",
+    "value": " joined!",
+    "group": "Wording"
+  },
+  "winnerLabel": {
+    "type": "text",
+    "label": "Label above a winner",
+    "value": "Winner",
+    "group": "Wording"
+  },
+  "winnerOfLabel": {
+    "type": "text",
+    "label": "Label when several winners are drawn ({n} and {total} are filled in)",
+    "value": "Winner {n} of {total}",
+    "group": "Wording"
+  },
+  "lastWinnerLabel": {
+    "type": "text",
+    "label": "Label when the last winner is shown again",
+    "value": "Last winner",
+    "group": "Wording"
+  },
+  "drawnFromText": {
+    "type": "text",
+    "label": "Line under a weighted winner ({n} is the number of entries)",
+    "value": "drawn from {n} entries",
+    "group": "Wording"
+  },
+  "lifelinesLabel": {
+    "type": "text",
+    "label": "Label before the lifeline hearts",
+    "value": "Lifelines",
+    "group": "Wording"
+  },
+  "heartFull": {
+    "type": "text",
+    "label": "Symbol for a lifeline left",
+    "value": "\u2665",
+    "group": "Wording"
+  },
+  "heartEmpty": {
+    "type": "text",
+    "label": "Symbol for a lifeline spent",
+    "value": "\u2661",
+    "group": "Wording"
+  },
+  "lifelineLeftText": {
+    "type": "text",
+    "label": "Line when one lifeline is left ({n} and {cmd} are filled in)",
+    "value": "{n} lifeline left, {cmd} to skip",
+    "group": "Wording"
+  },
+  "lifelinesLeftText": {
+    "type": "text",
+    "label": "Line when several lifelines are left",
+    "value": "{n} lifelines left, {cmd} to skip",
+    "group": "Wording"
+  },
+  "noLifelinesText": {
+    "type": "text",
+    "label": "Line when no lifelines are left",
+    "value": "No lifelines left, no more skips! \ud83d\ude48",
+    "group": "Wording"
+  },
+  "asksSuffix": {
+    "type": "text",
+    "label": "Text after the asker's name above a question",
+    "value": " asks",
+    "group": "Wording"
+  },
+  "anonymousEyebrow": {
+    "type": "text",
+    "label": "Label above a question when askers are hidden",
+    "value": "Truth or...",
+    "group": "Wording"
+  },
+  "idleQuestionsText": {
+    "type": "text",
+    "label": "Message on the empty wheel in Truth or... mode ({cmd} is filled in)",
+    "value": "Type {cmd} your question \u2600\ufe0f",
+    "group": "Wording"
+  },
+  "idleForfeitsText": {
+    "type": "text",
+    "label": "Message on the empty wheel in forfeits mode ({cmd} is filled in)",
+    "value": "No forfeits yet, {cmd} to add some",
+    "group": "Wording"
+  },
+  "goalSubLabel": {
+    "type": "text",
+    "label": "Goal bar label for subs",
+    "value": "Sub goal",
+    "group": "Wording"
+  },
+  "goalFollowsLabel": {
+    "type": "text",
+    "label": "Goal bar label for followers",
+    "value": "Follower goal",
+    "group": "Wording"
+  },
+  "goalBitsLabel": {
+    "type": "text",
+    "label": "Goal bar label for bits",
+    "value": "Bits goal",
+    "group": "Wording"
+  },
+  "goalTipsLabel": {
+    "type": "text",
+    "label": "Goal bar label for tips",
+    "value": "Tip goal",
+    "group": "Wording"
+  },
+  "goalDefaultLabel": {
+    "type": "text",
+    "label": "Goal bar label otherwise",
+    "value": "Goal",
+    "group": "Wording"
+  },
+  "wheelShape": {
+    "type": "dropdown",
+    "label": "Wheel shape",
+    "value": "semicircle",
+    "options": {
+      "semicircle": "Semicircle (half height, saves space)",
+      "full": "Full circle"
+    },
+    "group": "Wheel"
+  },
+  "idleSpin": {
+    "type": "checkbox",
+    "label": "Gently rotate the wheel while it waits",
+    "value": true,
+    "group": "Wheel"
+  },
+  "useChatColors": {
+    "type": "checkbox",
+    "label": "Colour each slice by the entrant's Twitch chat colour",
+    "value": false,
+    "group": "Wheel"
+  },
+  "rimWidth": {
+    "type": "number",
+    "label": "Outer rim thickness in pixels (0 for none)",
+    "value": 8,
+    "min": 0,
+    "max": 40,
+    "step": 1,
+    "group": "Wheel"
+  },
+  "dividerWidth": {
+    "type": "number",
+    "label": "Line between slices, in pixels (0 for none)",
+    "value": 2,
+    "min": 0,
+    "max": 20,
+    "step": 0.5,
+    "group": "Wheel"
+  },
+  "dividerOpacity": {
+    "type": "number",
+    "label": "Line between slices, opacity (used when the preset is Custom)",
+    "value": 0.22,
+    "min": 0,
+    "max": 1,
+    "step": 0.02,
+    "group": "Wheel"
+  },
+  "labelScale": {
+    "type": "number",
+    "label": "Size of the names on the wheel compared with the default (1 is the default)",
+    "value": 1,
+    "min": 0.5,
+    "max": 2,
+    "step": 0.05,
+    "group": "Wheel"
+  },
+  "labelWeight": {
+    "type": "dropdown",
+    "label": "Boldness of the names on the wheel",
+    "value": "700",
+    "options": {
+      "400": "Regular",
+      "500": "Medium",
+      "600": "Semi-bold",
+      "700": "Bold",
+      "800": "Extra bold"
+    },
+    "group": "Wheel"
+  },
+  "hubRing": {
+    "type": "number",
+    "label": "Thickness of the ring around the hub, in design pixels",
+    "value": 6,
+    "min": 0,
+    "max": 30,
+    "step": 1,
+    "group": "Wheel"
+  },
+  "wheelShadow": {
+    "type": "checkbox",
+    "label": "Soft shadow under the wheel",
+    "value": false,
+    "group": "Wheel"
+  },
+  "pillRadius": {
+    "type": "number",
+    "label": "Pill corner roundness, in design pixels",
+    "value": 14,
+    "min": 0,
+    "max": 60,
+    "step": 1,
+    "group": "Pills and cards"
+  },
+  "pillPaddingV": {
+    "type": "number",
+    "label": "Pill space above and below its text",
+    "value": 6,
+    "min": 0,
+    "max": 40,
+    "step": 1,
+    "group": "Pills and cards"
+  },
+  "pillPaddingH": {
+    "type": "number",
+    "label": "Pill space either side of its text",
+    "value": 16,
+    "min": 0,
+    "max": 80,
+    "step": 1,
+    "group": "Pills and cards"
+  },
+  "pillTilt": {
+    "type": "number",
+    "label": "Pill tilt in degrees (0 is straight)",
+    "value": 0,
+    "min": -20,
+    "max": 20,
+    "step": 0.5,
+    "group": "Pills and cards"
+  },
+  "toastRadius": {
+    "type": "number",
+    "label": "Joined-toast corner roundness",
+    "value": 14,
+    "min": 0,
+    "max": 60,
+    "step": 1,
+    "group": "Pills and cards"
+  },
+  "toastTilt": {
+    "type": "number",
+    "label": "Joined-toast tilt in degrees",
+    "value": 0,
+    "min": -20,
+    "max": 20,
+    "step": 0.5,
+    "group": "Pills and cards"
+  },
+  "cardRadius": {
+    "type": "number",
+    "label": "Winner card corner roundness",
+    "value": 30,
+    "min": 0,
+    "max": 100,
+    "step": 1,
+    "group": "Pills and cards"
+  },
+  "cardTilt": {
+    "type": "number",
+    "label": "Winner card tilt in degrees",
+    "value": 0,
+    "min": -20,
+    "max": 20,
+    "step": 0.5,
+    "group": "Pills and cards"
+  },
+  "cardPaddingV": {
+    "type": "number",
+    "label": "Winner card space above and below its text",
+    "value": 34,
+    "min": 0,
+    "max": 120,
+    "step": 1,
+    "group": "Pills and cards"
+  },
+  "cardPaddingH": {
+    "type": "number",
+    "label": "Winner card space either side of its text",
+    "value": 48,
+    "min": 0,
+    "max": 160,
+    "step": 1,
+    "group": "Pills and cards"
+  },
+  "cardBorderWidth": {
+    "type": "number",
+    "label": "Winner card outline width in pixels (0 for none)",
+    "value": 0,
+    "min": 0,
+    "max": 30,
+    "step": 1,
+    "group": "Pills and cards"
+  },
+  "goalHeight": {
+    "type": "number",
+    "label": "Goal bar thickness, in design pixels",
+    "value": 18,
+    "min": 4,
+    "max": 60,
+    "step": 1,
+    "group": "Pills and cards"
+  },
+  "showTail": {
+    "type": "checkbox",
+    "label": "Show the little circle tails on pills and the toast",
+    "value": false,
+    "group": "Pills and cards"
+  },
+  "pillShadow": {
+    "type": "checkbox",
+    "label": "Soft shadow under pills and the toast",
+    "value": false,
+    "group": "Pills and cards"
+  },
+  "cardShadow": {
+    "type": "checkbox",
+    "label": "Soft shadow under the winner card and the pointer",
+    "value": false,
+    "group": "Pills and cards"
+  },
+  "textShadow": {
+    "type": "checkbox",
+    "label": "Soft shadow behind the text, to help it read over bright scenes",
+    "value": false,
+    "group": "Pills and cards"
+  },
+  "idleScale": {
+    "type": "number",
+    "label": "Size of the empty-wheel message compared with the default (1 is the default)",
+    "value": 1,
+    "min": 0.4,
+    "max": 3,
+    "step": 0.05,
+    "group": "Text"
+  },
+  "idleWeight": {
+    "type": "dropdown",
+    "label": "Boldness of the empty-wheel message",
+    "value": "700",
+    "options": {
+      "400": "Regular",
+      "500": "Medium",
+      "600": "Semi-bold",
+      "700": "Bold",
+      "800": "Extra bold"
+    },
+    "group": "Text"
+  },
+  "toastScale": {
+    "type": "number",
+    "label": "Size of the joined toast compared with the default (1 is the default)",
+    "value": 1,
+    "min": 0.4,
+    "max": 3,
+    "step": 0.05,
+    "group": "Text"
+  },
+  "toastWeight": {
+    "type": "dropdown",
+    "label": "Boldness of the joined toast",
+    "value": "700",
+    "options": {
+      "400": "Regular",
+      "500": "Medium",
+      "600": "Semi-bold",
+      "700": "Bold",
+      "800": "Extra bold"
+    },
+    "group": "Text"
+  },
+  "pillScale": {
+    "type": "number",
+    "label": "Size of the status pills compared with the default (1 is the default)",
+    "value": 1,
+    "min": 0.4,
+    "max": 3,
+    "step": 0.05,
+    "group": "Text"
+  },
+  "pillWeight": {
+    "type": "dropdown",
+    "label": "Boldness of the status pills",
+    "value": "700",
+    "options": {
+      "400": "Regular",
+      "500": "Medium",
+      "600": "Semi-bold",
+      "700": "Bold",
+      "800": "Extra bold"
+    },
+    "group": "Text"
+  },
+  "goalScale": {
+    "type": "number",
+    "label": "Size of the goal bar label compared with the default (1 is the default)",
+    "value": 1,
+    "min": 0.4,
+    "max": 3,
+    "step": 0.05,
+    "group": "Text"
+  },
+  "goalWeight": {
+    "type": "dropdown",
+    "label": "Boldness of the goal bar label",
+    "value": "700",
+    "options": {
+      "400": "Regular",
+      "500": "Medium",
+      "600": "Semi-bold",
+      "700": "Bold",
+      "800": "Extra bold"
+    },
+    "group": "Text"
+  },
+  "eyebrowScale": {
+    "type": "number",
+    "label": "Size of the label above the winner compared with the default (1 is the default)",
+    "value": 1,
+    "min": 0.4,
+    "max": 3,
+    "step": 0.05,
+    "group": "Text"
+  },
+  "eyebrowWeight": {
+    "type": "dropdown",
+    "label": "Boldness of the label above the winner",
+    "value": "700",
+    "options": {
+      "400": "Regular",
+      "500": "Medium",
+      "600": "Semi-bold",
+      "700": "Bold",
+      "800": "Extra bold"
+    },
+    "group": "Text"
+  },
+  "nameScale": {
+    "type": "number",
+    "label": "Size of the winner name compared with the default (1 is the default)",
+    "value": 1,
+    "min": 0.4,
+    "max": 3,
+    "step": 0.05,
+    "group": "Text"
+  },
+  "nameWeight": {
+    "type": "dropdown",
+    "label": "Boldness of the winner name",
+    "value": "800",
+    "options": {
+      "400": "Regular",
+      "500": "Medium",
+      "600": "Semi-bold",
+      "700": "Bold",
+      "800": "Extra bold"
+    },
+    "group": "Text"
+  },
+  "subScale": {
+    "type": "number",
+    "label": "Size of the line under the winner compared with the default (1 is the default)",
+    "value": 1,
+    "min": 0.4,
+    "max": 3,
+    "step": 0.05,
+    "group": "Text"
+  },
+  "subWeight": {
+    "type": "dropdown",
+    "label": "Boldness of the line under the winner",
+    "value": "600",
+    "options": {
+      "400": "Regular",
+      "500": "Medium",
+      "600": "Semi-bold",
+      "700": "Bold",
+      "800": "Extra bold"
+    },
+    "group": "Text"
+  },
+  "lifelineScale": {
+    "type": "number",
+    "label": "Size of the lifeline hearts compared with the default (1 is the default)",
+    "value": 1,
+    "min": 0.4,
+    "max": 3,
+    "step": 0.05,
+    "group": "Text"
+  },
+  "lifelineWeight": {
+    "type": "dropdown",
+    "label": "Boldness of the lifeline hearts",
+    "value": "800",
+    "options": {
+      "400": "Regular",
+      "500": "Medium",
+      "600": "Semi-bold",
+      "700": "Bold",
+      "800": "Extra bold"
+    },
+    "group": "Text"
+  },
+  "questionScale": {
+    "type": "number",
+    "label": "Size of a revealed question compared with the default",
+    "value": 1,
+    "min": 0.4,
+    "max": 3,
+    "step": 0.05,
+    "group": "Text"
+  },
+  "eyebrowSpacing": {
+    "type": "number",
+    "label": "Space between the winner label's letters, in design pixels",
+    "value": 2,
+    "min": 0,
+    "max": 12,
+    "step": 0.5,
+    "group": "Text"
+  },
+  "eyebrowUppercase": {
+    "type": "checkbox",
+    "label": "Show the label above the winner in capitals",
+    "value": true,
+    "group": "Text"
+  },
+  "themePreset": {
+    "type": "dropdown",
+    "label": "Theme preset (pick Custom to use your own colours below)",
+    "value": "glass",
+    "options": {
+      "glass": "Soft black (default, matches the other overlays)",
+      "cosycabin": "Cosy cabin",
+      "pastel": "Cosy summer pastel",
+      "celestial": "Celestial tarot-witchy",
+      "pastelgoth": "Pastel goth",
+      "custom": "Custom (use the colours below)"
+    },
+    "group": "Theme"
+  },
+  "fontFamily": {
+    "type": "googleFont",
+    "label": "Font",
+    "value": "BioRhyme",
+    "group": "Theme"
+  },
+  "colorBg": {
+    "type": "colorpicker",
+    "label": "Panel colour (used when the preset is Custom)",
+    "value": "#000000",
+    "group": "Theme"
+  },
+  "panelOpacity": {
+    "type": "number",
+    "label": "Panel opacity for pills, the toast and the winner card (used when the preset is Custom)",
+    "value": 0.55,
+    "min": 0,
+    "max": 1,
+    "step": 0.05,
+    "group": "Theme"
+  },
+  "colorText": {
+    "type": "colorpicker",
+    "label": "Text colour (used when the preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Theme"
+  },
+  "colorAccent": {
+    "type": "colorpicker",
+    "label": "Accent colour: the rim and the empty wheel (used when the preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Theme"
+  },
+  "colorPointer": {
+    "type": "colorpicker",
+    "label": "Pointer colour (used when the preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Theme"
+  },
+  "colorPillBg": {
+    "type": "colorpicker",
+    "label": "Pill background colour (used when the preset is Custom)",
+    "value": "#000000",
+    "group": "Theme"
+  },
+  "colorPill": {
+    "type": "colorpicker",
+    "label": "Pill text colour (used when the preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Theme"
+  },
+  "colorToastBg": {
+    "type": "colorpicker",
+    "label": "Joined toast background colour (used when the preset is Custom)",
+    "value": "#000000",
+    "group": "Theme"
+  },
+  "colorToast": {
+    "type": "colorpicker",
+    "label": "Joined toast text colour (used when the preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Theme"
+  },
+  "colorCardBg": {
+    "type": "colorpicker",
+    "label": "Winner card background colour (used when the preset is Custom)",
+    "value": "#000000",
+    "group": "Theme"
+  },
+  "colorCard": {
+    "type": "colorpicker",
+    "label": "Winner card text colour (used when the preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Theme"
+  },
+  "colorEyebrowBg": {
+    "type": "colorpicker",
+    "label": "Winner label background colour (used when the preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Theme"
+  },
+  "colorEyebrow": {
+    "type": "colorpicker",
+    "label": "Winner label text colour (used when the preset is Custom)",
+    "value": "#111111",
+    "group": "Theme"
+  },
+  "colorIdle": {
+    "type": "colorpicker",
+    "label": "Empty-wheel message colour (used when the preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Theme"
+  },
+  "colorGoal": {
+    "type": "colorpicker",
+    "label": "Goal bar label colour (used when the preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Theme"
+  },
+  "colorGoalTrack": {
+    "type": "colorpicker",
+    "label": "Empty goal bar colour (used when the preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Theme"
+  },
+  "colorGoalFrom": {
+    "type": "colorpicker",
+    "label": "Goal bar fill, start colour (used when the preset is Custom)",
+    "value": "#D9D9D9",
+    "group": "Theme"
+  },
+  "colorGoalTo": {
+    "type": "colorpicker",
+    "label": "Goal bar fill, end colour (used when the preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Theme"
+  },
+  "colorHub": {
+    "type": "colorpicker",
+    "label": "Hub colour (used when the preset is Custom)",
+    "value": "#111111",
+    "group": "Theme"
+  },
+  "colorHubRing": {
+    "type": "colorpicker",
+    "label": "Hub ring colour (used when the preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Theme"
+  },
+  "colorSpent": {
+    "type": "colorpicker",
+    "label": "Spent lifelines and refused skips colour (used when the preset is Custom)",
+    "value": "#ff8a8a",
+    "group": "Theme"
+  },
+  "colorBorder": {
+    "type": "colorpicker",
+    "label": "Winner card outline colour (used when the preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Theme"
+  },
+  "colorLabelDark": {
+    "type": "colorpicker",
+    "label": "Names on light slices colour (used when the preset is Custom)",
+    "value": "#111111",
+    "group": "Theme"
+  },
+  "colorLabelLight": {
+    "type": "colorpicker",
+    "label": "Names on dark slices colour (used when the preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Theme"
+  },
+  "colorDivider": {
+    "type": "colorpicker",
+    "label": "Line between slices colour (used when the preset is Custom)",
+    "value": "#000000",
+    "group": "Theme"
+  },
+  "goalTrackOpacity": {
+    "type": "number",
+    "label": "Empty goal bar opacity (used when the preset is Custom)",
+    "value": 0.2,
+    "min": 0,
+    "max": 1,
+    "step": 0.02,
+    "group": "Theme"
+  },
+  "colorSegA": {
+    "type": "colorpicker",
+    "label": "Slice A colour (used when the preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Theme"
+  },
+  "colorSegB": {
+    "type": "colorpicker",
+    "label": "Slice B colour (used when the preset is Custom)",
+    "value": "#D9D9D9",
+    "group": "Theme"
+  },
+  "colorSegC": {
+    "type": "colorpicker",
+    "label": "Slice C colour (used when the preset is Custom)",
+    "value": "#BFBFBF",
+    "group": "Theme"
+  },
+  "colorSegD": {
+    "type": "colorpicker",
+    "label": "Slice D colour (used when the preset is Custom)",
+    "value": "#EDEDED",
+    "group": "Theme"
+  },
+  "colorSegE": {
+    "type": "colorpicker",
+    "label": "Slice E colour (used when the preset is Custom)",
+    "value": "#A6A6A6",
+    "group": "Theme"
+  },
+  "colorSegF": {
+    "type": "colorpicker",
+    "label": "Slice F colour (used when the preset is Custom)",
+    "value": "#CCCCCC",
+    "group": "Theme"
+  },
+  "animations": {
+    "type": "checkbox",
+    "label": "Animate pills, the toast and the winner card (untick to switch every animation off)",
+    "value": true,
+    "group": "Animation"
+  },
+  "spinDuration": {
+    "type": "number",
+    "label": "Spin length (ms)",
+    "value": 6000,
+    "min": 800,
+    "max": 60000,
+    "step": 100,
+    "group": "Animation"
+  },
+  "winnerDisplayDuration": {
+    "type": "number",
+    "label": "Winner reveal length (ms)",
+    "value": 6000,
+    "min": 800,
+    "max": 120000,
+    "step": 100,
+    "group": "Animation"
+  },
+  "toastSeconds": {
+    "type": "number",
+    "label": "Seconds the joined toast takes to appear",
+    "value": 0.45,
+    "min": 0,
+    "max": 5,
+    "step": 0.05,
+    "group": "Animation"
+  },
+  "cardSeconds": {
+    "type": "number",
+    "label": "Seconds the winner card takes to appear",
+    "value": 0.55,
+    "min": 0,
+    "max": 5,
+    "step": 0.05,
+    "group": "Animation"
+  },
+  "goalSeconds": {
+    "type": "number",
+    "label": "Seconds the goal bar takes to fill",
+    "value": 0.6,
+    "min": 0,
+    "max": 5,
+    "step": 0.05,
+    "group": "Animation"
+  },
+  "pulseSeconds": {
+    "type": "number",
+    "label": "Seconds one pulse of the entry countdown takes",
+    "value": 1,
+    "min": 0.2,
+    "max": 5,
+    "step": 0.05,
+    "group": "Animation"
+  },
+  "enableSounds": {
+    "type": "checkbox",
+    "label": "Play sounds (untick to mute everything, keeping the files)",
+    "value": true,
+    "group": "Sounds"
+  },
+  "enterSound": {
+    "type": "sound-input",
+    "label": "Sound when someone joins the wheel. Leave empty for none.",
+    "value": "",
+    "group": "Sounds"
+  },
+  "enterSoundVolume": {
+    "type": "number",
+    "label": "Join sound volume (0 to 100)",
+    "value": 60,
+    "min": 0,
+    "max": 100,
+    "step": 5,
+    "group": "Sounds"
+  },
+  "tickSound": {
+    "type": "sound-input",
+    "label": "Sound as each slice passes the pointer. Leave empty for none.",
+    "value": "",
+    "group": "Sounds"
+  },
+  "tickSoundVolume": {
+    "type": "number",
+    "label": "Tick sound volume (0 to 100)",
+    "value": 45,
+    "min": 0,
+    "max": 100,
+    "step": 5,
+    "group": "Sounds"
+  },
+  "winSound": {
+    "type": "sound-input",
+    "label": "Sound when the winner is revealed. Leave empty for none.",
+    "value": "",
+    "group": "Sounds"
+  },
+  "winSoundVolume": {
+    "type": "number",
+    "label": "Winner sound volume (0 to 100)",
+    "value": 80,
+    "min": 0,
+    "max": 100,
+    "step": 5,
+    "group": "Sounds"
+  },
+  "btnSpin": {
+    "type": "button",
+    "label": "Spin now",
+    "value": "Spin now",
+    "group": "Manual controls"
+  },
+  "btnOpen": {
+    "type": "button",
+    "label": "Open entries",
+    "value": "Open entries",
+    "group": "Manual controls"
+  },
+  "btnClose": {
+    "type": "button",
+    "label": "Close entries",
+    "value": "Close entries",
+    "group": "Manual controls"
+  },
+  "btnClear": {
+    "type": "button",
+    "label": "Clear entries",
+    "value": "Clear entries",
+    "group": "Manual controls"
+  },
+  "btnMode": {
+    "type": "button",
+    "label": "Switch mode",
+    "value": "Switch mode",
+    "group": "Manual controls"
+  },
+  "btnReroll": {
+    "type": "button",
+    "label": "Re-roll last draw",
+    "value": "Re-roll last draw",
+    "group": "Manual controls"
+  },
+  "btnLastWinner": {
+    "type": "button",
+    "label": "Show last winner",
+    "value": "Show last winner",
+    "group": "Manual controls"
+  },
+  "btnVeto": {
+    "type": "button",
+    "label": "Veto question (spend a lifeline)",
+    "value": "Veto question",
+    "group": "Manual controls"
+  },
+  "btnStrike": {
+    "type": "button",
+    "label": "Strike question (mod, no lifeline)",
+    "value": "Strike question",
+    "group": "Manual controls"
+  },
+  "btnResetLives": {
+    "type": "button",
+    "label": "Reset lifelines",
+    "value": "Reset lifelines",
+    "group": "Manual controls"
+  },
+  "btnForfeitClear": {
+    "type": "button",
+    "label": "Clear all forfeits",
+    "value": "Clear forfeits",
+    "group": "Manual controls"
+  },
+  "btnSoundEnter": {
+    "type": "button",
+    "label": "Test the join sound",
+    "value": "Play join sound",
+    "group": "Manual controls"
+  },
+  "btnSoundTick": {
+    "type": "button",
+    "label": "Test the tick sound",
+    "value": "Play tick sound",
+    "group": "Manual controls"
+  },
+  "btnSoundWin": {
+    "type": "button",
+    "label": "Test the winner sound",
+    "value": "Play winner sound",
+    "group": "Manual controls"
+  }
+}

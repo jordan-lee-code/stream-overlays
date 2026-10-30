@@ -1,0 +1,188 @@
+# Spin Wheel Overlay
+
+A StreamElements custom widget: a spinning wheel for giveaways, raffles and forfeits. Viewers type `!spintowin` to put their name on the wheel, and the streamer types `!spin` to draw a winner live.
+
+<p align="center"><img src="docs/raffle.png" alt="A semicircle wheel in shades of white and grey with nine viewer names, status pills and a toast saying fern joined" width="480"></p>
+
+It started as a raffle and grew into a wheel that also runs forfeit spins, weighted odds for subscribers, a "Truth or..." question round, and a wheel that spins itself when a goal is reached. It is one self-contained widget in plain JavaScript, with no dependencies and nothing to install.
+
+## Features
+
+- **Giveaway raffle:** viewers join with `!spintowin`, their name lands on the wheel with a small toast, and `!spin` draws a winner with a reveal and confetti.
+- **Forfeits mode:** a wheel of things chat makes you do, starting empty and built live from chat. Forfeits can be crossed off as they are landed on, and the wheel can spin itself on a bits, subs, follows or donation trigger.
+- **Truth or... mode:** chat submits questions, the wheel draws one, and it stays on screen while it is answered. A set number of lifelines lets the streamer skip questions, and moderators can strike an inappropriate one for free.
+- **Subscriber-weighted odds:** give subscribers and VIPs extra slots, reflected both in the maths and in how wide their slice is.
+- **Goal auto-spin:** spin on each new sub, every N followers, or when cumulative bits or tips cross a threshold, with an optional progress bar.
+- **Multi-winner draws:** `!spin 3` draws several distinct winners in a row.
+- **Entry countdown:** optionally close entries automatically after a set number of seconds.
+- **Recent-winner cooldown:** keep the last few winners out of the next draws.
+- **Re-roll and re-show:** put the last winner back and draw again, or re-show the most recent winner.
+- **Chat-colour slices** and a gentle idle drift while the wheel waits.
+- **A matching look:** a soft see-through black theme with white and grey slices and BioRhyme text, the same default as the other overlays in this set, so they look like one family on a stream.
+- **Customisable:** around 180 settings cover the wording of every label, the shape and colours of every part, the text, sounds and animation.
+- **Remembers everything:** entrants, mode, recent winners, lifelines and a running countdown are saved, so a refresh mid-giveaway loses nothing.
+- **Testable offline:** a local dev harness and an automated test script.
+
+## Screenshots
+
+**Forfeits mode.** A wheel of forfeits built live with `!spinforfeitadd`, shown here as a full circle. Long labels are shortened on the wheel and shown in full in the reveal.
+
+<p><img src="docs/forfeits.png" alt="A full circle wheel with six forfeits in shades of white and grey" width="420"></p>
+
+**Your own look.** Every part is a setting. This one uses custom slice colours, a thicker rim, white dividers, rounder pills and a pink theme. There are also four warm presets (Cosy cabin, Cosy summer pastel, Celestial and Pastel goth) if you prefer them to the default Soft black.
+
+<p><img src="docs/custom.png" alt="A full circle wheel with pastel slices, a pink rim and pointer" width="420"></p>
+
+## Quick start
+
+1. In StreamElements, edit your overlay and add **+ Add Widget, Static/Custom, Custom Widget**.
+2. Select the widget, open **Settings, Open Editor**, and paste each file from `widget/` into the matching tab: `widget.html` into HTML, `widget.css` into CSS, `widget.js` into JS, and `fields.json` into Fields.
+3. Click **Done**. The settings are grouped into Commands, Rules, Odds, Truth or..., Goal auto-spin, Wording, Wheel, Pills and cards, Text, Theme, Animation, Sounds and Manual controls.
+4. Size and position the widget on the overlay. The wheel scales to the box.
+
+The widget reads Twitch chat through StreamElements, so the commands work as soon as it is on an active overlay.
+
+If you would rather import, `npm run build` writes `dist/spinning-wheel.overlay.json`. StreamElements does not document its overlay import format, so pasting the files in (above) is the reliable route.
+
+## Chat commands
+
+Every command word is configurable. The defaults are:
+
+| Command | Who | What it does |
+| --- | --- | --- |
+| `!spintowin` | anyone | Joins the wheel (giveaway mode, while entries are open). |
+| `!spin` | broadcaster, mods | Spins and draws a winner. |
+| `!spin 3` | broadcaster, mods | Draws several winners in one go. |
+| `!spinopen` | broadcaster, mods | Opens entries. |
+| `!spinclose` | broadcaster, mods | Closes entries. |
+| `!spinclear` | broadcaster, mods | Removes everyone from the wheel. |
+| `!spinremove name` | broadcaster, mods | Removes one entrant. |
+| `!spinadd Alice, Bob` | broadcaster, mods | Adds entrants by hand, comma separated. |
+| `!spinreroll` | broadcaster, mods | Puts the last winner back and draws again. |
+| `!spinlastwinner` | broadcaster, mods | Re-shows the most recent winner. |
+| `!spinmode giveaway`, `forfeits` or `questions` | broadcaster, mods | Switches wheel mode. |
+| `!spinforfeitadd Karaoke, Pyjama party` | broadcaster, mods | Forfeits: adds one or more, comma separated. |
+| `!spinforfeitremove Karaoke` | broadcaster, mods | Forfeits: removes one by name. |
+| `!spinforfeitclear` | broadcaster, mods | Forfeits: clears the wheel. |
+| `!spinask <question>` | anyone | Truth or...: submits a question. |
+| `!spinveto` | broadcaster, mods | Truth or...: skips the current question, spending a lifeline. |
+| `!spinstrike` | mods | Truth or...: removes the current question for free. |
+| `!spinresetlifelines` | broadcaster, mods | Truth or...: tops the lifelines back up. |
+
+Whether moderators can use the streamer commands, or only the broadcaster, is a setting.
+
+## Forfeits mode
+
+Switch with `!spinmode forfeits`. The wheel starts empty and is built live: `!spinforfeitadd Karaoke hour, Pyjama party` adds one or more forfeits (each optionally `label|weight|#colour`), `!spinforfeitremove` takes one out and `!spinforfeitclear` empties the wheel. Forfeits are saved, so a refresh keeps what has been built. By default a forfeit is **crossed off** once it is landed on, so the wheel works like a bucket list to spin through. Turn that off if forfeits should stay and repeat.
+
+The forfeit wheel can spin itself. In the **Goal auto-spin** group, turn on auto-spin and choose a trigger: each new subscriber, every N followers, bits or a StreamElements donation. For bits and donations, **Cumulative** adds them up until they reach the threshold and then spins, carrying the remainder. **Each** spins once for every individual cheer or donation that meets the threshold. Auto-spin works in any mode.
+
+## Truth or... mode
+
+Chat submits questions with `!spinask`, and the wheel draws one that stays on screen while it is answered. A set number of **lifelines** (4 by default) lets the streamer `!spinveto` a question to skip it, and moderators can `!spinstrike` an inappropriate one without it costing a lifeline. Showing who asked is a toggle. What happens if a question is not answered is left to the streamer, and nothing in the widget names or encourages a consequence.
+
+## Theming
+
+The default look is *Soft black*: see-through black pills and cards, white text in BioRhyme, and slices in shades of white and grey. In the **Theme** group you can:
+
+- Pick a **preset**: *Soft black*, *Cosy cabin*, *Cosy summer pastel*, *Celestial*, or *Pastel goth*. A preset sets the whole palette and font at once, and colours every part (pills, toast, winner card, goal bar, hub) from its own tones.
+- Set the preset to **Custom** to use your own colours and font. There is a colour picker for the panel (with an opacity), the text, the accent, the pointer, each of the six slices, and every individual part: pills, the joined toast, the winner card and its label, the empty-wheel message, the goal bar, the hub, the outline and the names on light and dark slices.
+- Choose the **wheel shape**: *Semicircle* (the default) shows only the top half so it takes about half the height, which suits tucking it along an edge of a scene, and *Full circle* is the classic wheel. Both spin and draw the same way.
+
+Everything scales with the box the wheel is drawn in, text included, so it looks the same at any size.
+
+## Configuration
+
+Every setting has a plain label in StreamElements, grouped as follows.
+
+| Group | What it covers |
+| --- | --- |
+| Commands | Every command word. |
+| Rules | Who can spin, the default mode, whether entries start open, one entry per user, subscriber-only entry, the entry cap and the entry countdown. |
+| Odds | Subscriber and VIP weights, removing winners, forfeit cross-off and the winner cooldown. |
+| Truth or... | The lifeline count, anonymous questions and the maximum question length. |
+| Goal auto-spin | The trigger type, count or threshold, and an optional goal bar. |
+| Wording | The text of every badge, noun, toast, winner label, lifeline line, idle message and goal label, with the words in curly brackets filled in for you. |
+| Wheel | The shape, idle drift, chat-colour slices, the rim and divider thickness, the size and boldness of the names, the hub ring and a shadow. |
+| Pills and cards | The roundness, padding and tilt of pills, the toast and the winner card, the goal bar's thickness, an outline, tails and shadows. |
+| Text | The size and boldness of the empty-wheel message, toast, pills, goal label, winner label, winner name, line under the winner and lifelines. |
+| Theme | A preset or Custom colours and font, with a colour for every part. |
+| Animation | One switch for all animation, the spin and winner display times, and how long the toast, card, goal bar and countdown pulse take. |
+| Sounds | A sound and volume for someone joining, each tick and the winner, plus a master mute. |
+| Manual controls | Buttons for spin, open, close, clear, switch mode, reroll, re-show and the Truth or... controls, and to test each sound. |
+
+The full list, with defaults, is in [`widget/fields.json`](widget/fields.json).
+
+## Sounds
+
+Sounds are off until you add them, and no audio is bundled so that the sounds on a stream, and their licensing, are the streamer's own choice. Each of the three has an upload box in the **Sounds** group, so there is nothing to host: **Join sound** (someone enters the wheel), **Tick sound** (plays as slices pass the pointer) and **Winner sound** (plays on the reveal). Each has its own volume. For clips that are free to use, [freesound.org](https://freesound.org) and [pixabay.com/sound-effects](https://pixabay.com/sound-effects/) are good places to look, and each clip's licence should be read before it goes on stream. StreamElements also lets you upload audio in the widget editor and gives you a URL to paste.
+
+Fonts load from Google Fonts at run time and are chosen by the **Font** setting. Each preset brings its own, and any Google font name works.
+
+## Chat replies
+
+A StreamElements widget can read chat but cannot write to it. When someone uses `!spintowin` the confirmation is visual: their name lands on the wheel and the entry count rises. If you would like chat to see a reply as well, add a StreamElements **chatbot command** with the same name and a response message. The two sit side by side, both reacting to the same message.
+
+## Local development
+
+There is no build step and no dependencies. Serve the project root and open the dev harness:
+
+```sh
+npm run dev
+# then open http://localhost:8000/dev/
+```
+
+The harness stands in for StreamElements. Use its panel to send `!spintowin` as different users (toggling subscriber, VIP and moderator), spin, switch modes and fire goal events. Its **Every setting** section is generated from `widget/fields.json`, so it offers exactly what StreamElements will, and each sound setting has a **Use a test beep** button. The local dev page also shows a Ko-fi support button in the corner. That button belongs to the harness only and is not part of the widget, so it never appears on stream.
+
+The harness must be served over http rather than opened as a file, and fonts come from Google Fonts.
+
+## Testing
+
+```sh
+npm test
+```
+
+This runs the real `widget/widget.js` headlessly against a small mock of the page, the canvas and StreamElements, and exits non-zero on any failure. It covers all three modes, draws and removal, moderator controls, multi-winner draws, the cooldown, reroll and re-show, the entry countdown, goal auto-spins, theming (including a regression for the StreamElements rgba colour format), persistence, the entry toast and forfeit cross-off. It also covers every wording, look and colour setting, what is drawn on the canvas (the rim, dividers and names), the sounds and the animation switch, and checks that every field in `fields.json` is read by the widget.
+
+## Project layout
+
+```
+widget/   the widget: HTML, CSS, JS and the StreamElements fields
+dev/      the local dev harness
+test/     the automated test script
+build/    builds the optional overlay import file into dist/
+docs/     screenshots used in this README
+```
+
+## Compatibility and limitations
+
+- Built for Twitch. The event handling is platform-neutral, so other platforms would be a small addition.
+- With a very large entry list the names on the wheel thin out and some labels are hidden to stay readable. The winner is always shown clearly in the reveal card, so this is cosmetic rather than a fairness issue.
+- Entrants, mode, recent winners, lifelines and a running countdown are saved to the StreamElements widget store, so a browser-source refresh mid-giveaway loses nothing.
+
+The widget uses the StreamElements events `onWidgetLoad`, `onEventReceived` (`message`, `subscriber-latest`, `follower-latest`, `cheer-latest`, `tip-latest`, `widget-button`) and `SE_API.store`. The JavaScript is deliberately ES5 style so it can be pasted straight into the StreamElements editor.
+
+## Related overlays
+
+These overlays share the same default look, so they sit together on one stream.
+
+- [Sub Goals Overlay](https://github.com/jordan-lee-code/sub-goals-overlay): sub and bits goals that fill as chat reaches them.
+- [Chat Poll Overlay](https://github.com/jordan-lee-code/chat-poll-overlay): quick polls voted on by typing an option.
+- [Squat Tracker Overlay](https://github.com/jordan-lee-code/squat-tracker-overlay): a counter driven by gifted sub bombs.
+- [Rage Bar Overlay](https://github.com/jordan-lee-code/rage-bar-overlay): a bar chat fills with subs, bits and channel points.
+
+## Support
+
+If this saves you time, you can support its development on Ko-fi:
+
+[![Support on Ko-fi](https://img.shields.io/badge/Ko--fi-Support%20me-ff38b8?logo=ko-fi&logoColor=white)](https://ko-fi.com/journeyingjordan)
+
+Thank you, it is genuinely appreciated.
+
+## Contributing
+
+Contributions are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## License
+
+[MIT](LICENSE). The copyright notice, including the Ko-fi link, must be kept in copies and substantial portions of the code.
