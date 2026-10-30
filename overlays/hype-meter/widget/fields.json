@@ -1,0 +1,490 @@
+{
+  "command": {
+    "type": "text",
+    "label": "Command word",
+    "value": "!hype",
+    "group": "Commands"
+  },
+  "whoCanManage": {
+    "type": "dropdown",
+    "label": "Who can use it",
+    "value": "mods",
+    "options": {
+      "broadcaster": "Broadcaster only",
+      "mods": "Broadcaster + moderators"
+    },
+    "group": "Commands"
+  },
+  "levels": {
+    "type": "number",
+    "label": "Number of levels",
+    "value": 5,
+    "min": 1,
+    "max": 12,
+    "step": 1,
+    "group": "Levels"
+  },
+  "basePoints": {
+    "type": "number",
+    "label": "Points to fill the first level",
+    "value": 100,
+    "min": 1,
+    "step": 1,
+    "group": "Levels"
+  },
+  "growth": {
+    "type": "number",
+    "label": "How much bigger each level is than the one before (1 for the same)",
+    "value": 1.5,
+    "min": 1,
+    "max": 5,
+    "step": 0.05,
+    "group": "Levels"
+  },
+  "levelNames": {
+    "type": "text",
+    "label": "Level names, separated by commas",
+    "value": "Warming up, Heating up, Hyped, On fire, Legendary",
+    "group": "Levels"
+  },
+  "levelWord": {
+    "type": "text",
+    "label": "Word before the level number, and for levels with no name",
+    "value": "Level",
+    "group": "Levels"
+  },
+  "maxText": {
+    "type": "text",
+    "label": "Text on a full meter at the top level",
+    "value": "MAX",
+    "group": "Levels"
+  },
+  "canDropLevel": {
+    "type": "checkbox",
+    "label": "Let the meter fall back a level when it empties",
+    "value": false,
+    "group": "Levels"
+  },
+  "pointsMessage": {
+    "type": "number",
+    "label": "Points for a chat message",
+    "value": 1,
+    "min": 0,
+    "step": 0.5,
+    "group": "Earning"
+  },
+  "userCooldown": {
+    "type": "number",
+    "label": "Seconds before the same person can earn from chat again",
+    "value": 10,
+    "min": 0,
+    "max": 3600,
+    "step": 1,
+    "group": "Earning"
+  },
+  "ignoreCommands": {
+    "type": "checkbox",
+    "label": "Chat messages starting with ! earn nothing",
+    "value": true,
+    "group": "Earning"
+  },
+  "ignoreNames": {
+    "type": "text",
+    "label": "Chatters who earn nothing, separated by commas (for example bots)",
+    "value": "",
+    "group": "Earning"
+  },
+  "pointsSub1": {
+    "type": "number",
+    "label": "New sub or resub, tier 1 and Prime",
+    "value": 20,
+    "min": 0,
+    "step": 1,
+    "group": "Earning"
+  },
+  "pointsSub2": {
+    "type": "number",
+    "label": "New sub or resub, tier 2",
+    "value": 40,
+    "min": 0,
+    "step": 1,
+    "group": "Earning"
+  },
+  "pointsSub3": {
+    "type": "number",
+    "label": "New sub or resub, tier 3",
+    "value": 100,
+    "min": 0,
+    "step": 1,
+    "group": "Earning"
+  },
+  "pointsGift": {
+    "type": "number",
+    "label": "Each gifted sub",
+    "value": 20,
+    "min": 0,
+    "step": 1,
+    "group": "Earning"
+  },
+  "pointsBits": {
+    "type": "number",
+    "label": "Per 100 bits",
+    "value": 5,
+    "min": 0,
+    "step": 0.5,
+    "group": "Earning"
+  },
+  "pointsTip": {
+    "type": "number",
+    "label": "Per 1 of tip currency",
+    "value": 5,
+    "min": 0,
+    "step": 0.5,
+    "group": "Earning"
+  },
+  "pointsFollow": {
+    "type": "number",
+    "label": "Each follow",
+    "value": 5,
+    "min": 0,
+    "step": 1,
+    "group": "Earning"
+  },
+  "pointsRaid": {
+    "type": "number",
+    "label": "Each raid",
+    "value": 25,
+    "min": 0,
+    "step": 1,
+    "group": "Earning"
+  },
+  "decayPerMinute": {
+    "type": "number",
+    "label": "Points lost per minute when it goes quiet (0 for none)",
+    "value": 10,
+    "min": 0,
+    "step": 1,
+    "group": "Decay"
+  },
+  "decayDelay": {
+    "type": "number",
+    "label": "Seconds after the last event before it starts to fall",
+    "value": 30,
+    "min": 0,
+    "max": 3600,
+    "step": 1,
+    "group": "Decay"
+  },
+  "showPoints": {
+    "type": "checkbox",
+    "label": "Show the points, for example 45 / 100",
+    "value": true,
+    "group": "Meter"
+  },
+  "showPips": {
+    "type": "checkbox",
+    "label": "Show a dot for each level",
+    "value": true,
+    "group": "Meter"
+  },
+  "showLevelNumber": {
+    "type": "checkbox",
+    "label": "Show the level number beside its name",
+    "value": true,
+    "group": "Meter"
+  },
+  "bannerText": {
+    "type": "text",
+    "label": "Level-up banner ({name} is the level's name)",
+    "value": "Level up: {name}",
+    "group": "Meter"
+  },
+  "bannerSeconds": {
+    "type": "number",
+    "label": "Seconds the banner stays",
+    "value": 5,
+    "min": 1,
+    "max": 60,
+    "step": 1,
+    "group": "Meter"
+  },
+  "textSize": {
+    "type": "number",
+    "label": "Text size (percent of the box width)",
+    "value": 7,
+    "min": 2,
+    "max": 20,
+    "step": 0.25,
+    "group": "Meter"
+  },
+  "titleScale": {
+    "type": "number",
+    "label": "Title size (share of the text size)",
+    "value": 1,
+    "min": 0.5,
+    "max": 3,
+    "step": 0.05,
+    "group": "Meter"
+  },
+  "barHeight": {
+    "type": "number",
+    "label": "Bar thickness (share of the text size)",
+    "value": 0.7,
+    "min": 0.2,
+    "max": 2,
+    "step": 0.05,
+    "group": "Meter"
+  },
+  "addAmount": {
+    "type": "number",
+    "label": "Points for the Add button",
+    "value": 25,
+    "min": 1,
+    "step": 1,
+    "group": "Manual controls"
+  },
+  "btnAdd": {
+    "type": "button",
+    "label": "Add those points",
+    "group": "Manual controls"
+  },
+  "btnLevelUp": {
+    "type": "button",
+    "label": "Go up a level",
+    "group": "Manual controls"
+  },
+  "btnLevelDown": {
+    "type": "button",
+    "label": "Go down a level",
+    "group": "Manual controls"
+  },
+  "btnReset": {
+    "type": "button",
+    "label": "Reset to level 1",
+    "group": "Manual controls"
+  },
+  "btnPause": {
+    "type": "button",
+    "label": "Pause (nothing earned, nothing lost)",
+    "group": "Manual controls"
+  },
+  "btnResume": {
+    "type": "button",
+    "label": "Resume",
+    "group": "Manual controls"
+  },
+  "title": {
+    "type": "text",
+    "label": "Title",
+    "value": "Hype",
+    "group": "Look"
+  },
+  "showTitle": {
+    "type": "checkbox",
+    "label": "Show the title",
+    "value": true,
+    "group": "Look"
+  },
+  "themePreset": {
+    "type": "dropdown",
+    "label": "Style preset (the same twenty-two are in every overlay in this set)",
+    "value": "glass",
+    "options": {
+      "glass": "Soft black (default)",
+      "frost": "Soft white",
+      "midnight": "Midnight blue",
+      "sunset": "Sunset",
+      "forest": "Forest",
+      "ocean": "Ocean",
+      "rose": "Rose",
+      "neon": "Neon",
+      "cosycabin": "Cosy cabin",
+      "pastel": "Cosy summer pastel",
+      "celestial": "Celestial",
+      "pastelgoth": "Pastel goth",
+      "pastelpink": "Pastel pink",
+      "faegreen": "Fae green",
+      "pride": "Rainbow pride",
+      "progress": "Progress pride",
+      "trans": "Trans pride",
+      "bi": "Bi pride",
+      "pan": "Pan pride",
+      "enby": "Non-binary pride",
+      "lesbian": "Lesbian pride",
+      "ace": "Ace pride",
+      "custom": "Custom (use the colours below)"
+    },
+    "group": "Look"
+  },
+  "fontFamily": {
+    "type": "googleFont",
+    "label": "Font (used when the style preset is Custom)",
+    "value": "BioRhyme",
+    "group": "Look"
+  },
+  "weight": {
+    "type": "number",
+    "label": "Boldness (100 to 900)",
+    "value": 800,
+    "min": 100,
+    "max": 900,
+    "step": 100,
+    "group": "Look"
+  },
+  "radius": {
+    "type": "number",
+    "label": "Corner roundness, in pixels",
+    "value": 24,
+    "min": 0,
+    "max": 100,
+    "step": 1,
+    "group": "Look"
+  },
+  "pad": {
+    "type": "number",
+    "label": "Padding above and below",
+    "value": 0.5,
+    "min": 0,
+    "max": 3,
+    "step": 0.05,
+    "group": "Look"
+  },
+  "borderWidth": {
+    "type": "number",
+    "label": "Outline width, in pixels",
+    "value": 0,
+    "min": 0,
+    "max": 20,
+    "step": 1,
+    "group": "Look"
+  },
+  "borderColor": {
+    "type": "colorpicker",
+    "label": "Outline colour",
+    "value": "#FFFFFF",
+    "group": "Look"
+  },
+  "shadow": {
+    "type": "checkbox",
+    "label": "Shadow",
+    "value": false,
+    "group": "Look"
+  },
+  "animate": {
+    "type": "checkbox",
+    "label": "Animate",
+    "value": true,
+    "group": "Look"
+  },
+  "colorPanel": {
+    "type": "colorpicker",
+    "label": "Panel colour (used when the style preset is Custom)",
+    "value": "#000000",
+    "group": "Custom colours"
+  },
+  "panelOpacity": {
+    "type": "number",
+    "label": "Panel opacity, 0 to 1 (used when the style preset is Custom)",
+    "value": 0.55,
+    "min": 0,
+    "max": 1,
+    "step": 0.05,
+    "group": "Custom colours"
+  },
+  "cText": {
+    "type": "colorpicker",
+    "label": "Text (used when the style preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Custom colours"
+  },
+  "cAccent": {
+    "type": "colorpicker",
+    "label": "Accent (used when the style preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Custom colours"
+  },
+  "cTrack": {
+    "type": "colorpicker",
+    "label": "Bars and chips (used when the style preset is Custom)",
+    "value": "#444444",
+    "group": "Custom colours"
+  },
+  "cWarn": {
+    "type": "colorpicker",
+    "label": "Alert colour (used when the style preset is Custom)",
+    "value": "#D64545",
+    "group": "Custom colours"
+  },
+  "soundLevel": {
+    "type": "sound-input",
+    "label": "A level is reached",
+    "value": "",
+    "group": "Sounds"
+  },
+  "soundLevelVol": {
+    "type": "number",
+    "label": "Volume for that sound (0 to 100)",
+    "value": 70,
+    "min": 0,
+    "max": 100,
+    "step": 5,
+    "group": "Sounds"
+  },
+  "test_soundLevel": {
+    "type": "button",
+    "label": "Test it",
+    "group": "Sounds"
+  },
+  "soundMax": {
+    "type": "sound-input",
+    "label": "The top level is reached",
+    "value": "",
+    "group": "Sounds"
+  },
+  "soundMaxVol": {
+    "type": "number",
+    "label": "Volume for that sound (0 to 100)",
+    "value": 90,
+    "min": 0,
+    "max": 100,
+    "step": 5,
+    "group": "Sounds"
+  },
+  "test_soundMax": {
+    "type": "button",
+    "label": "Test it",
+    "group": "Sounds"
+  },
+  "soundDrop": {
+    "type": "sound-input",
+    "label": "A level is lost",
+    "value": "",
+    "group": "Sounds"
+  },
+  "soundDropVol": {
+    "type": "number",
+    "label": "Volume for that sound (0 to 100)",
+    "value": 60,
+    "min": 0,
+    "max": 100,
+    "step": 5,
+    "group": "Sounds"
+  },
+  "test_soundDrop": {
+    "type": "button",
+    "label": "Test it",
+    "group": "Sounds"
+  },
+  "mute": {
+    "type": "checkbox",
+    "label": "Mute every sound",
+    "value": false,
+    "group": "Sounds"
+  },
+  "debug": {
+    "type": "checkbox",
+    "label": "Log every event to the browser-source console",
+    "value": false,
+    "group": "Troubleshooting"
+  }
+}
