@@ -1,0 +1,109 @@
+/* Copyright (c) 2026 Jordan Lee (https://ko-fi.com/journeyingjordan). Released under the MIT licence: this notice must be kept in copies and substantial portions of the code. See LICENSE. */
+/* Every value below is a custom property that widget.js sets from the editor fields, so
+   the defaults can be restyled from the settings panel without touching this file. */
+
+#hy-root {
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  /* The width reference for the cqw sizes below. A container's own cqw units resolve
+     against its parent, so the card cannot be the container itself. */
+  container-type: inline-size;
+  -webkit-font-smoothing: antialiased;
+}
+#hy-root * { box-sizing: border-box; }
+#hy-root [hidden] { display: none !important; }
+
+/* The Animate field: when it is off, nothing moves or eases. */
+#hy-root.no-motion,
+#hy-root.no-motion * {
+  animation: none !important;
+  transition: none !important;
+}
+
+#hy-app {
+  --w-bg: rgba(0, 0, 0, 0.55);
+  --w-text: #FFFFFF;
+  --w-accent: #FFFFFF;
+  --w-track: #444444;
+  --w-alarm: #D64545;
+  --w-font: "BioRhyme", Georgia, serif;
+  --w-radius: 24px;
+  --w-pad: 0.5;
+  --w-weight: 800;
+  --w-border: 0 solid #FFFFFF;
+  --w-shadow: none;
+
+  flex: 0 0 auto;
+  width: 100%;
+  padding: calc(var(--w-pad) * 1em) 3cqw;
+  font-family: var(--w-font);
+  color: var(--w-text);
+  background: var(--w-bg);
+  border: var(--w-border);
+  border-radius: var(--w-radius);
+  box-shadow: var(--w-shadow);
+  line-height: 1.15;
+}
+
+@keyframes hy-pop {
+  0% { transform: scale(0.88); }
+  55% { transform: scale(1.07); }
+  100% { transform: scale(1); }
+}
+
+#hy-app {
+  font-size: var(--hy-size, 7cqw);
+  text-align: center;
+  position: relative;
+}
+.hy-title {
+  font-size: calc(1em * var(--hy-title, 1));
+  font-weight: var(--w-weight);
+  letter-spacing: 0.04em;
+  opacity: 0.9;
+}
+.hy-title.pop { animation: hy-pop 0.4s ease; }
+.hy-level { display: flex; justify-content: space-between; align-items: baseline; gap: 0.6em; margin-top: 0.2em; font-weight: 700; }
+.hy-name { color: var(--w-accent); font-weight: var(--w-weight); text-align: left; }
+.hy-num { opacity: 0.8; white-space: nowrap; }
+.hy-bar {
+  height: var(--hy-bar, 0.7em);
+  margin-top: 0.3em;
+  background: var(--w-track);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.hy-fill {
+  height: 100%;
+  width: 0;
+  background: var(--w-accent);
+  border-radius: inherit;
+  transition: width 0.4s ease;
+}
+#hy-app.full .hy-fill { animation: hy-glow 1.4s ease-in-out infinite alternate; }
+.hy-points { margin-top: 0.2em; font-size: 0.8em; font-weight: 700; opacity: 0.85; font-variant-numeric: tabular-nums; }
+#hy-app.full .hy-points { color: var(--w-accent); opacity: 1; letter-spacing: 0.08em; }
+.hy-pips { display: flex; justify-content: center; gap: 0.35em; margin-top: 0.35em; }
+.hy-pip { width: 0.5em; height: 0.5em; border-radius: 50%; background: var(--w-track); }
+.hy-pip.on { background: var(--w-accent); }
+.hy-pip.current { animation: hy-pop 1.2s ease infinite; }
+.hy-banner {
+  margin-top: 0.35em;
+  padding: 0.1em 0.6em;
+  font-weight: var(--w-weight);
+  color: var(--w-accent);
+  background: var(--w-track);
+  border-radius: 999px;
+  animation: hy-pop 0.5s ease;
+}
+.hy-status { margin-top: 0.2em; font-size: 0.7em; font-weight: 700; color: var(--w-alarm); }
+#hy-app.paused .hy-fill { opacity: 0.6; }
+#hy-app.levelup { animation: hy-flash 0.9s ease; }
+@keyframes hy-glow { from { filter: brightness(1); } to { filter: brightness(1.35); } }
+@keyframes hy-flash { 0% { transform: scale(1); } 30% { transform: scale(1.04); } 100% { transform: scale(1); } }

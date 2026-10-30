@@ -1,0 +1,33 @@
+{
+  "name": "hype-meter-overlay",
+  "version": "1.0.0",
+  "description": "A StreamElements custom widget: a hype meter that chat activity, subs, bits and tips fill, with levels and decay.",
+  "private": true,
+  "license": "MIT",
+  "author": "Jordan Lee",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jordan-lee-code/hype-meter-overlay.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jordan-lee-code/hype-meter-overlay/issues"
+  },
+  "homepage": "https://github.com/jordan-lee-code/hype-meter-overlay#readme",
+  "keywords": [
+    "streamelements",
+    "twitch",
+    "overlay",
+    "widget",
+    "hype",
+    "hype-train",
+    "meter"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "funding": "https://ko-fi.com/journeyingjordan",
+  "scripts": {
+    "test": "node test/test-widget.js",
+    "dev": "python3 -m http.server 8000"
+  }
+}
