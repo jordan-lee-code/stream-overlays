@@ -163,6 +163,11 @@
       detail: { listener: "cheer-latest", event: { amount: bits, name: "Cheerer", message: "cheer" + bits } }
     }));
   }
+  function sendTip(amount) {
+    window.dispatchEvent(new CustomEvent("onEventReceived", {
+      detail: { listener: "tip-latest", event: { amount: amount, name: "Tipper", currency: "USD" } }
+    }));
+  }
   function sendNewSub() {
     subEvent({ amount: 1, tier: "1000", name: "NewViewer" });
   }
@@ -338,6 +343,20 @@
       '<p class="hint">500 bits is one sub by default. Smaller cheers are remembered and add up, ' +
       'so two cheers of 300 make one sub with 100 left over.</p>' +
 
+      '<h2>Tips</h2>' +
+      '<div class="row">' +
+        '<label>Tip <input id="tip-amount" type="number" min="0.01" step="0.01" value="5" style="width:80px"></label>' +
+        '<button id="tip-send" class="go">Tip</button>' +
+      '</div>' +
+      '<div class="row">' +
+        '<button class="alt" data-tip="2">2</button>' +
+        '<button class="alt" data-tip="3">3</button>' +
+        '<button class="alt" data-tip="5">5</button>' +
+        '<button class="alt" data-tip="10">10</button>' +
+      '</div>' +
+      '<p class="hint">5 is one sub by default. Smaller tips are remembered and add up, ' +
+      'so a 3 and then another 3 make one sub with 1 left over.</p>' +
+
       '<h2>Chat commands</h2>' +
       '<div class="row">' +
         '<input id="chat-user" type="text" value="Streamer" placeholder="username">' +
@@ -363,7 +382,8 @@
         '<button class="alt" data-cmd="!incentive subs +1">subs +1</button>' +
         '<button class="alt" data-cmd="!incentive subs -1">subs -1</button>' +
         '<button class="alt" data-cmd="!incentive subs set 4">subs set 4</button>' +
-        '<button class="alt" data-cmd="!incentive bits +300">bits +300</button>' +
+        '<button class="alt" data-cmd="!incentive bits +300">bits +300</button> +
+        '<button class="alt" data-cmd="!incentive tip 5">tip 5</button>' +
         '<button class="alt" data-cmd="!incentive reset">reset</button>' +
       '</div>' +
       '<div class="row">' +
@@ -406,6 +426,12 @@
       if (e.key === "Enter") sendChat(this.value, opts());
     });
 
+    document.getElementById("tip-send").onclick = function () {
+      sendTip(parseFloat(document.getElementById("tip-amount").value) || 0);
+    };
+    c.querySelectorAll("[data-tip]").forEach(function (b) {
+      b.onclick = function () { sendTip(parseFloat(b.getAttribute("data-tip"))); };
+    });
     document.getElementById("bits-send").onclick = function () {
       sendCheer(parseInt(document.getElementById("bits-amount").value, 10) || 0);
     };

@@ -1,6 +1,6 @@
 # Sub Goals Overlay
 
-A StreamElements custom widget that shows the goals chat is working towards, such as "5 subs unlocks karaoke", with a progress bar that fills as subs and bits arrive.
+A StreamElements custom widget that shows the goals chat is working towards, such as "5 subs unlocks karaoke", with a progress bar that fills as subs, bits and tips arrive.
 
 ![The overlay showing two reached goals, one in progress and one waiting](docs/screenshot.png)
 
@@ -11,6 +11,7 @@ Goals are added live from chat with `!incentive add 15 chat confessions`. The wi
 - Live goals: add, remove and clear goals from chat, with several shown at once.
 - Progress: the goal being worked on gets the biggest line and a progress bar, while the others condense to a single line. Reached goals celebrate, then stay on screen struck through.
 - Subs and bits: new subs, resubs and gifted subs all count, and bits convert at a rate you choose, with leftovers carried over. The bits bar takes a few seconds to calculate, so chat can watch it happen.
+- Tips: tips from StreamElements convert at a rate you choose in your channel's currency (5 to a sub by default), with leftovers carried over and the same strip as bits, so a direct donation moves the goals too.
 - Sounds: optional sounds for a sub, for bits and for a goal being reached.
 - Pause and resume: stop counting before a stream starts and start it when you go live.
 - Scales to its box: text scales with the space the widget is given in StreamElements, and long goal names shrink to fit rather than wrapping or being cut off.
@@ -94,6 +95,7 @@ The command word is `!incentive` by default. The broadcaster and moderators can 
 | `!incentive subs +3` | Adjusts the sub count. Also `-3`, `set 12` and `=12`. |
 | `!incentive bits +500` | Adds bits from somewhere else. They use your bits rate and play the bits animation. |
 | `!incentive reset` | Sets the count back to zero and re-opens every goal, ready for a new stream. |
+| `!incentive tip 5` | Adds a tip from somewhere else (`12.50` or `$12.50`). It uses your tip rate and plays the strip. |
 | `!incentive stop` | Pauses tracking. New subs and bits are ignored until you start it again. |
 | `!incentive start` | Resumes tracking. |
 | `!incentive` or `!incentive list` | Shows the panel. Anyone can use this. |
@@ -107,6 +109,8 @@ Every sub counts as one: a new sub, a resub, a Prime sub and a single gifted sub
 StreamElements reports a gift bomb as several events. One announcement carries the real number of subs, and then one follow-up per recipient carries a streak or lifetime figure (for example 170) in the same `amount` field. The widget counts the announcement and ignores the follow-ups, so a bomb of 10 moves the total by 10 and not by 1,710.
 
 Bits count at 500 to a sub by default. A cheer too small to make a whole sub is kept, so 300 bits followed by another 300 makes one sub with 100 left over. A rate of 0 switches bits off.
+
+Tips work the same way. The tip rate is an amount in your channel's currency (the figure StreamElements sends with the tip), 5 to a sub by default, so a 3 followed by another 3 makes one sub with 1 left over. Bits and tips keep separate leftovers. A rate of 0 switches tips off, and the currency symbol in the strip is a setting.
 
 If a count ever looks wrong on a live stream, tick **Log each subscriber and cheer event** in the Troubleshooting settings. Each event is then logged to the browser-source console exactly as it arrived.
 
@@ -127,6 +131,7 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | Commands | The command word, who can use it, and the word for each action. |
 | Counting | Whether new subs and gifts count, whether tracking starts on, and a starting count. |
 | Bits | The bits rate, the animation, how long the bar takes to calculate, and how long the strip stays. |
+| Tips | The tip amount that counts as one sub, and the currency symbol for the strip. |
 | Goals | How many show at once, their order, whether reached goals stay, and the celebration time. |
 | Wording | The words for sub and subs, the celebrating text, the reached text and the paused note. |
 | Look | The style preset (one of twenty-one, or Custom), the font, the heading, panel shape and padding, bar thickness and spacing, the thank you message, and the switch for animation. |
@@ -153,17 +158,18 @@ The tracker is meant to be reused. Each sub or cheer that it counts is announced
 window.addEventListener("subgoals:counted", function (e) {
   // e.detail for a sub:  { kind: "sub", count, tier, gifted, bulk, who, subs }
   // e.detail for bits:   { kind: "bits", amount, who, subs }
+  // e.detail for a tip:  { kind: "tip", amount, who, subs }
 });
 ```
 
 | Field | Meaning |
 | --- | --- |
-| `kind` | `"sub"` or `"bits"`. |
+| `kind` | `"sub"`, `"bits"` or `"tip"`. |
 | `count` | For a sub, how many subs it was worth. A gift bomb is its real size, once. |
 | `tier` | `1`, `2` or `3`. A Prime sub is tier 1. For a gift bomb, the tier of the gifts. |
 | `gifted`, `bulk` | Whether it was a gift, and whether it was a gift bomb. |
-| `amount` | For bits, the number of bits. |
-| `who` | The gifter or subscriber, or the person who cheered. |
+| `amount` | For bits, the number of bits. For a tip, the amount in your currency. |
+| `who` | The gifter or subscriber, or the person who cheered or tipped. |
 | `subs` | The running sub total after this event. |
 
 Nothing is announced while tracking is stopped, for subs or bits the settings do not count, or for manual corrections such as `!incentive subs +5`. The [Subathon Overlay](../subathon) is built this way: it embeds this widget unchanged and adds time to its clock from these announcements.

@@ -156,6 +156,17 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   bomb(5); sub({ amount: 1, name: "Fay" }); await settled();
   ok(clock() === "10:19:00", "gifts and new subs have separate values (" + clock() + ")");
 
+  console.log("\n[a tip counts towards the goals as well as the clock]");
+  await load({ tmStart: "10:00:00" });
+  tip(5); await settled();
+  ok(clock() === "10:05:00", "a 5 tip adds 5 minutes to the clock (" + clock() + ")");
+  ok(E("incentive-total").textContent === "1 sub", "and counts as a sub towards the goals (" + E("incentive-total").textContent + ")");
+  tip(2); tip(3); await settled();
+  ok(clock() === "10:10:00" && E("incentive-total").textContent === "2 subs", "two smaller tips add up to the next sub, and the clock takes each at face value (" + clock() + ", " + E("incentive-total").textContent + ")");
+  await load({ tmStart: "10:00:00", tipsPerSub: 0 });
+  tip(5); await settled();
+  ok(clock() === "10:05:00" && E("incentive-total").textContent === "0 subs", "with the tip rate at 0 the goals ignore tips and the clock still counts them (" + E("incentive-total").textContent + ")");
+
   console.log("\n[time from bits, tips, follows and raids]");
   await load({ tmStart: "10:00:00" });
   cheer(300); await settled();

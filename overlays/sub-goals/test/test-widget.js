@@ -95,6 +95,7 @@ function chat(text, o) {
 const boss = text => chat(text, { broadcaster: true });
 function button(field) { window.dispatchEvent(new CustomEvent("onEventReceived", { detail: { listener: "widget-button", event: { field } } })); }
 function sub(event) { window.dispatchEvent(new CustomEvent("onEventReceived", { detail: { listener: "subscriber-latest", event } })); }
+const tip = n => window.dispatchEvent(new CustomEvent("onEventReceived", { detail: { listener: "tip-latest", event: { amount: n, name: "Tipper", currency: "USD" } } }));
 const cheer = n => window.dispatchEvent(new CustomEvent("onEventReceived", { detail: { listener: "cheer-latest", event: { amount: n, name: "Cheerer" } } }));
 const bomb = n => sub({ gifted: true, bulkGifted: true, amount: n, sender: "GenerousViewer" });
 const wait = ms => new Promise(r => setTimeout(r, ms));
@@ -182,6 +183,56 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   load({ unlockSeconds: 0.05 }); await wait(5);
   boss("!incentive add 2 karaoke"); cheer(1000);
   ok(live()[0].unlocked === true, "bits can unlock a goal");
+
+  console.log("\n[tips]");
+  load(); await wait(5);
+  tip(5);
+  ok(total() === "1 sub", "a 5 tip is one sub (" + total() + ")");
+  tip(12.5);
+  ok(total() === "3 subs", "12.50 is two more, with 2.50 left over (" + total() + ")");
+  tip(2.5);
+  ok(total() === "4 subs", "and the 2.50 left over joins the next 2.50 (" + total() + ")");
+  tip(3); tip(3);
+  ok(total() === "5 subs", "two 3 tips make one sub between them (" + total() + ")");
+  tip(0.1); tip(0.2); tip(4.7);
+  ok(total() === "6 subs", "small amounts add up exactly, with no rounding drift (" + total() + ")");
+  tip(0); tip(-5); tip("lots");
+  ok(total() === "6 subs", "empty or odd tips change nothing (" + total() + ")");
+  load({ tipsPerSub: 2 }); await wait(5);
+  tip(6);
+  ok(total() === "3 subs", "the rate is configurable (" + total() + ")");
+  load({ tipsPerSub: 0 }); await wait(5);
+  tip(500);
+  ok(total() === "0 subs", "a rate of 0 switches tips off (" + total() + ")");
+  load(); await wait(5);
+  tip(3); await wait(350);
+  reload(); await wait(10);
+  tip(2);
+  ok(total() === "1 sub", "a leftover tip survives a refresh (" + total() + ")");
+  tip(3); boss("!incentive reset"); tip(2);
+  ok(total() === "0 subs", "reset forgets a leftover tip (" + total() + ")");
+  load(); await wait(5);
+  boss("!incentive tip 10");
+  ok(total() === "2 subs", "!incentive tip adds one from somewhere else (" + total() + ")");
+  boss("!incentive tip $2.50"); boss("!incentive tip 2.5");
+  ok(total() === "3 subs", "with or without a currency sign, and with cents (" + total() + ")");
+  boss("!incentive tip lots"); chat("!incentive tip 50", { nick: "viewer" });
+  ok(total() === "3 subs", "unreadable, or from a viewer, changes nothing (" + total() + ")");
+  load(); await wait(5);
+  boss("!incentive stop"); tip(50);
+  ok(/^0 subs/.test(total()), "tips are ignored while tracking is stopped (" + total() + ")");
+  load({ unlockSeconds: 0.05 }); await wait(5);
+  boss("!incentive add 2 karaoke"); tip(10);
+  ok(live()[0].unlocked === true, "tips can unlock a goal");
+  load({ bitsPerSub: 500, tipsPerSub: 5 }); await wait(5);
+  cheer(300); tip(3);
+  cheer(200); tip(2);
+  ok(total() === "2 subs", "bits and tips keep separate leftovers (" + total() + ")");
+  load({ tipSymbol: "\u00a3", tipsPerSub: 5, bitsCalcSeconds: 0.3 }); await wait(5);
+  tip(3);
+  ok(elements["incentive-bits"].hidden === false && elements["incentive-bits-gain"].textContent === "+\u00a33", "a tip shows its amount in the strip (" + elements["incentive-bits-gain"].textContent + ")");
+  await wait(600);
+  ok(elements["incentive-bits-status"].textContent === "\u00a33/\u00a35", "and fills towards the next sub (" + elements["incentive-bits-status"].textContent + ")");
 
   console.log("\n[bits animation]");
   const B = id => elements["incentive-bits-" + id] || elements["incentive-bits"];

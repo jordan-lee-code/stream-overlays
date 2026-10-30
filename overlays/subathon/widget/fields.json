@@ -537,6 +537,12 @@
     "value": "bits",
     "group": "Goals: Commands"
   },
+  "verbTip": {
+    "type": "text",
+    "label": "Word to add a tip from somewhere else (5 or 12.50)",
+    "value": "tip",
+    "group": "Goals: Commands"
+  },
   "verbReset": {
     "type": "text",
     "label": "Word to zero the count and re-open every goal",
@@ -599,7 +605,7 @@
   },
   "showBits": {
     "type": "checkbox",
-    "label": "Animate bits being cheered and turning into subs",
+    "label": "Animate bits and tips being cheered and turning into subs",
     "value": true,
     "group": "Goals: Bits"
   },
@@ -626,6 +632,18 @@
     "label": "Word for bits in the strip (+300 bits)",
     "value": "bits",
     "group": "Goals: Bits"
+  },
+  "tipsPerSub": {
+    "type": "number",
+    "label": "Tip amount, in your channel's currency, that counts as one sub (leftover carries over; 0 switches tips off)",
+    "value": 5,
+    "group": "Goals: Tips"
+  },
+  "tipSymbol": {
+    "type": "text",
+    "label": "Currency symbol shown in the strip (a blank shows none)",
+    "value": "$",
+    "group": "Goals: Tips"
   },
   "maxVisible": {
     "type": "number",
@@ -1183,7 +1201,7 @@
   },
   "bitsSound": {
     "type": "sound-input",
-    "label": "Sound when bits are cheered or added. Leave empty for none.",
+    "label": "Sound when bits are cheered, tips arrive or either is added. Leave empty for none.",
     "value": "",
     "group": "Goals: Sounds"
   },

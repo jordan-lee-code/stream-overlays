@@ -17,7 +17,7 @@ It is one widget with no dependencies and nothing to install. The sub goals are 
 - Elapsed time and day number: the big clock can count up instead of down, or show the other time on a line under it, and the status line can say which day it is (see [Elapsed time and the day number](#elapsed-time-and-the-day-number)).
 - Lock and pause: pause the clock, or lock it so new time is banked while you decide what to do.
 - Chat control: add, subtract, set, pause, resume, lock, power up and more, from chat, for the broadcaster or moderators.
-- Sub goals underneath: the same goals as `!incentive add 15 chat confessions`, filling as subs and bits land, in the same panel style.
+- Sub goals underneath: the same goals as `!incentive add 15 chat confessions`, filling as subs, bits and tips land, in the same panel style.
 - Twenty-one style presets: one setting styles the clock and the goals together, and the same twenty-one presets are in every overlay in this set.
 - Customisable: over 170 settings cover values, commands, sizes, colours, fonts, sounds and animation.
 - Saved: the clock, the cap, banked time, power-ups and lock all survive a browser-source refresh, and a refresh while running keeps counting through the gap.
@@ -94,6 +94,8 @@ Every event adds a number of minutes you choose. These are the defaults, and all
 Times can be written as `5m`, `1h 30m`, `90`, `1:30:00` or `1d 12h`. A bare number is minutes, and `5:00` is five minutes.
 
 Subs and bits are not read from StreamElements a second time. The goals module has already worked out how many subs an event was worth, and the clock listens to that answer, so the two agree. StreamElements reports a gift bomb as one announcement with the real number of subs, followed by one event per recipient carrying a streak figure such as 170. Only the announcement counts, so a gift of 30 adds 30 gifts' worth of time once.
+
+Tips do two jobs. The clock adds time for each unit tipped, and the goals count the same tip towards subs at the rate in the Goals: Tips group (5 to a sub by default; 0 leaves tips out of the goals). That is how a direct donation can move both: a tip is worth minutes on the clock and, past the rate, a sub on the goals.
 
 Tips, follows and raids come straight from their own StreamElements events.
 

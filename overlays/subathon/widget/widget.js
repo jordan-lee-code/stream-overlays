@@ -77,6 +77,8 @@
   var subs = 0;
   var tracking = true;       // while false, incoming subs and bits are ignored
   var bitsLeft = 0;          // bits cheered that have not yet added up to a whole sub
+  var tipLeft = 0;           // tipped cents that have not yet added up to a whole sub
+  var meter = null;          // what the strip below is counting, bits or tips
   var incentives = [];       // { id, target, name, unlocking, done, delay, timer }
   var nextId = 1;
   var rows = {};             // id -> { li, name, count, fill, countText }
@@ -106,6 +108,7 @@
         clear: word(f.verbClear, "clear"),
         subs: word(f.verbSubs, "subs"),
         bits: word(f.verbBits, "bits"),
+        tip: word(f.verbTip, "tip"),
         reset: word(f.verbReset, "reset"),
         start: word(f.verbStart, "start"),
         stop: word(f.verbStop, "stop"),
@@ -121,6 +124,9 @@
       bitsCalcMs: Math.round(clamp(num(f.bitsCalcSeconds, 3), 0.2, 15) * 1000),
       bitsStripMs: Math.round(clamp(num(f.bitsStripSeconds, 2), 0.5, 30) * 1000),
       bitsLabel: str(f.bitsLabel, "bits"),
+      // Tips are worked in whole cents so two tips never add up wrongly. A rate of 0 switches them off.
+      tipCentsPerSub: Math.max(0, Math.round(num(f.tipsPerSub, 5) * 100)),
+      tipSymbol: txt(f.tipSymbol, "$"),
 
       maxVisible: Math.max(1, Math.round(num(f.maxVisible, 4))),
       goalOrder: str(f.goalOrder, "target"),
@@ -456,7 +462,7 @@
         var inc = incentives[i];
         keep.push({ id: inc.id, target: inc.target, name: inc.name, unlocked: !!(inc.unlocking || inc.done) });
       }
-      try { SE_API.store.set(STORE_KEY, { subs: subs, bitsLeft: bitsLeft, tracking: tracking, incentives: keep, nextId: nextId }); }
+      try { SE_API.store.set(STORE_KEY, { subs: subs, bitsLeft: bitsLeft, tipLeft: tipLeft, tracking: tracking, incentives: keep, nextId: nextId }); }
       catch (e) { /* store is best-effort */ }
     }, 300);
   }
@@ -467,6 +473,7 @@
         if (saved && typeof saved === "object" && typeof saved.subs === "number") {
           subs = Math.max(0, Math.round(saved.subs));
           bitsLeft = Math.max(0, Math.round(num(saved.bitsLeft, 0)));
+          tipLeft = Math.max(0, Math.round(num(saved.tipLeft, 0)));
           // Saves from before tracking could be paused have no flag, and a counter
           // that is counting is the kinder thing to come back to.
           tracking = saved.tracking !== false;
@@ -531,7 +538,7 @@
     var changed = next !== subs;
     subs = next;
     // A reset is a fresh start for a new stream, so every goal is up for grabs again.
-    if (kind === "reset") { rearm(); bitsLeft = 0; }
+    if (kind === "reset") { rearm(); bitsLeft = 0; tipLeft = 0; }
     saveState();
     var unlocked = checkUnlocks();
     render();
@@ -617,9 +624,46 @@
     var unlocked = 0;
     if (whole > 0) unlocked = setSubs(subs + whole, "bits");
     else saveState();
-    showBitsAnimation(amount, before, whole, bitsLeft);
+    showBitsAnimation(amount, before, whole, bitsLeft, {
+      per: cfg.bitsPerSub,
+      gain: function (a) { return "+" + a + " " + cfg.bitsLabel; },
+      status: function (n) { return n + "/" + cfg.bitsPerSub + " " + cfg.bitsLabel; }
+    });
     if (!goalSoundTakesOver(unlocked)) playSound("bits");
   }
+
+  // Tips count the same way, at a rate in the channel's own currency (5 to a sub by
+  // default), so a direct donation is worth more than its time on the clock alone.
+  // Like bits, a tip too small for a whole sub is kept and added to the next one.
+  function handleTip(event) {
+    event = event || {};
+    if (cfg.debug && typeof console !== "undefined" && console.log) {
+      try { console.log("[incentives] tip-latest", JSON.stringify(event)); }
+      catch (e) { console.log("[incentives] tip-latest", event); }
+    }
+    if (!tracking) return;
+    var cents = Math.max(0, Math.round(num(event.amount, 0) * 100));
+    addTips(cents);
+    if (cents > 0 && cfg.tipCentsPerSub > 0) announce({ kind: "tip", amount: cents / 100, who: String(event.name || event.username || ""), subs: subs });
+  }
+  function addTips(cents) {
+    cents = Math.max(0, Math.round(cents));
+    if (cfg.tipCentsPerSub <= 0 || cents <= 0) return;
+    var before = tipLeft;
+    var total = tipLeft + cents;
+    var whole = Math.floor(total / cfg.tipCentsPerSub);
+    tipLeft = total - whole * cfg.tipCentsPerSub;
+    var unlocked = 0;
+    if (whole > 0) unlocked = setSubs(subs + whole, "tip");
+    else saveState();
+    showBitsAnimation(cents, before, whole, tipLeft, {
+      per: cfg.tipCentsPerSub,
+      gain: function (a) { return "+" + money(a); },
+      status: function (n) { return money(n) + "/" + money(cfg.tipCentsPerSub); }
+    });
+    if (!goalSoundTakesOver(unlocked)) playSound("bits");
+  }
+  function money(cents) { return cfg.tipSymbol + (cents / 100).toFixed(2).replace(/\.00$/, ""); }
 
   // The cheer lands as a "+300 bits" chip over a small bar. After a moment the bar
   // fills towards the next sub, slowly and evenly, while the number beside it counts
@@ -632,7 +676,7 @@
     while (bitsIntervals.length) clearInterval(bitsIntervals.pop());
   }
   function bitsPct(n) {
-    return Math.min(100, Math.round(n / cfg.bitsPerSub * 1000) / 10) + "%";
+    return Math.min(100, Math.round(n / meter.per * 1000) / 10) + "%";
   }
   // A move of the bar over `ms` at an even pace, or straight there when ms is 0.
   function bitsFill(pct, ms) {
@@ -649,8 +693,7 @@
   // The number beside the bar counting from one value to another in the same time
   // the bar takes, so the two always agree.
   function bitsCount(from, to, ms) {
-    var label = " " + cfg.bitsLabel;
-    var show = function (n) { el.bitsStatus.textContent = n + "/" + cfg.bitsPerSub + label; };
+    var show = function (n) { el.bitsStatus.textContent = meter.status(n); };
     show(from);
     if (to === from) return;
     var began = Date.now();
@@ -664,9 +707,10 @@
     bitsAfter(ms, function () { clearInterval(id); show(to); });
   }
 
-  function showBitsAnimation(amount, before, whole, after) {
+  function showBitsAnimation(amount, before, whole, after, m) {
     if (!cfg.showBits || !el.bits) return;
-    var per = cfg.bitsPerSub;
+    meter = m;
+    var per = meter.per;
     var calc = cfg.bitsCalcMs;
     clearBitsTimers();
 
@@ -676,9 +720,9 @@
     void el.bits.offsetWidth;
     el.bits.classList.add("enter");
 
-    el.bitsGain.textContent = "+" + amount + " " + cfg.bitsLabel;
+    el.bitsGain.textContent = meter.gain(amount);
     bump(el.bitsGain);
-    el.bitsStatus.textContent = before + "/" + per + " " + cfg.bitsLabel;
+    el.bitsStatus.textContent = meter.status(before);
     bitsFill(bitsPct(before), 0);
 
     // 1. Fill towards the next sub (right to the top if this cheer makes one).
@@ -703,7 +747,7 @@
       bitsAfter(resetAt, function () {
         el.bits.classList.remove("converted");
         bitsFill("0%", 0);
-        el.bitsStatus.textContent = "0/" + per + " " + cfg.bitsLabel;
+        el.bitsStatus.textContent = meter.status(0);
       });
       // A moment later so the empty bar is painted before it starts to fill.
       bitsAfter(resetAt + 60, function () {
@@ -843,6 +887,10 @@
     else if (verb === V.bits) {
       var bm = /^\+?(\d+)$/.exec(arg);
       if (bm) addBits(parseInt(bm[1], 10));
+    }
+    else if (verb === V.tip) {
+      var tm = /^[^\d]*(\d+(?:\.\d+)?)$/.exec(arg);
+      if (tm) addTips(Math.round(parseFloat(tm[1]) * 100));
     }
     else if (verb === V.start) setTracking(true);
     else if (verb === V.stop) setTracking(false);
@@ -1085,6 +1133,7 @@
     else if (listener === "widget-button") handleButton(event.field);
     else if (listener === "subscriber-latest") handleSub(event);
     else if (listener === "cheer-latest") handleCheer(event);
+    else if (listener === "tip-latest") handleTip(event);
   });
 
   window.addEventListener("onWidgetLoad", function (obj) {
@@ -1104,6 +1153,7 @@
     rows = {};
     subs = 0;
     bitsLeft = 0;
+    tipLeft = 0;
     tracking = true;
     incentives = [];
     nextId = 1;
