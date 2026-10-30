@@ -132,6 +132,11 @@ const names = () => E("lb-list").children.filter(li => li.className.indexOf("lb-
   audioLog.length = 0; button("test_soundLead"); ok(audioLog.length === 1, "the Test buttons play");
   await load({ mode: "bits", soundUpdate: "data:audio/wav;base64,AA", mute: true }); audioLog.length = 0; cheer(100, "A"); ok(audioLog.length === 0, "mute silences everything");
 
+  section("blanking the wording");
+  await load({ mode: "gifts", titleGifts: "" }); ok(E("lb-heading").hidden, "a blank board title hides the heading instead of bringing the default back");
+  await load({ mode: "tips", currency: "" }); tip(5, "A"); ok(rows()[0] === "1|A|5", "a blank currency symbol means none (" + rows()[0] + ")");
+  await load({ mode: "gifts", emptyText: "" }); ok(E("lb-list").children[0].textContent === "", "a blank empty text shows nothing");
+
   section("every setting is wired up");
   env.checkWired();
   env.checkNotice();

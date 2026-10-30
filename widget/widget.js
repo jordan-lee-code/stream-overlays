@@ -15,11 +15,16 @@
     cosycabin: { panel: "#F5ECD6", text: "#57442E", accent: "#7C6142", track: "rgba(0, 0, 0, 0.11)", alarm: "#C05746", font: "Chicle" },
     pastel: { panel: "#FFF6E9", text: "#6B4F3A", accent: "#FF8A65", track: "rgba(0, 0, 0, 0.11)", alarm: "#F4587A", font: "Baloo 2" },
     celestial: { panel: "#2E1A47", text: "#F3ECFF", accent: "#E8C06B", track: "rgba(255, 255, 255, 0.18)", alarm: "#B5495B", font: "Cinzel" },
-    pastelgoth: { panel: "#3A3340", text: "#F2E9F0", accent: "#C8B6E2", track: "rgba(255, 255, 255, 0.18)", alarm: "#C96A8E", font: "Quicksand" }
+    pastelgoth: { panel: "#3A3340", text: "#F2E9F0", accent: "#C8B6E2", track: "rgba(255, 255, 255, 0.18)", alarm: "#C96A8E", font: "Quicksand" },
+    pastelpink: { panel: "#FFE3EC", text: "#6A2E4B", accent: "#D95C8A", track: "rgba(106, 46, 75, 0.14)", alarm: "#D6456F", font: "Fredoka" },
+    faegreen: { panel: "#2C4A36", text: "#EEF5DA", accent: "#C9E265", track: "rgba(238, 245, 218, 0.2)", alarm: "#E0805A", font: "Almendra" }
   };
 
   // ---- shared by every overlay in this set ----
   function str(v, d) { return (v === undefined || v === null || v === "") ? d : String(v); }
+  // For wording where an empty field is a real choice (no tag, no currency symbol, no title).
+  // StreamElements sends "" for a cleared field, which str() would turn back into the default.
+  function txt(v, d) { return (v === undefined || v === null) ? d : String(v); }
   function num(v, d) { var n = parseFloat(v); return isNaN(n) ? d : n; }
   function bool(v, d) {
     if (v === undefined || v === null) return d;
@@ -54,7 +59,7 @@
     return {
       command: str(f.command, d.command || "!command"),
       whoCanManage: str(f.whoCanManage, "mods"),
-      title: str(f.title, d.title || ""),
+      title: txt(f.title, d.title || ""),
       showTitle: bool(f.showTitle, true),
       themePreset: str(f.themePreset, "glass"),
       colorPanel: str(f.colorPanel, "#000000"),
@@ -159,10 +164,10 @@
     c.include = { gifts: bool(f.showGifts, true), bits: bool(f.showBits, true), tips: bool(f.showTips, true) };
     c.anon = bool(f.anonymousGifts, false);
     c.ignore = String(str(f.ignoreNames, "")).toLowerCase().split(",").map(function (s) { return s.replace(/^\s+|\s+$/g, ""); }).filter(Boolean);
-    c.emptyText = str(f.emptyText, "No one yet");
-    c.titles = { gifts: str(f.titleGifts, "Top gifters"), bits: str(f.titleBits, "Top cheerers"), tips: str(f.titleTips, "Top tippers") };
+    c.emptyText = txt(f.emptyText, "No one yet");
+    c.titles = { gifts: txt(f.titleGifts, "Top gifters"), bits: txt(f.titleBits, "Top cheerers"), tips: txt(f.titleTips, "Top tippers") };
     c.formats = { gifts: str(f.formatGifts, "{n} gifted"), bits: str(f.formatBits, "{n} bits"), tips: str(f.formatTips, "{c}{n}") };
-    c.currency = str(f.currency, "£");
+    c.currency = txt(f.currency, "£");
     c.showRank = bool(f.showRank, true);
     c.highlightFirst = bool(f.highlightFirst, true);
     c.maxName = clamp(Math.floor(num(f.maxName, 16)), 4, 40);
@@ -337,7 +342,7 @@
     if (!el.app) return;
     var view = currentView();
     el.heading.textContent = cfg.title ? cfg.title : cfg.titles[view];
-    el.heading.hidden = !cfg.showTitle;
+    el.heading.hidden = !cfg.showTitle || !el.heading.textContent;
     if (view !== lastView) {
       shown = {};
       if (el.board.classList) { el.board.classList.remove("swap"); void el.board.offsetWidth; el.board.classList.add("swap"); }
