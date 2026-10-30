@@ -16,7 +16,7 @@ It is a single self-contained widget in plain JavaScript, with no dependencies a
 - Chat control: set or adjust a count, reset, pause and resume from chat.
 - Wording: the labels, how a count reads and the reached text are settings.
 - Sounds: optional sounds for progress and for a goal being reached.
-- Customisable: around 70 settings cover the goals, wording, sizes, shape, outline, colours, fonts, sounds and animation.
+- Customisable: around 55 settings cover the goals, wording, sizes, shape, outline, colours, fonts, sounds and animation.
 - Saved: the counts survive a browser-source refresh.
 - Tests and a dev harness: a local harness with a time machine and an automated test script, so a new stream can be simulated in a click.
 
