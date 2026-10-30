@@ -1,0 +1,22 @@
+<!-- Copyright (c) 2026 Jordan Lee (https://ko-fi.com/journeyingjordan). Released under the MIT licence: this notice must be kept in copies and substantial portions of the code. See LICENSE. -->
+<div id="vote-app">
+  <div id="vote-card" class="vote-card" aria-live="polite" hidden>
+    <div class="vote-head">
+      <span id="vote-title" class="vote-title">Chat's choice</span>
+      <span id="vote-timer" class="pill vote-timer">45</span>
+    </div>
+
+    <div id="vote-eyebrow" class="vote-eyebrow" hidden></div>
+
+    <ul id="vote-options" class="vote-options"></ul>
+
+    <div class="vote-foot">
+      <span id="vote-total" class="vote-total">0 votes</span>
+      <span id="vote-hint" class="vote-hint"></span>
+    </div>
+  </div>
+
+  <!-- Outside the card on purpose. Inside, its long unbroken line of numbers
+       would widen the card and change the very layout it is there to report. -->
+  <div id="vote-debug" class="vote-debug" hidden></div>
+</div>

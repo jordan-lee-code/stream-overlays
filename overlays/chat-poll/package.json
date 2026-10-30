@@ -1,0 +1,33 @@
+{
+  "name": "chat-poll-overlay",
+  "version": "1.0.0",
+  "description": "A StreamElements custom widget for quick chat polls, voted on by typing an option.",
+  "private": true,
+  "license": "MIT",
+  "author": "Jordan Lee",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jordan-lee-code/chat-poll-overlay.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jordan-lee-code/chat-poll-overlay/issues"
+  },
+  "homepage": "https://github.com/jordan-lee-code/chat-poll-overlay#readme",
+  "keywords": [
+    "streamelements",
+    "twitch",
+    "overlay",
+    "stream-overlay",
+    "chat-poll",
+    "widget"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "funding": "https://ko-fi.com/journeyingjordan",
+  "scripts": {
+    "test": "node test/test-widget.js && node test/test-layout.js",
+    "build": "node build/build-overlay.js",
+    "dev": "python3 -m http.server 8000"
+  }
+}
