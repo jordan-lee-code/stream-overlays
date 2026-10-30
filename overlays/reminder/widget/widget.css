@@ -1,0 +1,100 @@
+/* Copyright (c) 2026 Jordan Lee (https://ko-fi.com/journeyingjordan). Released under the MIT licence: this notice must be kept in copies and substantial portions of the code. See LICENSE. */
+/* Every value below is a custom property that widget.js sets from the editor fields, so
+   the defaults can be restyled from the settings panel without touching this file. */
+
+#rm-root {
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  /* The width reference for the cqw sizes below. A container's own cqw units resolve
+     against its parent, so the card cannot be the container itself. */
+  container-type: inline-size;
+  -webkit-font-smoothing: antialiased;
+}
+#rm-root * { box-sizing: border-box; }
+#rm-root [hidden] { display: none !important; }
+
+/* The Animate field: when it is off, nothing moves or eases. */
+#rm-root.no-motion,
+#rm-root.no-motion * {
+  animation: none !important;
+  transition: none !important;
+}
+
+#rm-app {
+  --w-bg: rgba(0, 0, 0, 0.55);
+  --w-text: #FFFFFF;
+  --w-accent: #FFFFFF;
+  --w-track: #444444;
+  --w-alarm: #D64545;
+  --w-font: "BioRhyme", Georgia, serif;
+  --w-radius: 24px;
+  --w-pad: 0.5;
+  --w-weight: 800;
+  --w-border: 0 solid #FFFFFF;
+  --w-shadow: none;
+
+  flex: 0 0 auto;
+  width: 100%;
+  padding: calc(var(--w-pad) * 1em) 3cqw;
+  font-family: var(--w-font);
+  color: var(--w-text);
+  background: var(--w-bg);
+  background-image: var(--w-bgimg, none);
+  border: var(--w-border);
+  border-radius: var(--w-radius);
+  box-shadow: var(--w-shadow);
+  line-height: 1.15;
+}
+
+@keyframes rm-pop {
+  0% { transform: scale(0.88); }
+  55% { transform: scale(1.07); }
+  100% { transform: scale(1); }
+}
+
+#rm-app {
+  font-size: var(--rm-size, 7cqw);
+  text-align: left;
+}
+.rm-title {
+  font-size: calc(1em * var(--rm-title, 0.55));
+  font-weight: var(--w-weight);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--w-accent);
+}
+.rm-title.pop { animation: rm-pop 0.4s ease; }
+.rm-list { list-style: none; margin: 0; padding: 0; }
+.rm-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.7em;
+  margin-top: var(--rm-gap, 0.35em);
+  line-height: 1.15;
+}
+.rm-row.due { font-weight: var(--w-weight); }
+.rm-row.due.first { animation: rm-pop 0.5s ease; }
+.rm-row.waiting { font-size: calc(1em * var(--rm-wait, 0.55)); font-weight: 700; opacity: 0.9; }
+.rm-text { min-width: 0; overflow-wrap: anywhere; text-align: left; }
+.rm-time {
+  flex: 0 0 auto;
+  margin-left: auto;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  opacity: 0.85;
+}
+.rm-row.due .rm-time { color: var(--w-accent); opacity: 1; font-size: 0.6em; font-weight: 800; letter-spacing: 0.04em; }
+.rm-more { margin-top: 0.3em; font-size: 0.5em; font-weight: 700; opacity: 0.8; text-align: right; }
+#rm-app.alert { animation: rm-glow 1.6s ease-in-out infinite; border-color: var(--w-accent); }
+@keyframes rm-glow {
+  0%, 100% { box-shadow: 0 0 0 0 transparent; }
+  50% { box-shadow: 0 0 0.9em 0.15em var(--w-accent); }
+}

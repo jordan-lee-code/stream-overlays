@@ -1,0 +1,314 @@
+{
+  "command": {
+    "type": "text",
+    "label": "Command word",
+    "value": "!reminder",
+    "group": "Commands"
+  },
+  "whoCanManage": {
+    "type": "dropdown",
+    "label": "Who can use it",
+    "value": "mods",
+    "options": {
+      "broadcaster": "Broadcaster only",
+      "mods": "Broadcaster + moderators"
+    },
+    "group": "Commands"
+  },
+  "defaultText": {
+    "type": "text",
+    "label": "Text for a reminder set with no words (!reminder 15m)",
+    "value": "Time's up",
+    "group": "Reminders"
+  },
+  "snoozeTime": {
+    "type": "text",
+    "label": "Default snooze time (for example 5m)",
+    "value": "5m",
+    "group": "Reminders"
+  },
+  "maxShown": {
+    "type": "number",
+    "label": "Reminders shown at once, then +N more",
+    "value": 3,
+    "min": 1,
+    "max": 10,
+    "step": 1,
+    "group": "Reminders"
+  },
+  "maxPending": {
+    "type": "number",
+    "label": "Most reminders that can be waiting at once",
+    "value": 20,
+    "min": 1,
+    "max": 50,
+    "step": 1,
+    "group": "Reminders"
+  },
+  "repeatSeconds": {
+    "type": "number",
+    "label": "Play the sound again every this many seconds until cleared (0 for once)",
+    "value": 0,
+    "min": 0,
+    "max": 3600,
+    "step": 5,
+    "group": "Reminders"
+  },
+  "showPending": {
+    "type": "checkbox",
+    "label": "Show a reminder as soon as it is set, with a countdown on the right (off shows it only once it is due)",
+    "value": true,
+    "group": "Reminders"
+  },
+  "dueText": {
+    "type": "text",
+    "label": "What the timer says when the countdown runs out",
+    "value": "due",
+    "group": "Reminders"
+  },
+  "pendingRows": {
+    "type": "number",
+    "label": "Waiting reminders shown",
+    "value": 3,
+    "min": 1,
+    "max": 10,
+    "step": 1,
+    "group": "Reminders"
+  },
+  "textSize": {
+    "type": "number",
+    "label": "Reminder text size (percent of the box width)",
+    "value": 7,
+    "min": 2,
+    "max": 20,
+    "step": 0.25,
+    "group": "Size"
+  },
+  "titleScale": {
+    "type": "number",
+    "label": "Title size (share of the text size)",
+    "value": 0.55,
+    "min": 0.2,
+    "max": 2,
+    "step": 0.05,
+    "group": "Size"
+  },
+  "pendingScale": {
+    "type": "number",
+    "label": "Waiting-reminder size (share of the text size)",
+    "value": 0.55,
+    "min": 0.2,
+    "max": 1.5,
+    "step": 0.05,
+    "group": "Size"
+  },
+  "itemGap": {
+    "type": "number",
+    "label": "Space between reminders",
+    "value": 0.35,
+    "min": 0,
+    "max": 2,
+    "step": 0.05,
+    "group": "Size"
+  },
+  "pulse": {
+    "type": "checkbox",
+    "label": "Pulse the border while a reminder is showing, so it is hard to miss",
+    "value": true,
+    "group": "Size"
+  },
+  "btnTest": {
+    "type": "button",
+    "label": "Show a test reminder now",
+    "group": "Manual controls"
+  },
+  "btnClear": {
+    "type": "button",
+    "label": "Clear the reminders that are showing",
+    "group": "Manual controls"
+  },
+  "btnClearAll": {
+    "type": "button",
+    "label": "Clear everything, including the waiting ones",
+    "group": "Manual controls"
+  },
+  "btnSnooze": {
+    "type": "button",
+    "label": "Snooze the reminders that are showing (default snooze time)",
+    "group": "Manual controls"
+  },
+  "title": {
+    "type": "text",
+    "label": "Title",
+    "value": "Reminder",
+    "group": "Look"
+  },
+  "showTitle": {
+    "type": "checkbox",
+    "label": "Show the title",
+    "value": true,
+    "group": "Look"
+  },
+  "themePreset": {
+    "type": "dropdown",
+    "label": "Style preset (the same twenty-two are in every overlay in this set)",
+    "value": "glass",
+    "options": {
+      "glass": "Soft black (default)",
+      "frost": "Soft white",
+      "midnight": "Midnight blue",
+      "sunset": "Sunset",
+      "forest": "Forest",
+      "ocean": "Ocean",
+      "rose": "Rose",
+      "neon": "Neon",
+      "cosycabin": "Cosy cabin",
+      "pastel": "Cosy summer pastel",
+      "celestial": "Celestial",
+      "pastelgoth": "Pastel goth",
+      "pastelpink": "Pastel pink",
+      "faegreen": "Fae green",
+      "pride": "Rainbow pride",
+      "progress": "Progress pride",
+      "trans": "Trans pride",
+      "bi": "Bi pride",
+      "pan": "Pan pride",
+      "enby": "Non-binary pride",
+      "lesbian": "Lesbian pride",
+      "ace": "Ace pride",
+      "custom": "Custom (use the colours below)"
+    },
+    "group": "Look"
+  },
+  "fontFamily": {
+    "type": "googleFont",
+    "label": "Font (used when the style preset is Custom)",
+    "value": "BioRhyme",
+    "group": "Look"
+  },
+  "weight": {
+    "type": "number",
+    "label": "Boldness (100 to 900)",
+    "value": 800,
+    "min": 100,
+    "max": 900,
+    "step": 100,
+    "group": "Look"
+  },
+  "radius": {
+    "type": "number",
+    "label": "Corner roundness, in pixels",
+    "value": 24,
+    "min": 0,
+    "max": 100,
+    "step": 1,
+    "group": "Look"
+  },
+  "pad": {
+    "type": "number",
+    "label": "Padding above and below",
+    "value": 0.5,
+    "min": 0,
+    "max": 3,
+    "step": 0.05,
+    "group": "Look"
+  },
+  "borderWidth": {
+    "type": "number",
+    "label": "Outline width, in pixels",
+    "value": 0,
+    "min": 0,
+    "max": 20,
+    "step": 1,
+    "group": "Look"
+  },
+  "borderColor": {
+    "type": "colorpicker",
+    "label": "Outline colour",
+    "value": "#FFFFFF",
+    "group": "Look"
+  },
+  "shadow": {
+    "type": "checkbox",
+    "label": "Shadow",
+    "value": false,
+    "group": "Look"
+  },
+  "animate": {
+    "type": "checkbox",
+    "label": "Animate",
+    "value": true,
+    "group": "Look"
+  },
+  "colorPanel": {
+    "type": "colorpicker",
+    "label": "Panel colour (used when the style preset is Custom)",
+    "value": "#000000",
+    "group": "Custom colours"
+  },
+  "panelOpacity": {
+    "type": "number",
+    "label": "Panel opacity, 0 to 1 (used when the style preset is Custom)",
+    "value": 0.55,
+    "min": 0,
+    "max": 1,
+    "step": 0.05,
+    "group": "Custom colours"
+  },
+  "cText": {
+    "type": "colorpicker",
+    "label": "Text (used when the style preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Custom colours"
+  },
+  "cAccent": {
+    "type": "colorpicker",
+    "label": "Accent (used when the style preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Custom colours"
+  },
+  "cTrack": {
+    "type": "colorpicker",
+    "label": "Bars and chips (used when the style preset is Custom)",
+    "value": "#444444",
+    "group": "Custom colours"
+  },
+  "cWarn": {
+    "type": "colorpicker",
+    "label": "Alert colour (used when the style preset is Custom)",
+    "value": "#D64545",
+    "group": "Custom colours"
+  },
+  "soundRemind": {
+    "type": "sound-input",
+    "label": "A reminder arrives",
+    "value": "",
+    "group": "Sounds"
+  },
+  "soundRemindVol": {
+    "type": "number",
+    "label": "Volume for that sound (0 to 100)",
+    "value": 80,
+    "min": 0,
+    "max": 100,
+    "step": 5,
+    "group": "Sounds"
+  },
+  "test_soundRemind": {
+    "type": "button",
+    "label": "Test it",
+    "group": "Sounds"
+  },
+  "mute": {
+    "type": "checkbox",
+    "label": "Mute every sound",
+    "value": false,
+    "group": "Sounds"
+  },
+  "debug": {
+    "type": "checkbox",
+    "label": "Log every event to the browser-source console",
+    "value": false,
+    "group": "Troubleshooting"
+  }
+}
