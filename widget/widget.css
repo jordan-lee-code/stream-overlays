@@ -191,7 +191,7 @@
   width: 0;
   height: 100%;
   border-radius: inherit;
-  background: var(--accent);
+  background: var(--flag, var(--accent));
   transition: width var(--fill-s) cubic-bezier(0.22, 1, 0.36, 1);
 }
 
@@ -258,7 +258,7 @@
   width: 0;
   height: 100%;
   border-radius: inherit;
-  background: var(--accent);
+  background: var(--flag, var(--accent));
   transition: width var(--fill-s) cubic-bezier(0.22, 1, 0.36, 1);
 }
 .incentive-bits.converted .incentive-bits-status { font-weight: 700; }
