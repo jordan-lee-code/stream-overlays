@@ -19,6 +19,7 @@ You need Node.js 18 or newer. There is nothing to install. From the root of the 
 ```sh
 node kit/bin/overlay-kit.js list                              # the presets
 node kit/bin/overlay-kit.js check-contrast                    # every preset against the standards
+node kit/bin/overlay-kit.js check-settings overlays/counter   # do its settings follow the standard?
 node kit/bin/overlay-kit.js check-presets overlays/counter    # does this overlay match? (exit 1 if not)
 node kit/bin/overlay-kit.js sync-presets overlays/counter     # bring it in line
 node kit/bin/overlay-kit.js gallery overlays/counter          # redraw docs/presets.png (needs Chromium)

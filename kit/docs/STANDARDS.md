@@ -50,6 +50,18 @@ Groups are named **Commands**, then the overlay's own groups, then **Look**, **C
 
 Every setting has a plain label that says what it does, and a Custom colour's label says that it applies only when the preset is Custom. Every button has a **Test** or **Manual controls** home, and every button does something.
 
+### Checking it
+
+`overlay-kit check-settings` runs on every overlay as part of `npm test`. An overlay need not have every setting above, but one that has a setting with a standard name must give it the standard type and default, every setting must be in a group, and the older names for the same ideas (`animations`, `soundsEnabled`, `colorText`, `colorAccent`, `colorTrack`, `colorBg` and `boxOpacity`) are refused, with a message that says what replaced them.
+
+An overlay can keep a deliberate difference by naming it in its `package.json`, with the reason:
+
+```json
+"overlay-kit": { "exceptions": { "debug": "Why this overlay differs." } }
+```
+
+An exception with no reason is itself an error, so a difference is always explained. The Rage Bar has one: its `debug` starts on, because channel point redemptions are not documented for custom widgets and the first real one needs capturing.
+
 ### A blank is a blank
 
 StreamElements sends an empty string for a field the streamer has cleared. A wording field where empty is a real choice, such as a tag, a currency symbol, a suffix or a title, must treat `""` as empty and use the default only when the setting is missing. The helper is `txt()`. A command word or a reward title is the opposite: blank cannot mean anything, so it falls back to its default.
@@ -104,9 +116,10 @@ Each overlay has a harness for trying it without going live: it fires the events
 
 ## Known differences
 
-The standards above came from the newer overlays and then the older ones were brought towards them. These differences are known and deliberate, or not yet done:
+The standards above came from the newer overlays, and the older ones have been brought towards them. These differences remain, and are deliberate or not yet done:
 
-- **Older overlays' setting names.** The Sub Goals, Spin Wheel, Chat Poll, Squat Tracker and Rage Bar overlays use their own names for some Custom colours and have groups called Theme or Panel. Renaming a setting would reset the saved settings of anyone using it, so it needs a migration, not a rename.
-- **Command words.** The Spin Wheel, Chat Poll and Rage Bar overlays use a separate word for each action (`!spinopen`, `!voteend`, `!barlock`) and not one word with verbs. Changing it would break people's chat habits.
-- **Helpers.** The older overlays each carry their own copy of the small helper functions. The newer ones share one block, kept as [`shared/common.js`](../shared/common.js).
+- **Richer colour settings.** The Spin Wheel, Chat Poll, Rage Bar, Squat Tracker and Sub Goals overlays let you set the colour of each part separately (the wheel alone has about thirty), as well as the standard `colorPanel`, `cText`, `cAccent` and `cTrack`. Those extra settings are additions, not conflicts, and they are not in the standard.
+- **Groups.** The Spin Wheel, Chat Poll, Squat Tracker and Rage Bar overlays use the standard **Look** and **Custom colours** groups. The Sub Goals overlay, and so the Subathon's goals half, keeps its colours beside the part they colour (Panel, Text, Progress bars), which suits how many it has.
+- **A base command word.** The newer overlays have one `command` setting and verbs after it. The Sub Goals and Subathon overlays have it too. The Spin Wheel, Chat Poll, Squat Tracker and Rage Bar overlays use a separate configurable word for each action (`!spinopen`, `!voteend`, `!barlock`) and have no single `command`. Moving them to verbs would change what a streamer types, and rewrite a lot of their command handling, for little gain while the words are settings anyway.
+- **Helpers.** The older overlays each carry their own copy of the small helper functions. The newer ones share one block, kept as [`shared/common.js`](../shared/common.js). The copies differ in small ways, so replacing them is a refactor of each overlay, not a copy and paste.
 - **The wheel's pills** carry the flag as a background but are small, so a flag shows only as colour on them.

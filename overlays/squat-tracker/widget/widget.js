@@ -109,9 +109,9 @@
       themePreset: str(f.themePreset, "glass"),
       fontFamily: str(f.fontFamily, BASE.font),
       colors: {
-        bg: str(f.colorBg, "#FFFFFF"),
+        bg: str(f.cText, "#FFFFFF"),
         text: BASE.text,
-        accent: str(f.colorAccent, "#000000"),
+        accent: str(f.colorPanel, "#000000"),
         count: str(f.colorCount, "#FFFFFF"),
         label: str(f.colorLabel, "#FFFFFF"),
         border: str(f.colorBorder, "#FFFFFF"),
@@ -119,7 +119,7 @@
         float: str(f.colorFloat, "#FFFFFF"),
         floatBg: str(f.colorFloatBg, "#000000")
       },
-      boxOpacity: clamp(num(f.boxOpacity, 0.55), 0, 1),
+      panelOpacity: clamp(num(f.panelOpacity, 0.55), 0, 1),
       look: {
         radius: clamp(num(f.radius, 14), 0, 50),
         padV: clamp(num(f.paddingV, 6), 0, 40),
@@ -140,10 +140,10 @@
         labelSpacing: clamp(num(f.labelSpacing, 0.03), 0, 0.5),
         popScale: clamp(num(f.popScale, 1.16), 1, 2),
         popMs: clamp(num(f.popSeconds, 0.42), 0.1, 3),
-        animations: bool(f.animations, true)
+        animate: bool(f.animate, true)
       },
       sounds: {
-        enabled: bool(f.soundsEnabled, true),
+        enabled: !bool(f.mute, false),
         gift: { url: str(f.giftSound, ""), vol: clamp(num(f.giftSoundVolume, 70), 0, 100) },
         lock: { url: str(f.lockSound, ""), vol: clamp(num(f.lockSoundVolume, 70), 0, 100) },
         unlock: { url: str(f.unlockSound, ""), vol: clamp(num(f.unlockSoundVolume, 70), 0, 100) }
@@ -172,9 +172,9 @@
   function resolvedTheme() {
     if (cfg.themePreset === "custom") {
       return {
-        bg: cfg.colors.bg, text: cfg.colors.text, accent: rgba(cfg.colors.accent, cfg.boxOpacity), font: cfg.fontFamily,
+        bg: cfg.colors.bg, text: cfg.colors.text, accent: rgba(cfg.colors.accent, cfg.panelOpacity), font: cfg.fontFamily,
         count: cfg.colors.count, label: cfg.colors.label, border: cfg.colors.border,
-        lock: cfg.colors.lock, float: cfg.colors.float, floatBg: rgba(cfg.colors.floatBg, cfg.boxOpacity)
+        lock: cfg.colors.lock, float: cfg.colors.float, floatBg: rgba(cfg.colors.floatBg, cfg.panelOpacity)
       };
     }
     // A preset colours the whole sticker from its tones: the box is the panel, the
@@ -224,7 +224,7 @@
     root.style.setProperty("--pop-scale", String(L.popScale));
     root.style.setProperty("--pop-s", L.popMs + "s");
     root.style.setProperty("--float-s", cfg.floatMs / 1000 + "s");
-    if (L.animations) root.classList.remove("no-motion");
+    if (L.animate) root.classList.remove("no-motion");
     else root.classList.add("no-motion");
     document.body.style.background = "transparent";
     loadFont(t.font);

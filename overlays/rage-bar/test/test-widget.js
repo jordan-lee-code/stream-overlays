@@ -1803,8 +1803,8 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   ok(R["--note-scale"] === "0.9" && R["--note-w"] === "400" && R["--note-opacity"] === "0.4" && R["--float-scale"] === "2" && R["--float-w"] === "800", "note and floating text");
   await load({ lockedOpacity: 0.3, offOpacity: 0.2, popScale: 1.3 });
   ok(R["--locked-opacity"] === "0.3" && R["--off-opacity"] === "0.2" && R["--pop-scale"] === "1.3", "locked and off looks, and the swell");
-  await load({ themePreset: "custom", colorBg: "#102030", panelOpacity: 0.8, colorText: "#EEEEEE", colorAccent: "#FF00AA", colorFillFrom: "#010101", colorFillTo: "#020202", colorAlarm: "#030303",
-    colorTitle: "#040404", colorTimer: "#050505", colorReadout: "#060606", colorNote: "#070707", colorBorder: "#080808", colorTrack: "#FFFFFF", trackOpacity: 0.4,
+  await load({ themePreset: "custom", colorPanel: "#102030", panelOpacity: 0.8, cText: "#EEEEEE", cAccent: "#FF00AA", colorFillFrom: "#010101", colorFillTo: "#020202", colorAlarm: "#030303",
+    colorTitle: "#040404", colorTimer: "#050505", colorReadout: "#060606", colorNote: "#070707", colorBorder: "#080808", cTrack: "#FFFFFF", trackOpacity: 0.4,
     colorLock: "#090909", colorLockHole: "#0A0A0A", colorFloat: "#0B0B0B", colorFloatBg: "#000000", colorAlert: "#0C0C0C", colorAlertFill: "#0D0D0D" });
   ok(R["--bg"] === "rgba(16, 32, 48, 0.8)" && R["--text"] === "#EEEEEE" && R["--accent"] === "#FF00AA", "Custom card, text and accent (" + R["--bg"] + ")");
   ok(R["--fill-from"] === "#010101" && R["--fill-to"] === "#020202" && R["--alarm"] === "#030303", "Custom fill and alarm");
@@ -1820,7 +1820,7 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   console.log("\n[animation]");
   await load();
   ok(!elements["rage-app"].classList.contains("no-motion") && R["--fill-s"] === "0.55s" && R["--pop-s"] === "0.42s" && R["--float-s"] === "1.6s" && R["--dread-s"] === "2.2s" && R["--panic-s"] === "0.8s" && R["--refuse-s"] === "0.42s", "on by default, at the original speeds");
-  await load({ animations: false, fillSeconds: 2, popSeconds: 1, floatSeconds: 3, dreadSeconds: 4, panicSeconds: 0.5, refuseSeconds: 1 });
+  await load({ animate: false, fillSeconds: 2, popSeconds: 1, floatSeconds: 3, dreadSeconds: 4, panicSeconds: 0.5, refuseSeconds: 1 });
   ok(elements["rage-app"].classList.contains("no-motion"), "unticking Animate adds the no-motion class");
   ok(R["--fill-s"] === "2s" && R["--pop-s"] === "1s" && R["--float-s"] === "3s" && R["--dread-s"] === "4s" && R["--panic-s"] === "0.5s" && R["--refuse-s"] === "1s", "and the timings are configurable");
   await load({ floatSeconds: 3 });

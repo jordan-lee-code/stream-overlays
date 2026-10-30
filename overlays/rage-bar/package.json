@@ -30,5 +30,10 @@
     "test": "node test/test-widget.js",
     "build": "node build/build-overlay.js",
     "dev": "python3 -m http.server 8000"
+  },
+  "overlay-kit": {
+    "exceptions": {
+      "debug": "Channel point redemptions are not documented for custom widgets, so event logging is on until the first real redeem has been captured and the shape confirmed."
+    }
   }
 }

@@ -287,9 +287,9 @@
       fontFamily: str(f.fontFamily, BASE.font),
       panelOpacity: clamp(num(f.panelOpacity, 0.55), 0, 1),
       colors: {
-        bg: str(f.colorBg, "#000000"),
-        text: str(f.colorText, "#FFFFFF"),
-        accent: str(f.colorAccent, "#FFFFFF"),
+        bg: str(f.colorPanel, "#000000"),
+        text: str(f.cText, "#FFFFFF"),
+        accent: str(f.cAccent, "#FFFFFF"),
         pointer: str(f.colorPointer, "#FFFFFF"),
         segs: [
           str(f.colorSegA, BASE.segs[0]),
@@ -336,7 +336,7 @@
         subScale: clamp(num(f.subScale, 1), 0.4, 3), subWeight: str(f.subWeight, "600"),
         lifeScale: clamp(num(f.lifelineScale, 1), 0.4, 3), lifeWeight: str(f.lifelineWeight, "800"),
         questionScale: clamp(num(f.questionScale, 1), 0.4, 3),
-        animations: bool(f.animations, true), toastMs: clamp(num(f.toastSeconds, 0.45), 0, 5),
+        animate: bool(f.animate, true), toastMs: clamp(num(f.toastSeconds, 0.45), 0, 5),
         cardMs: clamp(num(f.cardSeconds, 0.55), 0, 5), goalMs: clamp(num(f.goalSeconds, 0.6), 0, 5),
         pulseMs: clamp(num(f.pulseSeconds, 1), 0.2, 5)
       },
@@ -491,7 +491,7 @@
     set("--text-shadow", L.textShadow ? "0 1px 4px rgba(0, 0, 0, 0.55)" : "none");
     set("--toast-s", L.toastMs + "s"); set("--card-s", L.cardMs + "s");
     set("--goal-s", L.goalMs + "s"); set("--pulse-s", L.pulseMs + "s");
-    if (L.animations) root.classList.remove("no-motion");
+    if (L.animate) root.classList.remove("no-motion");
     else root.classList.add("no-motion");
 
     document.body.style.background = "transparent";

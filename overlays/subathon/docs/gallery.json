@@ -3,7 +3,7 @@
   "height": 360,
   "fields": {
     "tmAnimate": false,
-    "animations": false,
+    "animate": false,
     "tmStart": "48:00:00",
     "tmFeedSeconds": 60
   },

@@ -443,7 +443,7 @@
     "step": 0.05,
     "group": "Text"
   },
-  "colorText": {
+  "cText": {
     "type": "colorpicker",
     "label": "Text colour for the goal being worked on (used when the style preset is Custom)",
     "value": "#FFFFFF",
@@ -508,13 +508,13 @@
     "value": false,
     "group": "Text"
   },
-  "colorAccent": {
+  "cAccent": {
     "type": "colorpicker",
     "label": "Progress bar colour (used when the style preset is Custom)",
     "value": "#FFFFFF",
     "group": "Progress bars"
   },
-  "colorTrack": {
+  "cTrack": {
     "type": "colorpicker",
     "label": "Empty part of the bar, colour (used when the style preset is Custom)",
     "value": "#FFFFFF",
@@ -553,10 +553,10 @@
     "step": 0.05,
     "group": "Progress bars"
   },
-  "soundsEnabled": {
+  "mute": {
     "type": "checkbox",
-    "label": "Play sounds (untick to mute everything, keeping the files)",
-    "value": true,
+    "label": "Mute every sound (the sound files are kept)",
+    "value": false,
     "group": "Sounds"
   },
   "subSound": {
@@ -656,7 +656,7 @@
     "value": "#FFFFFF",
     "group": "Thank you"
   },
-  "animations": {
+  "animate": {
     "type": "checkbox",
     "label": "Animate (untick to switch every animation and transition off)",
     "value": true,

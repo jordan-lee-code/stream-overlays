@@ -223,7 +223,7 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   ok(elements["squat-app"].style["--accent"] === "#F5ECD6", "cosy cabin box colour (" + elements["squat-app"].style["--accent"] + ")");
   load({ themePreset: "pastelgoth" }); await wait(5);
   ok(elements["squat-app"].style["--accent"] === "#3A3340", "pastel goth changes the box colour");
-  load({ themePreset: "custom", colorAccent: "#123456" }); await wait(5);
+  load({ themePreset: "custom", colorPanel: "#123456" }); await wait(5);
   ok(elements["squat-app"].style["--accent"] === "rgba(18, 52, 86, 0.55)", "custom uses the colour picker, at the box opacity (" + elements["squat-app"].style["--accent"] + ")");
 
   // M. caption
@@ -305,7 +305,7 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   load({ themePreset: "custom", colorCount: "#111111", colorLabel: "#222222", colorBorder: "#333333", colorLock: "#444444", colorFloat: "#555555", colorFloatBg: "#666666" }); await wait(5);
   ok(A["--c-count"] === "#111111" && A["--c-label"] === "#222222" && A["--c-border"] === "#333333", "Custom colours for the number, caption and outline");
   ok(A["--c-lock"] === "#444444" && A["--c-float"] === "#555555" && A["--c-float-bg"] === "rgba(102, 102, 102, 0.55)", "and for the padlock and the floating chip (" + A["--c-float-bg"] + ")");
-  load({ themePreset: "custom", colorAccent: "#112233", boxOpacity: 0.9 }); await wait(5);
+  load({ themePreset: "custom", colorPanel: "#112233", panelOpacity: 0.9 }); await wait(5);
   ok(A["--accent"] === "rgba(17, 34, 51, 0.9)", "a Custom box has its own opacity (" + A["--accent"] + ")");
   load({ themePreset: "celestial", colorCount: "#111111" }); await wait(5);
   ok(A["--c-count"] !== "#111111", "a preset ignores the custom colours");
@@ -316,7 +316,7 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   console.log("\n[animations switch]");
   load(); await wait(5);
   ok(!elements["squat-app"].classList.contains("no-motion"), "animation is on by default");
-  load({ animations: false }); await wait(5);
+  load({ animate: false }); await wait(5);
   ok(elements["squat-app"].classList.contains("no-motion"), "unticking Animate adds the no-motion class");
 
   // R. sounds
@@ -346,7 +346,7 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   ok(audioLog[0].volume === 0.25, "each sound has its own volume (" + audioLog[0].volume + ")");
   load(withSounds({ giftSoundVolume: 900 })); await wait(5); clearLog(); gift({ bulkGifted: true, amount: 5 });
   ok(audioLog[0].volume === 1, "held to the 0 to 1 range");
-  load(withSounds({ soundsEnabled: false })); await wait(5); clearLog();
+  load(withSounds({ mute: true })); await wait(5); clearLog();
   gift({ bulkGifted: true, amount: 5 }); chat("!squatslock", { mod: true });
   ok(played().length === 0, "unticking Play sounds mutes everything");
   load(withSounds()); await wait(5); clearLog();

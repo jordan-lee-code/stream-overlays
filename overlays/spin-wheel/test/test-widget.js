@@ -272,9 +272,9 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   ok(app._theme.accent === "#E8C06B", "switching to celestial changes palette");
   load({ themePreset: "pastelgoth" }); await wait(5);
   ok(app._theme.segs[0] === "#C8B6E2", "pastel goth slices change");
-  load({ themePreset: "custom", colorAccent: "#123456" }); await wait(5);
+  load({ themePreset: "custom", cAccent: "#123456" }); await wait(5);
   ok(app._theme.accent === "#123456", "custom uses the colour picker");
-  load({ themePreset: "pastel", colorAccent: "rgba(1,2,3,1)" }); await wait(5);
+  load({ themePreset: "pastel", cAccent: "rgba(1,2,3,1)" }); await wait(5);
   ok(app._theme.accent === "#BF684C", "a non-hex colour field does not stop a preset");
 
   // S. dynamic forfeits add/remove/clear
@@ -397,7 +397,7 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   ok(A["--eyebrow-scale"] === "1.1" && A["--eyebrow-w"] === "800" && A["--eyebrow-spacing"] === "4" && A["--eyebrow-case"] === "none", "winner label text");
   ok(A["--name-scale"] === "0.7" && A["--name-w"] === "700" && A["--sub-scale"] === "1.3" && A["--sub-w"] === "400", "winner name and line");
   ok(A["--life-scale"] === "0.9" && A["--life-w"] === "600" && A["--question-scale"] === "1.4", "lifelines and questions");
-  load({ themePreset: "custom", colorBg: "#102030", panelOpacity: 0.8, colorText: "#EEEEEE", colorAccent: "#FF00AA", colorPointer: "#00FFAA",
+  load({ themePreset: "custom", colorPanel: "#102030", panelOpacity: 0.8, cText: "#EEEEEE", cAccent: "#FF00AA", colorPointer: "#00FFAA",
     colorPillBg: "#010101", colorPill: "#020202", colorToastBg: "#030303", colorToast: "#040404", colorCardBg: "#050505", colorCard: "#060606",
     colorEyebrowBg: "#070707", colorEyebrow: "#080808", colorIdle: "#090909", colorGoal: "#0A0A0A", colorGoalTrack: "#FFFFFF", goalTrackOpacity: 0.4,
     colorGoalFrom: "#0B0B0B", colorGoalTo: "#0C0C0C", colorHub: "#0D0D0D", colorHubRing: "#0E0E0E", colorSpent: "#0F0F0F", colorBorder: "#111111" }); await wait(5);
@@ -447,7 +447,7 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   console.log("\n[animation]");
   load(); await wait(5);
   ok(!hasCls("no-motion") && A["--toast-s"] === "0.45s" && A["--card-s"] === "0.55s" && A["--goal-s"] === "0.6s" && A["--pulse-s"] === "1s", "on by default, at the original speeds");
-  load({ animations: false, toastSeconds: 2, cardSeconds: 1, goalSeconds: 3, pulseSeconds: 0.5 }); await wait(5);
+  load({ animate: false, toastSeconds: 2, cardSeconds: 1, goalSeconds: 3, pulseSeconds: 0.5 }); await wait(5);
   ok(hasCls("no-motion") && A["--toast-s"] === "2s" && A["--card-s"] === "1s" && A["--goal-s"] === "3s" && A["--pulse-s"] === "0.5s", "the switch and the timings");
 
   // AC. sounds

@@ -437,7 +437,7 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   load({ themePreset: "custom", paddingV: 1, paddingH: 1.5, borderWidth: 3, borderColor: "#FF0000", shadow: true, vAlign: "bottom",
     lineSpacing: 1.5, nameWeight: "800", waitingWeight: "500", waitingScale: 70, colorWaiting: "#CCCCCC", colorDone: "#999999",
     strikeDone: false, textShadow: true, headingScale: 1.6, titleWeight: "600", colorTitle: "#FFEEAA", totalWeight: "400", colorTotal: "#AAEEFF",
-    colorTrack: "#000000", trackOpacity: 0.5, colorGlow: "#00FF00", barHeight: 1.1, rowGap: 0.4, fillSeconds: 2
+    cTrack: "#000000", trackOpacity: 0.5, colorGlow: "#00FF00", barHeight: 1.1, rowGap: 0.4, fillSeconds: 2
   }); await wait(5);
   const A = elements["incentive-app"].style;
   ok(A["--pad-v"] === "1em" && A["--pad-h"] === "1.5em", "padding (" + A["--pad-v"] + ", " + A["--pad-h"] + ")");
@@ -544,7 +544,7 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   console.log("\n[animations switch]");
   load(); await wait(5);
   ok(!elements["incentive-app"].classList.contains("no-motion"), "animations are on by default");
-  load({ animations: false }); await wait(5);
+  load({ animate: false }); await wait(5);
   ok(elements["incentive-app"].classList.contains("no-motion"), "unticking Animate adds the no-motion class");
   load(); await wait(5);
   ok(!elements["incentive-app"].classList.contains("no-motion"), "and ticking it again removes it");
@@ -624,7 +624,7 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   ok(audioLog[0].volume === 0.25 && audioLog[1].volume === 1, "each sound has its own volume (" + audioLog.map(a => a.volume) + ")");
   load(withSounds({ subSoundVolume: 900 })); await wait(5); clearLog(); sub({ amount: 1 });
   ok(audioLog[0].volume === 1, "volume is held to the 0 to 1 range");
-  load(withSounds({ soundsEnabled: false })); await wait(5); clearLog();
+  load(withSounds({ mute: true })); await wait(5); clearLog();
   sub({ amount: 1 }); cheer(500); boss("!incentive add 1 x"); boss("!incentive bits 500");
   ok(played().length === 0, "unticking Play sounds mutes everything");
   load(withSounds()); await wait(5); boss("!incentive stop"); clearLog();
@@ -871,7 +871,7 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   ok(/^linear-gradient\(180deg, #5BCEFA 0% 20%, #F5A9B8 20% 40%, #FFFFFF 40% 60%, #F5A9B8 60% 80%, #5BCEFA 80% 100%\)$/.test(FLAG), "the trans preset stripes the bar like its flag, five bands (" + FLAG + ")");
   load({ themePreset: "glass" }); await wait(5);
   ok(elements["incentive-app"].style["--flag"] === "#FFFFFF", "any other preset leaves the bar its accent colour");
-  load({ themePreset: "custom", colorAccent: "#123456" }); await wait(5);
+  load({ themePreset: "custom", cAccent: "#123456" }); await wait(5);
   ok(elements["incentive-app"].style["--flag"] === elements["incentive-app"].style["--accent"], "and so does Custom");
 
   // ---- style presets: the same twenty-one, with the same colours, in every overlay
@@ -896,9 +896,9 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   load({ themePreset: "glass" }); await wait(5);
   ok(elements["incentive-app"].style["--panel-img"] === "none", "and every other preset leaves the card plain");
   ok(elements["incentive-app"].style["--flag-edge"] === "none", "with no outline either");
-  load({ themePreset: "frost", colorText: "#123456", colorPanel: "#654321" }); await wait(5);
+  load({ themePreset: "frost", cText: "#123456", colorPanel: "#654321" }); await wait(5);
   ok(elements["incentive-app"].style["--text"] === EXPECT.frost.text, "a preset ignores the colour pickers");
-  load({ themePreset: "custom", colorText: "#123456" }); await wait(5);
+  load({ themePreset: "custom", cText: "#123456" }); await wait(5);
   ok(elements["incentive-app"].style["--text"] === "#123456", "and Custom uses them");
 
   // ---- other widgets can build on the module through its announcements

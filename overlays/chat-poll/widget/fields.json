@@ -571,19 +571,19 @@
       "ace": "Ace pride",
       "custom": "Custom (use the colours below)"
     },
-    "group": "Theme"
+    "group": "Look"
   },
   "fontFamily": {
     "type": "googleFont",
     "label": "Font",
     "value": "BioRhyme",
-    "group": "Theme"
+    "group": "Look"
   },
-  "colorBg": {
+  "colorPanel": {
     "type": "colorpicker",
     "label": "Panel colour (used when the preset is Custom)",
     "value": "#000000",
-    "group": "Theme"
+    "group": "Custom colours"
   },
   "panelOpacity": {
     "type": "number",
@@ -592,67 +592,67 @@
     "min": 0,
     "max": 1,
     "step": 0.05,
-    "group": "Theme"
+    "group": "Custom colours"
   },
-  "colorText": {
+  "cText": {
     "type": "colorpicker",
     "label": "Text colour (used when the preset is Custom)",
     "value": "#FFFFFF",
-    "group": "Theme"
+    "group": "Custom colours"
   },
-  "colorAccent": {
+  "cAccent": {
     "type": "colorpicker",
     "label": "Accent colour (used when the preset is Custom)",
     "value": "#FFFFFF",
-    "group": "Theme"
+    "group": "Custom colours"
   },
   "colorOnAccent": {
     "type": "colorpicker",
     "label": "Text on the accent colour (used when the preset is Custom)",
     "value": "#111111",
-    "group": "Theme"
+    "group": "Custom colours"
   },
   "colorBorder": {
     "type": "colorpicker",
     "label": "Outline colour (used when the preset is Custom)",
     "value": "#FFFFFF",
-    "group": "Theme"
+    "group": "Custom colours"
   },
   "colorTitle": {
     "type": "colorpicker",
     "label": "Heading colour (used when the preset is Custom)",
     "value": "#FFFFFF",
-    "group": "Theme"
+    "group": "Custom colours"
   },
   "colorPillBg": {
     "type": "colorpicker",
     "label": "Countdown background (used when the preset is Custom)",
     "value": "#FFFFFF",
-    "group": "Theme"
+    "group": "Custom colours"
   },
   "colorPill": {
     "type": "colorpicker",
     "label": "Countdown text (used when the preset is Custom)",
     "value": "#111111",
-    "group": "Theme"
+    "group": "Custom colours"
   },
   "colorEyebrowBg": {
     "type": "colorpicker",
     "label": "Result label background (used when the preset is Custom)",
     "value": "#FFFFFF",
-    "group": "Theme"
+    "group": "Custom colours"
   },
   "colorEyebrow": {
     "type": "colorpicker",
     "label": "Result label text (used when the preset is Custom)",
     "value": "#111111",
-    "group": "Theme"
+    "group": "Custom colours"
   },
   "colorRow": {
     "type": "colorpicker",
     "label": "Option row tint (used when the preset is Custom)",
     "value": "#FFFFFF",
-    "group": "Theme"
+    "group": "Custom colours"
   },
   "rowOpacity": {
     "type": "number",
@@ -661,25 +661,25 @@
     "min": 0,
     "max": 1,
     "step": 0.02,
-    "group": "Theme"
+    "group": "Look"
   },
   "colorKey": {
     "type": "colorpicker",
     "label": "Option letter text (used when the preset is Custom)",
     "value": "#111111",
-    "group": "Theme"
+    "group": "Custom colours"
   },
   "colorLabel": {
     "type": "colorpicker",
     "label": "Option text colour (used when the preset is Custom)",
     "value": "#FFFFFF",
-    "group": "Theme"
+    "group": "Custom colours"
   },
-  "colorTrack": {
+  "cTrack": {
     "type": "colorpicker",
     "label": "Empty part of each bar (used when the preset is Custom)",
     "value": "#FFFFFF",
-    "group": "Theme"
+    "group": "Custom colours"
   },
   "trackOpacity": {
     "type": "number",
@@ -688,81 +688,81 @@
     "min": 0,
     "max": 1,
     "step": 0.02,
-    "group": "Theme"
+    "group": "Look"
   },
   "colorCount": {
     "type": "colorpicker",
     "label": "Vote count colour (used when the preset is Custom)",
     "value": "#FFFFFF",
-    "group": "Theme"
+    "group": "Custom colours"
   },
   "colorWinBg": {
     "type": "colorpicker",
     "label": "Winning option background (used when the preset is Custom)",
     "value": "#FFFFFF",
-    "group": "Theme"
+    "group": "Custom colours"
   },
   "colorWin": {
     "type": "colorpicker",
     "label": "Winning option text (used when the preset is Custom)",
     "value": "#111111",
-    "group": "Theme"
+    "group": "Custom colours"
   },
   "colorFoot": {
     "type": "colorpicker",
     "label": "Footer colour (used when the preset is Custom)",
     "value": "#FFFFFF",
-    "group": "Theme"
+    "group": "Custom colours"
   },
   "colorSegA": {
     "type": "colorpicker",
     "label": "Option A chip and bar colour (used when the preset is Custom)",
     "value": "#FFFFFF",
-    "group": "Theme"
+    "group": "Custom colours"
   },
   "colorSegB": {
     "type": "colorpicker",
     "label": "Option B chip and bar colour (used when the preset is Custom)",
     "value": "#D9D9D9",
-    "group": "Theme"
+    "group": "Custom colours"
   },
   "colorSegC": {
     "type": "colorpicker",
     "label": "Option C chip and bar colour (used when the preset is Custom)",
     "value": "#BFBFBF",
-    "group": "Theme"
+    "group": "Custom colours"
   },
   "colorSegD": {
     "type": "colorpicker",
     "label": "Option D chip and bar colour (used when the preset is Custom)",
     "value": "#EDEDED",
-    "group": "Theme"
+    "group": "Custom colours"
   },
   "colorSegE": {
     "type": "colorpicker",
     "label": "Option E chip and bar colour (used when the preset is Custom)",
     "value": "#A6A6A6",
-    "group": "Theme"
+    "group": "Custom colours"
   },
   "colorSegF": {
     "type": "colorpicker",
     "label": "Option F chip and bar colour (used when the preset is Custom)",
     "value": "#CCCCCC",
-    "group": "Theme"
+    "group": "Custom colours"
   },
   "colorSegG": {
     "type": "colorpicker",
     "label": "Option G chip and bar colour (used when the preset is Custom)",
     "value": "#F5F5F5",
-    "group": "Theme"
+    "group": "Custom colours"
   },
   "colorSegH": {
     "type": "colorpicker",
     "label": "Option H chip and bar colour (used when the preset is Custom)",
     "value": "#B3B3B3",
-    "group": "Theme"
+    "group": "Custom colours"
   },
-  "animations": {
+  "animate": {
     "type": "checkbox",
     "label": "Animate (untick to switch every animation off)",
     "value": true,
@@ -795,10 +795,10 @@
     "step": 0.05,
     "group": "Animation"
   },
-  "soundsEnabled": {
+  "mute": {
     "type": "checkbox",
-    "label": "Play sounds (untick to mute everything, keeping the files)",
-    "value": true,
+    "label": "Mute every sound (the sound files are kept)",
+    "value": false,
     "group": "Sounds"
   },
   "openSound": {

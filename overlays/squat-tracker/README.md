@@ -68,7 +68,7 @@ Choose **Custom** to use the colour pickers and font instead. They are ignored w
 
 1. In StreamElements, edit your overlay and add **+ Add Widget, Static/Custom, Custom Widget**.
 2. Select the widget, open **Settings, Open Editor**, and paste each file from `widget/` into the matching tab: `widget.html` into HTML, `widget.css` into CSS, `widget.js` into JS, and `fields.json` into Fields.
-3. Click **Done**. The settings are grouped into Commands, Squat rule, Look, Sticker, Text, Theme, Animation, Sounds and Manual controls.
+3. Click **Done**. The settings are grouped into Commands, Squat rule, Look, Sticker, Text, Look, Custom colours, Animation, Sounds and Manual controls.
 4. Size and position the widget. The number scales with the box.
 
 The widget reads Twitch chat and sub events through StreamElements, so the counting and commands work as soon as it is on an active overlay.
@@ -119,7 +119,7 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | Look | A caption under the number, the floating `+N` (its prefix, suffix and how long it stays), the padlock, and the tail. |
 | Sticker | The size of the number, caption and floating text, corner roundness, padding, the gap between number and caption, tilt, an outline and shadows. |
 | Text | The boldness of the number, caption and floating text, and the caption's opacity and letter spacing. |
-| Theme | One of the twenty-one shared style presets (Soft black by default) or Custom colours and font, with separate colours for the box, number, caption, outline, padlock and floating text, and an opacity for the box. |
+| Look and Custom colours | One of the twenty-one shared style presets (Soft black by default) or Custom colours and font, with separate colours for the box, number, caption, outline, padlock and floating text, and an opacity for the box. |
 | Animation | One switch for all animation, how far the sticker swells when the count changes, and how long that takes. |
 | Sounds | A sound and volume for a gift adding squats, for locking and for unlocking, plus a master mute. |
 | Manual controls | Buttons to simulate a gift, adjust, lock and reset, and to test each sound. |

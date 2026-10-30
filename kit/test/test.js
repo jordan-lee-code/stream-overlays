@@ -80,6 +80,26 @@ Object.keys(K.generators).forEach(kind => {
   });
 });
 
+console.log("\n[the settings standard]");
+const { checkFields } = require("../src/settings");
+const good = { animate: { type: "checkbox", value: true, group: "Look" }, mute: { type: "checkbox", value: false, group: "Sounds" }, cText: { type: "colorpicker", value: "#fff", group: "Custom colours" } };
+test("an overlay that follows the standard has no problems", () => assert.deepStrictEqual(checkFields(good), []));
+test("an old name for a standard setting is refused, and says what replaced it", () => {
+  const p = checkFields({ animations: { type: "checkbox", value: true, group: "Animation" } });
+  assert.ok(p.length === 1 && /animations: is the old name for animate/.test(p[0]));
+});
+test("a standard name with the wrong type or default is refused", () => {
+  assert.ok(checkFields({ animate: { type: "dropdown", value: true, group: "x" } }).some(x => /should be a checkbox/.test(x)));
+  assert.ok(checkFields({ mute: { type: "checkbox", value: true, group: "x" } }).some(x => /should default to false/.test(x)));
+});
+test("a setting with no group is refused", () => assert.ok(checkFields({ anything: { type: "text" } }).some(x => /not in a group/.test(x))));
+test("a documented exception is allowed, and one with no reason, or for a missing setting, is not", () => {
+  const f = { debug: { type: "checkbox", value: true, group: "Troubleshooting" } };
+  assert.deepStrictEqual(checkFields(f, { debug: "Logging is on until the first real event has been captured." }), []);
+  assert.ok(checkFields(f, { debug: "short" }).length >= 1);
+  assert.ok(checkFields(good, { debug: "This setting does not exist in the overlay." }).some(x => /no such setting/.test(x)));
+});
+
 console.log("\n[syncing a repo]");
 function tempRepo(name, kind) {
   const dir = path.join(fs.mkdtempSync(path.join(os.tmpdir(), "kit-")), name);

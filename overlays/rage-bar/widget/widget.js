@@ -332,9 +332,9 @@
       fontFamily: str(f.fontFamily, BASE.font),
       panelOpacity: clamp(num(f.panelOpacity, 0.55), 0, 1),
       colors: {
-        bg: str(f.colorBg, "#000000"),
-        text: str(f.colorText, "#FFFFFF"),
-        accent: str(f.colorAccent, "#FFFFFF"),
+        bg: str(f.colorPanel, "#000000"),
+        text: str(f.cText, "#FFFFFF"),
+        accent: str(f.cAccent, "#FFFFFF"),
         fillFrom: str(f.colorFillFrom, "#D9D9D9"),
         fillTo: str(f.colorFillTo, "#FFFFFF"),
         alarm: str(f.colorAlarm, "#D64545")
@@ -343,7 +343,7 @@
       parts: {
         title: str(f.colorTitle, "#FFFFFF"), timer: str(f.colorTimer, "#FFFFFF"),
         readout: str(f.colorReadout, "#FFFFFF"), note: str(f.colorNote, "#FFFFFF"),
-        border: str(f.colorBorder, "#FFFFFF"), track: str(f.colorTrack, "#FFFFFF"),
+        border: str(f.colorBorder, "#FFFFFF"), track: str(f.cTrack, "#FFFFFF"),
         lock: str(f.colorLock, "#FFFFFF"), lockHole: str(f.colorLockHole, "#111111"),
         float: str(f.colorFloat, "#FFFFFF"), floatBg: str(f.colorFloatBg, "#000000"),
         alert: str(f.colorAlert, "#FFFFFF"), alertFill: str(f.colorAlertFill, "#FFFFFF")
@@ -363,7 +363,7 @@
         floatScale: clamp(num(f.floatScale, 1), 0.4, 3), floatWeight: str(f.floatWeight, "700"),
         lockedOpacity: clamp(num(f.lockedOpacity, 0.6), 0, 1), offOpacity: clamp(num(f.offOpacity, 0.55), 0, 1),
         popScale: clamp(num(f.popScale, 1.04), 1, 2),
-        animations: bool(f.animations, true), fillMs: clamp(num(f.fillSeconds, 0.55), 0, 5),
+        animate: bool(f.animate, true), fillMs: clamp(num(f.fillSeconds, 0.55), 0, 5),
         popMs: clamp(num(f.popSeconds, 0.42), 0.1, 3), floatMs: clamp(num(f.floatSeconds, 1.6), 0.3, 10),
         dreadMs: clamp(num(f.dreadSeconds, 2.2), 0.4, 10), panicMs: clamp(num(f.panicSeconds, 0.8), 0.2, 5),
         refuseMs: clamp(num(f.refuseSeconds, 0.42), 0.1, 3)
@@ -479,7 +479,7 @@
     set("--pop-scale", String(L.popScale));
     set("--fill-s", L.fillMs + "s"); set("--pop-s", L.popMs + "s"); set("--float-s", L.floatMs + "s");
     set("--dread-s", L.dreadMs + "s"); set("--panic-s", L.panicMs + "s"); set("--refuse-s", L.refuseMs + "s");
-    if (L.animations) root.classList.remove("no-motion");
+    if (L.animate) root.classList.remove("no-motion");
     else root.classList.add("no-motion");
 
     document.body.style.background = "transparent";

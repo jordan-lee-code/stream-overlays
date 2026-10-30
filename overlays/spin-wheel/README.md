@@ -71,7 +71,7 @@ Choose **Custom** to use the colour pickers and font instead. They are ignored w
 
 1. In StreamElements, edit your overlay and add **+ Add Widget, Static/Custom, Custom Widget**.
 2. Select the widget, open **Settings, Open Editor**, and paste each file from `widget/` into the matching tab: `widget.html` into HTML, `widget.css` into CSS, `widget.js` into JS, and `fields.json` into Fields.
-3. Click **Done**. The settings are grouped into Commands, Rules, Odds, Truth or..., Goal auto-spin, Wording, Wheel, Pills and cards, Text, Theme, Animation, Sounds and Manual controls.
+3. Click **Done**. The settings are grouped into Commands, Rules, Odds, Truth or..., Goal auto-spin, Wording, Wheel, Pills and cards, Text, Look, Custom colours, Animation, Sounds and Manual controls.
 4. Size and position the widget on the overlay. The wheel scales to the box.
 
 The widget reads Twitch chat through StreamElements, so the commands work as soon as it is on an active overlay.
@@ -117,7 +117,7 @@ Chat submits questions with `!spinask`, and the wheel draws one that stays on sc
 
 ## Theming
 
-The default look is *Soft black*: see-through black pills and cards, white text in BioRhyme, and slices in shades of white and grey. In the **Theme** group you can:
+The default look is *Soft black*: see-through black pills and cards, white text in BioRhyme, and slices in shades of white and grey. In the **Look** and **Custom colours** groups you can:
 
 - Pick a **style preset**: one of the twenty-one shared presets (see [Style presets](#style-presets)). A preset sets the whole palette and font at once, and colours every part (pills, toast, winner card, goal bar, hub) from its own tones.
 - Set the style preset to **Custom** to use your own colours and font. There is a colour picker for the panel (with an opacity), the text, the accent, the pointer, each of the six slices, and every individual part: pills, the joined toast, the winner card and its label, the empty-wheel message, the goal bar, the hub, the outline and the names on light and dark slices.
@@ -140,7 +140,7 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | Wheel | The shape, idle drift, chat-colour slices, the rim and divider thickness, the size and boldness of the names, the hub ring and a shadow. |
 | Pills and cards | The roundness, padding and tilt of pills, the toast and the winner card, the goal bar's thickness, an outline, tails and shadows. |
 | Text | The size and boldness of the empty-wheel message, toast, pills, goal label, winner label, winner name, line under the winner and lifelines. |
-| Theme | One of the twenty-one shared style presets (Soft black by default) or Custom colours and font, with a colour for every part. |
+| Look and Custom colours | One of the twenty-one shared style presets (Soft black by default) or Custom colours and font, with a colour for every part. |
 | Animation | One switch for all animation, the spin and winner display times, and how long the toast, card, goal bar and countdown pulse take. |
 | Sounds | A sound and volume for someone joining, each tick and the winner, plus a master mute. |
 | Manual controls | Buttons for spin, open, close, clear, switch mode, reroll, re-show and the Truth or... controls, and to test each sound. |

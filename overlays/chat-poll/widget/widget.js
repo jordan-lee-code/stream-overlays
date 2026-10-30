@@ -236,9 +236,9 @@
       panelOpacity: clamp(num(f.panelOpacity, 0.55), 0, 1),
       fontFamily: str(f.fontFamily, BASE.font),
       colors: {
-        bg: str(f.colorBg, "#000000"),
-        text: str(f.colorText, "#FFFFFF"),
-        accent: str(f.colorAccent, "#FFFFFF")
+        bg: str(f.colorPanel, "#000000"),
+        text: str(f.cText, "#FFFFFF"),
+        accent: str(f.cAccent, "#FFFFFF")
       },
       urgentSeconds: clamp(Math.round(num(f.urgentSeconds, 5)), 0, 60),
       words: {
@@ -258,7 +258,7 @@
         eyebrowBg: str(f.colorEyebrowBg, "#FFFFFF"), eyebrow: str(f.colorEyebrow, "#111111"),
         onAccent: str(f.colorOnAccent, "#111111"),
         row: str(f.colorRow, "#FFFFFF"), key: str(f.colorKey, "#111111"), label: str(f.colorLabel, "#FFFFFF"),
-        track: str(f.colorTrack, "#FFFFFF"), count: str(f.colorCount, "#FFFFFF"),
+        track: str(f.cTrack, "#FFFFFF"), count: str(f.colorCount, "#FFFFFF"),
         winBg: str(f.colorWinBg, "#FFFFFF"), win: str(f.colorWin, "#111111"), foot: str(f.colorFoot, "#FFFFFF"),
         segs: ["A", "B", "C", "D", "E", "F", "G", "H"].map(function (k, i) { return str(f["colorSeg" + k], BASE.segs[i]); })
       },
@@ -280,11 +280,11 @@
         barWidth: clamp(num(f.barWidth, 4.5), 1, 20), barHeight: clamp(num(f.barHeight, 0.42), 0.1, 2),
         rowOpacity: clamp(num(f.rowOpacity, 0.12), 0, 1), trackOpacity: clamp(num(f.trackOpacity, 0.2), 0, 1),
         lostOpacity: clamp(num(f.lostOpacity, 0.5), 0, 1),
-        animations: bool(f.animations, true), fillMs: clamp(num(f.fillSeconds, 0.45), 0, 5),
+        animate: bool(f.animate, true), fillMs: clamp(num(f.fillSeconds, 0.45), 0, 5),
         enterMs: clamp(num(f.enterSeconds, 0.42), 0, 5), pulseMs: clamp(num(f.pulseSeconds, 0.8), 0.2, 5)
       },
       sounds: {
-        enabled: bool(f.soundsEnabled, true),
+        enabled: !bool(f.mute, false),
         open: { url: str(f.openSound, ""), vol: clamp(num(f.openSoundVolume, 70), 0, 100) },
         vote: { url: str(f.voteSound, ""), vol: clamp(num(f.voteSoundVolume, 40), 0, 100) },
         tick: { url: str(f.tickSound, ""), vol: clamp(num(f.tickSoundVolume, 60), 0, 100) },
@@ -407,7 +407,7 @@
     root.style.setProperty("--fill-s", L.fillMs + "s");
     root.style.setProperty("--in-s", L.enterMs + "s");
     root.style.setProperty("--pulse-s", L.pulseMs + "s");
-    if (L.animations) root.classList.remove("no-motion");
+    if (L.animate) root.classList.remove("no-motion");
     else root.classList.add("no-motion");
 
     document.body.style.background = "transparent";

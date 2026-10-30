@@ -69,7 +69,7 @@ Choose **Custom** to use the colour pickers and font instead. They are ignored w
 
 1. In StreamElements, edit your overlay and add **+ Add Widget, Static/Custom, Custom Widget**.
 2. Select the widget, open **Settings, Open Editor**, and paste each file from `widget/` into the matching tab: `widget.html` into HTML, `widget.css` into CSS, `widget.js` into JS, and `fields.json` into Fields.
-3. Click **Done**. The settings are grouped into Commands, Poll rules, Copy, Card, Text, Theme, Animation, Sounds and Manual controls.
+3. Click **Done**. The settings are grouped into Commands, Poll rules, Copy, Card, Text, Look, Custom colours, Animation, Sounds and Manual controls.
 4. Size the widget box to the full 1920 by 1080 canvas. The card sits against the left edge and its text scales with the box, so a full-size box renders at full resolution and any later shrinking in OBS keeps it sharp.
 
 If you would rather import, `npm run build` writes `dist/chat-voting.overlay.json`. StreamElements does not document its overlay import format, so pasting the files in (above) is the reliable route.
@@ -125,7 +125,7 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | Copy | The heading, the result and tie labels, the hint line, the words for vote and votes, and a troubleshooting overlay. |
 | Card | **Size of everything**, corner roundness, padding, spacing, an outline, shadows, the tail and tilt of the timer and result label, and the size of each option's bar. |
 | Text | The size and boldness of the heading, countdown, result label, options, letter chips, counts and footer, an own font for the heading, and the opacity of counts, footer and options that did not win. |
-| Theme | One of the twenty-one shared style presets (Soft black by default) or Custom colours and font, with a colour for every part and each of the eight options, and an opacity for the panel. |
+| Look and Custom colours | One of the twenty-one shared style presets (Soft black by default) or Custom colours and font, with a colour for every part and each of the eight options, and an opacity for the panel. |
 | Animation | One switch for all animation, and how long the bars, the card and the pulse take. |
 | Sounds | A sound and volume for a poll opening, a vote, each of the last seconds and the result, plus a master mute. |
 | Manual controls | Buttons to start a demo poll, add time, end, restart, cancel and undo, and to test each sound. |

@@ -34,6 +34,7 @@ run("kit contrast standards", "node", [KIT, "check-contrast"], ROOT);
 overlays.forEach(n => {
   const dir = path.join(ROOT, "overlays", n);
   run(n + " presets match the kit", "node", [KIT, "check-presets", dir], ROOT);
+  run(n + " settings follow the standard", "node", [KIT, "check-settings", dir], ROOT);
   run(n + " tests", "npm", ["test", "--silent"], dir);
 });
 

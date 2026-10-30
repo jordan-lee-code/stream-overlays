@@ -307,72 +307,72 @@
       "ace": "Ace pride",
       "custom": "Custom (use the colours below)"
     },
-    "group": "Theme"
+    "group": "Look"
   },
   "fontFamily": {
     "type": "googleFont",
     "label": "Font",
     "value": "BioRhyme",
-    "group": "Theme"
+    "group": "Look"
   },
-  "colorAccent": {
+  "colorPanel": {
     "type": "colorpicker",
     "label": "Box colour (used when the preset is Custom)",
     "value": "#000000",
-    "group": "Theme"
+    "group": "Custom colours"
   },
-  "boxOpacity": {
+  "panelOpacity": {
     "type": "number",
     "label": "Box and floating chip opacity (used when the preset is Custom; 0 is invisible, 1 is solid)",
     "value": 0.55,
     "min": 0,
     "max": 1,
     "step": 0.05,
-    "group": "Theme"
+    "group": "Custom colours"
   },
-  "colorBg": {
+  "cText": {
     "type": "colorpicker",
     "label": "Light tone: the number, caption, outline and padlock (used when the preset is Custom)",
     "value": "#FFFFFF",
-    "group": "Theme"
+    "group": "Custom colours"
   },
   "colorCount": {
     "type": "colorpicker",
     "label": "Number colour (used when the preset is Custom)",
     "value": "#FFFFFF",
-    "group": "Theme"
+    "group": "Custom colours"
   },
   "colorLabel": {
     "type": "colorpicker",
     "label": "Caption colour (used when the preset is Custom)",
     "value": "#FFFFFF",
-    "group": "Theme"
+    "group": "Custom colours"
   },
   "colorBorder": {
     "type": "colorpicker",
     "label": "Outline colour (used when the preset is Custom)",
     "value": "#FFFFFF",
-    "group": "Theme"
+    "group": "Custom colours"
   },
   "colorLock": {
     "type": "colorpicker",
     "label": "Padlock colour (used when the preset is Custom)",
     "value": "#FFFFFF",
-    "group": "Theme"
+    "group": "Custom colours"
   },
   "colorFloat": {
     "type": "colorpicker",
     "label": "Floating +N text colour (used when the preset is Custom)",
     "value": "#FFFFFF",
-    "group": "Theme"
+    "group": "Custom colours"
   },
   "colorFloatBg": {
     "type": "colorpicker",
     "label": "Floating +N background colour (used when the preset is Custom)",
     "value": "#000000",
-    "group": "Theme"
+    "group": "Custom colours"
   },
-  "animations": {
+  "animate": {
     "type": "checkbox",
     "label": "Animate (untick to switch every animation off)",
     "value": true,
@@ -405,10 +405,10 @@
     "step": 0.1,
     "group": "Animation"
   },
-  "soundsEnabled": {
+  "mute": {
     "type": "checkbox",
-    "label": "Play sounds (untick to mute everything, keeping the files)",
-    "value": true,
+    "label": "Mute every sound (the sound files are kept)",
+    "value": false,
     "group": "Sounds"
   },
   "giftSound": {

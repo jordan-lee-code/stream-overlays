@@ -73,7 +73,7 @@ Choose **Custom** to use the colour pickers and font instead. They are ignored w
 
 1. In StreamElements, edit your overlay and add **+ Add Widget, Static/Custom, Custom Widget**.
 2. Select the widget, open **Settings, Open Editor**, and paste each file from `widget/` into the matching tab: `widget.html` into HTML, `widget.css` into CSS, `widget.js` into JS, and `fields.json` into Fields.
-3. Click **Done**. The settings are grouped into Commands, Bar, Copy, Fill values, Lock, Nope, Wording, Card, Text, Theme, Animation, Sounds and Manual controls.
+3. Click **Done**. The settings are grouped into Commands, Bar, Copy, Fill values, Lock, Nope, Wording, Card, Text, Look, Custom colours, Animation, Sounds and Manual controls.
 4. Size the box on the canvas. Everything scales with it.
 5. Create the channel point rewards on Twitch (see below), then use **Fill the bar** in Manual controls to rehearse the whole sequence.
 
@@ -225,7 +225,7 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | Wording | Every word in the line under the bar, the readouts and the floating text. |
 | Card | Corner roundness, padding, spacing, tilt, an outline, shadows, the tail and the bar's thickness. |
 | Text | The size and boldness of the heading, countdown, readout, line and floating text. |
-| Theme | One of the twenty-one shared style presets (Soft black by default) or Custom colours and font, with a colour for every part. |
+| Look and Custom colours | One of the twenty-one shared style presets (Soft black by default) or Custom colours and font, with a colour for every part. |
 | Animation | One switch for all animation, and how long the fill, swell, floating text, glow, save window pulse and shake take. |
 | Sounds | A sound and volume for a contribution, a lock, a lock breaking, the bar filling, a save and a reset, plus a master mute. |
 | Manual controls | Buttons to fill, lock, unlock, save, switch on and off, reset and test each sound. |

@@ -920,19 +920,19 @@
       "ace": "Ace pride",
       "custom": "Custom (use the colours below)"
     },
-    "group": "Theme"
+    "group": "Look"
   },
   "fontFamily": {
     "type": "googleFont",
     "label": "Font",
     "value": "BioRhyme",
-    "group": "Theme"
+    "group": "Look"
   },
-  "colorBg": {
+  "colorPanel": {
     "type": "colorpicker",
     "label": "Panel colour (used when the preset is Custom)",
     "value": "#000000",
-    "group": "Theme"
+    "group": "Custom colours"
   },
   "panelOpacity": {
     "type": "number",
@@ -941,145 +941,145 @@
     "min": 0,
     "max": 1,
     "step": 0.05,
-    "group": "Theme"
+    "group": "Custom colours"
   },
-  "colorText": {
+  "cText": {
     "type": "colorpicker",
     "label": "Text colour (used when the preset is Custom)",
     "value": "#FFFFFF",
-    "group": "Theme"
+    "group": "Custom colours"
   },
-  "colorAccent": {
+  "cAccent": {
     "type": "colorpicker",
     "label": "Accent colour: the rim and the empty wheel (used when the preset is Custom)",
     "value": "#FFFFFF",
-    "group": "Theme"
+    "group": "Custom colours"
   },
   "colorPointer": {
     "type": "colorpicker",
     "label": "Pointer colour (used when the preset is Custom)",
     "value": "#FFFFFF",
-    "group": "Theme"
+    "group": "Custom colours"
   },
   "colorPillBg": {
     "type": "colorpicker",
     "label": "Pill background colour (used when the preset is Custom)",
     "value": "#000000",
-    "group": "Theme"
+    "group": "Custom colours"
   },
   "colorPill": {
     "type": "colorpicker",
     "label": "Pill text colour (used when the preset is Custom)",
     "value": "#FFFFFF",
-    "group": "Theme"
+    "group": "Custom colours"
   },
   "colorToastBg": {
     "type": "colorpicker",
     "label": "Joined toast background colour (used when the preset is Custom)",
     "value": "#000000",
-    "group": "Theme"
+    "group": "Custom colours"
   },
   "colorToast": {
     "type": "colorpicker",
     "label": "Joined toast text colour (used when the preset is Custom)",
     "value": "#FFFFFF",
-    "group": "Theme"
+    "group": "Custom colours"
   },
   "colorCardBg": {
     "type": "colorpicker",
     "label": "Winner card background colour (used when the preset is Custom)",
     "value": "#000000",
-    "group": "Theme"
+    "group": "Custom colours"
   },
   "colorCard": {
     "type": "colorpicker",
     "label": "Winner card text colour (used when the preset is Custom)",
     "value": "#FFFFFF",
-    "group": "Theme"
+    "group": "Custom colours"
   },
   "colorEyebrowBg": {
     "type": "colorpicker",
     "label": "Winner label background colour (used when the preset is Custom)",
     "value": "#FFFFFF",
-    "group": "Theme"
+    "group": "Custom colours"
   },
   "colorEyebrow": {
     "type": "colorpicker",
     "label": "Winner label text colour (used when the preset is Custom)",
     "value": "#111111",
-    "group": "Theme"
+    "group": "Custom colours"
   },
   "colorIdle": {
     "type": "colorpicker",
     "label": "Empty-wheel message colour (used when the preset is Custom)",
     "value": "#FFFFFF",
-    "group": "Theme"
+    "group": "Custom colours"
   },
   "colorGoal": {
     "type": "colorpicker",
     "label": "Goal bar label colour (used when the preset is Custom)",
     "value": "#FFFFFF",
-    "group": "Theme"
+    "group": "Custom colours"
   },
   "colorGoalTrack": {
     "type": "colorpicker",
     "label": "Empty goal bar colour (used when the preset is Custom)",
     "value": "#FFFFFF",
-    "group": "Theme"
+    "group": "Custom colours"
   },
   "colorGoalFrom": {
     "type": "colorpicker",
     "label": "Goal bar fill, start colour (used when the preset is Custom)",
     "value": "#D9D9D9",
-    "group": "Theme"
+    "group": "Custom colours"
   },
   "colorGoalTo": {
     "type": "colorpicker",
     "label": "Goal bar fill, end colour (used when the preset is Custom)",
     "value": "#FFFFFF",
-    "group": "Theme"
+    "group": "Custom colours"
   },
   "colorHub": {
     "type": "colorpicker",
     "label": "Hub colour (used when the preset is Custom)",
     "value": "#111111",
-    "group": "Theme"
+    "group": "Custom colours"
   },
   "colorHubRing": {
     "type": "colorpicker",
     "label": "Hub ring colour (used when the preset is Custom)",
     "value": "#FFFFFF",
-    "group": "Theme"
+    "group": "Custom colours"
   },
   "colorSpent": {
     "type": "colorpicker",
     "label": "Spent lifelines and refused skips colour (used when the preset is Custom)",
     "value": "#ff8a8a",
-    "group": "Theme"
+    "group": "Custom colours"
   },
   "colorBorder": {
     "type": "colorpicker",
     "label": "Winner card outline colour (used when the preset is Custom)",
     "value": "#FFFFFF",
-    "group": "Theme"
+    "group": "Custom colours"
   },
   "colorLabelDark": {
     "type": "colorpicker",
     "label": "Names on light slices colour (used when the preset is Custom)",
     "value": "#111111",
-    "group": "Theme"
+    "group": "Custom colours"
   },
   "colorLabelLight": {
     "type": "colorpicker",
     "label": "Names on dark slices colour (used when the preset is Custom)",
     "value": "#FFFFFF",
-    "group": "Theme"
+    "group": "Custom colours"
   },
   "colorDivider": {
     "type": "colorpicker",
     "label": "Line between slices colour (used when the preset is Custom)",
     "value": "#000000",
-    "group": "Theme"
+    "group": "Custom colours"
   },
   "goalTrackOpacity": {
     "type": "number",
@@ -1088,45 +1088,45 @@
     "min": 0,
     "max": 1,
     "step": 0.02,
-    "group": "Theme"
+    "group": "Look"
   },
   "colorSegA": {
     "type": "colorpicker",
     "label": "Slice A colour (used when the preset is Custom)",
     "value": "#FFFFFF",
-    "group": "Theme"
+    "group": "Custom colours"
   },
   "colorSegB": {
     "type": "colorpicker",
     "label": "Slice B colour (used when the preset is Custom)",
     "value": "#D9D9D9",
-    "group": "Theme"
+    "group": "Custom colours"
   },
   "colorSegC": {
     "type": "colorpicker",
     "label": "Slice C colour (used when the preset is Custom)",
     "value": "#BFBFBF",
-    "group": "Theme"
+    "group": "Custom colours"
   },
   "colorSegD": {
     "type": "colorpicker",
     "label": "Slice D colour (used when the preset is Custom)",
     "value": "#EDEDED",
-    "group": "Theme"
+    "group": "Custom colours"
   },
   "colorSegE": {
     "type": "colorpicker",
     "label": "Slice E colour (used when the preset is Custom)",
     "value": "#A6A6A6",
-    "group": "Theme"
+    "group": "Custom colours"
   },
   "colorSegF": {
     "type": "colorpicker",
     "label": "Slice F colour (used when the preset is Custom)",
     "value": "#CCCCCC",
-    "group": "Theme"
+    "group": "Custom colours"
   },
-  "animations": {
+  "animate": {
     "type": "checkbox",
     "label": "Animate pills, the toast and the winner card (untick to switch every animation off)",
     "value": true,

@@ -774,19 +774,19 @@
       "ace": "Ace pride",
       "custom": "Custom (use the colours below)"
     },
-    "group": "Theme"
+    "group": "Look"
   },
   "fontFamily": {
     "type": "googleFont",
     "label": "Font",
     "value": "BioRhyme",
-    "group": "Theme"
+    "group": "Look"
   },
-  "colorBg": {
+  "colorPanel": {
     "type": "colorpicker",
     "label": "Card colour (used when the preset is Custom)",
     "value": "#000000",
-    "group": "Theme"
+    "group": "Custom colours"
   },
   "panelOpacity": {
     "type": "number",
@@ -795,109 +795,109 @@
     "min": 0,
     "max": 1,
     "step": 0.05,
-    "group": "Theme"
+    "group": "Custom colours"
   },
-  "colorText": {
+  "cText": {
     "type": "colorpicker",
     "label": "Text colour (used when the preset is Custom)",
     "value": "#FFFFFF",
-    "group": "Theme"
+    "group": "Custom colours"
   },
-  "colorAccent": {
+  "cAccent": {
     "type": "colorpicker",
     "label": "Accent colour (used when the preset is Custom)",
     "value": "#FFFFFF",
-    "group": "Theme"
+    "group": "Custom colours"
   },
   "colorFillFrom": {
     "type": "colorpicker",
     "label": "Bar fill, start (used when the preset is Custom)",
     "value": "#D9D9D9",
-    "group": "Theme"
+    "group": "Custom colours"
   },
   "colorFillTo": {
     "type": "colorpicker",
     "label": "Bar fill, end (used when the preset is Custom)",
     "value": "#FFFFFF",
-    "group": "Theme"
+    "group": "Custom colours"
   },
   "colorAlarm": {
     "type": "colorpicker",
     "label": "Alarm colour: the card while the run can be saved, and the last stretch (used when the preset is Custom)",
     "value": "#D64545",
-    "group": "Theme"
+    "group": "Custom colours"
   },
   "colorTitle": {
     "type": "colorpicker",
     "label": "Heading colour (used when the preset is Custom)",
     "value": "#FFFFFF",
-    "group": "Theme"
+    "group": "Custom colours"
   },
   "colorTimer": {
     "type": "colorpicker",
     "label": "Countdown colour (used when the preset is Custom)",
     "value": "#FFFFFF",
-    "group": "Theme"
+    "group": "Custom colours"
   },
   "colorReadout": {
     "type": "colorpicker",
     "label": "Readout colour (used when the preset is Custom)",
     "value": "#FFFFFF",
-    "group": "Theme"
+    "group": "Custom colours"
   },
   "colorNote": {
     "type": "colorpicker",
     "label": "Line under the bar colour (used when the preset is Custom)",
     "value": "#FFFFFF",
-    "group": "Theme"
+    "group": "Custom colours"
   },
   "colorBorder": {
     "type": "colorpicker",
     "label": "Outline colour (used when the preset is Custom)",
     "value": "#FFFFFF",
-    "group": "Theme"
+    "group": "Custom colours"
   },
-  "colorTrack": {
+  "cTrack": {
     "type": "colorpicker",
     "label": "Empty part of the bar colour (used when the preset is Custom)",
     "value": "#FFFFFF",
-    "group": "Theme"
+    "group": "Custom colours"
   },
   "colorLock": {
     "type": "colorpicker",
     "label": "Padlock colour (used when the preset is Custom)",
     "value": "#FFFFFF",
-    "group": "Theme"
+    "group": "Custom colours"
   },
   "colorLockHole": {
     "type": "colorpicker",
     "label": "Padlock keyhole colour (used when the preset is Custom)",
     "value": "#111111",
-    "group": "Theme"
+    "group": "Custom colours"
   },
   "colorFloat": {
     "type": "colorpicker",
     "label": "Floating text colour (used when the preset is Custom)",
     "value": "#FFFFFF",
-    "group": "Theme"
+    "group": "Custom colours"
   },
   "colorFloatBg": {
     "type": "colorpicker",
     "label": "Floating text background colour (used when the preset is Custom)",
     "value": "#000000",
-    "group": "Theme"
+    "group": "Custom colours"
   },
   "colorAlert": {
     "type": "colorpicker",
     "label": "Text while the card is in alarm colour (used when the preset is Custom)",
     "value": "#FFFFFF",
-    "group": "Theme"
+    "group": "Custom colours"
   },
   "colorAlertFill": {
     "type": "colorpicker",
     "label": "Bar fill while the card is in alarm colour (used when the preset is Custom)",
     "value": "#FFFFFF",
-    "group": "Theme"
+    "group": "Custom colours"
   },
   "trackOpacity": {
     "type": "number",
@@ -906,7 +906,7 @@
     "min": 0,
     "max": 1,
     "step": 0.02,
-    "group": "Theme"
+    "group": "Look"
   },
   "lockedOpacity": {
     "type": "number",
@@ -915,7 +915,7 @@
     "min": 0,
     "max": 1,
     "step": 0.05,
-    "group": "Theme"
+    "group": "Look"
   },
   "offOpacity": {
     "type": "number",
@@ -924,9 +924,9 @@
     "min": 0,
     "max": 1,
     "step": 0.05,
-    "group": "Theme"
+    "group": "Look"
   },
-  "animations": {
+  "animate": {
     "type": "checkbox",
     "label": "Animate (untick to switch every animation off)",
     "value": true,

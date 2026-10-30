@@ -129,7 +129,7 @@
         font: str(f.fontFamily, "BioRhyme"),
         size: clamp(num(f.textSize, 40), 12, 120),
         lineSpacing: clamp(num(f.lineSpacing, 1.25), 0.9, 2.5),
-        text: str(f.colorText, "#FFFFFF"),
+        text: str(f.cText, "#FFFFFF"),
         nameWeight: str(f.nameWeight, "700"),
         waiting: str(f.colorWaiting, "#FFFFFF"),
         waitingWeight: str(f.waitingWeight, "400"),
@@ -145,8 +145,8 @@
         totalWeight: str(f.totalWeight, "800"),
         totalColor: str(f.colorTotal, "#FFFFFF"),
         totalFont: bool(f.totalOwnFont, false) ? str(f.totalFont, "BioRhyme") : "",
-        accent: str(f.colorAccent, "#FFFFFF"),
-        track: str(f.colorTrack, "#FFFFFF"),
+        accent: str(f.cAccent, "#FFFFFF"),
+        track: str(f.cTrack, "#FFFFFF"),
         trackOpacity: clamp(num(f.trackOpacity, 0.2), 0, 1),
         glow: str(f.colorGlow, "#FFFFFF"),
         pausedScale: clamp(num(f.pausedScale, 0.6), 0.3, 1.5),
@@ -155,14 +155,14 @@
         thanksColor: str(f.colorThanks, "#FFFFFF"),
         barH: clamp(num(f.barHeight, 0.7), 0.2, 2),
         rowGap: Math.max(0, num(f.rowGap, 0.9)),
-        animations: bool(f.animations, true),
+        animate: bool(f.animate, true),
         fillSeconds: clamp(num(f.fillSeconds, 0.9), 0, 10)
       },
       showThanks: bool(f.showThanks, true),
       thanksText: txt(f.thanksText, "Thank you for your generosity! <3"),
       thanksBar: bool(f.thanksBar, false),
       sounds: {
-        enabled: bool(f.soundsEnabled, true),
+        enabled: !bool(f.mute, false),
         replace: bool(f.goalReplacesSound, true),
         sub: { url: str(f.subSound, ""), vol: clamp(num(f.subSoundVolume, 70), 0, 100) },
         bits: { url: str(f.bitsSound, ""), vol: clamp(num(f.bitsSoundVolume, 70), 0, 100) },
@@ -313,7 +313,7 @@
     set("--row-gap", L.rowGap + "em");
     set("--fill-s", L.fillSeconds + "s");
 
-    if (L.animations) root.classList.remove("no-motion");
+    if (L.animate) root.classList.remove("no-motion");
     else root.classList.add("no-motion");
 
     document.body.style.background = "transparent";

@@ -7,6 +7,7 @@ const { sync } = require("../src/sync");
 const K = require("../src/presets");
 const { checkContrast } = require("../src/contrast");
 const { gallery } = require("../src/gallery");
+const { checkSettings } = require("../src/settings");
 
 const args = process.argv.slice(2);
 const cmd = args.shift();
@@ -17,6 +18,7 @@ function usage() {
   console.log([
     "overlay-kit sync-presets [dir]         bring an overlay's palette table, dropdown and tests in line with the kit",
     "overlay-kit check-presets [dir]        the same, but only report drift (exit 1 if there is any)",
+    "overlay-kit check-settings [dir]      check an overlay's settings use the standard names, types and defaults",
     "overlay-kit check-contrast             check every preset against the contrast standards",
     "overlay-kit gallery <dir>             render the overlay in every preset into docs/presets.png (needs Chromium)",
     "overlay-kit list                       list the presets",
@@ -35,6 +37,15 @@ if (cmd === "sync-presets" || cmd === "check-presets") {
   console.log(label + (check ? ": out of date" : ": updated"));
   result.changes.forEach(c => console.log("  " + c));
   process.exit(check ? 1 : 0);
+} else if (cmd === "check-settings") {
+  const dir = path.resolve(args[0] || ".");
+  let problems;
+  try { problems = checkSettings(dir); } catch (e) { console.error(e.message); process.exit(2); }
+  const name = path.basename(dir);
+  if (!problems.length) { console.log(name + ": settings follow the standard"); process.exit(0); }
+  console.log(name + ": " + problems.length + " setting problem" + (problems.length === 1 ? "" : "s"));
+  problems.forEach(x => console.log("  " + x));
+  process.exit(1);
 } else if (cmd === "check-contrast") {
   const r = checkContrast();
   r.lines.forEach(l => console.log(l));

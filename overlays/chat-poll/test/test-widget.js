@@ -343,7 +343,7 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   ok(elements["vote-app"].style["--accent"] === "#7C6142", "cosy cabin accent (" + elements["vote-app"].style["--accent"] + ")");
   load({ themePreset: "pastelgoth" }); await wait(5);
   ok(elements["vote-app"].style["--accent"] === "#C8B6E2", "pastel goth changes the accent");
-  load({ themePreset: "custom", colorAccent: "#123456" }); await wait(5);
+  load({ themePreset: "custom", cAccent: "#123456" }); await wait(5);
   ok(elements["vote-app"].style["--accent"] === "#123456", "custom uses the colour picker");
   load(); await wait(5);
   chat("!vote One, Two", boss); await wait(5);
@@ -490,9 +490,9 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   ok(V["--label-scale"] === "1.2" && V["--label-weight"] === "500" && V["--key-scale"] === "1.1" && V["--key-w"] === "400", "option text and chips");
   ok(V["--count-scale"] === "1" && V["--count-weight"] === "800" && V["--count-opacity"] === "0.5", "count text");
   ok(V["--foot-scale"] === "0.9" && V["--foot-w"] === "400" && V["--foot-opacity"] === "0.4" && V["--lost-opacity"] === "0.2", "footer and lost options");
-  load({ themePreset: "custom", colorBg: "#102030", panelOpacity: 0.8, colorText: "#EEEEEE", colorAccent: "#FF00AA", colorOnAccent: "#001122",
+  load({ themePreset: "custom", colorPanel: "#102030", panelOpacity: 0.8, cText: "#EEEEEE", cAccent: "#FF00AA", colorOnAccent: "#001122",
     colorBorder: "#010101", colorTitle: "#020202", colorPillBg: "#030303", colorPill: "#040404", colorEyebrowBg: "#050505", colorEyebrow: "#060606",
-    colorRow: "#000000", rowOpacity: 0.3, colorKey: "#070707", colorLabel: "#080808", colorTrack: "#FFFFFF", trackOpacity: 0.4, colorCount: "#090909",
+    colorRow: "#000000", rowOpacity: 0.3, colorKey: "#070707", colorLabel: "#080808", cTrack: "#FFFFFF", trackOpacity: 0.4, colorCount: "#090909",
     colorWinBg: "#0A0A0A", colorWin: "#0B0B0B", colorFoot: "#0C0C0C", colorSegA: "#AA0000", colorSegB: "#00AA00" }); await wait(5);
   ok(V["--bg"] === "rgba(16, 32, 48, 0.8)" && V["--text"] === "#EEEEEE" && V["--accent"] === "#FF00AA", "Custom panel colour with its opacity, text and accent (" + V["--bg"] + ")");
   ok(V["--c-border"] === "#010101" && V["--c-title"] === "#020202" && V["--c-pill-bg"] === "#030303" && V["--c-pill"] === "#040404", "Custom outline, heading and countdown colours");
@@ -519,7 +519,7 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   console.log("\n[animation]");
   load(); await wait(5);
   ok(!elements["vote-app"].classList.contains("no-motion") && V["--fill-s"] === "0.45s" && V["--in-s"] === "0.42s" && V["--pulse-s"] === "0.8s", "on by default, at the original speeds");
-  load({ animations: false, fillSeconds: 1.5, enterSeconds: 1, pulseSeconds: 2 }); await wait(5);
+  load({ animate: false, fillSeconds: 1.5, enterSeconds: 1, pulseSeconds: 2 }); await wait(5);
   ok(elements["vote-app"].classList.contains("no-motion"), "unticking Animate adds the no-motion class");
   ok(V["--fill-s"] === "1.5s" && V["--in-s"] === "1s" && V["--pulse-s"] === "2s", "and the timings are configurable");
 
@@ -558,7 +558,7 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   load(withSounds({ voteSoundVolume: 25 })); await wait(5); clearLog();
   chat("!vote One, Two", boss); chat("1", { nick: "a" });
   ok(audioLog.filter(a => a.src === "data:vote")[0].volume === 0.25, "each sound has its own volume");
-  load(withSounds({ soundsEnabled: false })); await wait(5); clearLog();
+  load(withSounds({ mute: true })); await wait(5); clearLog();
   chat("!vote One, Two", boss); chat("1", { nick: "a" }); chat("!voteend", boss);
   ok(played().length === 0, "unticking Play sounds mutes everything");
   load(withSounds()); await wait(5); clearLog();
