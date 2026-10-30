@@ -175,6 +175,7 @@ These overlays share the same default look and the same fourteen style presets, 
 - [Leaderboard Overlay](https://github.com/jordan-lee-code/leaderboard-overlay): top gifters, cheerers and tippers.
 - [Recent Activity Overlay](https://github.com/jordan-lee-code/recent-activity-overlay): the latest subs, gifts, bits, tips, follows and raids.
 - [Stream Goals Overlay](https://github.com/jordan-lee-code/stream-goals-overlay): sub and bits goals that start again for each stream.
+- [Reminder Overlay](https://github.com/jordan-lee-code/reminder-overlay): reminders you set from chat, which stay on screen until cleared.
 
 ## Support
 
