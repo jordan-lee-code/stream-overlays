@@ -1,0 +1,32 @@
+{
+  "name": "counter-overlay",
+  "version": "1.0.0",
+  "description": "A StreamElements custom widget: a counter that chat commands change, for deaths, wins and anything else worth counting.",
+  "private": true,
+  "license": "MIT",
+  "author": "Jordan Lee",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jordan-lee-code/counter-overlay.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jordan-lee-code/counter-overlay/issues"
+  },
+  "homepage": "https://github.com/jordan-lee-code/counter-overlay#readme",
+  "keywords": [
+    "streamelements",
+    "twitch",
+    "overlay",
+    "widget",
+    "counter",
+    "death-counter"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "funding": "https://ko-fi.com/journeyingjordan",
+  "scripts": {
+    "test": "node test/test-widget.js",
+    "dev": "python3 -m http.server 8000"
+  }
+}
