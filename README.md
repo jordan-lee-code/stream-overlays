@@ -111,13 +111,14 @@ Elapsed time is how long the clock has actually been running. Time while it was 
 
 <p><img src="docs/elapsed.png" alt="The clock reading 106:32:46 with a small line saying Elapsed 53:27:14 and a status of Day 3" width="380"></p>
 
-**The day number.** Tick **Show the day number in the status line** for a `Day 3` beside the status. What a day means differs from one subathon to the next, so **How the day number counts** has three choices:
+**The day number.** Tick **Show the day number in the status line** for a `Day 3` beside the status. What a day means differs from one subathon to the next, so **How the day number counts** has four choices:
 
 - *Each calendar day the clock runs* (the default) is for a subathon streamed a few hours at a time over several days. The first day the clock runs is Day 1, and the next day it runs is Day 2. A day when the clock does not run does not count, so skipping a Tuesday does not make Wednesday Day 4. A new day starts at the **rollover hour** (4 by default, meaning 4am) rather than at midnight, so a stream that runs past midnight is still the same day. The date comes from the computer running the overlay.
+- *Calendar days since the first day* counts dates instead, so days off count. The first day the clock runs is Day 1, and from then on the number is how many calendar days it has been, whether or not you streamed. Skipping a Tuesday makes Wednesday Day 4 if Monday was Day 2. It uses the same rollover hour, and it keeps counting while the clock is paused.
 - *Every 24 hours of running time* is for one long continuous stream, where Day 2 starts after 24 hours elapsed.
 - *Only when I change it* never changes by itself.
 
-In every mode you can set it by hand with `!subathon day 3`, `!subathon day +1` or `!subathon day -1`, or with the **Next day** and **Previous day** buttons, and it never goes below 1. Applying the start time puts it back to Day 1.
+In every mode you can set it by hand, and the number carries on counting from what you set with `!subathon day 3`, `!subathon day +1` or `!subathon day -1`, or with the **Next day** and **Previous day** buttons, and it never goes below 1. Applying the start time puts it back to Day 1.
 
 ## Chat commands
 

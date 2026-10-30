@@ -242,7 +242,8 @@
     "label": "How the day number counts",
     "value": "calendar",
     "options": {
-      "calendar": "Each calendar day the clock runs (days in a row)",
+      "calendar": "Each calendar day the clock runs (days off do not count)",
+      "date": "Calendar days since the first day (days off count)",
       "elapsed": "Every 24 hours of running time (one long stream)",
       "manual": "Only when I change it"
     },

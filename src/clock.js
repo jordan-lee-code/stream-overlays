@@ -104,7 +104,7 @@
   function blankState() {
     return {
       remaining: 0, at: 0, running: false, ended: false, locked: false,
-      added: 0, capBase: 0, banked: 0, sleeping: false, power: null, last: null, elapsed: 0, day: 1, dayStamp: ""
+      added: 0, capBase: 0, banked: 0, sleeping: false, power: null, last: null, elapsed: 0, day: 1, dayStamp: "", dayShift: 0
     };
   }
 
@@ -152,23 +152,35 @@
     var d = new Date(t - cfg.dayRollover * 3600000);
     return d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
   }
+  // Whole calendar days from one stamp to another. Built from UTC dates, so a clock change
+  // in between cannot make a day 23 or 25 hours long.
+  function daysBetween(from, to) {
+    var a = from.split("-").map(Number), b = to.split("-").map(Number);
+    return Math.round((Date.UTC(b[0], b[1] - 1, b[2]) - Date.UTC(a[0], a[1] - 1, a[2])) / 86400000);
+  }
   function updateDay() {
-    if (cfg.dayMode !== "calendar" || !state.running) return;
+    if (!state.running || (cfg.dayMode !== "calendar" && cfg.dayMode !== "date")) return;
     var stamp = dayStamp(now());
     if (!state.dayStamp) { state.dayStamp = stamp; save(); }
-    else if (stamp !== state.dayStamp) { state.day++; state.dayStamp = stamp; save(); }
+    else if (cfg.dayMode === "calendar" && stamp !== state.dayStamp) { state.day++; state.dayStamp = stamp; save(); }
   }
   function dayNumber() {
-    return cfg.dayMode === "elapsed" ? Math.floor(elapsedNow() / 86400000) + 1 : state.day;
+    if (cfg.dayMode === "elapsed") return Math.max(1, Math.floor(elapsedNow() / 86400000) + 1 + state.dayShift);
+    // "date" counts calendar days from the day it was anchored, running or not.
+    if (cfg.dayMode === "date" && state.dayStamp) return Math.max(1, state.day + daysBetween(state.dayStamp, dayStamp(now())));
+    return state.day;
   }
   function setDay(n) {
-    state.day = Math.max(1, Math.floor(n));
-    state.dayStamp = dayStamp(now());
+    n = Math.max(1, Math.floor(n));
+    // Counting by running time has no date to hold on to, so a day set by hand is kept as a shift.
+    if (cfg.dayMode === "elapsed") state.dayShift = n - (Math.floor(elapsedNow() / 86400000) + 1);
+    else { state.day = n; state.dayStamp = dayStamp(now()); }
     save(); render();
   }
+  // "+1" and "-1" move from the number on screen, whichever way the day is being counted.
   function parseDay(text) {
     var m = /^([+-])(\d+)$/.exec(text);
-    if (m) return state.day + (m[1] === "-" ? -1 : 1) * parseInt(m[2], 10);
+    if (m) return dayNumber() + (m[1] === "-" ? -1 : 1) * parseInt(m[2], 10);
     return /^\d+$/.test(text) ? parseInt(text, 10) : NaN;
   }
 
@@ -230,7 +242,7 @@
     var start = durationField(cfg.start, 24 * 3600000);
     state.remaining = start; state.at = now(); state.running = false; state.ended = start <= 0;
     state.added = 0; state.capBase = start; state.banked = 0; state.power = null;
-    state.sleeping = false; state.last = null; state.elapsed = 0; state.day = 1; state.dayStamp = "";
+    state.sleeping = false; state.last = null; state.elapsed = 0; state.day = 1; state.dayStamp = ""; state.dayShift = 0;
     save(); render(); showFeed();
   }
   function resetCap() {
@@ -380,8 +392,8 @@
       case "tmPowerStop": stopPower(); break;
       case "tmSleep": state.sleeping = true; save(); render(); break;
       case "tmWake": state.sleeping = false; save(); render(); break;
-      case "tmDayNext": setDay(state.day + 1); break;
-      case "tmDayPrev": setDay(state.day - 1); break;
+      case "tmDayNext": setDay(dayNumber() + 1); break;
+      case "tmDayPrev": setDay(dayNumber() - 1); break;
       case "tmTestZero": playSound("zero"); break;
       case "tmTestAdd": playSound("add"); break;
       case "tmTestPower": playSound("power"); break;
@@ -428,6 +440,7 @@
       s.elapsed = Math.max(0, num(saved.elapsed, 0));
       s.day = Math.max(1, Math.floor(num(saved.day, 1)));
       s.dayStamp = str(saved.dayStamp, "");
+      s.dayShift = Math.floor(num(saved.dayShift, 0));
       if (saved.power && num(saved.power.mult, 0) > 0) {
         s.power = { mult: num(saved.power.mult, 1), until: num(saved.power.until, 0), left: num(saved.power.left, 0) };
       }
