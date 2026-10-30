@@ -8,20 +8,20 @@ It started as a raffle and grew into a wheel that also runs forfeit spins, weigh
 
 ## Features
 
-- **Giveaway raffle:** viewers join with `!spintowin`, their name lands on the wheel with a small toast, and `!spin` draws a winner with a reveal and confetti.
-- **Forfeits mode:** a wheel of things chat makes you do, starting empty and built live from chat. Forfeits can be crossed off as they are landed on, and the wheel can spin itself on a bits, subs, follows or donation trigger.
-- **Truth or... mode:** chat submits questions, the wheel draws one, and it stays on screen while it is answered. A set number of lifelines lets the streamer skip questions, and moderators can strike an inappropriate one for free.
-- **Subscriber-weighted odds:** give subscribers and VIPs extra slots, reflected both in the maths and in how wide their slice is.
-- **Goal auto-spin:** spin on each new sub, every N followers, or when cumulative bits or tips cross a threshold, with an optional progress bar.
-- **Multi-winner draws:** `!spin 3` draws several distinct winners in a row.
-- **Entry countdown:** optionally close entries automatically after a set number of seconds.
-- **Recent-winner cooldown:** keep the last few winners out of the next draws.
-- **Re-roll and re-show:** put the last winner back and draw again, or re-show the most recent winner.
-- **Chat-colour slices** and a gentle idle drift while the wheel waits.
-- **A matching look:** a soft see-through black theme with white and grey slices and BioRhyme text, the same default as the other overlays in this set, so they look like one family on a stream.
-- **Customisable:** around 180 settings cover the wording of every label, the shape and colours of every part, the text, sounds and animation.
-- **Remembers everything:** entrants, mode, recent winners, lifelines and a running countdown are saved, so a refresh mid-giveaway loses nothing.
-- **Testable offline:** a local dev harness and an automated test script.
+- Giveaway raffle: viewers join with `!spintowin`, their name lands on the wheel with a small toast, and `!spin` draws a winner with a reveal and confetti.
+- Forfeits mode: a wheel of things chat makes you do, starting empty and built live from chat. Forfeits can be crossed off as they are landed on, and the wheel can spin itself on a bits, subs, follows or donation trigger.
+- Truth or... mode: chat submits questions, the wheel draws one, and it stays on screen while it is answered. A set number of lifelines lets the streamer skip questions, and moderators can strike an inappropriate one for free.
+- Subscriber-weighted odds: give subscribers and VIPs extra slots, reflected both in the maths and in how wide their slice is.
+- Goal auto-spin: spin on each new sub, every N followers, or when cumulative bits or tips cross a threshold, with an optional progress bar.
+- Multi-winner draws: `!spin 3` draws several distinct winners in a row.
+- Entry countdown: optionally close entries automatically after a set number of seconds.
+- Recent-winner cooldown: keep the last few winners out of the next draws.
+- Re-roll and re-show: put the last winner back and draw again, or re-show the most recent winner.
+- Chat colours and idle drift: slices can use each viewer's chat colour, and the wheel drifts slowly while it waits.
+- A shared look: the default is a see-through black theme with white and grey slices and BioRhyme text, the same as the other overlays in this set.
+- Customisable: around 180 settings cover the wording of every label, the shape and colours of every part, the text, sounds and animation.
+- Saved: entrants, mode, recent winners, lifelines and a running countdown are saved, so a refresh mid-giveaway loses nothing.
+- Testable offline: a local dev harness and an automated test script.
 
 ## Screenshots
 
@@ -35,7 +35,7 @@ It started as a raffle and grew into a wheel that also runs forfeit spins, weigh
 
 ## Style presets
 
-One setting picks the look. The same twelve presets, with exactly the same colours, are in every overlay in this set, so whichever you choose, the overlays still look like one family on a stream. This is how each one looks in this overlay.
+One setting picks the look. The same twelve presets, with the same colours, are in every overlay in this set, so overlays from this set match whichever you choose. This is how each one looks in this overlay.
 
 <p><img src="docs/presets.png" alt="A grid of this overlay in each of the twelve style presets: Soft black, Soft white, Midnight blue, Sunset, Forest, Ocean, Rose, Neon, Cosy cabin, Cosy summer pastel, Celestial and Pastel goth" width="760"></p>
 
@@ -185,7 +185,7 @@ docs/     screenshots used in this README
 - With a very large entry list the names on the wheel thin out and some labels are hidden to stay readable. The winner is always shown clearly in the reveal card, so this is cosmetic rather than a fairness issue.
 - Entrants, mode, recent winners, lifelines and a running countdown are saved to the StreamElements widget store, so a browser-source refresh mid-giveaway loses nothing.
 
-The widget uses the StreamElements events `onWidgetLoad`, `onEventReceived` (`message`, `subscriber-latest`, `follower-latest`, `cheer-latest`, `tip-latest`, `widget-button`) and `SE_API.store`. The JavaScript is deliberately ES5 style so it can be pasted straight into the StreamElements editor.
+The widget uses the StreamElements events `onWidgetLoad`, `onEventReceived` (`message`, `subscriber-latest`, `follower-latest`, `cheer-latest`, `tip-latest`, `widget-button`) and `SE_API.store`. The JavaScript is plain ES5, so it can be pasted straight into the StreamElements editor.
 
 ## Related overlays
 
@@ -202,7 +202,7 @@ If this saves you time, you can support its development on Ko-fi:
 
 [![Support on Ko-fi](https://img.shields.io/badge/Ko--fi-Support%20me-ff38b8?logo=ko-fi&logoColor=white)](https://ko-fi.com/journeyingjordan)
 
-Thank you, it is genuinely appreciated.
+Thanks for using it.
 
 ## Contributing
 
