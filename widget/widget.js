@@ -15,11 +15,16 @@
     cosycabin: { panel: "#F5ECD6", text: "#57442E", accent: "#7C6142", track: "rgba(0, 0, 0, 0.11)", alarm: "#C05746", font: "Chicle" },
     pastel: { panel: "#FFF6E9", text: "#6B4F3A", accent: "#FF8A65", track: "rgba(0, 0, 0, 0.11)", alarm: "#F4587A", font: "Baloo 2" },
     celestial: { panel: "#2E1A47", text: "#F3ECFF", accent: "#E8C06B", track: "rgba(255, 255, 255, 0.18)", alarm: "#B5495B", font: "Cinzel" },
-    pastelgoth: { panel: "#3A3340", text: "#F2E9F0", accent: "#C8B6E2", track: "rgba(255, 255, 255, 0.18)", alarm: "#C96A8E", font: "Quicksand" }
+    pastelgoth: { panel: "#3A3340", text: "#F2E9F0", accent: "#C8B6E2", track: "rgba(255, 255, 255, 0.18)", alarm: "#C96A8E", font: "Quicksand" },
+    pastelpink: { panel: "#FFE3EC", text: "#6A2E4B", accent: "#D95C8A", track: "rgba(106, 46, 75, 0.14)", alarm: "#D6456F", font: "Fredoka" },
+    faegreen: { panel: "#2C4A36", text: "#EEF5DA", accent: "#C9E265", track: "rgba(238, 245, 218, 0.2)", alarm: "#E0805A", font: "Almendra" }
   };
 
   // ---- shared by every overlay in this set ----
   function str(v, d) { return (v === undefined || v === null || v === "") ? d : String(v); }
+  // For wording where an empty field is a real choice (no tag, no currency symbol, no title).
+  // StreamElements sends "" for a cleared field, which str() would turn back into the default.
+  function txt(v, d) { return (v === undefined || v === null) ? d : String(v); }
   function num(v, d) { var n = parseFloat(v); return isNaN(n) ? d : n; }
   function bool(v, d) {
     if (v === undefined || v === null) return d;
@@ -54,7 +59,7 @@
     return {
       command: str(f.command, d.command || "!command"),
       whoCanManage: str(f.whoCanManage, "mods"),
-      title: str(f.title, d.title || ""),
+      title: txt(f.title, d.title || ""),
       showTitle: bool(f.showTitle, true),
       themePreset: str(f.themePreset, "glass"),
       colorPanel: str(f.colorPanel, "#000000"),
@@ -161,13 +166,13 @@
     c.resetMode = str(f.resetMode, "gap");
     c.gapMs = Math.max(1, num(f.gapHours, 6)) * 3600000;
     c.show = { subs: bool(f.showSubs, true), bits: bool(f.showBits, true), tips: bool(f.showTips, false), follows: bool(f.showFollows, false) };
-    c.label = { subs: str(f.labelSubs, "Sub goal"), bits: str(f.labelBits, "Bits goal"), tips: str(f.labelTips, "Tip goal"), follows: str(f.labelFollows, "Follow goal") };
+    c.label = { subs: txt(f.labelSubs, "Sub goal"), bits: txt(f.labelBits, "Bits goal"), tips: txt(f.labelTips, "Tip goal"), follows: txt(f.labelFollows, "Follow goal") };
     c.base = { subs: Math.max(1, num(f.targetSubs, 50)), bits: Math.max(1, num(f.targetBits, 5000)), tips: Math.max(1, num(f.targetTips, 50)), follows: Math.max(1, num(f.targetFollows, 100)) };
     c.raise = { subs: Math.max(0, num(f.raiseSubs, 25)), bits: Math.max(0, num(f.raiseBits, 2500)), tips: Math.max(0, num(f.raiseTips, 0)), follows: Math.max(0, num(f.raiseFollows, 50)) };
     c.subPoints = bool(f.subPoints, false);
     c.format = str(f.format, "{n} / {target}");
-    c.currency = str(f.currency, "£");
-    c.reachedText = str(f.reachedText, "Goal reached!");
+    c.currency = txt(f.currency, "£");
+    c.reachedText = txt(f.reachedText, "Goal reached!");
     c.raiseDelayMs = Math.max(1, num(f.raiseDelay, 6)) * 1000;
     c.textSize = Math.max(2, num(f.textSize, 5.5));
     c.titleScale = Math.max(0.5, num(f.titleScale, 1.2));
@@ -311,7 +316,7 @@
       row.hidden = !cfg.show[k];
       el.labels[k].textContent = cfg.label[k];
       var done = state.reached[k];
-      el.counts[k].textContent = done ? cfg.reachedText : cfg.format.split("{n}").join(shown(k, n)).split("{target}").join(shown(k, target));
+      el.counts[k].textContent = done && cfg.reachedText ? cfg.reachedText : cfg.format.split("{n}").join(shown(k, n)).split("{target}").join(shown(k, target));
       el.fills[k].style.width = clamp(n / target * 100, 0, 100) + "%";
       row.classList.toggle("reached", done);
     }

@@ -107,6 +107,11 @@ const HOUR = 3600000;
   audioLog.length = 0; button("test_soundReached"); ok(audioLog.length === 1, "the Test buttons play");
   await load({ soundProgress: "data:audio/wav;base64,AA", mute: true }); audioLog.length = 0; sub({ amount: 1 }); ok(audioLog.length === 0, "mute silences everything");
 
+  section("blanking the wording");
+  await load({ labelSubs: "" }); ok(E("sg-label-subs").textContent === "", "a blank label stays blank");
+  await load({ showTips: true, currency: "" }); tip(5); ok(count("tips") === "5 / 50", "a blank currency symbol means none (" + count("tips") + ")");
+  await load({ targetSubs: 2, raiseSubs: 0, reachedText: "" }); sub({ amount: 1 }); sub({ amount: 1 }); ok(count("subs") === "2 / 2", "a blank reached text keeps showing the count (" + count("subs") + ")");
+
   section("every setting is wired up");
   env.checkWired();
   env.checkNotice();
