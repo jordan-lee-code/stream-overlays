@@ -87,6 +87,21 @@ function sync(dir, opts) {
     });
   }
 
+  // 3b. the shared primitives block, kept identical in every overlay that carries it
+  const jsRel = info.file;
+  const jsPath = path.join(dir, jsRel);
+  if (fs.existsSync(jsPath)) {
+    const w = read(jsPath), START = "  // ---- shared by every overlay in this set ----", END = "  // ---- end of the shared primitives ----\n";
+    const common = read(path.join(__dirname, "..", "shared", "common.js"));
+    const block = common.slice(common.indexOf(START), common.indexOf(END) + END.length);
+    const at = w.indexOf(START);
+    if (at !== -1) {
+      const endAt = w.indexOf(END, at);
+      const stop = endAt !== -1 ? endAt + END.length : w.indexOf("  // The settings every overlay in this set shares", at);
+      if (stop !== -1) write(jsRel, w.slice(0, at) + block + w.slice(stop), "the shared primitives");
+    }
+  }
+
   // 4. the shared test mock
   const mockPath = path.join(dir, "test/mock.js");
   if (fs.existsSync(mockPath)) write("test/mock.js", read(path.join(__dirname, "..", "shared", "mock.js")), "the shared test mock");

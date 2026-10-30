@@ -676,98 +676,6 @@
     "step": 1,
     "group": "Goals: Goals"
   },
-  "title": {
-    "type": "text",
-    "label": "Title text above the goals (leave blank for none)",
-    "value": "Sub goals",
-    "group": "Goals: Heading"
-  },
-  "showTotal": {
-    "type": "checkbox",
-    "label": "Show the running sub count beside the title",
-    "value": true,
-    "group": "Goals: Heading"
-  },
-  "headingScale": {
-    "type": "number",
-    "label": "Size of the title and the sub count, which are always the same size (compared with the text size)",
-    "value": 1.5,
-    "min": 0.6,
-    "max": 4,
-    "step": 0.05,
-    "group": "Goals: Heading"
-  },
-  "pausedScale": {
-    "type": "number",
-    "label": "Size of the paused note beside the sub count, compared with the count (1 is the same size)",
-    "value": 0.6,
-    "min": 0.3,
-    "max": 1.5,
-    "step": 0.05,
-    "group": "Goals: Heading"
-  },
-  "titleWeight": {
-    "type": "dropdown",
-    "label": "Title boldness",
-    "value": "800",
-    "options": {
-      "400": "Regular",
-      "500": "Medium",
-      "600": "Semi-bold",
-      "700": "Bold",
-      "800": "Extra bold"
-    },
-    "group": "Goals: Heading"
-  },
-  "colorTitle": {
-    "type": "colorpicker",
-    "label": "Title colour (used when the style preset is Custom)",
-    "value": "#FFFFFF",
-    "group": "Goals: Heading"
-  },
-  "titleOwnFont": {
-    "type": "checkbox",
-    "label": "Use a different font for the title (tick, then pick it below)",
-    "value": false,
-    "group": "Goals: Heading"
-  },
-  "titleFont": {
-    "type": "googleFont",
-    "label": "Font for the title (only used when the box above is ticked)",
-    "value": "BioRhyme",
-    "group": "Goals: Heading"
-  },
-  "totalWeight": {
-    "type": "dropdown",
-    "label": "Sub count boldness",
-    "value": "800",
-    "options": {
-      "400": "Regular",
-      "500": "Medium",
-      "600": "Semi-bold",
-      "700": "Bold",
-      "800": "Extra bold"
-    },
-    "group": "Goals: Heading"
-  },
-  "colorTotal": {
-    "type": "colorpicker",
-    "label": "Sub count colour (used when the style preset is Custom)",
-    "value": "#FFFFFF",
-    "group": "Goals: Heading"
-  },
-  "totalOwnFont": {
-    "type": "checkbox",
-    "label": "Use a different font for the sub count (tick, then pick it below)",
-    "value": false,
-    "group": "Goals: Heading"
-  },
-  "totalFont": {
-    "type": "googleFont",
-    "label": "Font for the sub count (only used when the box above is ticked)",
-    "value": "BioRhyme",
-    "group": "Goals: Heading"
-  },
   "unitSingular": {
     "type": "text",
     "label": "Word for one sub (1 sub)",
@@ -826,13 +734,93 @@
       "ace": "Ace pride",
       "custom": "Custom (use the colours below)"
     },
-    "group": "Goals: Panel"
+    "group": "Goals: Look"
   },
-  "colorPanel": {
-    "type": "colorpicker",
-    "label": "Panel colour (used when the style preset is Custom)",
-    "value": "#000000",
-    "group": "Goals: Panel"
+  "fontFamily": {
+    "type": "googleFont",
+    "label": "Font (used when the style preset is Custom)",
+    "value": "BioRhyme",
+    "group": "Goals: Look"
+  },
+  "title": {
+    "type": "text",
+    "label": "Title text above the goals (leave blank for none)",
+    "value": "Sub goals",
+    "group": "Goals: Look"
+  },
+  "showTotal": {
+    "type": "checkbox",
+    "label": "Show the running sub count beside the title",
+    "value": true,
+    "group": "Goals: Look"
+  },
+  "headingScale": {
+    "type": "number",
+    "label": "Size of the title and the sub count, which are always the same size (compared with the text size)",
+    "value": 1.5,
+    "min": 0.6,
+    "max": 4,
+    "step": 0.05,
+    "group": "Goals: Look"
+  },
+  "pausedScale": {
+    "type": "number",
+    "label": "Size of the paused note beside the sub count, compared with the count (1 is the same size)",
+    "value": 0.6,
+    "min": 0.3,
+    "max": 1.5,
+    "step": 0.05,
+    "group": "Goals: Look"
+  },
+  "titleWeight": {
+    "type": "dropdown",
+    "label": "Title boldness",
+    "value": "800",
+    "options": {
+      "400": "Regular",
+      "500": "Medium",
+      "600": "Semi-bold",
+      "700": "Bold",
+      "800": "Extra bold"
+    },
+    "group": "Goals: Look"
+  },
+  "titleOwnFont": {
+    "type": "checkbox",
+    "label": "Use a different font for the title (tick, then pick it below)",
+    "value": false,
+    "group": "Goals: Look"
+  },
+  "titleFont": {
+    "type": "googleFont",
+    "label": "Font for the title (only used when the box above is ticked)",
+    "value": "BioRhyme",
+    "group": "Goals: Look"
+  },
+  "totalWeight": {
+    "type": "dropdown",
+    "label": "Sub count boldness",
+    "value": "800",
+    "options": {
+      "400": "Regular",
+      "500": "Medium",
+      "600": "Semi-bold",
+      "700": "Bold",
+      "800": "Extra bold"
+    },
+    "group": "Goals: Look"
+  },
+  "totalOwnFont": {
+    "type": "checkbox",
+    "label": "Use a different font for the sub count (tick, then pick it below)",
+    "value": false,
+    "group": "Goals: Look"
+  },
+  "totalFont": {
+    "type": "googleFont",
+    "label": "Font for the sub count (only used when the box above is ticked)",
+    "value": "BioRhyme",
+    "group": "Goals: Look"
   },
   "panelOpacity": {
     "type": "number",
@@ -841,7 +829,7 @@
     "min": 0,
     "max": 1,
     "step": 0.05,
-    "group": "Goals: Panel"
+    "group": "Goals: Look"
   },
   "radius": {
     "type": "number",
@@ -850,7 +838,7 @@
     "min": 0,
     "max": 120,
     "step": 1,
-    "group": "Goals: Panel"
+    "group": "Goals: Look"
   },
   "paddingV": {
     "type": "number",
@@ -859,7 +847,7 @@
     "min": 0,
     "max": 3,
     "step": 0.05,
-    "group": "Goals: Panel"
+    "group": "Goals: Look"
   },
   "paddingH": {
     "type": "number",
@@ -868,7 +856,7 @@
     "min": 0,
     "max": 3,
     "step": 0.05,
-    "group": "Goals: Panel"
+    "group": "Goals: Look"
   },
   "borderWidth": {
     "type": "number",
@@ -877,19 +865,13 @@
     "min": 0,
     "max": 20,
     "step": 1,
-    "group": "Goals: Panel"
-  },
-  "borderColor": {
-    "type": "colorpicker",
-    "label": "Outline colour (used when the style preset is Custom)",
-    "value": "#FFFFFF",
-    "group": "Goals: Panel"
+    "group": "Goals: Look"
   },
   "shadow": {
     "type": "checkbox",
     "label": "Soft shadow under the panel",
     "value": false,
-    "group": "Goals: Panel"
+    "group": "Goals: Look"
   },
   "vAlign": {
     "type": "dropdown",
@@ -900,13 +882,7 @@
       "middle": "Middle",
       "bottom": "Bottom"
     },
-    "group": "Goals: Panel"
-  },
-  "fontFamily": {
-    "type": "googleFont",
-    "label": "Font (used when the style preset is Custom)",
-    "value": "BioRhyme",
-    "group": "Goals: Text"
+    "group": "Goals: Look"
   },
   "textSize": {
     "type": "number",
@@ -915,7 +891,7 @@
     "min": 12,
     "max": 120,
     "step": 1,
-    "group": "Goals: Text"
+    "group": "Goals: Look"
   },
   "lineSpacing": {
     "type": "number",
@@ -924,7 +900,7 @@
     "min": 0.9,
     "max": 2.5,
     "step": 0.05,
-    "group": "Goals: Text"
+    "group": "Goals: Look"
   },
   "activeScale": {
     "type": "number",
@@ -933,13 +909,7 @@
     "min": 0.5,
     "max": 3,
     "step": 0.05,
-    "group": "Goals: Text"
-  },
-  "cText": {
-    "type": "colorpicker",
-    "label": "Text colour for the goal being worked on (used when the style preset is Custom)",
-    "value": "#FFFFFF",
-    "group": "Goals: Text"
+    "group": "Goals: Look"
   },
   "nameWeight": {
     "type": "dropdown",
@@ -952,13 +922,7 @@
       "700": "Bold",
       "800": "Extra bold"
     },
-    "group": "Goals: Text"
-  },
-  "colorWaiting": {
-    "type": "colorpicker",
-    "label": "Text colour for goals waiting their turn (used when the style preset is Custom)",
-    "value": "#FFFFFF",
-    "group": "Goals: Text"
+    "group": "Goals: Look"
   },
   "waitingWeight": {
     "type": "dropdown",
@@ -971,7 +935,7 @@
       "700": "Bold",
       "800": "Extra bold"
     },
-    "group": "Goals: Text"
+    "group": "Goals: Look"
   },
   "waitingScale": {
     "type": "number",
@@ -980,37 +944,19 @@
     "min": 30,
     "max": 120,
     "step": 1,
-    "group": "Goals: Text"
-  },
-  "colorDone": {
-    "type": "colorpicker",
-    "label": "Text colour for reached goals (used when the style preset is Custom)",
-    "value": "#FFFFFF",
-    "group": "Goals: Text"
+    "group": "Goals: Look"
   },
   "strikeDone": {
     "type": "checkbox",
     "label": "Strike through the name of a reached goal",
     "value": true,
-    "group": "Goals: Text"
+    "group": "Goals: Look"
   },
   "textShadow": {
     "type": "checkbox",
     "label": "Soft shadow behind the text, to help it read over bright scenes",
     "value": false,
-    "group": "Goals: Text"
-  },
-  "cAccent": {
-    "type": "colorpicker",
-    "label": "Progress bar colour (used when the style preset is Custom)",
-    "value": "#FFFFFF",
-    "group": "Goals: Progress bars"
-  },
-  "cTrack": {
-    "type": "colorpicker",
-    "label": "Empty part of the bar, colour (used when the style preset is Custom)",
-    "value": "#FFFFFF",
-    "group": "Goals: Progress bars"
+    "group": "Goals: Look"
   },
   "trackOpacity": {
     "type": "number",
@@ -1019,13 +965,7 @@
     "min": 0,
     "max": 1,
     "step": 0.05,
-    "group": "Goals: Progress bars"
-  },
-  "colorGlow": {
-    "type": "colorpicker",
-    "label": "Glow colour when a goal is reached (used when the style preset is Custom)",
-    "value": "#FFFFFF",
-    "group": "Goals: Progress bars"
+    "group": "Goals: Look"
   },
   "barHeight": {
     "type": "number",
@@ -1034,7 +974,7 @@
     "min": 0.2,
     "max": 2,
     "step": 0.05,
-    "group": "Goals: Progress bars"
+    "group": "Goals: Look"
   },
   "rowGap": {
     "type": "number",
@@ -1043,7 +983,182 @@
     "min": 0,
     "max": 3,
     "step": 0.05,
-    "group": "Goals: Progress bars"
+    "group": "Goals: Look"
+  },
+  "showThanks": {
+    "type": "checkbox",
+    "label": "When every goal has been reached, show a thank-you message at the bottom (needs Keep reached goals on screen)",
+    "value": true,
+    "group": "Goals: Look"
+  },
+  "thanksText": {
+    "type": "text",
+    "label": "The thank-you message",
+    "value": "Thank you for your generosity! <3",
+    "group": "Goals: Look"
+  },
+  "thanksBar": {
+    "type": "checkbox",
+    "label": "Show a full, glowing bar under the message",
+    "value": false,
+    "group": "Goals: Look"
+  },
+  "thanksScale": {
+    "type": "number",
+    "label": "Message size compared with the text size (a long message shrinks to fit)",
+    "value": 0.85,
+    "min": 0.4,
+    "max": 3,
+    "step": 0.05,
+    "group": "Goals: Look"
+  },
+  "thanksWeight": {
+    "type": "dropdown",
+    "label": "Message boldness",
+    "value": "700",
+    "options": {
+      "400": "Regular",
+      "500": "Medium",
+      "600": "Semi-bold",
+      "700": "Bold",
+      "800": "Extra bold"
+    },
+    "group": "Goals: Look"
+  },
+  "animate": {
+    "type": "checkbox",
+    "label": "Animate (untick to switch every animation and transition off)",
+    "value": true,
+    "group": "Goals: Look"
+  },
+  "fillSeconds": {
+    "type": "number",
+    "label": "Seconds a bar takes to fill",
+    "value": 0.9,
+    "min": 0,
+    "max": 10,
+    "step": 0.1,
+    "group": "Goals: Look"
+  },
+  "colorTitle": {
+    "type": "colorpicker",
+    "label": "Title colour (used when the style preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Goals: Custom colours"
+  },
+  "colorTotal": {
+    "type": "colorpicker",
+    "label": "Sub count colour (used when the style preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Goals: Custom colours"
+  },
+  "colorPanel": {
+    "type": "colorpicker",
+    "label": "Panel colour (used when the style preset is Custom)",
+    "value": "#000000",
+    "group": "Goals: Custom colours"
+  },
+  "borderColor": {
+    "type": "colorpicker",
+    "label": "Outline colour (used when the style preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Goals: Custom colours"
+  },
+  "cText": {
+    "type": "colorpicker",
+    "label": "Text colour for the goal being worked on (used when the style preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Goals: Custom colours"
+  },
+  "colorWaiting": {
+    "type": "colorpicker",
+    "label": "Text colour for goals waiting their turn (used when the style preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Goals: Custom colours"
+  },
+  "colorDone": {
+    "type": "colorpicker",
+    "label": "Text colour for reached goals (used when the style preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Goals: Custom colours"
+  },
+  "cAccent": {
+    "type": "colorpicker",
+    "label": "Progress bar colour (used when the style preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Goals: Custom colours"
+  },
+  "cTrack": {
+    "type": "colorpicker",
+    "label": "Empty part of the bar, colour (used when the style preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Goals: Custom colours"
+  },
+  "colorGlow": {
+    "type": "colorpicker",
+    "label": "Glow colour when a goal is reached (used when the style preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Goals: Custom colours"
+  },
+  "colorThanks": {
+    "type": "colorpicker",
+    "label": "Message colour (used when the style preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Goals: Custom colours"
+  },
+  "btnDemo": {
+    "type": "button",
+    "label": "Add three example goals (5 karaoke, 10 game, 15 chat confessions)",
+    "value": "Add examples",
+    "group": "Goals: Manual controls"
+  },
+  "btnPlus": {
+    "type": "button",
+    "label": "Add one sub",
+    "value": "+ 1 sub",
+    "group": "Goals: Manual controls"
+  },
+  "btnMinus": {
+    "type": "button",
+    "label": "Take one sub off",
+    "value": "- 1 sub",
+    "group": "Goals: Manual controls"
+  },
+  "btnSoundSub": {
+    "type": "button",
+    "label": "Test the sub sound",
+    "value": "Play sub sound",
+    "group": "Goals: Manual controls"
+  },
+  "btnSoundBits": {
+    "type": "button",
+    "label": "Test the bits sound",
+    "value": "Play bits sound",
+    "group": "Goals: Manual controls"
+  },
+  "btnSoundGoal": {
+    "type": "button",
+    "label": "Test the goal sound",
+    "value": "Play goal sound",
+    "group": "Goals: Manual controls"
+  },
+  "btnTracking": {
+    "type": "button",
+    "label": "Start or stop tracking subs and bits",
+    "value": "Start / stop",
+    "group": "Goals: Manual controls"
+  },
+  "btnReset": {
+    "type": "button",
+    "label": "Reset the sub count to 0 and re-open every goal",
+    "value": "Reset subs",
+    "group": "Goals: Manual controls"
+  },
+  "btnClear": {
+    "type": "button",
+    "label": "Remove every goal",
+    "value": "Clear goals",
+    "group": "Goals: Manual controls"
   },
   "mute": {
     "type": "checkbox",
@@ -1102,125 +1217,10 @@
     "value": true,
     "group": "Goals: Sounds"
   },
-  "showThanks": {
-    "type": "checkbox",
-    "label": "When every goal has been reached, show a thank-you message at the bottom (needs Keep reached goals on screen)",
-    "value": true,
-    "group": "Goals: Thank you"
-  },
-  "thanksText": {
-    "type": "text",
-    "label": "The thank-you message",
-    "value": "Thank you for your generosity! <3",
-    "group": "Goals: Thank you"
-  },
-  "thanksBar": {
-    "type": "checkbox",
-    "label": "Show a full, glowing bar under the message",
-    "value": false,
-    "group": "Goals: Thank you"
-  },
-  "thanksScale": {
-    "type": "number",
-    "label": "Message size compared with the text size (a long message shrinks to fit)",
-    "value": 0.85,
-    "min": 0.4,
-    "max": 3,
-    "step": 0.05,
-    "group": "Goals: Thank you"
-  },
-  "thanksWeight": {
-    "type": "dropdown",
-    "label": "Message boldness",
-    "value": "700",
-    "options": {
-      "400": "Regular",
-      "500": "Medium",
-      "600": "Semi-bold",
-      "700": "Bold",
-      "800": "Extra bold"
-    },
-    "group": "Goals: Thank you"
-  },
-  "colorThanks": {
-    "type": "colorpicker",
-    "label": "Message colour (used when the style preset is Custom)",
-    "value": "#FFFFFF",
-    "group": "Goals: Thank you"
-  },
-  "animate": {
-    "type": "checkbox",
-    "label": "Animate (untick to switch every animation and transition off)",
-    "value": true,
-    "group": "Goals: Animation"
-  },
-  "fillSeconds": {
-    "type": "number",
-    "label": "Seconds a bar takes to fill",
-    "value": 0.9,
-    "min": 0,
-    "max": 10,
-    "step": 0.1,
-    "group": "Goals: Animation"
-  },
   "debug": {
     "type": "checkbox",
     "label": "Log each subscriber and cheer event to the browser console (for troubleshooting)",
     "value": false,
     "group": "Goals: Troubleshooting"
-  },
-  "btnDemo": {
-    "type": "button",
-    "label": "Add three example goals (5 karaoke, 10 game, 15 chat confessions)",
-    "value": "Add examples",
-    "group": "Goals: Manual controls"
-  },
-  "btnPlus": {
-    "type": "button",
-    "label": "Add one sub",
-    "value": "+ 1 sub",
-    "group": "Goals: Manual controls"
-  },
-  "btnMinus": {
-    "type": "button",
-    "label": "Take one sub off",
-    "value": "- 1 sub",
-    "group": "Goals: Manual controls"
-  },
-  "btnSoundSub": {
-    "type": "button",
-    "label": "Test the sub sound",
-    "value": "Play sub sound",
-    "group": "Goals: Manual controls"
-  },
-  "btnSoundBits": {
-    "type": "button",
-    "label": "Test the bits sound",
-    "value": "Play bits sound",
-    "group": "Goals: Manual controls"
-  },
-  "btnSoundGoal": {
-    "type": "button",
-    "label": "Test the goal sound",
-    "value": "Play goal sound",
-    "group": "Goals: Manual controls"
-  },
-  "btnTracking": {
-    "type": "button",
-    "label": "Start or stop tracking subs and bits",
-    "value": "Start / stop",
-    "group": "Goals: Manual controls"
-  },
-  "btnReset": {
-    "type": "button",
-    "label": "Reset the sub count to 0 and re-open every goal",
-    "value": "Reset subs",
-    "group": "Goals: Manual controls"
-  },
-  "btnClear": {
-    "type": "button",
-    "label": "Remove every goal",
-    "value": "Clear goals",
-    "group": "Goals: Manual controls"
   }
 }

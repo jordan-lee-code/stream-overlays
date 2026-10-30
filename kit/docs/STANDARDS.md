@@ -50,6 +50,10 @@ Groups are named **Commands**, then the overlay's own groups, then **Look**, **C
 
 Every setting has a plain label that says what it does, and a Custom colour's label says that it applies only when the preset is Custom. Every button has a **Test** or **Manual controls** home, and every button does something.
 
+### Shared helpers
+
+The small functions every widget needs (`str`, `txt`, `num`, `bool`, `clamp`, `pad2`, `byId`, `rgba` and `rolesOf`) are one block in [`shared/common.js`](../shared/common.js), between the lines `shared by every overlay in this set` and `end of the shared primitives`. Every overlay carries a copy, `overlay-kit sync-presets` keeps the copies identical, and `check-presets` fails if one has drifted, so a fix to a helper is made once and spread. Each overlay's own code goes outside the block.
+
 ### Checking it
 
 `overlay-kit check-settings` runs on every overlay as part of `npm test`. An overlay need not have every setting above, but one that has a setting with a standard name must give it the standard type and default, every setting must be in a group, and a second command word is refused (there is one `command` and verbs after it), and the older names for the same ideas (`animations`, `soundsEnabled`, `colorText`, `colorAccent`, `colorTrack`, `colorBg` and `boxOpacity`) are refused, with a message that says what replaced them.
@@ -119,6 +123,4 @@ Each overlay has a harness for trying it without going live: it fires the events
 The standards above came from the newer overlays, and the older ones have been brought towards them. These differences remain, and are deliberate or not yet done:
 
 - **Richer colour settings.** The Spin Wheel, Chat Poll, Rage Bar, Squat Tracker and Sub Goals overlays let you set the colour of each part separately (the wheel alone has about thirty), as well as the standard `colorPanel`, `cText`, `cAccent` and `cTrack`. Those extra settings are additions, not conflicts, and they are not in the standard.
-- **Groups.** The Spin Wheel, Chat Poll, Squat Tracker and Rage Bar overlays use the standard **Look** and **Custom colours** groups. The Sub Goals overlay, and so the Subathon's goals half, keeps its colours beside the part they colour (Panel, Text, Progress bars), which suits how many it has.
-- **Helpers.** The older overlays each carry their own copy of the small helper functions. The newer ones share one block, kept as [`shared/common.js`](../shared/common.js). The copies differ in small ways, so replacing them is a refactor of each overlay, not a copy and paste.
 - **The wheel's pills** carry the flag as a background but are small, so a flag shows only as colour on them.

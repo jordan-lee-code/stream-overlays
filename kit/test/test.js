@@ -80,6 +80,34 @@ Object.keys(K.generators).forEach(kind => {
   });
 });
 
+console.log("\n[the shared helpers]");
+{
+  const common = fs.readFileSync(path.join(__dirname, "../shared/common.js"), "utf8");
+  const START = "  // ---- shared by every overlay in this set ----", END = "  // ---- end of the shared primitives ----\n";
+  const block = common.slice(common.indexOf(START), common.indexOf(END) + END.length);
+  const drifted = block.replace("Math.max(lo, Math.min(hi, n))", "n");
+  const withBlock = body => {
+    const dir = tempRepo("counter");
+    const p = path.join(dir, "widget/widget.js");
+    sync(dir);                       // settle the preset table first, so only the helpers are in question
+    fs.writeFileSync(p, fs.readFileSync(p, "utf8").replace("  var PRESETS", body + "  var PRESETS"));
+    return { dir, p };
+  };
+  test("a drifted helper is reported, and an overlay with no block is left alone", () => {
+    const { dir, p } = withBlock(drifted);
+    assert.ok(sync(dir, { check: true }).changes.some(x => /shared primitives/.test(x)));
+    assert.ok(fs.readFileSync(p, "utf8").indexOf(block) === -1);
+    assert.ok(!sync(tempRepo("counter"), { check: true }).changes.some(x => /shared primitives/.test(x)));
+  });
+  test("syncing puts the shared block back, keeps the overlay's own code, and a second run changes nothing", () => {
+    const { dir, p } = withBlock(drifted);
+    sync(dir);
+    const out = fs.readFileSync(p, "utf8");
+    assert.ok(out.indexOf(block) > -1 && /var after = 1;/.test(out));
+    assert.deepStrictEqual(sync(dir, { check: true }).changes, []);
+  });
+}
+
 console.log("\n[the settings standard]");
 const { checkFields } = require("../src/settings");
 const good = { animate: { type: "checkbox", value: true, group: "Look" }, mute: { type: "checkbox", value: false, group: "Sounds" }, cText: { type: "colorpicker", value: "#fff", group: "Custom colours" } };

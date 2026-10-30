@@ -71,7 +71,7 @@ Choose **Custom** to use the colour pickers and font instead. They are ignored w
 
 1. In StreamElements, edit your overlay and add **+ Add Widget, Static/Custom, Custom Widget**.
 2. Select the widget, open **Settings, Open Editor**, and paste each file from `widget/` into the matching tab: `widget.html` into HTML, `widget.css` into CSS, `widget.js` into JS, and `fields.json` into Fields.
-3. Click **Done**. The settings are grouped into Clock: Commands, Time, Cap, Time per event, Power-ups and sleep, Look, Custom colours, Manual controls, Sounds and Troubleshooting, followed by Goals: Commands, Counting, Bits, Goals and the rest of the goals settings.
+3. Click **Done**. The settings are grouped into Clock: Commands, Time, Cap, Time per event, Power-ups and sleep, Look, Custom colours, Manual controls, Sounds and Troubleshooting, followed by Goals: Commands, Counting, Bits, Goals, Wording, Look, Custom colours and the rest of the goals settings.
 4. Under **Clock: Time**, set the start time and click **Apply start time**. The clock starts paused, so nothing drains until you click **Resume the clock** (or type `!subathon resume`).
 5. Size and position the widget. The clock and the goals scale with the box, and the goals take whatever height is left under the clock.
 

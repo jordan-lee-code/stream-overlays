@@ -128,15 +128,12 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | Counting | Whether new subs and gifts count, whether tracking starts on, and a starting count. |
 | Bits | The bits rate, the animation, how long the bar takes to calculate, and how long the strip stays. |
 | Goals | How many show at once, their order, whether reached goals stay, and the celebration time. |
-| Heading | The title and sub count: text, size, boldness, colour and an optional font of their own. |
 | Wording | The words for sub and subs, the celebrating text, the reached text and the paused note. |
-| Panel | The style preset (one of twenty-one, or Custom) and, for Custom, the colour and opacity, corner roundness, padding, an optional outline and shadow, and vertical position. |
-| Text | Font, size, line spacing, and the colours and boldness of the current, waiting and reached goals. |
-| Progress bars | Bar colours, thickness, glow and spacing. |
-| Thank you | The message, its size, boldness and colour, and an optional bar. |
-| Sounds | A sound and volume for subs, bits and goals, plus a master mute. |
-| Animation | One switch for all animation, and how long a bar takes to fill. |
+| Look | The style preset (one of twenty-one, or Custom), the font, the heading, panel shape and padding, bar thickness and spacing, the thank you message, and the switch for animation. |
+| Custom colours | A colour for each part, used when the preset is Custom. |
 | Manual controls | Buttons to add example goals, adjust the count, start or stop tracking, reset and clear. |
+| Sounds | A sound and volume for subs, bits and goals, plus a master mute. |
+| Troubleshooting | Logs every event to the browser console. |
 
 The full list, with defaults, is in [`widget/fields.json`](widget/fields.json).
 

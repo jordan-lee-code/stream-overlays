@@ -15,6 +15,49 @@
 (function () {
   "use strict";
 
+  // ---- shared by every overlay in this set ----
+  function str(v, d) { return (v === undefined || v === null || v === "") ? d : String(v); }
+  // For wording where an empty field is a real choice (no tag, no currency symbol, no title).
+  // StreamElements sends "" for a cleared field, which str() would turn back into the default.
+  function txt(v, d) { return (v === undefined || v === null) ? d : String(v); }
+  function num(v, d) { var n = parseFloat(v); return isNaN(n) ? d : n; }
+  function bool(v, d) {
+    if (v === undefined || v === null || v === "") return d;
+    return v === true || v === "true" || v === 1 || v === "1" || v === "on";
+  }
+  function clamp(n, lo, hi) { return Math.max(lo, Math.min(hi, n)); }
+  function pad2(n) { return (n < 10 ? "0" : "") + n; }
+  function byId(id) { return document.getElementById(id); }
+  function rgba(hex, opacity) {
+    var m = /^#?([0-9a-f]{3}|[0-9a-f]{6})$/i.exec(String(hex === undefined || hex === null ? "" : hex).trim());
+    if (!m) return "rgba(0, 0, 0, " + clamp(opacity, 0, 1) + ")";
+    var h = m[1];
+    if (h.length === 3) h = h.replace(/./g, function (c) { return c + c; });
+    var n = parseInt(h, 16);
+    return "rgba(" + ((n >> 16) & 255) + ", " + ((n >> 8) & 255) + ", " + (n & 255) + ", " + clamp(opacity, 0, 1) + ")";
+  }
+  function rolesOf(data) {
+    var r = { broadcaster: false, mod: false, sub: false, vip: false };
+    var badges = (data && data.badges) || [];
+    for (var i = 0; i < badges.length; i++) {
+      var t = String(badges[i].type || "").toLowerCase();
+      if (t === "broadcaster") r.broadcaster = true;
+      else if (t === "moderator") r.mod = true;
+      else if (t === "subscriber" || t === "founder") r.sub = true;
+      else if (t === "vip") r.vip = true;
+    }
+    var tags = (data && data.tags) || {};
+    if (tags.mod === "1" || tags.mod === 1) r.mod = true;
+    if (tags.subscriber === "1" || tags.subscriber === 1 || tags.subscriber === true) r.sub = true;
+    if (tags.vip === "1" || tags.vip === 1) r.vip = true;
+    if (typeof tags.badges === "string") {
+      if (/broadcaster/.test(tags.badges)) r.broadcaster = true;
+      if (/vip/.test(tags.badges)) r.vip = true;
+    }
+    return r;
+  }
+  // ---- end of the shared primitives ----
+
   var STORE_KEY = "sub_goals_v1";
   var LEAVE_MS = 400;        // matches incentive-leave in widget.css
   var STAGGER_MS = 300;      // gap between goals that unlock from one gift bomb
@@ -48,28 +91,6 @@
   var transitionBound = false;
   var thanksTimer = null;
 
-  // ---------------------------------------------------------------------------
-  // Config helpers
-  // ---------------------------------------------------------------------------
-  function bool(v, dflt) {
-    if (v === undefined || v === null || v === "") return dflt;
-    return v === true || v === "true" || v === 1 || v === "1" || v === "on";
-  }
-  function num(v, dflt) {
-    var n = parseFloat(v);
-    return isNaN(n) ? dflt : n;
-  }
-  function str(v, dflt) {
-    return (v === undefined || v === null || v === "") ? dflt : String(v);
-  }
-
-  // For wording where an empty field is a real choice. StreamElements sends "" for a cleared
-  // field, which str() would turn back into the default.
-  function txt(v, dflt) {
-    return (v === undefined || v === null) ? dflt : String(v);
-  }
-
-  function clamp(n, lo, hi) { return Math.min(hi, Math.max(lo, n)); }
   // A command word is a single lower-case token, so "Add" and " add " both work.
   function word(v, dflt) { return str(v, dflt).toLowerCase().trim().split(/\s+/)[0]; }
 
@@ -194,18 +215,6 @@
   }
 
   function unit(n) { return n === 1 ? cfg.unitSingular : cfg.unitPlural; }
-
-  // ---------------------------------------------------------------------------
-  // Theme
-  // ---------------------------------------------------------------------------
-  function rgba(hex, alpha) {
-    var m = /^#?([0-9a-f]{3}|[0-9a-f]{6})$/i.exec(String(hex).trim());
-    if (!m) return "rgba(0, 0, 0, " + alpha + ")";
-    var h = m[1];
-    if (h.length === 3) h = h.replace(/./g, function (c) { return c + c; });
-    var n = parseInt(h, 16);
-    return "rgba(" + ((n >> 16) & 255) + ", " + ((n >> 8) & 255) + ", " + (n & 255) + ", " + alpha + ")";
-  }
 
   var ALIGN = { top: "flex-start", middle: "center", bottom: "flex-end" };
 
@@ -480,22 +489,6 @@
     } catch (e) { done(false); }
   }
 
-  // ---------------------------------------------------------------------------
-  // Roles & permissions
-  // ---------------------------------------------------------------------------
-  function rolesOf(data) {
-    var r = { broadcaster: false, mod: false };
-    var badges = data.badges || [];
-    for (var i = 0; i < badges.length; i++) {
-      var t = String(badges[i].type || "").toLowerCase();
-      if (t === "broadcaster") r.broadcaster = true;
-      else if (t === "moderator") r.mod = true;
-    }
-    var tags = data.tags || {};
-    if (tags.mod === "1" || tags.mod === 1) r.mod = true;
-    if (typeof tags.badges === "string" && /broadcaster/.test(tags.badges)) r.broadcaster = true;
-    return r;
-  }
   function canManage(roles) {
     if (roles.broadcaster) return true;
     return cfg.whoCanManage === "mods" && roles.mod;
@@ -1172,6 +1165,49 @@
 (function () {
   "use strict";
 
+  // ---- shared by every overlay in this set ----
+  function str(v, d) { return (v === undefined || v === null || v === "") ? d : String(v); }
+  // For wording where an empty field is a real choice (no tag, no currency symbol, no title).
+  // StreamElements sends "" for a cleared field, which str() would turn back into the default.
+  function txt(v, d) { return (v === undefined || v === null) ? d : String(v); }
+  function num(v, d) { var n = parseFloat(v); return isNaN(n) ? d : n; }
+  function bool(v, d) {
+    if (v === undefined || v === null || v === "") return d;
+    return v === true || v === "true" || v === 1 || v === "1" || v === "on";
+  }
+  function clamp(n, lo, hi) { return Math.max(lo, Math.min(hi, n)); }
+  function pad2(n) { return (n < 10 ? "0" : "") + n; }
+  function byId(id) { return document.getElementById(id); }
+  function rgba(hex, opacity) {
+    var m = /^#?([0-9a-f]{3}|[0-9a-f]{6})$/i.exec(String(hex === undefined || hex === null ? "" : hex).trim());
+    if (!m) return "rgba(0, 0, 0, " + clamp(opacity, 0, 1) + ")";
+    var h = m[1];
+    if (h.length === 3) h = h.replace(/./g, function (c) { return c + c; });
+    var n = parseInt(h, 16);
+    return "rgba(" + ((n >> 16) & 255) + ", " + ((n >> 8) & 255) + ", " + (n & 255) + ", " + clamp(opacity, 0, 1) + ")";
+  }
+  function rolesOf(data) {
+    var r = { broadcaster: false, mod: false, sub: false, vip: false };
+    var badges = (data && data.badges) || [];
+    for (var i = 0; i < badges.length; i++) {
+      var t = String(badges[i].type || "").toLowerCase();
+      if (t === "broadcaster") r.broadcaster = true;
+      else if (t === "moderator") r.mod = true;
+      else if (t === "subscriber" || t === "founder") r.sub = true;
+      else if (t === "vip") r.vip = true;
+    }
+    var tags = (data && data.tags) || {};
+    if (tags.mod === "1" || tags.mod === 1) r.mod = true;
+    if (tags.subscriber === "1" || tags.subscriber === 1 || tags.subscriber === true) r.sub = true;
+    if (tags.vip === "1" || tags.vip === 1) r.vip = true;
+    if (typeof tags.badges === "string") {
+      if (/broadcaster/.test(tags.badges)) r.broadcaster = true;
+      if (/vip/.test(tags.badges)) r.vip = true;
+    }
+    return r;
+  }
+  // ---- end of the shared primitives ----
+
   var STORE_KEY = "subathon_v1";
   var TICK_MS = 200;
 
@@ -1211,18 +1247,7 @@
   // Small helpers
   // ---------------------------------------------------------------------------
   function now() { return Date.now(); }
-  function str(v, d) { return (v === undefined || v === null || v === "") ? d : String(v); }
-  // For wording where an empty field is a real choice. StreamElements sends "" for a cleared
-  // field, which str() would turn back into the default.
-  function txt(v, d) { return (v === undefined || v === null) ? d : String(v); }
-  function num(v, d) { var n = parseFloat(v); return isNaN(n) ? d : n; }
-  function bool(v, d) {
-    if (v === undefined || v === null) return d;
-    if (typeof v === "string") return v === "true";
-    return !!v;
-  }
   function pad(n) { return (n < 10 ? "0" : "") + n; }
-  function byId(id) { return document.getElementById(id); }
 
   // "2h 30s", "10m", "1:30:00", "5:00" (minutes and seconds) or a bare number of
   // minutes. Returns milliseconds, or NaN when it is not a time at all.
@@ -1476,22 +1501,6 @@
     earn(cfg.raid, who(event && (event.name || event.username), "Someone") + " raided");
   }
 
-  // ---------------------------------------------------------------------------
-  // Chat commands
-  // ---------------------------------------------------------------------------
-  function rolesOf(data) {
-    var r = { broadcaster: false, mod: false };
-    var badges = data.badges || [];
-    for (var i = 0; i < badges.length; i++) {
-      var t = String(badges[i].type || "").toLowerCase();
-      if (t === "broadcaster") r.broadcaster = true;
-      else if (t === "moderator") r.mod = true;
-    }
-    var tags = data.tags || {};
-    if (tags.mod === "1" || tags.mod === 1) r.mod = true;
-    if (typeof tags.badges === "string" && /broadcaster/.test(tags.badges)) r.broadcaster = true;
-    return r;
-  }
   function canManage(roles) {
     if (roles.broadcaster) return true;
     return cfg.whoCanManage === "mods" && roles.mod;
@@ -1618,15 +1627,6 @@
     return s;
   }
 
-  // ---------------------------------------------------------------------------
-  // Look
-  // ---------------------------------------------------------------------------
-  function rgba(hex, opacity) {
-    var m = /^#?([0-9a-f]{6})$/i.exec(String(hex || ""));
-    if (!m) return hex || "transparent";
-    var n = parseInt(m[1], 16);
-    return "rgba(" + ((n >> 16) & 255) + ", " + ((n >> 8) & 255) + ", " + (n & 255) + ", " + Math.max(0, Math.min(1, opacity)) + ")";
-  }
   function themeColours() {
     var p = cfg.themePreset !== "custom" ? PRESETS[cfg.themePreset] : null;
     if (p) return p;
