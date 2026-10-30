@@ -227,14 +227,14 @@
     pastelgoth: { panel: "#3A3340", text: "#F2E9F0", accent: "#C8B6E2", track: "rgba(255, 255, 255, 0.18)", glow: "#C8B6E2", font: "Quicksand" },
     pastelpink: { panel: "#FFE3EC", text: "#6A2E4B", accent: "#D95C8A", track: "rgba(106, 46, 75, 0.14)", glow: "#D95C8A", font: "Fredoka" },
     faegreen: { panel: "#2C4A36", text: "#EEF5DA", accent: "#C9E265", track: "rgba(238, 245, 218, 0.2)", glow: "#C9E265", font: "Almendra" },
-    pride: { panel: "rgba(20, 16, 34, 0.8)", text: "#FFFFFF", accent: "#FFEE00", track: "rgba(255, 255, 255, 0.2)", glow: "#FFEE00", font: "Fredoka", flag: ["#E50000", "#FF8D00", "#FFEE00", "#028121", "#004CFF", "#770088"] },
-    progress: { panel: "rgba(22, 16, 30, 0.8)", text: "#FFFFFF", accent: "#5BCEFA", track: "rgba(255, 255, 255, 0.2)", glow: "#5BCEFA", font: "Fredoka", flag: ["#E50000", "#FF8D00", "#FFEE00", "#028121", "#004CFF", "#770088"] },
-    trans: { panel: "rgba(18, 28, 44, 0.82)", text: "#FFFFFF", accent: "#F5A9B8", track: "rgba(255, 255, 255, 0.2)", glow: "#F5A9B8", font: "Fredoka", flag: ["#5BCEFA", "#F5A9B8", "#FFFFFF", "#F5A9B8", "#5BCEFA"] },
-    bi: { panel: "rgba(30, 14, 36, 0.82)", text: "#FFFFFF", accent: "#E0559F", track: "rgba(255, 255, 255, 0.2)", glow: "#E0559F", font: "Fredoka", flag: ["#D60270", "#D60270", "#9B4F96", "#0038A8", "#0038A8"] },
-    pan: { panel: "rgba(24, 20, 40, 0.82)", text: "#FFFFFF", accent: "#FFD800", track: "rgba(255, 255, 255, 0.2)", glow: "#FFD800", font: "Fredoka", flag: ["#FF218C", "#FFD800", "#21B1FF"] },
-    enby: { panel: "rgba(24, 24, 28, 0.86)", text: "#FFFFFF", accent: "#FFF433", track: "rgba(255, 255, 255, 0.2)", glow: "#FFF433", font: "Fredoka", flag: ["#FFF433", "#FFFFFF", "#9B59D0", "#2D2D2D"] },
-    lesbian: { panel: "rgba(40, 16, 20, 0.82)", text: "#FFFFFF", accent: "#FF9A56", track: "rgba(255, 255, 255, 0.2)", glow: "#FF9A56", font: "Fredoka", flag: ["#D52D00", "#EF7627", "#FF9A56", "#FFFFFF", "#D162A4", "#B55690", "#A30262"] },
-    ace: { panel: "rgba(16, 16, 22, 0.86)", text: "#F1F1F1", accent: "#B075C9", track: "rgba(255, 255, 255, 0.2)", glow: "#B075C9", font: "Fredoka", flag: ["#000000", "#A3A3A3", "#FFFFFF", "#800080"] }
+    pride: { panel: "rgba(194, 168, 154, 0.9)", text: "#1A1426", accent: "#1A1426", track: "rgba(26, 20, 38, 0.34)", glow: "#1A1426", font: "Fredoka", flag: ["#E50000", "#FF8D00", "#FFEE00", "#028121", "#004CFF", "#770088"], bgimg: "linear-gradient(rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0.45)), linear-gradient(135deg, #E50000, #FF8D00, #FFEE00, #028121, #004CFF, #770088)" },
+    progress: { panel: "rgba(194, 168, 154, 0.9)", text: "#1A1426", accent: "#1A1426", track: "rgba(26, 20, 38, 0.34)", glow: "#1A1426", font: "Fredoka", flag: ["#E50000", "#FF8D00", "#FFEE00", "#028121", "#004CFF", "#770088"], bgimg: "linear-gradient(rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0.45)), linear-gradient(135deg, #E50000, #FF8D00, #FFEE00, #028121, #004CFF, #770088)" },
+    trans: { panel: "rgba(185, 201, 225, 0.9)", text: "#1A1426", accent: "#1A1426", track: "rgba(26, 20, 38, 0.34)", glow: "#1A1426", font: "Fredoka", flag: ["#5BCEFA", "#F5A9B8", "#FFFFFF", "#F5A9B8", "#5BCEFA"], bgimg: "linear-gradient(135deg, #5BCEFA, #F5A9B8, #FFFFFF, #F5A9B8, #5BCEFA)" },
+    bi: { panel: "rgba(117, 39, 142, 0.9)", text: "#FFFFFF", accent: "#FFFFFF", track: "rgba(255, 255, 255, 0.24)", glow: "#FFFFFF", font: "Fredoka", flag: ["#D60270", "#D60270", "#9B4F96", "#0038A8", "#0038A8"], bgimg: "linear-gradient(135deg, #D60270, #D60270, #9B4F96, #0038A8, #0038A8)" },
+    pan: { panel: "rgba(181, 142, 132, 0.9)", text: "#1A1426", accent: "#1A1426", track: "rgba(26, 20, 38, 0.34)", glow: "#1A1426", font: "Fredoka", flag: ["#FF218C", "#FFD800", "#21B1FF"], bgimg: "linear-gradient(135deg, #FF218C, #FFD800, #21B1FF)" },
+    enby: { panel: "rgba(212, 202, 192, 0.9)", text: "#1A1426", accent: "#2D2D2D", track: "rgba(26, 20, 38, 0.34)", glow: "#2D2D2D", font: "Fredoka", flag: ["#FFF433", "#FFFFFF", "#9B59D0", "#2D2D2D"], bgimg: "linear-gradient(rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0.45)), linear-gradient(135deg, #FFF433, #FFFFFF, #9B59D0, #2D2D2D)" },
+    lesbian: { panel: "rgba(232, 167, 169, 0.9)", text: "#1A1426", accent: "#1A1426", track: "rgba(26, 20, 38, 0.34)", glow: "#1A1426", font: "Fredoka", flag: ["#D52D00", "#EF7627", "#FF9A56", "#FFFFFF", "#D162A4", "#B55690", "#A30262"], bgimg: "linear-gradient(rgba(255, 255, 255, 0.40), rgba(255, 255, 255, 0.40)), linear-gradient(135deg, #D52D00, #EF7627, #FF9A56, #FFFFFF, #D162A4, #B55690, #A30262)" },
+    ace: { panel: "rgba(202, 187, 202, 0.9)", text: "#1A1426", accent: "#000000", track: "rgba(26, 20, 38, 0.34)", glow: "#000000", font: "Fredoka", flag: ["#000000", "#A3A3A3", "#FFFFFF", "#800080"], bgimg: "linear-gradient(rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0.55)), linear-gradient(135deg, #000000, #A3A3A3, #FFFFFF, #800080)" }
   };
 
   // The colours the panel is actually drawn with: a preset's own, or the pickers'
@@ -259,7 +259,7 @@
     return {
       panel: P.panel, text: P.text, waiting: P.text, done: P.text, title: P.text, total: P.text,
       thanks: P.text, accent: P.accent, track: P.track, glow: rgba(P.glow, 0.7), borderC: P.accent, font: P.font,
-      flag: P.flag ? flagGradient(P.flag) : ""
+      flag: P.flag ? flagGradient(P.flag) : "", bgimg: P.bgimg || ""
     };
   }
 
@@ -269,6 +269,7 @@
     var T = themeColours();
     var set = function (k, v) { root.style.setProperty(k, v); };
     set("--panel", T.panel);
+    set("--panel-img", T.bgimg || "none");
     set("--radius", L.radius + "px");
     set("--pad-v", L.padV + "em");
     set("--pad-h", L.padH + "em");

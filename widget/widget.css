@@ -83,6 +83,7 @@
   overflow: hidden;
   padding: var(--pad-v) var(--pad-h);
   background: var(--panel);
+  background-image: var(--panel-img, none);
   border: var(--border-w) solid var(--border-c);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
