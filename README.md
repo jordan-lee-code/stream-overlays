@@ -39,9 +39,9 @@ The overlay sits over your scene with a see-through panel. These are all taken f
 
 ## Style presets
 
-One setting picks the look. The same twelve presets, with the same colours, are in every overlay in this set, so overlays from this set match whichever you choose. This is how each one looks in this overlay.
+One setting picks the look. The same fourteen presets, with the same colours, are in every overlay in this set, so overlays from this set match whichever you choose. This is how each one looks in this overlay.
 
-<p><img src="docs/presets.png" alt="A grid of this overlay in each of the twelve style presets: Soft black, Soft white, Midnight blue, Sunset, Forest, Ocean, Rose, Neon, Cosy cabin, Cosy summer pastel, Celestial and Pastel goth" width="760"></p>
+<p><img src="docs/presets.png" alt="A grid of this overlay in each of the fourteen style presets: Soft black, Soft white, Midnight blue, Sunset, Forest, Ocean, Rose, Neon, Cosy cabin, Cosy summer pastel, Celestial, Pastel goth, Pastel pink and Fae green" width="760"></p>
 
 | Preset | Look |
 | --- | --- |
@@ -57,6 +57,8 @@ One setting picks the look. The same twelve presets, with the same colours, are 
 | Cosy summer pastel | Warm cream and coral, in Baloo 2. |
 | Celestial | Deep purple and gold, in Cinzel. |
 | Pastel goth | Charcoal and lilac, in Quicksand. |
+| Pastel pink | Soft blush pink with rose, in Fredoka. |
+| Fae green | Mossy green with a firefly lime accent, in Almendra. |
 
 Choose **Custom** to use the colour pickers and font instead. They are ignored while a preset is chosen.
 
@@ -119,7 +121,7 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | Goals | How many show at once, their order, whether reached goals stay, and the celebration time. |
 | Heading | The title and sub count: text, size, boldness, colour and an optional font of their own. |
 | Wording | The words for sub and subs, the celebrating text, the reached text and the paused note. |
-| Panel | The style preset (one of twelve, or Custom) and, for Custom, the colour and opacity, corner roundness, padding, an optional outline and shadow, and vertical position. |
+| Panel | The style preset (one of fourteen, or Custom) and, for Custom, the colour and opacity, corner roundness, padding, an optional outline and shadow, and vertical position. |
 | Text | Font, size, line spacing, and the colours and boldness of the current, waiting and reached goals. |
 | Progress bars | Bar colours, thickness, glow and spacing. |
 | Thank you | The message, its size, boldness and colour, and an optional bar. |
@@ -201,7 +203,7 @@ The JavaScript is plain ES5, so it can be pasted straight into the StreamElement
 
 ## Related overlays
 
-These overlays share the same default look and the same twelve style presets, so they sit together on one stream.
+These overlays share the same default look and the same fourteen style presets, so they sit together on one stream.
 
 - [Subathon Overlay](https://github.com/jordan-lee-code/subathon-overlay): a subathon clock with a cap, power-ups and sub goals.
 - [Spin Wheel Overlay](https://github.com/jordan-lee-code/spin-wheel-overlay): a wheel for giveaways, raffles and forfeits.

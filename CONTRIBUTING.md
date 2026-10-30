@@ -22,7 +22,7 @@ The dev harness stands in for StreamElements, so you can try changes without goi
 4. When you add a setting, add it to `widget/fields.json` and read it in `readConfig` in `widget/widget.js`. A test fails if a field is never read.
 5. Add or update tests in `test/test-widget.js`, and make sure `npm test` passes.
 6. If behaviour changes, update the README.
-7. The twelve style presets are shared by every overlay in this set, with identical colours, so they look cohesive on one stream. They live in the `PRESETS` table in `widget/widget.js`, and a test checks each against the shared values. If you change a palette, make the same change in the other overlays and regenerate the gallery in `docs/presets.png`.
+7. The fourteen style presets are shared by every overlay in this set, with identical colours, so they look cohesive on one stream. They live in the `PRESETS` table in `widget/widget.js`, and a test checks each against the shared values. If you change a palette, make the same change in the other overlays and regenerate the gallery in `docs/presets.png`.
 
 ## Reporting a bug
 

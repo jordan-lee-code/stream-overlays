@@ -62,6 +62,12 @@
     return (v === undefined || v === null || v === "") ? dflt : String(v);
   }
 
+  // For wording where an empty field is a real choice. StreamElements sends "" for a cleared
+  // field, which str() would turn back into the default.
+  function txt(v, dflt) {
+    return (v === undefined || v === null) ? dflt : String(v);
+  }
+
   function clamp(n, lo, hi) { return Math.min(hi, Math.max(lo, n)); }
   // A command word is a single lower-case token, so "Add" and " add " both work.
   function word(v, dflt) { return str(v, dflt).toLowerCase().trim().split(/\s+/)[0]; }
@@ -105,9 +111,9 @@
       showTotal: bool(f.showTotal, true),
       unitSingular: str(f.unitSingular, "sub"),
       unitPlural: str(f.unitPlural, "subs"),
-      unlockedText: str(f.unlockedText, "Unlocked!"),
-      doneText: str(f.doneText, "- unlocked"),
-      pausedText: str(f.pausedText, "(paused)"),
+      unlockedText: txt(f.unlockedText, "Unlocked!"),
+      doneText: txt(f.doneText, "- unlocked"),
+      pausedText: txt(f.pausedText, "(paused)"),
 
       look: {
         panel: str(f.colorPanel, "#000000"),
@@ -152,7 +158,7 @@
         fillSeconds: clamp(num(f.fillSeconds, 0.9), 0, 10)
       },
       showThanks: bool(f.showThanks, true),
-      thanksText: str(f.thanksText, "Thank you for your generosity! <3"),
+      thanksText: txt(f.thanksText, "Thank you for your generosity! <3"),
       thanksBar: bool(f.thanksBar, false),
       sounds: {
         enabled: bool(f.soundsEnabled, true),
@@ -202,7 +208,7 @@
 
   var ALIGN = { top: "flex-start", middle: "center", bottom: "flex-end" };
 
-  /* Style presets. The same twelve, with the same colours, in every overlay in this
+  /* Style presets. The same fourteen, with the same colours, in every overlay in this
      set, generated from one table so they cannot drift apart, so any preset looks
      like one family across a whole stream. The default, Soft black, is a see-through
      black panel with white text. Custom uses the colour pickers instead. */
@@ -218,7 +224,9 @@
     cosycabin: { panel: "#F5ECD6", text: "#57442E", accent: "#7C6142", track: "rgba(0, 0, 0, 0.11)", glow: "#7C6142", font: "Chicle" },
     pastel: { panel: "#FFF6E9", text: "#6B4F3A", accent: "#FF8A65", track: "rgba(0, 0, 0, 0.11)", glow: "#FF8A65", font: "Baloo 2" },
     celestial: { panel: "#2E1A47", text: "#F3ECFF", accent: "#E8C06B", track: "rgba(255, 255, 255, 0.18)", glow: "#E8C06B", font: "Cinzel" },
-    pastelgoth: { panel: "#3A3340", text: "#F2E9F0", accent: "#C8B6E2", track: "rgba(255, 255, 255, 0.18)", glow: "#C8B6E2", font: "Quicksand" }
+    pastelgoth: { panel: "#3A3340", text: "#F2E9F0", accent: "#C8B6E2", track: "rgba(255, 255, 255, 0.18)", glow: "#C8B6E2", font: "Quicksand" },
+    pastelpink: { panel: "#FFE3EC", text: "#6A2E4B", accent: "#D95C8A", track: "rgba(106, 46, 75, 0.14)", glow: "#D95C8A", font: "Fredoka" },
+    faegreen: { panel: "#2C4A36", text: "#EEF5DA", accent: "#C9E265", track: "rgba(238, 245, 218, 0.2)", glow: "#C9E265", font: "Almendra" }
   };
 
   // The colours the panel is actually drawn with: a preset's own, or the pickers'
