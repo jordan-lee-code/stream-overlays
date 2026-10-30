@@ -1,0 +1,1227 @@
+{
+  "tmCommand": {
+    "type": "text",
+    "label": "Command word",
+    "value": "!subathon",
+    "group": "Clock: Commands"
+  },
+  "tmWho": {
+    "type": "dropdown",
+    "label": "Who can use it",
+    "value": "mods",
+    "options": {
+      "broadcaster": "Broadcaster only",
+      "mods": "Broadcaster + moderators"
+    },
+    "group": "Clock: Commands"
+  },
+  "tmStart": {
+    "type": "text",
+    "label": "Start time (for example 24h, 48:00:00 or 1d 12h)",
+    "value": "24:00:00",
+    "group": "Clock: Time"
+  },
+  "tmApply": {
+    "type": "button",
+    "label": "Apply start time (resets the clock, paused)",
+    "group": "Clock: Time"
+  },
+  "tmWarn": {
+    "type": "text",
+    "label": "Turn the clock to the warning colour below this time",
+    "value": "1h",
+    "group": "Clock: Time"
+  },
+  "tmLockAtZero": {
+    "type": "checkbox",
+    "label": "Once it reaches zero, bank new time instead of restarting",
+    "value": true,
+    "group": "Clock: Time"
+  },
+  "tmEndedText": {
+    "type": "text",
+    "label": "Text when the clock reaches zero",
+    "value": "Time's up!",
+    "group": "Clock: Time"
+  },
+  "tmCapEnabled": {
+    "type": "checkbox",
+    "label": "Hold the subathon to a total length",
+    "value": false,
+    "group": "Clock: Cap"
+  },
+  "tmCap": {
+    "type": "text",
+    "label": "Total length, start time included (for example 200h)",
+    "value": "200:00:00",
+    "group": "Clock: Cap"
+  },
+  "tmShowCap": {
+    "type": "checkbox",
+    "label": "Show how much time can still be earned",
+    "value": true,
+    "group": "Clock: Cap"
+  },
+  "tmCapReset": {
+    "type": "button",
+    "label": "Count the cap from the clock as it is now",
+    "group": "Clock: Cap"
+  },
+  "tmRelease": {
+    "type": "button",
+    "label": "Release banked time onto the clock (as far as the cap allows)",
+    "group": "Clock: Cap"
+  },
+  "tmSub1": {
+    "type": "text",
+    "label": "New sub or resub, tier 1 and Prime",
+    "value": "5m",
+    "group": "Clock: Time per event"
+  },
+  "tmSub2": {
+    "type": "text",
+    "label": "New sub or resub, tier 2",
+    "value": "10m",
+    "group": "Clock: Time per event"
+  },
+  "tmSub3": {
+    "type": "text",
+    "label": "New sub or resub, tier 3",
+    "value": "25m",
+    "group": "Clock: Time per event"
+  },
+  "tmGift1": {
+    "type": "text",
+    "label": "Each gifted sub, tier 1",
+    "value": "5m",
+    "group": "Clock: Time per event"
+  },
+  "tmGift2": {
+    "type": "text",
+    "label": "Each gifted sub, tier 2",
+    "value": "10m",
+    "group": "Clock: Time per event"
+  },
+  "tmGift3": {
+    "type": "text",
+    "label": "Each gifted sub, tier 3",
+    "value": "25m",
+    "group": "Clock: Time per event"
+  },
+  "tmBits": {
+    "type": "text",
+    "label": "Per 100 bits",
+    "value": "1m",
+    "group": "Clock: Time per event"
+  },
+  "tmTip": {
+    "type": "text",
+    "label": "Per 1 of tip currency",
+    "value": "1m",
+    "group": "Clock: Time per event"
+  },
+  "tmFollow": {
+    "type": "text",
+    "label": "Each follow",
+    "value": "0",
+    "group": "Clock: Time per event"
+  },
+  "tmRaid": {
+    "type": "text",
+    "label": "Each raid",
+    "value": "0",
+    "group": "Clock: Time per event"
+  },
+  "tmPowerMult": {
+    "type": "number",
+    "label": "Power-up multiplier",
+    "value": 2,
+    "min": 0,
+    "max": 100,
+    "step": 0.25,
+    "group": "Clock: Power-ups and sleep"
+  },
+  "tmPowerDuration": {
+    "type": "text",
+    "label": "Power-up length (used when no event count is set)",
+    "value": "30m",
+    "group": "Clock: Power-ups and sleep"
+  },
+  "tmPowerEvents": {
+    "type": "number",
+    "label": "Or end the power-up after this many events (0 for none)",
+    "value": 0,
+    "min": 0,
+    "max": 1000,
+    "step": 1,
+    "group": "Clock: Power-ups and sleep"
+  },
+  "tmPowerGo": {
+    "type": "button",
+    "label": "Start the power-up",
+    "group": "Clock: Power-ups and sleep"
+  },
+  "tmPowerStop": {
+    "type": "button",
+    "label": "End the power-up",
+    "group": "Clock: Power-ups and sleep"
+  },
+  "tmSleepMult": {
+    "type": "number",
+    "label": "Sleep mode multiplier",
+    "value": 0.5,
+    "min": 0,
+    "max": 10,
+    "step": 0.05,
+    "group": "Clock: Power-ups and sleep"
+  },
+  "tmSleep": {
+    "type": "button",
+    "label": "Start sleep mode",
+    "group": "Clock: Power-ups and sleep"
+  },
+  "tmWake": {
+    "type": "button",
+    "label": "End sleep mode",
+    "group": "Clock: Power-ups and sleep"
+  },
+  "tmTitle": {
+    "type": "text",
+    "label": "Title above the clock",
+    "value": "Subathon",
+    "group": "Clock: Look"
+  },
+  "tmShowTitle": {
+    "type": "checkbox",
+    "label": "Show the title",
+    "value": true,
+    "group": "Clock: Look"
+  },
+  "tmShowStatus": {
+    "type": "checkbox",
+    "label": "Show the status line (paused, locked, power-up, banked)",
+    "value": true,
+    "group": "Clock: Look"
+  },
+  "tmClockShows": {
+    "type": "dropdown",
+    "label": "What the big clock shows",
+    "value": "remaining",
+    "options": {
+      "remaining": "Time remaining (counting down)",
+      "elapsed": "Time elapsed (counting up)"
+    },
+    "group": "Clock: Look"
+  },
+  "tmShowOther": {
+    "type": "checkbox",
+    "label": "Show the other time on a line under the clock",
+    "value": false,
+    "group": "Clock: Look"
+  },
+  "tmElapsedLabel": {
+    "type": "text",
+    "label": "Label for the elapsed time",
+    "value": "Elapsed",
+    "group": "Clock: Look"
+  },
+  "tmRemainingLabel": {
+    "type": "text",
+    "label": "Label for the remaining time",
+    "value": "Remaining",
+    "group": "Clock: Look"
+  },
+  "tmShowDay": {
+    "type": "checkbox",
+    "label": "Show the day number in the status line",
+    "value": false,
+    "group": "Clock: Look"
+  },
+  "tmDayMode": {
+    "type": "dropdown",
+    "label": "How the day number counts",
+    "value": "calendar",
+    "options": {
+      "calendar": "Each calendar day the clock runs (days off do not count)",
+      "date": "Calendar days since the first day (days off count)",
+      "elapsed": "Every 24 hours of running time (one long stream)",
+      "manual": "Only when I change it"
+    },
+    "group": "Clock: Look"
+  },
+  "tmDayRollover": {
+    "type": "number",
+    "label": "Hour a new day starts, for calendar days (4 means 4am, so a stream past midnight is the same day)",
+    "value": 4,
+    "min": 0,
+    "max": 23,
+    "step": 1,
+    "group": "Clock: Look"
+  },
+  "tmDayLabel": {
+    "type": "text",
+    "label": "Word before the day number",
+    "value": "Day",
+    "group": "Clock: Look"
+  },
+  "tmShowGoals": {
+    "type": "checkbox",
+    "label": "Show the sub goals under the clock",
+    "value": true,
+    "group": "Clock: Look"
+  },
+  "tmOrder": {
+    "type": "dropdown",
+    "label": "Which comes first",
+    "value": "clock",
+    "options": {
+      "clock": "Clock, then goals",
+      "goals": "Goals, then clock"
+    },
+    "group": "Clock: Look"
+  },
+  "tmClockSize": {
+    "type": "number",
+    "label": "Clock size (percent of the box width)",
+    "value": 15,
+    "min": 4,
+    "max": 30,
+    "step": 0.5,
+    "group": "Clock: Look"
+  },
+  "tmTitleScale": {
+    "type": "number",
+    "label": "Title size (share of the clock size)",
+    "value": 0.32,
+    "min": 0.1,
+    "max": 1,
+    "step": 0.02,
+    "group": "Clock: Look"
+  },
+  "tmStatusScale": {
+    "type": "number",
+    "label": "Status and feed size (share of the clock size)",
+    "value": 0.2,
+    "min": 0.08,
+    "max": 0.6,
+    "step": 0.01,
+    "group": "Clock: Look"
+  },
+  "tmWeight": {
+    "type": "number",
+    "label": "Boldness (100 to 900)",
+    "value": 800,
+    "min": 100,
+    "max": 900,
+    "step": 100,
+    "group": "Clock: Look"
+  },
+  "tmPad": {
+    "type": "number",
+    "label": "Space above and below the digits",
+    "value": 0.12,
+    "min": 0,
+    "max": 1,
+    "step": 0.02,
+    "group": "Clock: Look"
+  },
+  "tmGap": {
+    "type": "number",
+    "label": "Gap between the clock and the goals, in pixels",
+    "value": 12,
+    "min": 0,
+    "max": 120,
+    "step": 1,
+    "group": "Clock: Look"
+  },
+  "tmFeedSeconds": {
+    "type": "number",
+    "label": "Seconds each time-added line stays",
+    "value": 6,
+    "min": 1,
+    "max": 60,
+    "step": 1,
+    "group": "Clock: Look"
+  },
+  "tmAnimate": {
+    "type": "checkbox",
+    "label": "Animate",
+    "value": true,
+    "group": "Clock: Look"
+  },
+  "tmText": {
+    "type": "colorpicker",
+    "label": "Text and digits (used when the style preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Clock: Custom colours"
+  },
+  "tmAccent": {
+    "type": "colorpicker",
+    "label": "Status line (used when the style preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Clock: Custom colours"
+  },
+  "tmTrack": {
+    "type": "colorpicker",
+    "label": "Time-added chip (used when the style preset is Custom)",
+    "value": "#444444",
+    "group": "Clock: Custom colours"
+  },
+  "tmWarnColour": {
+    "type": "colorpicker",
+    "label": "Warning and time's up (used when the style preset is Custom)",
+    "value": "#D64545",
+    "group": "Clock: Custom colours"
+  },
+  "tmResume": {
+    "type": "button",
+    "label": "Resume the clock",
+    "group": "Clock: Manual controls"
+  },
+  "tmPause": {
+    "type": "button",
+    "label": "Pause the clock",
+    "group": "Clock: Manual controls"
+  },
+  "tmManual": {
+    "type": "text",
+    "label": "Amount to add or subtract",
+    "value": "10m",
+    "group": "Clock: Manual controls"
+  },
+  "tmAdd": {
+    "type": "button",
+    "label": "Add that amount",
+    "group": "Clock: Manual controls"
+  },
+  "tmSubtract": {
+    "type": "button",
+    "label": "Subtract that amount",
+    "group": "Clock: Manual controls"
+  },
+  "tmLock": {
+    "type": "button",
+    "label": "Lock (new time is banked)",
+    "group": "Clock: Manual controls"
+  },
+  "tmUnlock": {
+    "type": "button",
+    "label": "Unlock",
+    "group": "Clock: Manual controls"
+  },
+  "tmDayNext": {
+    "type": "button",
+    "label": "Next day",
+    "group": "Clock: Manual controls"
+  },
+  "tmDayPrev": {
+    "type": "button",
+    "label": "Previous day",
+    "group": "Clock: Manual controls"
+  },
+  "tmSoundAdd": {
+    "type": "sound-input",
+    "label": "Time added or clock resumed",
+    "value": "",
+    "group": "Clock: Sounds"
+  },
+  "tmVolAdd": {
+    "type": "number",
+    "label": "Volume for that sound (0 to 100)",
+    "value": 60,
+    "min": 0,
+    "max": 100,
+    "step": 5,
+    "group": "Clock: Sounds"
+  },
+  "tmTestAdd": {
+    "type": "button",
+    "label": "Test it",
+    "group": "Clock: Sounds"
+  },
+  "tmSoundZero": {
+    "type": "sound-input",
+    "label": "Clock reaches zero",
+    "value": "",
+    "group": "Clock: Sounds"
+  },
+  "tmVolZero": {
+    "type": "number",
+    "label": "Volume for that sound (0 to 100)",
+    "value": 80,
+    "min": 0,
+    "max": 100,
+    "step": 5,
+    "group": "Clock: Sounds"
+  },
+  "tmTestZero": {
+    "type": "button",
+    "label": "Test it",
+    "group": "Clock: Sounds"
+  },
+  "tmSoundPower": {
+    "type": "sound-input",
+    "label": "Power-up starts",
+    "value": "",
+    "group": "Clock: Sounds"
+  },
+  "tmVolPower": {
+    "type": "number",
+    "label": "Volume for that sound (0 to 100)",
+    "value": 60,
+    "min": 0,
+    "max": 100,
+    "step": 5,
+    "group": "Clock: Sounds"
+  },
+  "tmTestPower": {
+    "type": "button",
+    "label": "Test it",
+    "group": "Clock: Sounds"
+  },
+  "tmMute": {
+    "type": "checkbox",
+    "label": "Mute every clock sound",
+    "value": false,
+    "group": "Clock: Sounds"
+  },
+  "tmDebug": {
+    "type": "checkbox",
+    "label": "Log every event to the browser-source console",
+    "value": false,
+    "group": "Clock: Troubleshooting"
+  },
+  "command": {
+    "type": "text",
+    "label": "Command word. Anyone can type it alone, or with list, to show the panel. Mods use it with the words below.",
+    "value": "!incentive",
+    "group": "Goals: Commands"
+  },
+  "whoCanManage": {
+    "type": "dropdown",
+    "label": "Who can add, remove and adjust",
+    "value": "mods",
+    "options": {
+      "broadcaster": "Broadcaster only",
+      "mods": "Broadcaster + moderators"
+    },
+    "group": "Goals: Commands"
+  },
+  "verbAdd": {
+    "type": "text",
+    "label": "Word to add a goal (!incentive add 15 chat confessions)",
+    "value": "add",
+    "group": "Goals: Commands"
+  },
+  "verbRemove": {
+    "type": "text",
+    "label": "Word to remove a goal, by number or part of its name",
+    "value": "remove",
+    "group": "Goals: Commands"
+  },
+  "verbClear": {
+    "type": "text",
+    "label": "Word to remove every goal",
+    "value": "clear",
+    "group": "Goals: Commands"
+  },
+  "verbSubs": {
+    "type": "text",
+    "label": "Word to adjust the sub count (+3, -2, set 12)",
+    "value": "subs",
+    "group": "Goals: Commands"
+  },
+  "verbBits": {
+    "type": "text",
+    "label": "Word to add bits from somewhere else (+500)",
+    "value": "bits",
+    "group": "Goals: Commands"
+  },
+  "verbReset": {
+    "type": "text",
+    "label": "Word to zero the count and re-open every goal",
+    "value": "reset",
+    "group": "Goals: Commands"
+  },
+  "verbStart": {
+    "type": "text",
+    "label": "Word to start tracking subs and bits",
+    "value": "start",
+    "group": "Goals: Commands"
+  },
+  "verbStop": {
+    "type": "text",
+    "label": "Word to stop tracking subs and bits",
+    "value": "stop",
+    "group": "Goals: Commands"
+  },
+  "verbList": {
+    "type": "text",
+    "label": "Word to show the panel",
+    "value": "list",
+    "group": "Goals: Commands"
+  },
+  "countNewSubs": {
+    "type": "checkbox",
+    "label": "Count new subs, resubs and Prime subs (one each)",
+    "value": true,
+    "group": "Goals: Counting"
+  },
+  "countGifts": {
+    "type": "checkbox",
+    "label": "Count gifted subs (a gift bomb counts its full size once)",
+    "value": true,
+    "group": "Goals: Counting"
+  },
+  "startTracking": {
+    "type": "checkbox",
+    "label": "Start with tracking on (first load only; after that use the start and stop words)",
+    "value": true,
+    "group": "Goals: Counting"
+  },
+  "startSubs": {
+    "type": "number",
+    "label": "Starting sub count (first load only)",
+    "value": 0,
+    "min": 0,
+    "max": 100000,
+    "step": 1,
+    "group": "Goals: Counting"
+  },
+  "bitsPerSub": {
+    "type": "number",
+    "label": "Bits that count as one sub (leftover bits carry over; 0 switches bits off)",
+    "value": 500,
+    "min": 0,
+    "max": 100000,
+    "step": 50,
+    "group": "Goals: Bits"
+  },
+  "showBits": {
+    "type": "checkbox",
+    "label": "Animate bits being cheered and turning into subs",
+    "value": true,
+    "group": "Goals: Bits"
+  },
+  "bitsCalcSeconds": {
+    "type": "number",
+    "label": "Seconds the bits bar takes to calculate: the bar fills and the number counts up over this long (longer is calmer)",
+    "value": 3,
+    "min": 0.5,
+    "max": 15,
+    "step": 0.5,
+    "group": "Goals: Bits"
+  },
+  "bitsStripSeconds": {
+    "type": "number",
+    "label": "Seconds the bits strip stays on screen once the bar has finished",
+    "value": 2,
+    "min": 0.5,
+    "max": 30,
+    "step": 0.1,
+    "group": "Goals: Bits"
+  },
+  "bitsLabel": {
+    "type": "text",
+    "label": "Word for bits in the strip (+300 bits)",
+    "value": "bits",
+    "group": "Goals: Bits"
+  },
+  "maxVisible": {
+    "type": "number",
+    "label": "Most upcoming goals shown at once (the nearest ones win)",
+    "value": 4,
+    "min": 1,
+    "max": 12,
+    "step": 1,
+    "group": "Goals: Goals"
+  },
+  "goalOrder": {
+    "type": "dropdown",
+    "label": "Order of goals",
+    "value": "target",
+    "options": {
+      "target": "Fewest subs first",
+      "added": "The order they were added"
+    },
+    "group": "Goals: Goals"
+  },
+  "keepUnlocked": {
+    "type": "checkbox",
+    "label": "Keep reached goals on screen (untick to remove them after the celebration)",
+    "value": true,
+    "group": "Goals: Goals"
+  },
+  "unlockSeconds": {
+    "type": "number",
+    "label": "Seconds a reached goal celebrates before it settles",
+    "value": 8,
+    "min": 1,
+    "max": 60,
+    "step": 1,
+    "group": "Goals: Goals"
+  },
+  "showWaitingCounts": {
+    "type": "checkbox",
+    "label": "Show the target beside goals that are waiting their turn",
+    "value": true,
+    "group": "Goals: Goals"
+  },
+  "maxNameLength": {
+    "type": "number",
+    "label": "Longest goal name allowed, in characters (longer is cut off when added)",
+    "value": 60,
+    "min": 5,
+    "max": 200,
+    "step": 1,
+    "group": "Goals: Goals"
+  },
+  "title": {
+    "type": "text",
+    "label": "Title text above the goals (leave blank for none)",
+    "value": "Sub goals",
+    "group": "Goals: Heading"
+  },
+  "showTotal": {
+    "type": "checkbox",
+    "label": "Show the running sub count beside the title",
+    "value": true,
+    "group": "Goals: Heading"
+  },
+  "headingScale": {
+    "type": "number",
+    "label": "Size of the title and the sub count, which are always the same size (compared with the text size)",
+    "value": 1.5,
+    "min": 0.6,
+    "max": 4,
+    "step": 0.05,
+    "group": "Goals: Heading"
+  },
+  "pausedScale": {
+    "type": "number",
+    "label": "Size of the paused note beside the sub count, compared with the count (1 is the same size)",
+    "value": 0.6,
+    "min": 0.3,
+    "max": 1.5,
+    "step": 0.05,
+    "group": "Goals: Heading"
+  },
+  "titleWeight": {
+    "type": "dropdown",
+    "label": "Title boldness",
+    "value": "800",
+    "options": {
+      "400": "Regular",
+      "500": "Medium",
+      "600": "Semi-bold",
+      "700": "Bold",
+      "800": "Extra bold"
+    },
+    "group": "Goals: Heading"
+  },
+  "colorTitle": {
+    "type": "colorpicker",
+    "label": "Title colour (used when the style preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Goals: Heading"
+  },
+  "titleOwnFont": {
+    "type": "checkbox",
+    "label": "Use a different font for the title (tick, then pick it below)",
+    "value": false,
+    "group": "Goals: Heading"
+  },
+  "titleFont": {
+    "type": "googleFont",
+    "label": "Font for the title (only used when the box above is ticked)",
+    "value": "BioRhyme",
+    "group": "Goals: Heading"
+  },
+  "totalWeight": {
+    "type": "dropdown",
+    "label": "Sub count boldness",
+    "value": "800",
+    "options": {
+      "400": "Regular",
+      "500": "Medium",
+      "600": "Semi-bold",
+      "700": "Bold",
+      "800": "Extra bold"
+    },
+    "group": "Goals: Heading"
+  },
+  "colorTotal": {
+    "type": "colorpicker",
+    "label": "Sub count colour (used when the style preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Goals: Heading"
+  },
+  "totalOwnFont": {
+    "type": "checkbox",
+    "label": "Use a different font for the sub count (tick, then pick it below)",
+    "value": false,
+    "group": "Goals: Heading"
+  },
+  "totalFont": {
+    "type": "googleFont",
+    "label": "Font for the sub count (only used when the box above is ticked)",
+    "value": "BioRhyme",
+    "group": "Goals: Heading"
+  },
+  "unitSingular": {
+    "type": "text",
+    "label": "Word for one sub (1 sub)",
+    "value": "sub",
+    "group": "Goals: Wording"
+  },
+  "unitPlural": {
+    "type": "text",
+    "label": "Word for several subs (10 subs)",
+    "value": "subs",
+    "group": "Goals: Wording"
+  },
+  "unlockedText": {
+    "type": "text",
+    "label": "Text while a goal is celebrating",
+    "value": "Unlocked!",
+    "group": "Goals: Wording"
+  },
+  "doneText": {
+    "type": "text",
+    "label": "Text beside a goal that has been reached, on the right (include any dash you want)",
+    "value": "- unlocked",
+    "group": "Goals: Wording"
+  },
+  "pausedText": {
+    "type": "text",
+    "label": "Note shown beside the sub count while tracking is stopped",
+    "value": "(paused)",
+    "group": "Goals: Wording"
+  },
+  "themePreset": {
+    "type": "dropdown",
+    "label": "Style preset (pick Custom to use your own colours and font below)",
+    "value": "glass",
+    "options": {
+      "glass": "Soft black (default)",
+      "frost": "Soft white",
+      "midnight": "Midnight blue",
+      "sunset": "Sunset",
+      "forest": "Forest",
+      "ocean": "Ocean",
+      "rose": "Rose",
+      "neon": "Neon",
+      "cosycabin": "Cosy cabin",
+      "pastel": "Cosy summer pastel",
+      "celestial": "Celestial",
+      "pastelgoth": "Pastel goth",
+      "pastelpink": "Pastel pink",
+      "faegreen": "Fae green",
+      "pride": "Rainbow pride",
+      "progress": "Progress pride",
+      "trans": "Trans pride",
+      "bi": "Bi pride",
+      "pan": "Pan pride",
+      "enby": "Non-binary pride",
+      "lesbian": "Lesbian pride",
+      "ace": "Ace pride",
+      "custom": "Custom (use the colours below)"
+    },
+    "group": "Goals: Panel"
+  },
+  "colorPanel": {
+    "type": "colorpicker",
+    "label": "Panel colour (used when the style preset is Custom)",
+    "value": "#000000",
+    "group": "Goals: Panel"
+  },
+  "panelOpacity": {
+    "type": "number",
+    "label": "Panel opacity (0 is invisible, 1 is solid) (used when the style preset is Custom)",
+    "value": 0.55,
+    "min": 0,
+    "max": 1,
+    "step": 0.05,
+    "group": "Goals: Panel"
+  },
+  "radius": {
+    "type": "number",
+    "label": "Corner roundness in pixels",
+    "value": 24,
+    "min": 0,
+    "max": 120,
+    "step": 1,
+    "group": "Goals: Panel"
+  },
+  "paddingV": {
+    "type": "number",
+    "label": "Space above and below the text (1 is the height of a line)",
+    "value": 0.55,
+    "min": 0,
+    "max": 3,
+    "step": 0.05,
+    "group": "Goals: Panel"
+  },
+  "paddingH": {
+    "type": "number",
+    "label": "Space either side of the text (1 is the height of a line)",
+    "value": 0.7,
+    "min": 0,
+    "max": 3,
+    "step": 0.05,
+    "group": "Goals: Panel"
+  },
+  "borderWidth": {
+    "type": "number",
+    "label": "Outline width in pixels (0 for none)",
+    "value": 0,
+    "min": 0,
+    "max": 20,
+    "step": 1,
+    "group": "Goals: Panel"
+  },
+  "borderColor": {
+    "type": "colorpicker",
+    "label": "Outline colour (used when the style preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Goals: Panel"
+  },
+  "shadow": {
+    "type": "checkbox",
+    "label": "Soft shadow under the panel",
+    "value": false,
+    "group": "Goals: Panel"
+  },
+  "vAlign": {
+    "type": "dropdown",
+    "label": "Where the panel sits in its box, up and down",
+    "value": "top",
+    "options": {
+      "top": "Top",
+      "middle": "Middle",
+      "bottom": "Bottom"
+    },
+    "group": "Goals: Panel"
+  },
+  "fontFamily": {
+    "type": "googleFont",
+    "label": "Font (used when the style preset is Custom)",
+    "value": "BioRhyme",
+    "group": "Goals: Text"
+  },
+  "textSize": {
+    "type": "number",
+    "label": "Text size: how big the text is in a box 620 pixels wide. It scales up and down with the box, so it looks the same at any size. A goal name too long for its row shrinks to fit.",
+    "value": 40,
+    "min": 12,
+    "max": 120,
+    "step": 1,
+    "group": "Goals: Text"
+  },
+  "lineSpacing": {
+    "type": "number",
+    "label": "Line spacing (1.25 is the default)",
+    "value": 1.25,
+    "min": 0.9,
+    "max": 2.5,
+    "step": 0.05,
+    "group": "Goals: Text"
+  },
+  "activeScale": {
+    "type": "number",
+    "label": "Size of the goal being worked on, compared with the text size (the biggest line in the list)",
+    "value": 1.3,
+    "min": 0.5,
+    "max": 3,
+    "step": 0.05,
+    "group": "Goals: Text"
+  },
+  "colorText": {
+    "type": "colorpicker",
+    "label": "Text colour for the goal being worked on (used when the style preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Goals: Text"
+  },
+  "nameWeight": {
+    "type": "dropdown",
+    "label": "Boldness of the goal being worked on",
+    "value": "700",
+    "options": {
+      "400": "Regular",
+      "500": "Medium",
+      "600": "Semi-bold",
+      "700": "Bold",
+      "800": "Extra bold"
+    },
+    "group": "Goals: Text"
+  },
+  "colorWaiting": {
+    "type": "colorpicker",
+    "label": "Text colour for goals waiting their turn (used when the style preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Goals: Text"
+  },
+  "waitingWeight": {
+    "type": "dropdown",
+    "label": "Boldness of goals waiting their turn",
+    "value": "400",
+    "options": {
+      "400": "Regular",
+      "500": "Medium",
+      "600": "Semi-bold",
+      "700": "Bold",
+      "800": "Extra bold"
+    },
+    "group": "Goals: Text"
+  },
+  "waitingScale": {
+    "type": "number",
+    "label": "Size of goals waiting their turn and reached goals, as a percentage of the goal being worked on",
+    "value": 75,
+    "min": 30,
+    "max": 120,
+    "step": 1,
+    "group": "Goals: Text"
+  },
+  "colorDone": {
+    "type": "colorpicker",
+    "label": "Text colour for reached goals (used when the style preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Goals: Text"
+  },
+  "strikeDone": {
+    "type": "checkbox",
+    "label": "Strike through the name of a reached goal",
+    "value": true,
+    "group": "Goals: Text"
+  },
+  "textShadow": {
+    "type": "checkbox",
+    "label": "Soft shadow behind the text, to help it read over bright scenes",
+    "value": false,
+    "group": "Goals: Text"
+  },
+  "colorAccent": {
+    "type": "colorpicker",
+    "label": "Progress bar colour (used when the style preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Goals: Progress bars"
+  },
+  "colorTrack": {
+    "type": "colorpicker",
+    "label": "Empty part of the bar, colour (used when the style preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Goals: Progress bars"
+  },
+  "trackOpacity": {
+    "type": "number",
+    "label": "Empty part of the bar, opacity (0 to 1) (used when the style preset is Custom)",
+    "value": 0.2,
+    "min": 0,
+    "max": 1,
+    "step": 0.05,
+    "group": "Goals: Progress bars"
+  },
+  "colorGlow": {
+    "type": "colorpicker",
+    "label": "Glow colour when a goal is reached (used when the style preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Goals: Progress bars"
+  },
+  "barHeight": {
+    "type": "number",
+    "label": "Bar thickness (1 is the height of a line)",
+    "value": 0.7,
+    "min": 0.2,
+    "max": 2,
+    "step": 0.05,
+    "group": "Goals: Progress bars"
+  },
+  "rowGap": {
+    "type": "number",
+    "label": "Space between goals (1 is the height of a line)",
+    "value": 0.9,
+    "min": 0,
+    "max": 3,
+    "step": 0.05,
+    "group": "Goals: Progress bars"
+  },
+  "soundsEnabled": {
+    "type": "checkbox",
+    "label": "Play sounds (untick to mute everything, keeping the files)",
+    "value": true,
+    "group": "Goals: Sounds"
+  },
+  "subSound": {
+    "type": "sound-input",
+    "label": "Sound when a sub counts (a gift bomb plays it once). Leave empty for none.",
+    "value": "",
+    "group": "Goals: Sounds"
+  },
+  "subSoundVolume": {
+    "type": "number",
+    "label": "Sub sound volume (0 to 100)",
+    "value": 70,
+    "min": 0,
+    "max": 100,
+    "step": 5,
+    "group": "Goals: Sounds"
+  },
+  "bitsSound": {
+    "type": "sound-input",
+    "label": "Sound when bits are cheered or added. Leave empty for none.",
+    "value": "",
+    "group": "Goals: Sounds"
+  },
+  "bitsSoundVolume": {
+    "type": "number",
+    "label": "Bits sound volume (0 to 100)",
+    "value": 70,
+    "min": 0,
+    "max": 100,
+    "step": 5,
+    "group": "Goals: Sounds"
+  },
+  "goalSound": {
+    "type": "sound-input",
+    "label": "Sound when a goal is reached (once, even if several are reached together). Leave empty for none.",
+    "value": "",
+    "group": "Goals: Sounds"
+  },
+  "goalSoundVolume": {
+    "type": "number",
+    "label": "Goal sound volume (0 to 100)",
+    "value": 80,
+    "min": 0,
+    "max": 100,
+    "step": 5,
+    "group": "Goals: Sounds"
+  },
+  "goalReplacesSound": {
+    "type": "checkbox",
+    "label": "When a sub or cheer reaches a goal, play only the goal sound (so the two do not talk over each other)",
+    "value": true,
+    "group": "Goals: Sounds"
+  },
+  "showThanks": {
+    "type": "checkbox",
+    "label": "When every goal has been reached, show a thank-you message at the bottom (needs Keep reached goals on screen)",
+    "value": true,
+    "group": "Goals: Thank you"
+  },
+  "thanksText": {
+    "type": "text",
+    "label": "The thank-you message",
+    "value": "Thank you for your generosity! <3",
+    "group": "Goals: Thank you"
+  },
+  "thanksBar": {
+    "type": "checkbox",
+    "label": "Show a full, glowing bar under the message",
+    "value": false,
+    "group": "Goals: Thank you"
+  },
+  "thanksScale": {
+    "type": "number",
+    "label": "Message size compared with the text size (a long message shrinks to fit)",
+    "value": 0.85,
+    "min": 0.4,
+    "max": 3,
+    "step": 0.05,
+    "group": "Goals: Thank you"
+  },
+  "thanksWeight": {
+    "type": "dropdown",
+    "label": "Message boldness",
+    "value": "700",
+    "options": {
+      "400": "Regular",
+      "500": "Medium",
+      "600": "Semi-bold",
+      "700": "Bold",
+      "800": "Extra bold"
+    },
+    "group": "Goals: Thank you"
+  },
+  "colorThanks": {
+    "type": "colorpicker",
+    "label": "Message colour (used when the style preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Goals: Thank you"
+  },
+  "animations": {
+    "type": "checkbox",
+    "label": "Animate (untick to switch every animation and transition off)",
+    "value": true,
+    "group": "Goals: Animation"
+  },
+  "fillSeconds": {
+    "type": "number",
+    "label": "Seconds a bar takes to fill",
+    "value": 0.9,
+    "min": 0,
+    "max": 10,
+    "step": 0.1,
+    "group": "Goals: Animation"
+  },
+  "debug": {
+    "type": "checkbox",
+    "label": "Log each subscriber and cheer event to the browser console (for troubleshooting)",
+    "value": false,
+    "group": "Goals: Troubleshooting"
+  },
+  "btnDemo": {
+    "type": "button",
+    "label": "Add three example goals (5 karaoke, 10 game, 15 chat confessions)",
+    "value": "Add examples",
+    "group": "Goals: Manual controls"
+  },
+  "btnPlus": {
+    "type": "button",
+    "label": "Add one sub",
+    "value": "+ 1 sub",
+    "group": "Goals: Manual controls"
+  },
+  "btnMinus": {
+    "type": "button",
+    "label": "Take one sub off",
+    "value": "- 1 sub",
+    "group": "Goals: Manual controls"
+  },
+  "btnSoundSub": {
+    "type": "button",
+    "label": "Test the sub sound",
+    "value": "Play sub sound",
+    "group": "Goals: Manual controls"
+  },
+  "btnSoundBits": {
+    "type": "button",
+    "label": "Test the bits sound",
+    "value": "Play bits sound",
+    "group": "Goals: Manual controls"
+  },
+  "btnSoundGoal": {
+    "type": "button",
+    "label": "Test the goal sound",
+    "value": "Play goal sound",
+    "group": "Goals: Manual controls"
+  },
+  "btnTracking": {
+    "type": "button",
+    "label": "Start or stop tracking subs and bits",
+    "value": "Start / stop",
+    "group": "Goals: Manual controls"
+  },
+  "btnReset": {
+    "type": "button",
+    "label": "Reset the sub count to 0 and re-open every goal",
+    "value": "Reset subs",
+    "group": "Goals: Manual controls"
+  },
+  "btnClear": {
+    "type": "button",
+    "label": "Remove every goal",
+    "value": "Clear goals",
+    "group": "Goals: Manual controls"
+  }
+}
