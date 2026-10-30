@@ -68,7 +68,7 @@ One setting picks the look. The same twenty-two presets, with the same colours, 
 | Lesbian pride | Dark wine with the orange to pink stripes. |
 | Ace pride | Near black with grey, white and purple. |
 
-The last eight are pride presets, built from the stripes of the rainbow, progress, trans, bi, pan, non-binary, lesbian and ace flags. A bar is striped like the flag where an overlay has one, and the slices of a wheel and the options of a poll take their colours from the stripes in order.
+The last eight are pride presets, built from the stripes of the rainbow, progress, trans, bi, pan, non-binary, lesbian and ace flags. A bar is striped like the flag where an overlay has one, and the slices of a wheel and the options of a poll take their colours from the stripes in order. The colours follow each flag's published design, and the progress flag shows its six rainbow stripes, because its chevron is a separate shape.
 
 Choose **Custom** to use the colour pickers and font instead. They are ignored while a preset is chosen.
 
