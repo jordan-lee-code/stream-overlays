@@ -101,7 +101,7 @@ module.exports = function createEnv(root) {
     // the same order, with Custom last. `appId` is the card that carries the --w-* variables.
     async checkPresets(appId) {
       const opts = fields.themePreset.options, keys = Object.keys(opts);
-      env.ok(keys.length === Object.keys(expectedPresets).length + 1 && keys[keys.length - 1] === "custom", "the dropdown has the fourteen shared presets and Custom (" + keys.length + ")");
+      env.ok(keys.length === Object.keys(expectedPresets).length + 1 && keys[keys.length - 1] === "custom", "the dropdown has the twenty-two shared presets and Custom (" + keys.length + ")");
       env.ok(fields.themePreset.value === "glass", "Soft black is the default");
       let all = true;
       for (const key of Object.keys(expectedPresets)) {
@@ -111,6 +111,11 @@ module.exports = function createEnv(root) {
         const v = env.vars(appId);
         if (v["--w-bg"] !== x.panel || v["--w-text"] !== x.text || v["--w-accent"] !== x.accent || String(v["--w-font"]).indexOf('"' + x.font + '"') !== 0) {
           all = false; console.log("    colours differ for " + key + ": " + v["--w-bg"]);
+        }
+        // A pride preset gives bars the stripes of its flag, top to bottom. Every other preset gives them the accent.
+        const wantFlag = x.flag ? "linear-gradient(180deg, " + x.flag[0] + " 0% " + (100 / x.flag.length) + "%" : x.accent;
+        if (x.flag ? String(v["--w-flag"]).indexOf(wantFlag) !== 0 || String(v["--w-flag"]).split(", ").length !== x.flag.length + 1 : v["--w-flag"] !== wantFlag) {
+          all = false; console.log("    bar differs for " + key + ": " + v["--w-flag"]);
         }
       }
       env.ok(all, "every preset's label, panel, text, accent and font match the shared table");

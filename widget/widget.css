@@ -79,7 +79,7 @@
   border-radius: 999px;
   overflow: hidden;
 }
-.sg-fill { height: 100%; width: 0; background: var(--w-accent); border-radius: inherit; transition: width 0.6s ease; }
+.sg-fill { height: 100%; width: 0; background: var(--w-flag, var(--w-accent)); border-radius: inherit; transition: width 0.6s ease; }
 .sg-row.bump .sg-top { animation: sg-pop 0.45s ease; }
 .sg-row.reached .sg-count { color: var(--w-accent); opacity: 1; letter-spacing: 0.03em; }
 .sg-status { margin-top: 0.4em; font-size: 0.7em; font-weight: 700; color: var(--w-alarm); text-align: center; }
