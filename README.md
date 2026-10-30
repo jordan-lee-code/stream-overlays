@@ -8,14 +8,14 @@ Goals are added live from chat with `!incentive add 15 chat confessions`. The wi
 
 ## Features
 
-- **Live goals:** add, remove and clear goals from chat, with several shown at once.
-- **Smooth progress:** the goal being worked on gets the biggest line and a progress bar, while the others condense to a single line. Reached goals celebrate, then stay on screen struck through.
-- **Subs and bits:** new subs, resubs and gifted subs all count, and bits convert at a rate you choose, with leftovers carried over. The bits bar takes a few seconds to calculate, so chat can watch it happen.
-- **Sounds:** optional sounds for a sub, for bits and for a goal being reached.
-- **Pause and resume:** stop counting before a stream starts and start it when you go live.
-- **Scales to its box:** text scales with the space the widget is given in StreamElements, and long goal names shrink to fit rather than wrapping or being cut off.
-- **Customisable:** more than 80 settings cover wording, colours, fonts, sizes, spacing, sounds and the chat command words.
-- **Testable offline:** a local dev harness and an automated test script, no live stream needed.
+- Live goals: add, remove and clear goals from chat, with several shown at once.
+- Progress: the goal being worked on gets the biggest line and a progress bar, while the others condense to a single line. Reached goals celebrate, then stay on screen struck through.
+- Subs and bits: new subs, resubs and gifted subs all count, and bits convert at a rate you choose, with leftovers carried over. The bits bar takes a few seconds to calculate, so chat can watch it happen.
+- Sounds: optional sounds for a sub, for bits and for a goal being reached.
+- Pause and resume: stop counting before a stream starts and start it when you go live.
+- Scales to its box: text scales with the space the widget is given in StreamElements, and long goal names shrink to fit rather than wrapping or being cut off.
+- Customisable: more than 80 settings cover wording, colours, fonts, sizes, spacing, sounds and the chat command words.
+- Testable offline: a local dev harness and an automated test script, no live stream needed.
 
 ## Screenshots
 
@@ -39,7 +39,7 @@ The overlay sits over your scene with a see-through panel. These are all taken f
 
 ## Style presets
 
-One setting picks the look. The same twelve presets, with exactly the same colours, are in every overlay in this set, so whichever you choose, the overlays still look like one family on a stream. This is how each one looks in this overlay.
+One setting picks the look. The same twelve presets, with the same colours, are in every overlay in this set, so overlays from this set match whichever you choose. This is how each one looks in this overlay.
 
 <p><img src="docs/presets.png" alt="A grid of this overlay in each of the twelve style presets: Soft black, Soft white, Midnight blue, Sunset, Forest, Ocean, Rose, Neon, Cosy cabin, Cosy summer pastel, Celestial and Pastel goth" width="760"></p>
 
@@ -139,7 +139,7 @@ A browser may refuse to play sound until someone has interacted with the page, w
 
 ## Building on it
 
-The tracker is meant to be reused. Each sub or cheer that it counts is announced on the page as a `subgoals:counted` event, so another widget can build on it without parsing StreamElements events a second time, and the two can never disagree about how many subs something was worth. That includes the gift bomb case, where only the announcement counts.
+The tracker is meant to be reused. Each sub or cheer that it counts is announced on the page as a `subgoals:counted` event, so another widget can build on it without parsing StreamElements events a second time and the two always agree on how many subs something was worth. That includes the gift bomb case, where only the announcement counts.
 
 ```js
 window.addEventListener("subgoals:counted", function (e) {
@@ -197,7 +197,7 @@ docs/     screenshots used in this README
 
 The widget uses the StreamElements events `onWidgetLoad`, `onEventReceived` with `subscriber-latest`, `cheer-latest`, `message` and `widget-button`, and `SE_API.store`. Event shapes follow the StreamElements documentation, and the Troubleshooting option is there to check them against a live stream.
 
-The JavaScript is deliberately ES5 style so it can be pasted straight into the StreamElements editor.
+The JavaScript is plain ES5, so it can be pasted straight into the StreamElements editor.
 
 ## Related overlays
 
@@ -214,7 +214,7 @@ If this saves you time, you can support its development on Ko-fi:
 
 [![Support on Ko-fi](https://img.shields.io/badge/Ko--fi-Support%20me-ff38b8?logo=ko-fi&logoColor=white)](https://ko-fi.com/journeyingjordan)
 
-Thank you, it is genuinely appreciated.
+Thanks for using it.
 
 ## Contributing
 
