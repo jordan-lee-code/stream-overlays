@@ -1,0 +1,423 @@
+{
+  "tmCommand": {
+    "type": "text",
+    "label": "Command word",
+    "value": "!subathon",
+    "group": "Clock: Commands"
+  },
+  "tmWho": {
+    "type": "dropdown",
+    "label": "Who can use it",
+    "value": "mods",
+    "options": {
+      "broadcaster": "Broadcaster only",
+      "mods": "Broadcaster + moderators"
+    },
+    "group": "Clock: Commands"
+  },
+  "tmStart": {
+    "type": "text",
+    "label": "Start time (for example 24h, 48:00:00 or 1d 12h)",
+    "value": "24:00:00",
+    "group": "Clock: Time"
+  },
+  "tmApply": {
+    "type": "button",
+    "label": "Apply start time (resets the clock, paused)",
+    "group": "Clock: Time"
+  },
+  "tmWarn": {
+    "type": "text",
+    "label": "Turn the clock to the warning colour below this time",
+    "value": "1h",
+    "group": "Clock: Time"
+  },
+  "tmLockAtZero": {
+    "type": "checkbox",
+    "label": "Once it reaches zero, bank new time instead of restarting",
+    "value": true,
+    "group": "Clock: Time"
+  },
+  "tmEndedText": {
+    "type": "text",
+    "label": "Text when the clock reaches zero",
+    "value": "Time's up!",
+    "group": "Clock: Time"
+  },
+  "tmCapEnabled": {
+    "type": "checkbox",
+    "label": "Hold the subathon to a total length",
+    "value": false,
+    "group": "Clock: Cap"
+  },
+  "tmCap": {
+    "type": "text",
+    "label": "Total length, start time included (for example 200h)",
+    "value": "200:00:00",
+    "group": "Clock: Cap"
+  },
+  "tmShowCap": {
+    "type": "checkbox",
+    "label": "Show how much time can still be earned",
+    "value": true,
+    "group": "Clock: Cap"
+  },
+  "tmCapReset": {
+    "type": "button",
+    "label": "Count the cap from the clock as it is now",
+    "group": "Clock: Cap"
+  },
+  "tmRelease": {
+    "type": "button",
+    "label": "Release banked time onto the clock (as far as the cap allows)",
+    "group": "Clock: Cap"
+  },
+  "tmSub1": {
+    "type": "text",
+    "label": "New sub or resub, tier 1 and Prime",
+    "value": "5m",
+    "group": "Clock: Time per event"
+  },
+  "tmSub2": {
+    "type": "text",
+    "label": "New sub or resub, tier 2",
+    "value": "10m",
+    "group": "Clock: Time per event"
+  },
+  "tmSub3": {
+    "type": "text",
+    "label": "New sub or resub, tier 3",
+    "value": "25m",
+    "group": "Clock: Time per event"
+  },
+  "tmGift1": {
+    "type": "text",
+    "label": "Each gifted sub, tier 1",
+    "value": "5m",
+    "group": "Clock: Time per event"
+  },
+  "tmGift2": {
+    "type": "text",
+    "label": "Each gifted sub, tier 2",
+    "value": "10m",
+    "group": "Clock: Time per event"
+  },
+  "tmGift3": {
+    "type": "text",
+    "label": "Each gifted sub, tier 3",
+    "value": "25m",
+    "group": "Clock: Time per event"
+  },
+  "tmBits": {
+    "type": "text",
+    "label": "Per 100 bits",
+    "value": "1m",
+    "group": "Clock: Time per event"
+  },
+  "tmTip": {
+    "type": "text",
+    "label": "Per 1 of tip currency",
+    "value": "1m",
+    "group": "Clock: Time per event"
+  },
+  "tmFollow": {
+    "type": "text",
+    "label": "Each follow",
+    "value": "0",
+    "group": "Clock: Time per event"
+  },
+  "tmRaid": {
+    "type": "text",
+    "label": "Each raid",
+    "value": "0",
+    "group": "Clock: Time per event"
+  },
+  "tmPowerMult": {
+    "type": "number",
+    "label": "Power-up multiplier",
+    "value": 2,
+    "min": 0,
+    "max": 100,
+    "step": 0.25,
+    "group": "Clock: Power-ups and sleep"
+  },
+  "tmPowerDuration": {
+    "type": "text",
+    "label": "Power-up length (used when no event count is set)",
+    "value": "30m",
+    "group": "Clock: Power-ups and sleep"
+  },
+  "tmPowerEvents": {
+    "type": "number",
+    "label": "Or end the power-up after this many events (0 for none)",
+    "value": 0,
+    "min": 0,
+    "max": 1000,
+    "step": 1,
+    "group": "Clock: Power-ups and sleep"
+  },
+  "tmPowerGo": {
+    "type": "button",
+    "label": "Start the power-up",
+    "group": "Clock: Power-ups and sleep"
+  },
+  "tmPowerStop": {
+    "type": "button",
+    "label": "End the power-up",
+    "group": "Clock: Power-ups and sleep"
+  },
+  "tmSleepMult": {
+    "type": "number",
+    "label": "Sleep mode multiplier",
+    "value": 0.5,
+    "min": 0,
+    "max": 10,
+    "step": 0.05,
+    "group": "Clock: Power-ups and sleep"
+  },
+  "tmSleep": {
+    "type": "button",
+    "label": "Start sleep mode",
+    "group": "Clock: Power-ups and sleep"
+  },
+  "tmWake": {
+    "type": "button",
+    "label": "End sleep mode",
+    "group": "Clock: Power-ups and sleep"
+  },
+  "tmTitle": {
+    "type": "text",
+    "label": "Title above the clock",
+    "value": "Subathon",
+    "group": "Clock: Look"
+  },
+  "tmShowTitle": {
+    "type": "checkbox",
+    "label": "Show the title",
+    "value": true,
+    "group": "Clock: Look"
+  },
+  "tmShowStatus": {
+    "type": "checkbox",
+    "label": "Show the status line (paused, locked, power-up, banked)",
+    "value": true,
+    "group": "Clock: Look"
+  },
+  "tmShowGoals": {
+    "type": "checkbox",
+    "label": "Show the sub goals under the clock",
+    "value": true,
+    "group": "Clock: Look"
+  },
+  "tmOrder": {
+    "type": "dropdown",
+    "label": "Which comes first",
+    "value": "clock",
+    "options": {
+      "clock": "Clock, then goals",
+      "goals": "Goals, then clock"
+    },
+    "group": "Clock: Look"
+  },
+  "tmClockSize": {
+    "type": "number",
+    "label": "Clock size (percent of the box width)",
+    "value": 15,
+    "min": 4,
+    "max": 30,
+    "step": 0.5,
+    "group": "Clock: Look"
+  },
+  "tmTitleScale": {
+    "type": "number",
+    "label": "Title size (share of the clock size)",
+    "value": 0.32,
+    "min": 0.1,
+    "max": 1,
+    "step": 0.02,
+    "group": "Clock: Look"
+  },
+  "tmStatusScale": {
+    "type": "number",
+    "label": "Status and feed size (share of the clock size)",
+    "value": 0.2,
+    "min": 0.08,
+    "max": 0.6,
+    "step": 0.01,
+    "group": "Clock: Look"
+  },
+  "tmWeight": {
+    "type": "number",
+    "label": "Boldness (100 to 900)",
+    "value": 800,
+    "min": 100,
+    "max": 900,
+    "step": 100,
+    "group": "Clock: Look"
+  },
+  "tmPad": {
+    "type": "number",
+    "label": "Space above and below the digits",
+    "value": 0.12,
+    "min": 0,
+    "max": 1,
+    "step": 0.02,
+    "group": "Clock: Look"
+  },
+  "tmGap": {
+    "type": "number",
+    "label": "Gap between the clock and the goals, in pixels",
+    "value": 12,
+    "min": 0,
+    "max": 120,
+    "step": 1,
+    "group": "Clock: Look"
+  },
+  "tmFeedSeconds": {
+    "type": "number",
+    "label": "Seconds each time-added line stays",
+    "value": 6,
+    "min": 1,
+    "max": 60,
+    "step": 1,
+    "group": "Clock: Look"
+  },
+  "tmAnimate": {
+    "type": "checkbox",
+    "label": "Animate",
+    "value": true,
+    "group": "Clock: Look"
+  },
+  "tmText": {
+    "type": "colorpicker",
+    "label": "Text and digits (used when the style preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Clock: Custom colours"
+  },
+  "tmAccent": {
+    "type": "colorpicker",
+    "label": "Status line (used when the style preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Clock: Custom colours"
+  },
+  "tmTrack": {
+    "type": "colorpicker",
+    "label": "Time-added chip (used when the style preset is Custom)",
+    "value": "#444444",
+    "group": "Clock: Custom colours"
+  },
+  "tmWarnColour": {
+    "type": "colorpicker",
+    "label": "Warning and time's up (used when the style preset is Custom)",
+    "value": "#D64545",
+    "group": "Clock: Custom colours"
+  },
+  "tmResume": {
+    "type": "button",
+    "label": "Resume the clock",
+    "group": "Clock: Manual controls"
+  },
+  "tmPause": {
+    "type": "button",
+    "label": "Pause the clock",
+    "group": "Clock: Manual controls"
+  },
+  "tmManual": {
+    "type": "text",
+    "label": "Amount to add or subtract",
+    "value": "10m",
+    "group": "Clock: Manual controls"
+  },
+  "tmAdd": {
+    "type": "button",
+    "label": "Add that amount",
+    "group": "Clock: Manual controls"
+  },
+  "tmSubtract": {
+    "type": "button",
+    "label": "Subtract that amount",
+    "group": "Clock: Manual controls"
+  },
+  "tmLock": {
+    "type": "button",
+    "label": "Lock (new time is banked)",
+    "group": "Clock: Manual controls"
+  },
+  "tmUnlock": {
+    "type": "button",
+    "label": "Unlock",
+    "group": "Clock: Manual controls"
+  },
+  "tmSoundAdd": {
+    "type": "sound-input",
+    "label": "Time added or clock resumed",
+    "value": "",
+    "group": "Clock: Sounds"
+  },
+  "tmVolAdd": {
+    "type": "number",
+    "label": "Volume for that sound (0 to 100)",
+    "value": 60,
+    "min": 0,
+    "max": 100,
+    "step": 5,
+    "group": "Clock: Sounds"
+  },
+  "tmTestAdd": {
+    "type": "button",
+    "label": "Test it",
+    "group": "Clock: Sounds"
+  },
+  "tmSoundZero": {
+    "type": "sound-input",
+    "label": "Clock reaches zero",
+    "value": "",
+    "group": "Clock: Sounds"
+  },
+  "tmVolZero": {
+    "type": "number",
+    "label": "Volume for that sound (0 to 100)",
+    "value": 80,
+    "min": 0,
+    "max": 100,
+    "step": 5,
+    "group": "Clock: Sounds"
+  },
+  "tmTestZero": {
+    "type": "button",
+    "label": "Test it",
+    "group": "Clock: Sounds"
+  },
+  "tmSoundPower": {
+    "type": "sound-input",
+    "label": "Power-up starts",
+    "value": "",
+    "group": "Clock: Sounds"
+  },
+  "tmVolPower": {
+    "type": "number",
+    "label": "Volume for that sound (0 to 100)",
+    "value": 60,
+    "min": 0,
+    "max": 100,
+    "step": 5,
+    "group": "Clock: Sounds"
+  },
+  "tmTestPower": {
+    "type": "button",
+    "label": "Test it",
+    "group": "Clock: Sounds"
+  },
+  "tmMute": {
+    "type": "checkbox",
+    "label": "Mute every clock sound",
+    "value": false,
+    "group": "Clock: Sounds"
+  },
+  "tmDebug": {
+    "type": "checkbox",
+    "label": "Log every event to the browser-source console",
+    "value": false,
+    "group": "Clock: Troubleshooting"
+  }
+}

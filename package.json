@@ -1,0 +1,37 @@
+{
+  "name": "subathon-overlay",
+  "version": "1.0.0",
+  "description": "A StreamElements custom widget that runs a whole subathon: a clock that subs, bits and tips add time to, with a cap, power-ups and goals.",
+  "private": true,
+  "license": "MIT",
+  "author": "Jordan Lee",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jordan-lee-code/subathon-overlay.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jordan-lee-code/subathon-overlay/issues"
+  },
+  "homepage": "https://github.com/jordan-lee-code/subathon-overlay#readme",
+  "keywords": [
+    "streamelements",
+    "twitch",
+    "subathon",
+    "overlay",
+    "timer",
+    "widget"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "funding": "https://ko-fi.com/journeyingjordan",
+  "scripts": {
+    "build": "node build/build.js",
+    "test": "node build/build.js && node test/test-widget.js",
+    "check": "node build/build.js && git diff --exit-code -- widget",
+    "dev": "node build/build.js && python3 -m http.server 8000"
+  },
+  "dependencies": {
+    "sub-goals-overlay": "git+https://github.com/jordan-lee-code/sub-goals-overlay.git#v1.1.0"
+  }
+}
