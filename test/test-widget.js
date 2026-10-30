@@ -434,8 +434,7 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   ok(elements["incentive-bits"].hidden === true, "then leaves the chosen 0.5s after the bar finishes");
 
   console.log("\n[customising the look]");
-  load({
-    paddingV: 1, paddingH: 1.5, borderWidth: 3, borderColor: "#FF0000", shadow: true, vAlign: "bottom",
+  load({ themePreset: "custom", paddingV: 1, paddingH: 1.5, borderWidth: 3, borderColor: "#FF0000", shadow: true, vAlign: "bottom",
     lineSpacing: 1.5, nameWeight: "800", waitingWeight: "500", waitingScale: 70, colorWaiting: "#CCCCCC", colorDone: "#999999",
     strikeDone: false, textShadow: true, headingScale: 1.6, titleWeight: "600", colorTitle: "#FFEEAA", totalWeight: "400", colorTotal: "#AAEEFF",
     colorTrack: "#000000", trackOpacity: 0.5, colorGlow: "#00FF00", barHeight: 1.1, rowGap: 0.4, fillSeconds: 2
@@ -521,7 +520,7 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   ok(T().hidden === false && T("text").textContent === "You are wonderful!" && T("track").hidden === false && !T().classList.contains("no-bar"), "custom text, with the optional bar switched on (" + T("text").textContent + ")");
   await wait(120);
   ok(T("fill").style.width === "100%", "and it fills");
-  load({ thanksScale: 1.4, thanksWeight: "800", colorThanks: "#FFD6F0" }); await wait(5);
+  load({ themePreset: "custom",thanksScale: 1.4, thanksWeight: "800", colorThanks: "#FFD6F0" }); await wait(5);
   ok(A["--thanks-scale"] === "1.4" && A["--thanks-w"] === "800" && A["--c-thanks"] === "#FFD6F0", "size, boldness and colour are configurable");
   load({ thanksScale: 99 }); await wait(5);
   ok(A["--thanks-scale"] === "3", "and held to a sensible limit");
@@ -850,15 +849,33 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   load(); await wait(5);
   ok(app["--font"].indexOf("BioRhyme") !== -1, "BioRhyme is the font (" + app["--font"] + ")");
   ok(/family=BioRhyme:wght@200\.\.800/.test(elements["incentive-font-link"].href || ""), "its whole weight range is requested, so any boldness is real");
-  load({ colorPanel: "#336699", panelOpacity: 0.3, radius: 10 }); await wait(5);
+  load({ themePreset: "custom",colorPanel: "#336699", panelOpacity: 0.3, radius: 10 }); await wait(5);
   ok(app["--panel"] === "rgba(51, 102, 153, 0.3)" && app["--radius"] === "10px", "panel colour, opacity and radius are configurable (" + app["--panel"] + ")");
-  load({ colorPanel: "nonsense" }); await wait(5);
+  load({ themePreset: "custom",colorPanel: "nonsense" }); await wait(5);
   ok(app["--panel"] === "rgba(0, 0, 0, 0.55)", "a bad colour falls back to black");
   load({ title: "" }); await wait(5);
   ok(elements["incentive-title"].hidden === true && elements["incentive-header"].hidden === false, "heading can be blanked while the total stays");
   load({ title: "", showTotal: false }); await wait(5);
   ok(elements["incentive-header"].hidden === true, "the heading row disappears when both are off");
 
+
+  // ---- style presets: the same twelve, with the same colours, in every overlay
+  console.log("\n[style presets]");
+  const EXPECT = {"glass": {"text": "#FFFFFF", "accent": "#FFFFFF", "panel": "rgba(0, 0, 0, 0.55)", "font": "BioRhyme"}, "frost": {"text": "#1B2130", "accent": "#1B2130", "panel": "rgba(255, 255, 255, 0.72)", "font": "BioRhyme"}, "midnight": {"text": "#E8EEFF", "accent": "#7FA8FF", "panel": "rgba(10, 18, 46, 0.72)", "font": "BioRhyme"}, "sunset": {"text": "#FFF1E6", "accent": "#FF9A5A", "panel": "rgba(48, 18, 42, 0.72)", "font": "BioRhyme"}, "forest": {"text": "#EAF7EE", "accent": "#6FD6A0", "panel": "rgba(12, 36, 28, 0.72)", "font": "BioRhyme"}, "ocean": {"text": "#E6F8FF", "accent": "#4CD3E0", "panel": "rgba(6, 36, 50, 0.72)", "font": "BioRhyme"}, "rose": {"text": "#FFE9F1", "accent": "#FF8FB8", "panel": "rgba(58, 14, 34, 0.72)", "font": "BioRhyme"}, "neon": {"text": "#FFFFFF", "accent": "#00F0FF", "panel": "rgba(4, 4, 16, 0.82)", "font": "BioRhyme"}, "cosycabin": {"text": "#57442E", "accent": "#7C6142", "panel": "#F5ECD6", "font": "Chicle"}, "pastel": {"text": "#6B4F3A", "accent": "#FF8A65", "panel": "#FFF6E9", "font": "Baloo 2"}, "celestial": {"text": "#F3ECFF", "accent": "#E8C06B", "panel": "#2E1A47", "font": "Cinzel"}, "pastelgoth": {"text": "#F2E9F0", "accent": "#C8B6E2", "panel": "#3A3340", "font": "Quicksand"}};
+  const LABELS = {"glass": "Soft black (default)", "frost": "Soft white", "midnight": "Midnight blue", "sunset": "Sunset", "forest": "Forest", "ocean": "Ocean", "rose": "Rose", "neon": "Neon", "cosycabin": "Cosy cabin", "pastel": "Cosy summer pastel", "celestial": "Celestial", "pastelgoth": "Pastel goth", "custom": "Custom (use the colours below)"};
+  ok(JSON.stringify(Object.keys(fields.themePreset.options)) === JSON.stringify(Object.keys(LABELS)) && Object.keys(LABELS).length === 13, "the dropdown offers the twelve shared presets and Custom, in the shared order");
+  ok(Object.keys(LABELS).every(k => fields.themePreset.options[k] === LABELS[k]), "with the shared labels");
+  ok(fields.themePreset.value === "glass", "and Soft black is the default");
+  for (const key of Object.keys(EXPECT)) {
+    load({ themePreset: key }); await wait(5);
+    const S2 = elements["incentive-app"].style;
+    ok(S2["--text"] === EXPECT[key].text && S2["--accent"] === EXPECT[key].accent && S2["--panel"] === EXPECT[key].panel && S2["--font"].indexOf('"' + EXPECT[key].font + '"') !== -1,
+      key + ": panel, text, accent and font match the shared table (" + S2["--panel"] + ", " + S2["--text"] + ")");
+  }
+  load({ themePreset: "frost", colorText: "#123456", colorPanel: "#654321" }); await wait(5);
+  ok(elements["incentive-app"].style["--text"] === EXPECT.frost.text, "a preset ignores the colour pickers");
+  load({ themePreset: "custom", colorText: "#123456" }); await wait(5);
+  ok(elements["incentive-app"].style["--text"] === "#123456", "and Custom uses them");
   console.log("\n=== " + pass + " passed, " + fail + " failed ===");
   process.exit(fail ? 1 : 0);
 })();

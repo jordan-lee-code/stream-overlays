@@ -37,6 +37,29 @@ The overlay sits over your scene with a see-through panel. These are all taken f
 
 <p><img src="docs/custom-theme.png" alt="The overlay in a customised pink theme with an outline and a script font for the title" width="440"></p>
 
+## Style presets
+
+One setting picks the look. The same twelve presets, with exactly the same colours, are in every overlay in this set, so whichever you choose, the overlays still look like one family on a stream. This is how each one looks in this overlay.
+
+<p><img src="docs/presets.png" alt="A grid of this overlay in each of the twelve style presets: Soft black, Soft white, Midnight blue, Sunset, Forest, Ocean, Rose, Neon, Cosy cabin, Cosy summer pastel, Celestial and Pastel goth" width="760"></p>
+
+| Preset | Look |
+| --- | --- |
+| Soft black (default) | See-through black with white text. |
+| Soft white | Frosted white with dark text. |
+| Midnight blue | Deep navy with a periwinkle accent. |
+| Sunset | Deep plum with orange and coral. |
+| Forest | Deep green with a mint accent. |
+| Ocean | Deep teal with an aqua accent. |
+| Rose | Deep berry with a pink accent. |
+| Neon | Near black with cyan and magenta. |
+| Cosy cabin | Cream and brown, in Chicle. |
+| Cosy summer pastel | Warm cream and coral, in Baloo 2. |
+| Celestial | Deep purple and gold, in Cinzel. |
+| Pastel goth | Charcoal and lilac, in Quicksand. |
+
+Choose **Custom** to use the colour pickers and font instead. They are ignored while a preset is chosen.
+
 ## Quick start
 
 1. In StreamElements, add a **Custom widget** to your overlay and open its editor.
@@ -96,7 +119,7 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | Goals | How many show at once, their order, whether reached goals stay, and the celebration time. |
 | Heading | The title and sub count: text, size, boldness, colour and an optional font of their own. |
 | Wording | The words for sub and subs, the celebrating text, the reached text and the paused note. |
-| Panel | Colour, opacity, corners, padding, an optional outline and shadow, and vertical position. |
+| Panel | The style preset (one of twelve, or Custom) and, for Custom, the colour and opacity, corner roundness, padding, an optional outline and shadow, and vertical position. |
 | Text | Font, size, line spacing, and the colours and boldness of the current, waiting and reached goals. |
 | Progress bars | Bar colours, thickness, glow and spacing. |
 | Thank you | The message, its size, boldness and colour, and an optional bar. |

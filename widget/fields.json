@@ -69,7 +69,6 @@
     "value": "list",
     "group": "Commands"
   },
-
   "countNewSubs": {
     "type": "checkbox",
     "label": "Count new subs, resubs and Prime subs (one each)",
@@ -97,7 +96,6 @@
     "step": 1,
     "group": "Counting"
   },
-
   "bitsPerSub": {
     "type": "number",
     "label": "Bits that count as one sub (leftover bits carry over; 0 switches bits off)",
@@ -137,7 +135,6 @@
     "value": "bits",
     "group": "Bits"
   },
-
   "maxVisible": {
     "type": "number",
     "label": "Most upcoming goals shown at once (the nearest ones win)",
@@ -187,7 +184,6 @@
     "step": 1,
     "group": "Goals"
   },
-
   "title": {
     "type": "text",
     "label": "Title text above the goals (leave blank for none)",
@@ -233,7 +229,7 @@
   },
   "colorTitle": {
     "type": "colorpicker",
-    "label": "Title colour",
+    "label": "Title colour (used when the style preset is Custom)",
     "value": "#FFFFFF",
     "group": "Heading"
   },
@@ -264,7 +260,7 @@
   },
   "colorTotal": {
     "type": "colorpicker",
-    "label": "Sub count colour",
+    "label": "Sub count colour (used when the style preset is Custom)",
     "value": "#FFFFFF",
     "group": "Heading"
   },
@@ -280,7 +276,6 @@
     "value": "BioRhyme",
     "group": "Heading"
   },
-
   "unitSingular": {
     "type": "text",
     "label": "Word for one sub (1 sub)",
@@ -311,16 +306,36 @@
     "value": "(paused)",
     "group": "Wording"
   },
-
+  "themePreset": {
+    "type": "dropdown",
+    "label": "Style preset (pick Custom to use your own colours and font below)",
+    "value": "glass",
+    "options": {
+      "glass": "Soft black (default)",
+      "frost": "Soft white",
+      "midnight": "Midnight blue",
+      "sunset": "Sunset",
+      "forest": "Forest",
+      "ocean": "Ocean",
+      "rose": "Rose",
+      "neon": "Neon",
+      "cosycabin": "Cosy cabin",
+      "pastel": "Cosy summer pastel",
+      "celestial": "Celestial",
+      "pastelgoth": "Pastel goth",
+      "custom": "Custom (use the colours below)"
+    },
+    "group": "Panel"
+  },
   "colorPanel": {
     "type": "colorpicker",
-    "label": "Panel colour",
+    "label": "Panel colour (used when the style preset is Custom)",
     "value": "#000000",
     "group": "Panel"
   },
   "panelOpacity": {
     "type": "number",
-    "label": "Panel opacity (0 is invisible, 1 is solid)",
+    "label": "Panel opacity (0 is invisible, 1 is solid) (used when the style preset is Custom)",
     "value": 0.55,
     "min": 0,
     "max": 1,
@@ -365,7 +380,7 @@
   },
   "borderColor": {
     "type": "colorpicker",
-    "label": "Outline colour",
+    "label": "Outline colour (used when the style preset is Custom)",
     "value": "#FFFFFF",
     "group": "Panel"
   },
@@ -386,10 +401,9 @@
     },
     "group": "Panel"
   },
-
   "fontFamily": {
     "type": "googleFont",
-    "label": "Font",
+    "label": "Font (used when the style preset is Custom)",
     "value": "BioRhyme",
     "group": "Text"
   },
@@ -422,7 +436,7 @@
   },
   "colorText": {
     "type": "colorpicker",
-    "label": "Text colour for the goal being worked on",
+    "label": "Text colour for the goal being worked on (used when the style preset is Custom)",
     "value": "#FFFFFF",
     "group": "Text"
   },
@@ -441,7 +455,7 @@
   },
   "colorWaiting": {
     "type": "colorpicker",
-    "label": "Text colour for goals waiting their turn",
+    "label": "Text colour for goals waiting their turn (used when the style preset is Custom)",
     "value": "#FFFFFF",
     "group": "Text"
   },
@@ -469,7 +483,7 @@
   },
   "colorDone": {
     "type": "colorpicker",
-    "label": "Text colour for reached goals",
+    "label": "Text colour for reached goals (used when the style preset is Custom)",
     "value": "#FFFFFF",
     "group": "Text"
   },
@@ -485,22 +499,21 @@
     "value": false,
     "group": "Text"
   },
-
   "colorAccent": {
     "type": "colorpicker",
-    "label": "Progress bar colour",
+    "label": "Progress bar colour (used when the style preset is Custom)",
     "value": "#FFFFFF",
     "group": "Progress bars"
   },
   "colorTrack": {
     "type": "colorpicker",
-    "label": "Empty part of the bar, colour",
+    "label": "Empty part of the bar, colour (used when the style preset is Custom)",
     "value": "#FFFFFF",
     "group": "Progress bars"
   },
   "trackOpacity": {
     "type": "number",
-    "label": "Empty part of the bar, opacity (0 to 1)",
+    "label": "Empty part of the bar, opacity (0 to 1) (used when the style preset is Custom)",
     "value": 0.2,
     "min": 0,
     "max": 1,
@@ -509,7 +522,7 @@
   },
   "colorGlow": {
     "type": "colorpicker",
-    "label": "Glow colour when a goal is reached",
+    "label": "Glow colour when a goal is reached (used when the style preset is Custom)",
     "value": "#FFFFFF",
     "group": "Progress bars"
   },
@@ -531,7 +544,6 @@
     "step": 0.05,
     "group": "Progress bars"
   },
-
   "soundsEnabled": {
     "type": "checkbox",
     "label": "Play sounds (untick to mute everything, keeping the files)",
@@ -589,7 +601,6 @@
     "value": true,
     "group": "Sounds"
   },
-
   "showThanks": {
     "type": "checkbox",
     "label": "When every goal has been reached, show a thank-you message at the bottom (needs Keep reached goals on screen)",
@@ -632,11 +643,10 @@
   },
   "colorThanks": {
     "type": "colorpicker",
-    "label": "Message colour",
+    "label": "Message colour (used when the style preset is Custom)",
     "value": "#FFFFFF",
     "group": "Thank you"
   },
-
   "animations": {
     "type": "checkbox",
     "label": "Animate (untick to switch every animation and transition off)",
@@ -652,14 +662,12 @@
     "step": 0.1,
     "group": "Animation"
   },
-
   "debug": {
     "type": "checkbox",
     "label": "Log each subscriber and cheer event to the browser console (for troubleshooting)",
     "value": false,
     "group": "Troubleshooting"
   },
-
   "btnDemo": {
     "type": "button",
     "label": "Add three example goals (5 karaoke, 10 game, 15 chat confessions)",

@@ -69,6 +69,7 @@
   function readConfig(f) {
     f = f || {};
     cfg = {
+      themePreset: str(f.themePreset, "glass"),
       cmd: str(f.command, "!incentive").toLowerCase().trim(),
       whoCanManage: str(f.whoCanManage, "mods"),
       verbs: {
@@ -201,29 +202,67 @@
 
   var ALIGN = { top: "flex-start", middle: "center", bottom: "flex-end" };
 
+  /* Style presets. The same twelve, with the same colours, in every overlay in this
+     set, generated from one table so they cannot drift apart, so any preset looks
+     like one family across a whole stream. The default, Soft black, is a see-through
+     black panel with white text. Custom uses the colour pickers instead. */
+  var PRESETS = {
+    glass: { panel: "rgba(0, 0, 0, 0.55)", text: "#FFFFFF", accent: "#FFFFFF", track: "rgba(255, 255, 255, 0.2)", glow: "#FFFFFF", font: "BioRhyme" },
+    frost: { panel: "rgba(255, 255, 255, 0.72)", text: "#1B2130", accent: "#1B2130", track: "rgba(0, 0, 0, 0.14)", glow: "#1B2130", font: "BioRhyme" },
+    midnight: { panel: "rgba(10, 18, 46, 0.72)", text: "#E8EEFF", accent: "#7FA8FF", track: "rgba(127, 168, 255, 0.22)", glow: "#7FA8FF", font: "BioRhyme" },
+    sunset: { panel: "rgba(48, 18, 42, 0.72)", text: "#FFF1E6", accent: "#FF9A5A", track: "rgba(255, 154, 90, 0.24)", glow: "#FF9A5A", font: "BioRhyme" },
+    forest: { panel: "rgba(12, 36, 28, 0.72)", text: "#EAF7EE", accent: "#6FD6A0", track: "rgba(111, 214, 160, 0.22)", glow: "#6FD6A0", font: "BioRhyme" },
+    ocean: { panel: "rgba(6, 36, 50, 0.72)", text: "#E6F8FF", accent: "#4CD3E0", track: "rgba(76, 211, 224, 0.22)", glow: "#4CD3E0", font: "BioRhyme" },
+    rose: { panel: "rgba(58, 14, 34, 0.72)", text: "#FFE9F1", accent: "#FF8FB8", track: "rgba(255, 143, 184, 0.24)", glow: "#FF8FB8", font: "BioRhyme" },
+    neon: { panel: "rgba(4, 4, 16, 0.82)", text: "#FFFFFF", accent: "#00F0FF", track: "rgba(0, 240, 255, 0.2)", glow: "#00F0FF", font: "BioRhyme" },
+    cosycabin: { panel: "#F5ECD6", text: "#57442E", accent: "#7C6142", track: "rgba(0, 0, 0, 0.11)", glow: "#7C6142", font: "Chicle" },
+    pastel: { panel: "#FFF6E9", text: "#6B4F3A", accent: "#FF8A65", track: "rgba(0, 0, 0, 0.11)", glow: "#FF8A65", font: "Baloo 2" },
+    celestial: { panel: "#2E1A47", text: "#F3ECFF", accent: "#E8C06B", track: "rgba(255, 255, 255, 0.18)", glow: "#E8C06B", font: "Cinzel" },
+    pastelgoth: { panel: "#3A3340", text: "#F2E9F0", accent: "#C8B6E2", track: "rgba(255, 255, 255, 0.18)", glow: "#C8B6E2", font: "Quicksand" }
+  };
+
+  // The colours the panel is actually drawn with: a preset's own, or the pickers'
+  // when the preset is Custom.
+  function themeColours() {
+    var L = cfg.look;
+    if (cfg.themePreset === "custom") {
+      return {
+        panel: rgba(L.panel, L.opacity), text: L.text, waiting: L.waiting, done: L.done,
+        title: L.titleColor, total: L.totalColor, thanks: L.thanksColor, accent: L.accent,
+        track: rgba(L.track, L.trackOpacity), glow: rgba(L.glow, 0.7), borderC: L.borderC, font: L.font
+      };
+    }
+    var P = PRESETS[cfg.themePreset] || PRESETS.glass;
+    return {
+      panel: P.panel, text: P.text, waiting: P.text, done: P.text, title: P.text, total: P.text,
+      thanks: P.text, accent: P.accent, track: P.track, glow: rgba(P.glow, 0.7), borderC: P.accent, font: P.font
+    };
+  }
+
   function applyTheme() {
     var root = el.app;
     var L = cfg.look;
+    var T = themeColours();
     var set = function (k, v) { root.style.setProperty(k, v); };
-    set("--panel", rgba(L.panel, L.opacity));
+    set("--panel", T.panel);
     set("--radius", L.radius + "px");
     set("--pad-v", L.padV + "em");
     set("--pad-h", L.padH + "em");
     set("--border-w", L.borderW + "px");
-    set("--border-c", L.borderC);
+    set("--border-c", T.borderC);
     set("--shadow", L.shadow ? "0 0.25em 0.9em rgba(0, 0, 0, 0.45)" : "none");
     set("align-items", ALIGN[L.vAlign] || ALIGN.top);
 
-    set("--font", '"' + L.font + '", "Georgia", serif');
+    set("--font", '"' + T.font + '", "Georgia", serif');
     set("--size", (L.size / REF_WIDTH * 100).toFixed(3) + "cqw");
     set("--lh", String(L.lineSpacing));
-    set("--text", L.text);
+    set("--text", T.text);
     set("--name-w", L.nameWeight);
-    set("--c-wait", L.waiting);
+    set("--c-wait", T.waiting);
     set("--wait-w", L.waitingWeight);
     set("--active-scale", String(L.activeScale));
     set("--wait-scale", String(L.waitingScale));
-    set("--c-done", L.done);
+    set("--c-done", T.done);
     set("--done-deco", L.strikeDone ? "line-through" : "none");
     set("--text-shadow", L.textShadow ? "0 0.06em 0.18em rgba(0, 0, 0, 0.65)" : "none");
 
@@ -231,18 +270,18 @@
     set("--heading-scale", String(L.headingScale));
     set("--paused-scale", String(L.pausedScale));
     set("--title-w", L.titleWeight);
-    set("--c-title", L.titleColor);
+    set("--c-title", T.title);
     set("--title-font", stack(L.titleFont));
     set("--total-w", L.totalWeight);
-    set("--c-total", L.totalColor);
+    set("--c-total", T.total);
     set("--total-font", stack(L.totalFont));
 
-    set("--accent", L.accent);
-    set("--track", rgba(L.track, L.trackOpacity));
-    set("--glow", rgba(L.glow, 0.7));
+    set("--accent", T.accent);
+    set("--track", T.track);
+    set("--glow", T.glow);
     set("--thanks-scale", String(L.thanksScale));
     set("--thanks-w", L.thanksWeight);
-    set("--c-thanks", L.thanksColor);
+    set("--c-thanks", T.thanks);
     set("--bar-h", L.barH + "em");
     set("--row-gap", L.rowGap + "em");
     set("--fill-s", L.fillSeconds + "s");
@@ -251,7 +290,7 @@
     else root.classList.add("no-motion");
 
     document.body.style.background = "transparent";
-    loadFont(L.font, "incentive-font-link");
+    loadFont(T.font, "incentive-font-link");
     if (L.titleFont) loadFont(L.titleFont, "incentive-font-link-title");
     if (L.totalFont) loadFont(L.totalFont, "incentive-font-link-total");
   }
