@@ -37,9 +37,9 @@ It is one self-contained widget in plain JavaScript, with no dependencies and no
 
 ## Style presets
 
-One setting picks the look. The same twelve presets, with the same colours, are in every overlay in this set, so overlays from this set match whichever you choose. This is how each one looks in this overlay.
+One setting picks the look. The same fourteen presets, with the same colours, are in every overlay in this set, so overlays from this set match whichever you choose. This is how each one looks in this overlay.
 
-<p><img src="docs/presets.png" alt="A grid of this overlay in each of the twelve style presets: Soft black, Soft white, Midnight blue, Sunset, Forest, Ocean, Rose, Neon, Cosy cabin, Cosy summer pastel, Celestial and Pastel goth" width="760"></p>
+<p><img src="docs/presets.png" alt="A grid of this overlay in each of the fourteen style presets: Soft black, Soft white, Midnight blue, Sunset, Forest, Ocean, Rose, Neon, Cosy cabin, Cosy summer pastel, Celestial, Pastel goth, Pastel pink and Fae green" width="760"></p>
 
 | Preset | Look |
 | --- | --- |
@@ -55,6 +55,8 @@ One setting picks the look. The same twelve presets, with the same colours, are 
 | Cosy summer pastel | Warm cream and coral, in Baloo 2. |
 | Celestial | Deep purple and gold, in Cinzel. |
 | Pastel goth | Charcoal and lilac, in Quicksand. |
+| Pastel pink | Soft blush pink with rose, in Fredoka. |
+| Fae green | Mossy green with a firefly lime accent, in Almendra. |
 
 Choose **Custom** to use the colour pickers and font instead. They are ignored while a preset is chosen.
 
@@ -214,7 +216,7 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | Wording | Every word in the line under the bar, the readouts and the floating text. |
 | Card | Corner roundness, padding, spacing, tilt, an outline, shadows, the tail and the bar's thickness. |
 | Text | The size and boldness of the heading, countdown, readout, line and floating text. |
-| Theme | One of the twelve shared style presets (Soft black by default) or Custom colours and font, with a colour for every part. |
+| Theme | One of the fourteen shared style presets (Soft black by default) or Custom colours and font, with a colour for every part. |
 | Animation | One switch for all animation, and how long the fill, swell, floating text, glow, save window pulse and shake take. |
 | Sounds | A sound and volume for a contribution, a lock, a lock breaking, the bar filling, a save and a reset, plus a master mute. |
 | Manual controls | Buttons to fill, lock, unlock, save, switch on and off, reset and test each sound. |
@@ -291,7 +293,7 @@ The widget uses the StreamElements events `onWidgetLoad`, `onEventReceived` (`su
 
 ## Related overlays
 
-These overlays share the same default look and the same twelve style presets, so they sit together on one stream.
+These overlays share the same default look and the same fourteen style presets, so they sit together on one stream.
 
 - [Sub Goals Overlay](https://github.com/jordan-lee-code/sub-goals-overlay): sub and bits goals that fill as chat reaches them.
 - [Subathon Overlay](https://github.com/jordan-lee-code/subathon-overlay): a subathon clock with a cap, power-ups and sub goals.

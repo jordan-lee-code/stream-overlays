@@ -27,7 +27,7 @@
      later why the bar went backwards. */
   var INSTANCE = Math.random().toString(36).slice(2, 10);
 
-  /* Style presets. The same twelve, with the same colours, in every overlay in this
+  /* Style presets. The same fourteen, with the same colours, in every overlay in this
      set, generated from one table so they cannot drift apart, so any preset looks
      like one family across a whole stream. The default, Soft black, is a see-through
      black panel with white text. */
@@ -91,6 +91,16 @@
       bg: "#3A3340", text: "#F2E9F0", accent: "#C8B6E2", font: "Quicksand",
       fillFrom: "#D9A7C7", fillTo: "#C8B6E2", alarm: "#C96A8E",
       parts: {"title": "#F2E9F0", "timer": "#F2E9F0", "readout": "#F2E9F0", "note": "#F2E9F0", "border": "#C8B6E2", "track": "rgba(255, 255, 255, 0.18)", "lock": "#C8B6E2", "lockHole": "#3A3340", "float": "#F2E9F0", "floatBg": "#3A3340", "alert": "#FFFFFF", "alertFill": "#FFFFFF", "alertTrack": "rgba(0, 0, 0, 0.22)"}
+    },
+    pastelpink: {
+      bg: "#FFE3EC", text: "#6A2E4B", accent: "#D95C8A", font: "Fredoka",
+      fillFrom: "#F7A8C6", fillTo: "#E0679A", alarm: "#D6456F",
+      parts: {"title": "#6A2E4B", "timer": "#6A2E4B", "readout": "#6A2E4B", "note": "#6A2E4B", "border": "#D95C8A", "track": "rgba(106, 46, 75, 0.14)", "lock": "#D95C8A", "lockHole": "#FFE3EC", "float": "#6A2E4B", "floatBg": "#FFE3EC", "alert": "#FFFFFF", "alertFill": "#FFFFFF", "alertTrack": "rgba(0, 0, 0, 0.22)"}
+    },
+    faegreen: {
+      bg: "#2C4A36", text: "#EEF5DA", accent: "#C9E265", font: "Almendra",
+      fillFrom: "#8FB84E", fillTo: "#D7EE7A", alarm: "#E0805A",
+      parts: {"title": "#EEF5DA", "timer": "#EEF5DA", "readout": "#EEF5DA", "note": "#EEF5DA", "border": "#C9E265", "track": "rgba(238, 245, 218, 0.2)", "lock": "#C9E265", "lockHole": "#2C4A36", "float": "#EEF5DA", "floatBg": "#2C4A36", "alert": "#FFFFFF", "alertFill": "#FFFFFF", "alertTrack": "rgba(0, 0, 0, 0.22)"}
     }
   };
   var BASE = PRESETS.glass;
