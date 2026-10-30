@@ -351,6 +351,8 @@
     if (!root) return;
     root.style.setProperty("--bg", t.bg);
     root.style.setProperty("--bg-img", t.bgimg || "none");
+    // A pale stripe, such as the white of a flag, keeps its edge on a pale card.
+    root.style.setProperty("--edge", t.bgimg ? "inset 0 0 0 1px rgba(20, 16, 38, 0.38)" : "none");
     root.style.setProperty("--text", t.text);
     root.style.setProperty("--accent", t.accent);
     root.style.setProperty("--font", '"' + t.font + '", "Baloo 2", "Segoe UI", sans-serif');

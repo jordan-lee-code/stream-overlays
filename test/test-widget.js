@@ -591,10 +591,12 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   console.log("\n[pride flags behind the card]");
   load({ themePreset: "trans" }); await wait(5);
   ok(elements["vote-app"].style["--bg-img"] === "linear-gradient(135deg, #5BCEFA, #F5A9B8, #FFFFFF, #F5A9B8, #5BCEFA)", "the trans preset puts its flag behind the card (" + elements["vote-app"].style["--bg-img"] + ")");
+  ok(elements["vote-app"].style["--edge"] === "inset 0 0 0 1px rgba(20, 16, 38, 0.38)", "and gives the option chips and bars a thin outline, so a white stripe keeps its edge");
   load({ themePreset: "ace" }); await wait(5);
   ok(/^linear-gradient\(rgba\(255, 255, 255, 0\.\d+\), rgba\(255, 255, 255, 0\.\d+\)\), linear-gradient\(135deg, #000000, #A3A3A3, #FFFFFF, #800080\)$/.test(elements["vote-app"].style["--bg-img"]), "a flag with a black stripe gets a light wash over it, so the dark text stays readable");
   load({ themePreset: "glass" }); await wait(5);
   ok(elements["vote-app"].style["--bg-img"] === "none", "and every other preset leaves the card plain");
+  ok(elements["vote-app"].style["--edge"] === "none", "with no outline either");
   console.log("\n=== " + pass + " passed, " + fail + " failed ===");
   process.exit(fail ? 1 : 0);
 })();
