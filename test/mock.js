@@ -113,6 +113,7 @@ module.exports = function createEnv(root) {
           all = false; console.log("    colours differ for " + key + ": " + v["--w-bg"]);
         }
         // A pride preset puts its flag behind the panel as an image. Every other preset leaves the panel plain.
+        if (v["--w-edge"] !== (x.flag ? "inset 0 0 0 1px rgba(20, 16, 38, 0.38)" : "none")) { all = false; console.log("    outline differs for " + key + ": " + v["--w-edge"]); }
         if (v["--w-bgimg"] !== (x.bgimg || "none")) { all = false; console.log("    panel image differs for " + key + ": " + v["--w-bgimg"]); }
         // A pride preset gives bars the stripes of its flag, top to bottom. Every other preset gives them the accent.
         const wantFlag = x.flag ? "linear-gradient(180deg, " + x.flag[0] + " 0% " + (100 / x.flag.length) + "%" : x.accent;

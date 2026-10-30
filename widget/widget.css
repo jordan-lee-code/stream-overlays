@@ -84,6 +84,7 @@
   height: 100%;
   width: 0;
   background: var(--w-flag, var(--w-accent));
+  box-shadow: var(--w-edge, none);
   border-radius: inherit;
   transition: width 0.4s ease;
 }
