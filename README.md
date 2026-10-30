@@ -171,6 +171,8 @@ npm run dev
 
 The harness stands in for StreamElements. It can send new subs, resubs, single gifts, gift bombs and cheers, type chat commands as a viewer, moderator or broadcaster, and show what would be saved. The **Every setting** section is generated from `widget/fields.json`, so it offers exactly what StreamElements will, and each sound setting has a **Use a test beep** button.
 
+At the top of the harness, **Look and export** switches the style preset on the live widget, and can download or copy a `fields.json` with your current settings as its defaults. Paste that into the Fields tab of a new custom widget in StreamElements and it starts out looking the way it does here.
+
 The harness must be served over http rather than opened as a file. Fonts come from Google Fonts, so an internet connection is needed for the right look. The local dev page also shows a Ko-fi support button in the corner. That button belongs to the harness only and is not part of the widget, so it never appears on stream.
 
 ## Testing
