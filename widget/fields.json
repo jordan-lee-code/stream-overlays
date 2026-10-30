@@ -1,0 +1,908 @@
+{
+  "startCommand": {
+    "type": "text",
+    "label": "Start a poll (e.g. !vote Truth A, Truth B, The lie)",
+    "value": "!vote",
+    "group": "Commands"
+  },
+  "endCommand": {
+    "type": "text",
+    "label": "End the poll early and declare",
+    "value": "!voteend",
+    "group": "Commands"
+  },
+  "cancelCommand": {
+    "type": "text",
+    "label": "Cancel the poll and declare nothing",
+    "value": "!votecancel",
+    "group": "Commands"
+  },
+  "restartCommand": {
+    "type": "text",
+    "label": "Run the same options again from scratch (chat wasn't ready)",
+    "value": "!voterestart",
+    "group": "Commands"
+  },
+  "extendCommand": {
+    "type": "text",
+    "label": "Add seconds to a running poll (e.g. !voteextend 20)",
+    "value": "!voteextend",
+    "group": "Commands"
+  },
+  "undoCommand": {
+    "type": "text",
+    "label": "Roll back the last thing that happened to the poll",
+    "value": "!voteundo",
+    "group": "Commands"
+  },
+  "showCommand": {
+    "type": "text",
+    "label": "Re-show the last result",
+    "value": "!voteresults",
+    "group": "Commands"
+  },
+  "hideCommand": {
+    "type": "text",
+    "label": "Hide the card straight away",
+    "value": "!votehide",
+    "group": "Commands"
+  },
+  "whoCanManage": {
+    "type": "dropdown",
+    "label": "Who can run polls",
+    "value": "mods",
+    "options": {
+      "broadcaster": "Broadcaster only",
+      "mods": "Broadcaster + moderators"
+    },
+    "group": "Commands"
+  },
+  "duration": {
+    "type": "number",
+    "label": "Default poll length in seconds (a leading 60s on the command overrides it for that poll)",
+    "value": 45,
+    "min": 5,
+    "max": 600,
+    "step": 5,
+    "group": "Poll rules"
+  },
+  "allowChangeVote": {
+    "type": "checkbox",
+    "label": "Let someone change their mind (their latest vote counts)",
+    "value": true,
+    "group": "Poll rules"
+  },
+  "matchMode": {
+    "type": "dropdown",
+    "label": "How a message counts as a vote",
+    "value": "exact",
+    "options": {
+      "exact": "Only if the whole message is the option, number or letter",
+      "contains": "If the option appears anywhere in the message"
+    },
+    "group": "Poll rules"
+  },
+  "liveResults": {
+    "type": "checkbox",
+    "label": "Show the counts as votes come in (turn off to keep them secret until the end)",
+    "value": true,
+    "group": "Poll rules"
+  },
+  "tieBreak": {
+    "type": "dropdown",
+    "label": "If two options tie",
+    "value": "show",
+    "options": {
+      "show": "Show it as a tie and let the streamer call it",
+      "random": "Pick one of the tied options at random"
+    },
+    "group": "Poll rules"
+  },
+  "reopenSeconds": {
+    "type": "number",
+    "label": "Seconds given back when !voteundo reopens a finished poll",
+    "value": 15,
+    "min": 5,
+    "max": 300,
+    "step": 5,
+    "group": "Poll rules"
+  },
+  "resultSeconds": {
+    "type": "number",
+    "label": "Seconds the result stays on screen (0 keeps it up until you hide it)",
+    "value": 12,
+    "min": 0,
+    "max": 600,
+    "step": 1,
+    "group": "Poll rules"
+  },
+  "urgentSeconds": {
+    "type": "number",
+    "label": "Seconds from the end when the timer starts to pulse and tick",
+    "value": 5,
+    "min": 0,
+    "max": 60,
+    "step": 1,
+    "group": "Poll rules"
+  },
+  "title": {
+    "type": "text",
+    "label": "Question shown above the options",
+    "value": "Chat's choice",
+    "group": "Copy"
+  },
+  "resultLabel": {
+    "type": "text",
+    "label": "Tag above a clear winner",
+    "value": "Chat says",
+    "group": "Copy"
+  },
+  "tieLabel": {
+    "type": "text",
+    "label": "Tag when options tie",
+    "value": "It's a tie",
+    "group": "Copy"
+  },
+  "emptyLabel": {
+    "type": "text",
+    "label": "Tag when nobody voted",
+    "value": "Nobody voted",
+    "group": "Copy"
+  },
+  "showHint": {
+    "type": "checkbox",
+    "label": "Show a line telling chat what to type",
+    "value": true,
+    "group": "Copy"
+  },
+  "voteWord": {
+    "type": "text",
+    "label": "Word for one vote (1 vote)",
+    "value": "vote",
+    "group": "Copy"
+  },
+  "votesWord": {
+    "type": "text",
+    "label": "Word for several votes (12 votes)",
+    "value": "votes",
+    "group": "Copy"
+  },
+  "blindSuffix": {
+    "type": "text",
+    "label": "Text added after the vote total while counts are hidden (12 votes in)",
+    "value": " in",
+    "group": "Copy"
+  },
+  "hintVerb": {
+    "type": "text",
+    "label": "First word of the hint line (type A, B or C in chat)",
+    "value": "type",
+    "group": "Copy"
+  },
+  "hintTo": {
+    "type": "text",
+    "label": "Word between the first and last option when there are five or more (A to H)",
+    "value": "to",
+    "group": "Copy"
+  },
+  "hintOr": {
+    "type": "text",
+    "label": "Word before the last option (A, B or C)",
+    "value": "or",
+    "group": "Copy"
+  },
+  "hintSuffix": {
+    "type": "text",
+    "label": "End of the hint line (in chat)",
+    "value": "in chat",
+    "group": "Copy"
+  },
+  "timerSuffix": {
+    "type": "text",
+    "label": "Text after the countdown number (for example s)",
+    "value": "",
+    "group": "Copy"
+  },
+  "eyebrowUppercase": {
+    "type": "checkbox",
+    "label": "Show the result label (Chat says, It's a tie) in capitals",
+    "value": true,
+    "group": "Copy"
+  },
+  "debug": {
+    "type": "checkbox",
+    "label": "Troubleshooting: show a line of sizing measurements on the card (turn off before going live)",
+    "value": false,
+    "group": "Copy"
+  },
+  "scale": {
+    "type": "number",
+    "label": "Size of everything (percent). A ceiling: the card shrinks to fit its box when a poll needs more room.",
+    "value": 100,
+    "min": 25,
+    "max": 400,
+    "step": 5,
+    "group": "Card"
+  },
+  "radius": {
+    "type": "number",
+    "label": "Card corner roundness, in em",
+    "value": 0.8,
+    "min": 0,
+    "max": 4,
+    "step": 0.05,
+    "group": "Card"
+  },
+  "paddingV": {
+    "type": "number",
+    "label": "Space above and below the contents, in em",
+    "value": 0.75,
+    "min": 0,
+    "max": 4,
+    "step": 0.05,
+    "group": "Card"
+  },
+  "paddingH": {
+    "type": "number",
+    "label": "Space either side of the contents, in em",
+    "value": 0.9,
+    "min": 0,
+    "max": 4,
+    "step": 0.05,
+    "group": "Card"
+  },
+  "cardGap": {
+    "type": "number",
+    "label": "Space between the heading, options and footer, in em",
+    "value": 0.45,
+    "min": 0,
+    "max": 3,
+    "step": 0.05,
+    "group": "Card"
+  },
+  "rowGap": {
+    "type": "number",
+    "label": "Space between options, in em",
+    "value": 0.28,
+    "min": 0,
+    "max": 2,
+    "step": 0.02,
+    "group": "Card"
+  },
+  "borderWidth": {
+    "type": "number",
+    "label": "Outline width, in em (0 for none)",
+    "value": 0,
+    "min": 0,
+    "max": 1.5,
+    "step": 0.02,
+    "group": "Card"
+  },
+  "shadow": {
+    "type": "checkbox",
+    "label": "Soft shadow under the card",
+    "value": false,
+    "group": "Card"
+  },
+  "textShadow": {
+    "type": "checkbox",
+    "label": "Soft shadow behind the text, to help it read over bright scenes",
+    "value": false,
+    "group": "Card"
+  },
+  "showTail": {
+    "type": "checkbox",
+    "label": "Show the little circle tail on the timer",
+    "value": false,
+    "group": "Card"
+  },
+  "timerRadius": {
+    "type": "number",
+    "label": "Timer corner roundness, in em",
+    "value": 0.6,
+    "min": 0,
+    "max": 3,
+    "step": 0.05,
+    "group": "Card"
+  },
+  "timerTilt": {
+    "type": "number",
+    "label": "Timer tilt in degrees (0 is straight)",
+    "value": 0,
+    "min": -20,
+    "max": 20,
+    "step": 0.5,
+    "group": "Card"
+  },
+  "eyebrowTilt": {
+    "type": "number",
+    "label": "Result label tilt in degrees (0 is straight)",
+    "value": 0,
+    "min": -20,
+    "max": 20,
+    "step": 0.5,
+    "group": "Card"
+  },
+  "barWidth": {
+    "type": "number",
+    "label": "Width of each option's bar, in em",
+    "value": 4.5,
+    "min": 1,
+    "max": 20,
+    "step": 0.25,
+    "group": "Card"
+  },
+  "barHeight": {
+    "type": "number",
+    "label": "Thickness of each option's bar, in em",
+    "value": 0.42,
+    "min": 0.1,
+    "max": 2,
+    "step": 0.02,
+    "group": "Card"
+  },
+  "titleScale": {
+    "type": "number",
+    "label": "Size of the heading compared with the card's text (1 is the same)",
+    "value": 1.2,
+    "min": 0.5,
+    "max": 3,
+    "step": 0.02,
+    "group": "Text"
+  },
+  "titleWeight": {
+    "type": "dropdown",
+    "label": "Heading boldness",
+    "value": "800",
+    "options": {
+      "400": "Regular",
+      "500": "Medium",
+      "600": "Semi-bold",
+      "700": "Bold",
+      "800": "Extra bold"
+    },
+    "group": "Text"
+  },
+  "titleOwnFont": {
+    "type": "checkbox",
+    "label": "Use a different font for the heading (tick, then pick it below)",
+    "value": false,
+    "group": "Text"
+  },
+  "titleFont": {
+    "type": "googleFont",
+    "label": "Font for the heading (only used when the box above is ticked)",
+    "value": "BioRhyme",
+    "group": "Text"
+  },
+  "timerScale": {
+    "type": "number",
+    "label": "Size of the countdown",
+    "value": 0.95,
+    "min": 0.5,
+    "max": 3,
+    "step": 0.02,
+    "group": "Text"
+  },
+  "timerWeight": {
+    "type": "dropdown",
+    "label": "Countdown boldness",
+    "value": "700",
+    "options": {
+      "400": "Regular",
+      "500": "Medium",
+      "600": "Semi-bold",
+      "700": "Bold",
+      "800": "Extra bold"
+    },
+    "group": "Text"
+  },
+  "eyebrowScale": {
+    "type": "number",
+    "label": "Size of the result label",
+    "value": 0.8,
+    "min": 0.4,
+    "max": 3,
+    "step": 0.02,
+    "group": "Text"
+  },
+  "eyebrowWeight": {
+    "type": "dropdown",
+    "label": "Result label boldness",
+    "value": "700",
+    "options": {
+      "400": "Regular",
+      "500": "Medium",
+      "600": "Semi-bold",
+      "700": "Bold",
+      "800": "Extra bold"
+    },
+    "group": "Text"
+  },
+  "eyebrowSpacing": {
+    "type": "number",
+    "label": "Space between the result label's letters, in em",
+    "value": 0.12,
+    "min": 0,
+    "max": 0.6,
+    "step": 0.01,
+    "group": "Text"
+  },
+  "labelScale": {
+    "type": "number",
+    "label": "Size of the option text",
+    "value": 0.98,
+    "min": 0.5,
+    "max": 3,
+    "step": 0.02,
+    "group": "Text"
+  },
+  "labelWeight": {
+    "type": "dropdown",
+    "label": "Option text boldness",
+    "value": "700",
+    "options": {
+      "400": "Regular",
+      "500": "Medium",
+      "600": "Semi-bold",
+      "700": "Bold",
+      "800": "Extra bold"
+    },
+    "group": "Text"
+  },
+  "keyScale": {
+    "type": "number",
+    "label": "Size of the option letter chips",
+    "value": 0.92,
+    "min": 0.5,
+    "max": 3,
+    "step": 0.02,
+    "group": "Text"
+  },
+  "keyWeight": {
+    "type": "dropdown",
+    "label": "Option letter boldness",
+    "value": "700",
+    "options": {
+      "400": "Regular",
+      "500": "Medium",
+      "600": "Semi-bold",
+      "700": "Bold",
+      "800": "Extra bold"
+    },
+    "group": "Text"
+  },
+  "countScale": {
+    "type": "number",
+    "label": "Size of the vote count and percentage",
+    "value": 0.84,
+    "min": 0.4,
+    "max": 3,
+    "step": 0.02,
+    "group": "Text"
+  },
+  "countWeight": {
+    "type": "dropdown",
+    "label": "Vote count boldness",
+    "value": "700",
+    "options": {
+      "400": "Regular",
+      "500": "Medium",
+      "600": "Semi-bold",
+      "700": "Bold",
+      "800": "Extra bold"
+    },
+    "group": "Text"
+  },
+  "countOpacity": {
+    "type": "number",
+    "label": "Vote count opacity (0 to 1)",
+    "value": 0.9,
+    "min": 0,
+    "max": 1,
+    "step": 0.05,
+    "group": "Text"
+  },
+  "footScale": {
+    "type": "number",
+    "label": "Size of the footer (vote total and hint)",
+    "value": 0.72,
+    "min": 0.4,
+    "max": 3,
+    "step": 0.02,
+    "group": "Text"
+  },
+  "footWeight": {
+    "type": "dropdown",
+    "label": "Footer boldness",
+    "value": "700",
+    "options": {
+      "400": "Regular",
+      "500": "Medium",
+      "600": "Semi-bold",
+      "700": "Bold",
+      "800": "Extra bold"
+    },
+    "group": "Text"
+  },
+  "footOpacity": {
+    "type": "number",
+    "label": "Footer opacity (0 to 1)",
+    "value": 0.72,
+    "min": 0,
+    "max": 1,
+    "step": 0.05,
+    "group": "Text"
+  },
+  "lostOpacity": {
+    "type": "number",
+    "label": "Opacity of the options that did not win (0 to 1)",
+    "value": 0.5,
+    "min": 0,
+    "max": 1,
+    "step": 0.05,
+    "group": "Text"
+  },
+  "themePreset": {
+    "type": "dropdown",
+    "label": "Theme preset (pick Custom to use your own colours below)",
+    "value": "glass",
+    "options": {
+      "glass": "Soft black (default, matches the other overlays)",
+      "cosycabin": "Cosy cabin",
+      "pastel": "Cosy summer pastel",
+      "celestial": "Celestial tarot-witchy",
+      "pastelgoth": "Pastel goth",
+      "custom": "Custom (use the colours below)"
+    },
+    "group": "Theme"
+  },
+  "fontFamily": {
+    "type": "googleFont",
+    "label": "Font",
+    "value": "BioRhyme",
+    "group": "Theme"
+  },
+  "colorBg": {
+    "type": "colorpicker",
+    "label": "Panel colour (used when the preset is Custom)",
+    "value": "#000000",
+    "group": "Theme"
+  },
+  "panelOpacity": {
+    "type": "number",
+    "label": "Panel opacity (used when the preset is Custom; 0 is invisible, 1 is solid)",
+    "value": 0.55,
+    "min": 0,
+    "max": 1,
+    "step": 0.05,
+    "group": "Theme"
+  },
+  "colorText": {
+    "type": "colorpicker",
+    "label": "Text colour (used when the preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Theme"
+  },
+  "colorAccent": {
+    "type": "colorpicker",
+    "label": "Accent colour (used when the preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Theme"
+  },
+  "colorOnAccent": {
+    "type": "colorpicker",
+    "label": "Text on the accent colour (used when the preset is Custom)",
+    "value": "#111111",
+    "group": "Theme"
+  },
+  "colorBorder": {
+    "type": "colorpicker",
+    "label": "Outline colour (used when the preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Theme"
+  },
+  "colorTitle": {
+    "type": "colorpicker",
+    "label": "Heading colour (used when the preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Theme"
+  },
+  "colorPillBg": {
+    "type": "colorpicker",
+    "label": "Countdown background (used when the preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Theme"
+  },
+  "colorPill": {
+    "type": "colorpicker",
+    "label": "Countdown text (used when the preset is Custom)",
+    "value": "#111111",
+    "group": "Theme"
+  },
+  "colorEyebrowBg": {
+    "type": "colorpicker",
+    "label": "Result label background (used when the preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Theme"
+  },
+  "colorEyebrow": {
+    "type": "colorpicker",
+    "label": "Result label text (used when the preset is Custom)",
+    "value": "#111111",
+    "group": "Theme"
+  },
+  "colorRow": {
+    "type": "colorpicker",
+    "label": "Option row tint (used when the preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Theme"
+  },
+  "rowOpacity": {
+    "type": "number",
+    "label": "Option row tint opacity (used when the preset is Custom)",
+    "value": 0.12,
+    "min": 0,
+    "max": 1,
+    "step": 0.02,
+    "group": "Theme"
+  },
+  "colorKey": {
+    "type": "colorpicker",
+    "label": "Option letter text (used when the preset is Custom)",
+    "value": "#111111",
+    "group": "Theme"
+  },
+  "colorLabel": {
+    "type": "colorpicker",
+    "label": "Option text colour (used when the preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Theme"
+  },
+  "colorTrack": {
+    "type": "colorpicker",
+    "label": "Empty part of each bar (used when the preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Theme"
+  },
+  "trackOpacity": {
+    "type": "number",
+    "label": "Empty bar opacity (used when the preset is Custom)",
+    "value": 0.2,
+    "min": 0,
+    "max": 1,
+    "step": 0.02,
+    "group": "Theme"
+  },
+  "colorCount": {
+    "type": "colorpicker",
+    "label": "Vote count colour (used when the preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Theme"
+  },
+  "colorWinBg": {
+    "type": "colorpicker",
+    "label": "Winning option background (used when the preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Theme"
+  },
+  "colorWin": {
+    "type": "colorpicker",
+    "label": "Winning option text (used when the preset is Custom)",
+    "value": "#111111",
+    "group": "Theme"
+  },
+  "colorFoot": {
+    "type": "colorpicker",
+    "label": "Footer colour (used when the preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Theme"
+  },
+  "colorSegA": {
+    "type": "colorpicker",
+    "label": "Option A chip and bar colour (used when the preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Theme"
+  },
+  "colorSegB": {
+    "type": "colorpicker",
+    "label": "Option B chip and bar colour (used when the preset is Custom)",
+    "value": "#D9D9D9",
+    "group": "Theme"
+  },
+  "colorSegC": {
+    "type": "colorpicker",
+    "label": "Option C chip and bar colour (used when the preset is Custom)",
+    "value": "#BFBFBF",
+    "group": "Theme"
+  },
+  "colorSegD": {
+    "type": "colorpicker",
+    "label": "Option D chip and bar colour (used when the preset is Custom)",
+    "value": "#EDEDED",
+    "group": "Theme"
+  },
+  "colorSegE": {
+    "type": "colorpicker",
+    "label": "Option E chip and bar colour (used when the preset is Custom)",
+    "value": "#A6A6A6",
+    "group": "Theme"
+  },
+  "colorSegF": {
+    "type": "colorpicker",
+    "label": "Option F chip and bar colour (used when the preset is Custom)",
+    "value": "#CCCCCC",
+    "group": "Theme"
+  },
+  "colorSegG": {
+    "type": "colorpicker",
+    "label": "Option G chip and bar colour (used when the preset is Custom)",
+    "value": "#F5F5F5",
+    "group": "Theme"
+  },
+  "colorSegH": {
+    "type": "colorpicker",
+    "label": "Option H chip and bar colour (used when the preset is Custom)",
+    "value": "#B3B3B3",
+    "group": "Theme"
+  },
+  "animations": {
+    "type": "checkbox",
+    "label": "Animate (untick to switch every animation off)",
+    "value": true,
+    "group": "Animation"
+  },
+  "fillSeconds": {
+    "type": "number",
+    "label": "Seconds a bar takes to fill",
+    "value": 0.45,
+    "min": 0,
+    "max": 5,
+    "step": 0.05,
+    "group": "Animation"
+  },
+  "enterSeconds": {
+    "type": "number",
+    "label": "Seconds the card takes to appear",
+    "value": 0.42,
+    "min": 0,
+    "max": 5,
+    "step": 0.05,
+    "group": "Animation"
+  },
+  "pulseSeconds": {
+    "type": "number",
+    "label": "Seconds one pulse of the last-seconds timer takes",
+    "value": 0.8,
+    "min": 0.2,
+    "max": 5,
+    "step": 0.05,
+    "group": "Animation"
+  },
+  "soundsEnabled": {
+    "type": "checkbox",
+    "label": "Play sounds (untick to mute everything, keeping the files)",
+    "value": true,
+    "group": "Sounds"
+  },
+  "openSound": {
+    "type": "sound-input",
+    "label": "Sound when a poll opens. Leave empty for none.",
+    "value": "",
+    "group": "Sounds"
+  },
+  "openSoundVolume": {
+    "type": "number",
+    "label": "Open sound volume (0 to 100)",
+    "value": 70,
+    "min": 0,
+    "max": 100,
+    "step": 5,
+    "group": "Sounds"
+  },
+  "voteSound": {
+    "type": "sound-input",
+    "label": "Sound when a vote is counted. Leave empty for none.",
+    "value": "",
+    "group": "Sounds"
+  },
+  "voteSoundVolume": {
+    "type": "number",
+    "label": "Vote sound volume (0 to 100)",
+    "value": 40,
+    "min": 0,
+    "max": 100,
+    "step": 5,
+    "group": "Sounds"
+  },
+  "tickSound": {
+    "type": "sound-input",
+    "label": "Sound when each of the last seconds. Leave empty for none.",
+    "value": "",
+    "group": "Sounds"
+  },
+  "tickSoundVolume": {
+    "type": "number",
+    "label": "Tick sound volume (0 to 100)",
+    "value": 60,
+    "min": 0,
+    "max": 100,
+    "step": 5,
+    "group": "Sounds"
+  },
+  "resultSound": {
+    "type": "sound-input",
+    "label": "Sound when the result is declared. Leave empty for none.",
+    "value": "",
+    "group": "Sounds"
+  },
+  "resultSoundVolume": {
+    "type": "number",
+    "label": "Result sound volume (0 to 100)",
+    "value": 80,
+    "min": 0,
+    "max": 100,
+    "step": 5,
+    "group": "Sounds"
+  },
+  "btnDemo": {
+    "type": "button",
+    "label": "Test: open a three-option poll",
+    "value": "Start demo poll",
+    "group": "Manual controls"
+  },
+  "btnExtend": {
+    "type": "button",
+    "label": "Add 15 seconds to the running poll",
+    "value": "+15 seconds",
+    "group": "Manual controls"
+  },
+  "btnEnd": {
+    "type": "button",
+    "label": "End now and declare",
+    "value": "End poll",
+    "group": "Manual controls"
+  },
+  "btnRestart": {
+    "type": "button",
+    "label": "Same options, votes wiped, full clock",
+    "value": "Restart poll",
+    "group": "Manual controls"
+  },
+  "btnCancel": {
+    "type": "button",
+    "label": "Bin the poll without declaring",
+    "value": "Cancel poll",
+    "group": "Manual controls"
+  },
+  "btnUndo": {
+    "type": "button",
+    "label": "Roll back the last change",
+    "value": "Undo",
+    "group": "Manual controls"
+  },
+  "btnSoundOpen": {
+    "type": "button",
+    "label": "Test the open sound",
+    "value": "Play open sound",
+    "group": "Manual controls"
+  },
+  "btnSoundVote": {
+    "type": "button",
+    "label": "Test the vote sound",
+    "value": "Play vote sound",
+    "group": "Manual controls"
+  },
+  "btnSoundTick": {
+    "type": "button",
+    "label": "Test the tick sound",
+    "value": "Play tick sound",
+    "group": "Manual controls"
+  },
+  "btnSoundResult": {
+    "type": "button",
+    "label": "Test the result sound",
+    "value": "Play result sound",
+    "group": "Manual controls"
+  }
+}

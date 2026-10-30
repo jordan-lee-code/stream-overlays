@@ -1,0 +1,438 @@
+/* Copyright (c) 2026 Jordan Lee (https://ko-fi.com/journeyingjordan). Released under the MIT licence: this notice must be kept in copies and substantial portions of the code. See LICENSE. */
+/* Chat Voting. StreamElements widget styles.
+   A warm card that appears when a poll opens and gets out of the way when it is
+   done, dressed in cosy-cabin cream and brown by default. Colours and font come from CSS
+   custom properties that widget.js sets from the editor Fields, so everything
+   below can be restyled from the settings panel without touching this file. */
+
+#vote-app {
+  --bg: rgba(0, 0, 0, 0.55);
+  --text: #FFFFFF;
+  --accent: #FFFFFF;
+  --font: "BioRhyme", "Georgia", serif;
+  --scale: 1;
+
+  /* Every value below is set from the editor Fields by widget.js. Sizes in em are
+     relative to the card's type size, so one number controls the whole card. */
+  --gap: 0.45;
+  --pad-v: 0.75;
+  --pad-h: 0.9;
+  --border-w: 0;
+  --radius: 0.8;
+  --row-gap: 0.28;
+  --shadow: none;
+  --text-shadow: none;
+  --tail-display: none;
+  --in-s: 0.42s;
+  --fill-s: 0.45s;
+  --pulse-s: 0.8s;
+  --title-scale: 1.2;
+  --title-w: 800;
+  --title-font: inherit;
+  --timer-scale: 0.95;
+  --timer-w: 700;
+  --pill-radius: 0.6;
+  --pill-tilt: 0deg;
+  --pill-shadow: 0 0.22em 0.5em rgba(0, 0, 0, 0.26);
+  --eyebrow-scale: 0.8;
+  --eyebrow-w: 700;
+  --eyebrow-spacing: 0.12em;
+  --eyebrow-case: uppercase;
+  --eyebrow-tilt: 0deg;
+  --label-scale: 0.98;
+  --label-weight: 700;
+  --key-scale: 0.92;
+  --key-w: 700;
+  --count-scale: 0.84;
+  --count-weight: 700;
+  --count-opacity: 0.9;
+  --bar-w: 4.5em;
+  --bar-h: 0.42em;
+  --lost-opacity: 0.5;
+  --foot-scale: 0.72;
+  --foot-w: 700;
+  --foot-opacity: 0.72;
+  --c-border: var(--accent);
+  --c-title: var(--text);
+  --c-pill-bg: var(--accent);
+  --c-pill: #111111;
+  --c-eyebrow-bg: var(--accent);
+  --c-eyebrow: #111111;
+  --c-row: rgba(255, 255, 255, 0.12);
+  --c-key: #111111;
+  --c-label: var(--text);
+  --c-track: rgba(255, 255, 255, 0.2);
+  --c-count: var(--text);
+  --c-win-bg: var(--accent);
+  --c-win: #111111;
+  --c-foot: var(--text);
+
+  /* Fill the StreamElements widget box and become the sizing reference, so the
+     card scales to whatever box the streamer draws rather than assuming the full
+     overlay canvas. */
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  container-type: size;
+  margin: 0;
+  display: flex;
+  /* Vertically centred in the box, held to the left edge horizontally. The card
+     is sized to its contents, so left alignment keeps it anchored in one place
+     as options come and go; centring made it drift sideways whenever a poll had
+     a longer statement in it than the last one. */
+  align-items: center;
+  justify-content: flex-start;
+
+  /* Room for the card's drop shadow, which reaches about an em and a half past
+     its edges and was being sliced flat against the side of the widget box.
+     Sized from the box rather than the type so it holds its proportion whether
+     the poll is large or small. */
+  padding: 3cqmin;
+  font-family: var(--font);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+
+#vote-app * { box-sizing: border-box; }
+#vote-app [hidden] { display: none !important; }
+
+/* One type scale for the whole card, tied to the smaller side of the widget box.
+   Everything inside sizes in em from here, so this single number controls the
+   size of the whole card and it stays in proportion whether it is tucked in a
+   corner or filling half the scene.
+
+   The ceiling is deliberately high. It used to cap at 30px, which meant drawing
+   a bigger widget box did not give you a bigger card, and the only way to make
+   the poll large on screen was to scale the browser source up in OBS, which
+   bitmap-scales what was rendered small and is exactly where the blur came from.
+   With room to grow, a large source renders large natively and stays crisp. */
+.vote-card {
+  font-size: calc(clamp(11px, 4.4cqmin, 120px) * var(--scale, 1) * var(--fit, 1));
+
+  /* Sized to its content rather than to the box that was drawn, so a two-option poll
+     is a small card and only a genuinely long statement pushes it out to the
+     full width. The minimum stops a Yes/No poll collapsing into a sliver. */
+  width: fit-content;
+  min-width: min(100%, 14em);
+  max-width: 100%;
+  max-height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--gap) * 1em);
+  padding: calc(var(--pad-v) * 1em) calc(var(--pad-h) * 1em) calc(var(--pad-v) * 0.8em);
+  background: var(--bg);
+  border: calc(var(--border-w) * 1em) solid var(--c-border);
+  border-radius: calc(var(--radius) * 1em);
+  box-shadow: var(--shadow);
+  text-shadow: var(--text-shadow);
+  animation: vote-in var(--in-s) cubic-bezier(0.18, 1.4, 0.4, 1) both;
+}
+
+@keyframes vote-in {
+  from { transform: translateY(-0.6em) scale(0.92); opacity: 0; }
+  to { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+/* Applied for a single frame while widget.js measures how much room the card
+   would want if nothing were in its way. Every constraint comes off and the
+   statements go to one line, so the measurement is the card's true appetite
+   rather than whatever it has already been squeezed into. */
+.vote-card.measuring {
+  width: max-content;
+  min-width: 0;
+  max-width: none;
+  max-height: none;
+
+  /* Without this the card is still a flex item while being measured, and flex
+     shrinks it back to the container. It would then report wanting exactly the
+     room it already has, however much it really needed, and the fit would come
+     out as "no change required" while the rows quietly overflowed. */
+  flex: none;
+}
+/* `overflow: visible` matters as much as the nowrap here, and its absence was a
+   real bug. Dense mode gives the label `overflow: hidden` to hold statements to
+   two lines. Left on during measurement, the one-line text is clipped inside a
+   label that stays narrow, so the card reports wanting far less room than it
+   does, the fit decides no shrinking is needed, and every statement ends up
+   broken across two lines in a column a few characters wide. */
+.vote-card.measuring .vote-label {
+  white-space: nowrap;
+  max-height: none;
+  overflow: visible;
+  /* Sized by its own text while measuring, so the widest one can be found. */
+  flex: 0 0 auto;
+  width: auto;
+}
+.vote-card.measuring .vote-options { overflow: visible; }
+.vote-card.measuring .vote-option { overflow: visible; }
+.vote-card.measuring .vote-count { flex: 0 0 auto; width: auto; min-width: 0; }
+
+/* ---- Head: the question, and the countdown as a tilted sticker pill ---- */
+.vote-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6em;
+}
+
+.vote-title {
+  font-size: calc(var(--title-scale) * 1em);
+  font-weight: var(--title-w);
+  line-height: 1.15;
+  color: var(--c-title);
+  font-family: var(--title-font);
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Sticker badge: cream on warm brown with a little circle "tail". */
+.pill {
+  position: relative;
+  flex: none;
+  font-size: calc(var(--timer-scale) * 1em);
+  font-weight: var(--timer-w);
+  padding: 0.2em 0.75em;
+  border-radius: calc(var(--pill-radius) * 1em);
+  background: var(--c-pill-bg);
+  color: var(--c-pill);
+  box-shadow: var(--pill-shadow);
+  transform: rotate(var(--pill-tilt));
+}
+.pill::after {
+  content: "";
+  display: var(--tail-display);
+  background: inherit;
+  width: 0.42em;
+  height: 0.42em;
+  border-radius: 100px;
+  position: absolute;
+  bottom: -0.12em;
+  left: 0.5em;
+  z-index: -1;
+}
+
+/* The last few seconds pulse, so chat feels the window closing. */
+.vote-timer.urgent { animation: vote-pulse var(--pulse-s) ease-in-out infinite; }
+@keyframes vote-pulse {
+  0%, 100% { opacity: 1; transform: rotate(var(--pill-tilt)) scale(1); }
+  50% { opacity: 0.75; transform: rotate(var(--pill-tilt)) scale(1.08); }
+}
+
+/* ---- Result eyebrow: a small tilted tag above the options ---- */
+.vote-eyebrow {
+  align-self: flex-start;
+  font-size: calc(var(--eyebrow-scale) * 1em);
+  font-weight: var(--eyebrow-w);
+  letter-spacing: var(--eyebrow-spacing);
+  text-transform: var(--eyebrow-case);
+  color: var(--c-eyebrow);
+  background: var(--c-eyebrow-bg);
+  padding: 0.15em 0.7em;
+  border-radius: 0.5em;
+  transform: rotate(var(--eyebrow-tilt));
+}
+
+/* ---- Options ---- */
+.vote-options {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--row-gap) * 1em);
+  min-height: 0;
+  overflow: hidden;
+}
+
+.vote-option {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.45em;
+  padding: 0.22em 0.45em;
+  border-radius: 0.5em;
+  background: var(--c-row);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* The keyword chip: what someone actually types in chat. */
+.vote-key {
+  flex: none;
+  min-width: 1.7em;
+  text-align: center;
+  font-size: calc(var(--key-scale) * 1em);
+  font-weight: var(--key-w);
+  padding: 0.12em 0.4em;
+  border-radius: 0.45em;
+  background: var(--seg, var(--accent));
+  color: var(--c-key);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+}
+
+/* The statement is never trimmed. The card is sized by its contents, so the
+   honest thing is to let the widest option decide how wide the card gets rather
+   than cutting a word in half to protect a width nobody chose.
+
+   No `min-width: 0` here, deliberately. That flag lets a flex item shrink below
+   its own content, which is what was squeezing `spaghetti` into a column narrow
+   enough to wrap and then clipping what did not fit. Left at its default the
+   label refuses to go below its longest word, and the card grows to suit.
+
+   `break-word` handles the one case that cannot be solved by growing: a single
+   run of characters longer than the whole card, which has to break somewhere. */
+/* `--label-w` is set by widget.js to the width of the longest statement, in em
+   so it rides along with the type size. Every label taking the same width is
+   what lines the bars, counts and percentages up into columns; left to size
+   themselves each row would start its bar wherever its own text happened to
+   end, which is tidy on no row and ragged on all of them. */
+.vote-label {
+  flex: 0 0 var(--label-w, auto);
+  font-size: calc(var(--label-scale) * 1em);
+  font-weight: var(--label-weight);
+  color: var(--c-label);
+  line-height: 1.25;
+  overflow-wrap: break-word;
+}
+
+/* A fixed width rather than a percentage, because a percentage would be resolving
+   against a card that is itself being sized by its contents. */
+.vote-bar {
+  flex: 0 0 var(--bar-w);
+  height: var(--bar-h);
+  border-radius: 999px;
+  background: var(--c-track);
+  overflow: hidden;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.14);
+}
+
+.vote-fill {
+  display: block;
+  height: 100%;
+  width: 0%;
+  border-radius: 999px;
+  background: var(--seg, var(--accent));
+  transition: width var(--fill-s) ease;
+}
+
+/* Measured and set like the label column. `min-width` alone was a guess at how
+   wide `128 · 55%` would be, and a guess is exactly the wrong thing here: too
+   small and the percentage is cut off, too large and every card carries dead
+   space. The measurement knows. */
+.vote-count {
+  /* No `min-width` alongside this. A minimum wider than the measured column
+     silently wins, the row then overflows by the difference, and the corrective
+     loop shrinks the whole card over and over trying to fix something that is
+     not about size at all. The fallback in the var covers the unmeasured case. */
+  flex: 0 0 var(--count-w, 3.9em);
+  text-align: right;
+  font-size: calc(var(--count-scale) * 1em);
+  font-weight: var(--count-weight);
+  color: var(--c-count);
+  opacity: var(--count-opacity);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* While the counts are hidden the bars and numbers come out entirely, so the
+   row is just the keyword and the statement and nobody can read the room. */
+.vote-card.blind .vote-bar,
+.vote-card.blind .vote-count { display: none; }
+
+/* There used to be a "dense" mode here that dropped the type a step and clamped
+   statements to two lines once a poll had five or more options, back when a long
+   poll could grow off the bottom of the box with nothing to stop it.
+
+   It is gone, and the card is better for it. Fitting to the box does that job
+   properly and for every case, not just the one the threshold happened to catch,
+   and it does it by shrinking only as far as it must. Measured against eight
+   options, dropping dense mode left the type larger in every box tried: 47.5px
+   rather than 38.9px on a 1080p canvas, 30.8 rather than 25.2 in a narrow one.
+   Its clamp was also what made the card mismeasure itself, since a clipped label
+   reports needing almost no room at all. */
+
+/* `!vote A, B, C` and `!vote 1, 2, 3` carry no information in their labels, so
+   the label is dropped entirely and the bar takes the space it would have used.
+   What is left is the chip, the bar and the count, which is the smallest honest
+   version of a poll row. */
+.vote-card.keys-only .vote-bar { flex: 1 1 7em; }
+
+/* ---- The result ---- */
+.vote-option.win {
+  background: var(--c-win-bg);
+  color: var(--c-win);
+  animation: vote-win 0.5s cubic-bezier(0.18, 1.5, 0.4, 1) both;
+}
+.vote-option.win .vote-key {
+  background: var(--c-win);
+  color: var(--c-win-bg);
+  text-shadow: none;
+}
+.vote-option.win .vote-bar { background: rgba(255, 255, 255, 0.3); }
+.vote-option.win .vote-fill { background: var(--c-win); }
+
+@keyframes vote-win {
+  from { transform: scale(0.94); }
+  60%  { transform: scale(1.045); }
+  to   { transform: scale(1); }
+}
+
+.vote-option.lost { opacity: var(--lost-opacity); }
+
+/* ---- Foot ---- */
+.vote-foot {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.6em;
+  font-size: calc(var(--foot-scale) * 1em);
+  font-weight: var(--foot-w);
+  color: var(--c-foot);
+  opacity: var(--foot-opacity);
+}
+
+.vote-hint {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.vote-total { flex: none; font-variant-numeric: tabular-nums; }
+
+/* Off unless the troubleshooting toggle is on. Deliberately plain and small: it
+   exists so a screenshot can answer questions about sizing that guessing cannot,
+   which beats another round of "try this and see".
+
+   Absolutely positioned along the bottom of the widget box, outside the card and
+   out of its layout entirely, so switching it on cannot change what it reports.
+   A diagnostic that alters the thing it measures is worse than none, because it
+   sends you looking in the wrong place with confidence. */
+.vote-debug {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 11px;
+  line-height: 1.4;
+  padding: 3px 5px;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.72);
+  word-break: break-all;
+  text-align: left;
+  pointer-events: none;
+}
+
+/* The Animate field: when it is off, nothing moves or eases anywhere. */
+#vote-app.no-motion *,
+#vote-app.no-motion *::before,
+#vote-app.no-motion *::after {
+  animation: none !important;
+  transition: none !important;
+}
