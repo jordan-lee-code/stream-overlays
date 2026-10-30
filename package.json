@@ -1,6 +1,6 @@
 {
   "name": "sub-goals-overlay",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A StreamElements custom widget that shows sub and bits goals filling up as chat reaches them.",
   "private": true,
   "license": "MIT",

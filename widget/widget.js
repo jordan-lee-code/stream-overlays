@@ -530,6 +530,24 @@
     if (was !== tracking) pop();
   }
 
+  // Other widgets can build on this one without parsing StreamElements events a
+  // second time. Each sub or cheer that is counted is announced on the page as a
+  // "subgoals:counted" event, so whatever listens gets the same answer to "how many
+  // subs was that?", including the gift bomb case where only the announcement
+  // counts, and the two can never disagree. Nothing listens in the standalone
+  // widget, and an announcement that fails is never allowed to break counting.
+  function announce(detail) {
+    try { window.dispatchEvent(new CustomEvent("subgoals:counted", { detail: detail })); }
+    catch (e) { /* announcing is best-effort */ }
+  }
+  // "1000", "2000", "3000" and "prime" become 1, 2, 3 and 1.
+  function tierOf(event) {
+    var t = String(event.tier || "").toLowerCase();
+    if (t === "2000" || t === "2") return 2;
+    if (t === "3000" || t === "3") return 3;
+    return 1;
+  }
+
   function handleSub(event) {
     event = event || {};
     if (cfg.debug && typeof console !== "undefined" && console.log) {
@@ -543,6 +561,12 @@
     if (n <= 0) return;
     var unlocked = setSubs(subs + n, "sub");
     if (!goalSoundTakesOver(unlocked)) playSound("sub");
+    var bulk = bool(event.bulkGifted, false);
+    announce({
+      kind: "sub", count: n, tier: tierOf(event), bulk: bulk,
+      gifted: bulk || bool(event.gifted, false),
+      who: String(event.sender || event.name || event.username || ""), subs: subs
+    });
   }
 
   // Bits count towards the goals at a rate the streamer chooses (500 bits to a sub
@@ -557,6 +581,8 @@
     }
     if (!tracking) return;
     addBits(num(event.amount, 0));
+    var bits = Math.max(0, Math.round(num(event.amount, 0)));
+    if (bits > 0) announce({ kind: "bits", amount: bits, who: String(event.name || event.username || ""), subs: subs });
   }
 
   // The part shared by a real cheer and `!incentive bits`: the manual one skips the

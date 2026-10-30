@@ -876,6 +876,34 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   ok(elements["incentive-app"].style["--text"] === EXPECT.frost.text, "a preset ignores the colour pickers");
   load({ themePreset: "custom", colorText: "#123456" }); await wait(5);
   ok(elements["incentive-app"].style["--text"] === "#123456", "and Custom uses them");
+
+  // ---- other widgets can build on the module through its announcements
+  console.log("\n[announcing counted events]");
+  const heard = [];
+  window.addEventListener("subgoals:counted", e => heard.push(e.detail));
+  load(); await wait(5);
+  heard.length = 0;
+  sub({ amount: 1, tier: "2000", name: "Alice" });
+  ok(heard.length === 1 && heard[0].kind === "sub" && heard[0].count === 1 && heard[0].tier === 2 && heard[0].gifted === false && heard[0].who === "Alice", "a new tier 2 sub is announced once with its tier and name (" + JSON.stringify(heard[0]) + ")");
+  heard.length = 0; bomb(10);
+  for (let i = 0; i < 10; i++) sub({ gifted: true, isCommunityGift: true, amount: 170, sender: "GenerousViewer" });
+  ok(heard.length === 1 && heard[0].count === 10 && heard[0].bulk === true && heard[0].gifted === true && heard[0].subs === 11, "a gift bomb is announced once at its real size, not once per recipient (" + JSON.stringify(heard) + ")");
+  heard.length = 0; sub({ gifted: true, amount: 3, tier: "3000", sender: "Bob" });
+  ok(heard.length === 1 && heard[0].count === 1 && heard[0].tier === 3 && heard[0].gifted === true && heard[0].who === "Bob", "a single gifted sub carries its tier and gifter");
+  heard.length = 0; sub({ tier: "prime", name: "Cara" });
+  ok(heard[0].tier === 1, "a Prime sub counts as tier 1");
+  heard.length = 0; cheer(300);
+  ok(heard.length === 1 && heard[0].kind === "bits" && heard[0].amount === 300, "a cheer is announced with its bits (" + JSON.stringify(heard[0]) + ")");
+  heard.length = 0; cheer(0); cheer(-5);
+  ok(heard.length === 0, "an empty cheer is not announced");
+  heard.length = 0; load({ bitsPerSub: 0 }); await wait(5); cheer(500);
+  ok(heard.length === 1 && heard[0].amount === 500, "bits are still announced when they do not count towards goals");
+  heard.length = 0; boss("!incentive stop"); sub({ amount: 1 }); cheer(500);
+  ok(heard.length === 0, "nothing is announced while tracking is stopped, so a listener never counts what the goals did not");
+  boss("!incentive start"); heard.length = 0; boss("!incentive subs +5"); boss("!incentive bits +500");
+  ok(heard.length === 0, "manual corrections are not announced");
+  heard.length = 0; load({ countGifts: false }); await wait(5); bomb(5); sub({ amount: 1 });
+  ok(heard.length === 1 && heard[0].count === 1, "what the goal settings do not count is not announced (" + heard.length + ")");
   console.log("\n=== " + pass + " passed, " + fail + " failed ===");
   process.exit(fail ? 1 : 0);
 })();

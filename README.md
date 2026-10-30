@@ -137,6 +137,29 @@ A gift bomb plays the sub sound once, not once per recipient, and a bomb that re
 
 A browser may refuse to play sound until someone has interacted with the page, which can happen in an editor preview. An OBS browser source plays sounds without that.
 
+## Building on it
+
+The tracker is meant to be reused. Each sub or cheer that it counts is announced on the page as a `subgoals:counted` event, so another widget can build on it without parsing StreamElements events a second time, and the two can never disagree about how many subs something was worth. That includes the gift bomb case, where only the announcement counts.
+
+```js
+window.addEventListener("subgoals:counted", function (e) {
+  // e.detail for a sub:  { kind: "sub", count, tier, gifted, bulk, who, subs }
+  // e.detail for bits:   { kind: "bits", amount, who, subs }
+});
+```
+
+| Field | Meaning |
+| --- | --- |
+| `kind` | `"sub"` or `"bits"`. |
+| `count` | For a sub, how many subs it was worth. A gift bomb is its real size, once. |
+| `tier` | `1`, `2` or `3`. A Prime sub is tier 1. For a gift bomb, the tier of the gifts. |
+| `gifted`, `bulk` | Whether it was a gift, and whether it was a gift bomb. |
+| `amount` | For bits, the number of bits. |
+| `who` | The gifter or subscriber, or the person who cheered. |
+| `subs` | The running sub total after this event. |
+
+Nothing is announced while tracking is stopped, for subs or bits the settings do not count, or for manual corrections such as `!incentive subs +5`. The [Subathon Overlay](https://github.com/jordan-lee-code/subathon-overlay) is built this way: it embeds this widget unchanged and adds time to its clock from these announcements.
+
 ## Local development
 
 There is no build step and no dependencies. Serve the project root and open the dev harness:
