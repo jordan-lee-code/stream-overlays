@@ -1,0 +1,389 @@
+{
+  "command": {
+    "type": "text",
+    "label": "Command word",
+    "value": "!leaderboard",
+    "group": "Commands"
+  },
+  "whoCanManage": {
+    "type": "dropdown",
+    "label": "Who can use it",
+    "value": "mods",
+    "options": {
+      "broadcaster": "Broadcaster only",
+      "mods": "Broadcaster + moderators"
+    },
+    "group": "Commands"
+  },
+  "mode": {
+    "type": "dropdown",
+    "label": "What to show",
+    "value": "rotate",
+    "options": {
+      "rotate": "Rotate through the boards",
+      "gifts": "Top gifters only",
+      "bits": "Top cheerers only",
+      "tips": "Top tippers only"
+    },
+    "group": "Board"
+  },
+  "rotateSeconds": {
+    "type": "number",
+    "label": "Seconds on each board when rotating",
+    "value": 15,
+    "min": 3,
+    "max": 600,
+    "step": 1,
+    "group": "Board"
+  },
+  "rows": {
+    "type": "number",
+    "label": "Names shown",
+    "value": 5,
+    "min": 1,
+    "max": 15,
+    "step": 1,
+    "group": "Board"
+  },
+  "showGifts": {
+    "type": "checkbox",
+    "label": "Include the gifters board when rotating",
+    "value": true,
+    "group": "Board"
+  },
+  "showBits": {
+    "type": "checkbox",
+    "label": "Include the cheerers board when rotating",
+    "value": true,
+    "group": "Board"
+  },
+  "showTips": {
+    "type": "checkbox",
+    "label": "Include the tippers board when rotating",
+    "value": true,
+    "group": "Board"
+  },
+  "anonymousGifts": {
+    "type": "checkbox",
+    "label": "Count anonymous gifters and cheerers together as Anonymous",
+    "value": false,
+    "group": "Board"
+  },
+  "ignoreNames": {
+    "type": "text",
+    "label": "Names to leave out, separated by commas (for example bots)",
+    "value": "",
+    "group": "Board"
+  },
+  "emptyText": {
+    "type": "text",
+    "label": "Text when a board is empty",
+    "value": "No one yet",
+    "group": "Board"
+  },
+  "titleGifts": {
+    "type": "text",
+    "label": "Gifters board title",
+    "value": "Top gifters",
+    "group": "Wording"
+  },
+  "titleBits": {
+    "type": "text",
+    "label": "Cheerers board title",
+    "value": "Top cheerers",
+    "group": "Wording"
+  },
+  "titleTips": {
+    "type": "text",
+    "label": "Tippers board title",
+    "value": "Top tippers",
+    "group": "Wording"
+  },
+  "formatGifts": {
+    "type": "text",
+    "label": "How a gift total reads ({n} is the number)",
+    "value": "{n} gifted",
+    "group": "Wording"
+  },
+  "formatBits": {
+    "type": "text",
+    "label": "How a bits total reads ({n} is the number)",
+    "value": "{n} bits",
+    "group": "Wording"
+  },
+  "formatTips": {
+    "type": "text",
+    "label": "How a tip total reads ({c} is the currency, {n} the amount)",
+    "value": "{c}{n}",
+    "group": "Wording"
+  },
+  "currency": {
+    "type": "text",
+    "label": "Currency symbol",
+    "value": "£",
+    "group": "Wording"
+  },
+  "showRank": {
+    "type": "checkbox",
+    "label": "Show rank numbers",
+    "value": true,
+    "group": "Rows"
+  },
+  "highlightFirst": {
+    "type": "checkbox",
+    "label": "Highlight first place with the accent colour",
+    "value": true,
+    "group": "Rows"
+  },
+  "maxName": {
+    "type": "number",
+    "label": "Longest name shown, in characters",
+    "value": 16,
+    "min": 4,
+    "max": 40,
+    "step": 1,
+    "group": "Rows"
+  },
+  "rowSize": {
+    "type": "number",
+    "label": "Row text size (percent of the box width)",
+    "value": 6,
+    "min": 2,
+    "max": 20,
+    "step": 0.25,
+    "group": "Rows"
+  },
+  "titleScale": {
+    "type": "number",
+    "label": "Title size (share of the row size)",
+    "value": 1.15,
+    "min": 0.5,
+    "max": 3,
+    "step": 0.05,
+    "group": "Rows"
+  },
+  "rowGap": {
+    "type": "number",
+    "label": "Space between rows",
+    "value": 0.25,
+    "min": 0,
+    "max": 2,
+    "step": 0.05,
+    "group": "Rows"
+  },
+  "highlightChange": {
+    "type": "checkbox",
+    "label": "Pop a row when its total changes",
+    "value": true,
+    "group": "Rows"
+  },
+  "btnNext": {
+    "type": "button",
+    "label": "Show the next board",
+    "group": "Manual controls"
+  },
+  "btnRotate": {
+    "type": "button",
+    "label": "Go back to rotating",
+    "group": "Manual controls"
+  },
+  "btnReset": {
+    "type": "button",
+    "label": "Clear every board",
+    "group": "Manual controls"
+  },
+  "title": {
+    "type": "text",
+    "label": "Title above every board (leave empty to use each board's own title)",
+    "value": "",
+    "group": "Look"
+  },
+  "showTitle": {
+    "type": "checkbox",
+    "label": "Show the title",
+    "value": true,
+    "group": "Look"
+  },
+  "themePreset": {
+    "type": "dropdown",
+    "label": "Style preset (the same twenty-two are in every overlay in this set)",
+    "value": "glass",
+    "options": {
+      "glass": "Soft black (default)",
+      "frost": "Soft white",
+      "midnight": "Midnight blue",
+      "sunset": "Sunset",
+      "forest": "Forest",
+      "ocean": "Ocean",
+      "rose": "Rose",
+      "neon": "Neon",
+      "cosycabin": "Cosy cabin",
+      "pastel": "Cosy summer pastel",
+      "celestial": "Celestial",
+      "pastelgoth": "Pastel goth",
+      "pastelpink": "Pastel pink",
+      "faegreen": "Fae green",
+      "pride": "Rainbow pride",
+      "progress": "Progress pride",
+      "trans": "Trans pride",
+      "bi": "Bi pride",
+      "pan": "Pan pride",
+      "enby": "Non-binary pride",
+      "lesbian": "Lesbian pride",
+      "ace": "Ace pride",
+      "custom": "Custom (use the colours below)"
+    },
+    "group": "Look"
+  },
+  "fontFamily": {
+    "type": "googleFont",
+    "label": "Font (used when the style preset is Custom)",
+    "value": "BioRhyme",
+    "group": "Look"
+  },
+  "weight": {
+    "type": "number",
+    "label": "Boldness (100 to 900)",
+    "value": 800,
+    "min": 100,
+    "max": 900,
+    "step": 100,
+    "group": "Look"
+  },
+  "radius": {
+    "type": "number",
+    "label": "Corner roundness, in pixels",
+    "value": 24,
+    "min": 0,
+    "max": 100,
+    "step": 1,
+    "group": "Look"
+  },
+  "pad": {
+    "type": "number",
+    "label": "Padding above and below",
+    "value": 0.5,
+    "min": 0,
+    "max": 3,
+    "step": 0.05,
+    "group": "Look"
+  },
+  "borderWidth": {
+    "type": "number",
+    "label": "Outline width, in pixels",
+    "value": 0,
+    "min": 0,
+    "max": 20,
+    "step": 1,
+    "group": "Look"
+  },
+  "borderColor": {
+    "type": "colorpicker",
+    "label": "Outline colour",
+    "value": "#FFFFFF",
+    "group": "Look"
+  },
+  "shadow": {
+    "type": "checkbox",
+    "label": "Shadow",
+    "value": false,
+    "group": "Look"
+  },
+  "animate": {
+    "type": "checkbox",
+    "label": "Animate",
+    "value": true,
+    "group": "Look"
+  },
+  "colorPanel": {
+    "type": "colorpicker",
+    "label": "Panel colour (used when the style preset is Custom)",
+    "value": "#000000",
+    "group": "Custom colours"
+  },
+  "panelOpacity": {
+    "type": "number",
+    "label": "Panel opacity, 0 to 1 (used when the style preset is Custom)",
+    "value": 0.55,
+    "min": 0,
+    "max": 1,
+    "step": 0.05,
+    "group": "Custom colours"
+  },
+  "cText": {
+    "type": "colorpicker",
+    "label": "Text (used when the style preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Custom colours"
+  },
+  "cAccent": {
+    "type": "colorpicker",
+    "label": "Accent (used when the style preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Custom colours"
+  },
+  "cTrack": {
+    "type": "colorpicker",
+    "label": "Bars and chips (used when the style preset is Custom)",
+    "value": "#444444",
+    "group": "Custom colours"
+  },
+  "cWarn": {
+    "type": "colorpicker",
+    "label": "Alert colour (used when the style preset is Custom)",
+    "value": "#D64545",
+    "group": "Custom colours"
+  },
+  "soundUpdate": {
+    "type": "sound-input",
+    "label": "A total changes",
+    "value": "",
+    "group": "Sounds"
+  },
+  "soundUpdateVol": {
+    "type": "number",
+    "label": "Volume for that sound (0 to 100)",
+    "value": 50,
+    "min": 0,
+    "max": 100,
+    "step": 5,
+    "group": "Sounds"
+  },
+  "test_soundUpdate": {
+    "type": "button",
+    "label": "Test it",
+    "group": "Sounds"
+  },
+  "soundLead": {
+    "type": "sound-input",
+    "label": "Someone takes first place",
+    "value": "",
+    "group": "Sounds"
+  },
+  "soundLeadVol": {
+    "type": "number",
+    "label": "Volume for that sound (0 to 100)",
+    "value": 80,
+    "min": 0,
+    "max": 100,
+    "step": 5,
+    "group": "Sounds"
+  },
+  "test_soundLead": {
+    "type": "button",
+    "label": "Test it",
+    "group": "Sounds"
+  },
+  "mute": {
+    "type": "checkbox",
+    "label": "Mute every sound",
+    "value": false,
+    "group": "Sounds"
+  },
+  "debug": {
+    "type": "checkbox",
+    "label": "Log every event to the browser-source console",
+    "value": false,
+    "group": "Troubleshooting"
+  }
+}

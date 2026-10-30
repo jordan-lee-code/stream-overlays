@@ -1,0 +1,33 @@
+{
+  "name": "leaderboard-overlay",
+  "version": "1.0.0",
+  "description": "A StreamElements custom widget: leaderboards for top gifters, cheerers and tippers, rotating through the boards.",
+  "private": true,
+  "license": "MIT",
+  "author": "Jordan Lee",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jordan-lee-code/leaderboard-overlay.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jordan-lee-code/leaderboard-overlay/issues"
+  },
+  "homepage": "https://github.com/jordan-lee-code/leaderboard-overlay#readme",
+  "keywords": [
+    "streamelements",
+    "twitch",
+    "overlay",
+    "widget",
+    "leaderboard",
+    "gifted-subs",
+    "bits"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "funding": "https://ko-fi.com/journeyingjordan",
+  "scripts": {
+    "test": "node test/test-widget.js",
+    "dev": "python3 -m http.server 8000"
+  }
+}
