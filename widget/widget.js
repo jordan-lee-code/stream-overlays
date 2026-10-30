@@ -19,7 +19,7 @@
 
   var STORE_KEY = "squat_tracker_v1";
 
-  /* Style presets. The same twelve, with the same colours, in every overlay in this
+  /* Style presets. The same fourteen, with the same colours, in every overlay in this
      set, generated from one table so they cannot drift apart, so any preset looks
      like one family across a whole stream. The default, Soft black, is a see-through
      black panel with white text. */
@@ -35,7 +35,9 @@
     cosycabin: { panel: "#F5ECD6", strong: "#F5ECD6", text: "#57442E", accent: "#7C6142", font: "Chicle" },
     pastel: { panel: "#FFF6E9", strong: "#FFF6E9", text: "#6B4F3A", accent: "#FF8A65", font: "Baloo 2" },
     celestial: { panel: "#2E1A47", strong: "#2E1A47", text: "#F3ECFF", accent: "#E8C06B", font: "Cinzel" },
-    pastelgoth: { panel: "#3A3340", strong: "#3A3340", text: "#F2E9F0", accent: "#C8B6E2", font: "Quicksand" }
+    pastelgoth: { panel: "#3A3340", strong: "#3A3340", text: "#F2E9F0", accent: "#C8B6E2", font: "Quicksand" },
+    pastelpink: { panel: "#FFE3EC", strong: "#FFE3EC", text: "#6A2E4B", accent: "#D95C8A", font: "Fredoka" },
+    faegreen: { panel: "#2C4A36", strong: "#2C4A36", text: "#EEF5DA", accent: "#C9E265", font: "Almendra" }
   };
   var BASE = PRESETS.glass;
 

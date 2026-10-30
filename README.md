@@ -26,15 +26,15 @@ It is a single self-contained widget in plain JavaScript, with no dependencies a
 
 <p><img src="docs/locked.png" alt="The sticker with a small padlock in its corner" width="340"></p>
 
-**Your own look.** Every part is a setting. This one uses custom colours, an outline, rounder corners, a tilt, a lighter caption and a tail. You can also pick any of the twelve [style presets](#style-presets) with one setting.
+**Your own look.** Every part is a setting. This one uses custom colours, an outline, rounder corners, a tilt, a lighter caption and a tail. You can also pick any of the fourteen [style presets](#style-presets) with one setting.
 
 <p><img src="docs/custom.png" alt="A pink sticker with a light outline, a tilt and the caption squats today" width="340"></p>
 
 ## Style presets
 
-One setting picks the look. The same twelve presets, with the same colours, are in every overlay in this set, so overlays from this set match whichever you choose. This is how each one looks in this overlay.
+One setting picks the look. The same fourteen presets, with the same colours, are in every overlay in this set, so overlays from this set match whichever you choose. This is how each one looks in this overlay.
 
-<p><img src="docs/presets.png" alt="A grid of this overlay in each of the twelve style presets: Soft black, Soft white, Midnight blue, Sunset, Forest, Ocean, Rose, Neon, Cosy cabin, Cosy summer pastel, Celestial and Pastel goth" width="760"></p>
+<p><img src="docs/presets.png" alt="A grid of this overlay in each of the fourteen style presets: Soft black, Soft white, Midnight blue, Sunset, Forest, Ocean, Rose, Neon, Cosy cabin, Cosy summer pastel, Celestial, Pastel goth, Pastel pink and Fae green" width="760"></p>
 
 | Preset | Look |
 | --- | --- |
@@ -50,6 +50,8 @@ One setting picks the look. The same twelve presets, with the same colours, are 
 | Cosy summer pastel | Warm cream and coral, in Baloo 2. |
 | Celestial | Deep purple and gold, in Cinzel. |
 | Pastel goth | Charcoal and lilac, in Quicksand. |
+| Pastel pink | Soft blush pink with rose, in Fredoka. |
+| Fae green | Mossy green with a firefly lime accent, in Almendra. |
 
 Choose **Custom** to use the colour pickers and font instead. They are ignored while a preset is chosen.
 
@@ -108,7 +110,7 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | Look | A caption under the number, the floating `+N` (its prefix, suffix and how long it stays), the padlock, and the tail. |
 | Sticker | The size of the number, caption and floating text, corner roundness, padding, the gap between number and caption, tilt, an outline and shadows. |
 | Text | The boldness of the number, caption and floating text, and the caption's opacity and letter spacing. |
-| Theme | One of the twelve shared style presets (Soft black by default) or Custom colours and font, with separate colours for the box, number, caption, outline, padlock and floating text, and an opacity for the box. |
+| Theme | One of the fourteen shared style presets (Soft black by default) or Custom colours and font, with separate colours for the box, number, caption, outline, padlock and floating text, and an opacity for the box. |
 | Animation | One switch for all animation, how far the sticker swells when the count changes, and how long that takes. |
 | Sounds | A sound and volume for a gift adding squats, for locking and for unlocking, plus a master mute. |
 | Manual controls | Buttons to simulate a gift, adjust, lock and reset, and to test each sound. |
@@ -160,7 +162,7 @@ The JavaScript is plain ES5, so it can be pasted straight into the StreamElement
 
 ## Related overlays
 
-These overlays share the same default look and the same twelve style presets, so they sit together on one stream.
+These overlays share the same default look and the same fourteen style presets, so they sit together on one stream.
 
 - [Sub Goals Overlay](https://github.com/jordan-lee-code/sub-goals-overlay): sub and bits goals that fill as chat reaches them.
 - [Subathon Overlay](https://github.com/jordan-lee-code/subathon-overlay): a subathon clock with a cap, power-ups and sub goals.
