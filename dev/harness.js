@@ -60,7 +60,81 @@
 
   function dispatchLoad() {
     window.dispatchEvent(new CustomEvent("onWidgetLoad", { detail: { fieldData: fieldData } }));
+    syncLook();
   }
+
+  // ---- Look and export: switch style presets quickly, and carry the settings to StreamElements ----
+  // StreamElements takes each setting's starting value from `value` in fields.json, so the
+  // export is fields.json with the current values filled in. Pasted into the Fields tab of a
+  // new widget, it starts out looking the way it does here. (A widget that already has saved
+  // settings keeps them, so use a new copy of the widget, or set the values by hand.)
+  function exportText() {
+    var out = {};
+    Object.keys(fieldDefs).forEach(function (k) {
+      var d = JSON.parse(JSON.stringify(fieldDefs[k]));
+      // Test beeps are made up by this page, so a sound keeps its own default.
+      if (d.type !== "button" && d.type !== "sound-input" && fieldData.hasOwnProperty(k)) d.value = fieldData[k];
+      out[k] = d;
+    });
+    return JSON.stringify(out, null, 2) + "\n";
+  }
+  function syncLook() {
+    var sel = document.getElementById("look-preset");
+    if (sel && fieldData.themePreset !== undefined) sel.value = fieldData.themePreset;
+    var box = document.getElementById("export-text");
+    if (box) box.value = exportText();
+  }
+  function rebuildSettings() {
+    var host = document.getElementById("all-settings");
+    var open = [];
+    Array.prototype.forEach.call(host.querySelectorAll("details"), function (d) {
+      if (d.open) open.push(d.querySelector("summary").textContent);
+    });
+    host.innerHTML = "";
+    buildSettings(host);
+    Array.prototype.forEach.call(host.querySelectorAll("details"), function (d) {
+      if (open.indexOf(d.querySelector("summary").textContent) !== -1) d.open = true;
+    });
+  }
+  function buildLook(host) {
+    var def = fieldDefs.themePreset;
+    host.innerHTML =
+      (def ? '<div class="row"><label for="look-preset">Style preset</label> <select id="look-preset"></select></div>' +
+        '<p class="hint">The same twelve presets are in every overlay in this set. Custom uses the colour settings below.</p>' : '') +
+      '<div class="row"><button id="export-download" class="go">Download fields.json</button>' +
+      '<button id="export-copy" class="alt">Copy fields.json</button></div>' +
+      '<p class="hint">Your current settings as a fields.json for StreamElements. Paste it into the Fields tab of a new custom widget and it starts out as you see it here.</p>' +
+      '<p id="export-msg" class="hint"></p>' +
+      '<details><summary>Show the JSON</summary><textarea id="export-text" readonly style="width:100%;height:110px;font-size:11px"></textarea></details>';
+    var sel = document.getElementById("look-preset");
+    if (sel) {
+      Object.keys(def.options || {}).forEach(function (k) {
+        var o = document.createElement("option"); o.value = k; o.textContent = def.options[k]; sel.appendChild(o);
+      });
+      sel.onchange = function () { fieldData.themePreset = sel.value; rebuildSettings(); dispatchLoad(); };
+    }
+    function say(t) { document.getElementById("export-msg").textContent = t; }
+    document.getElementById("export-download").onclick = function () {
+      var a = document.createElement("a");
+      a.href = URL.createObjectURL(new Blob([exportText()], { type: "application/json" }));
+      a.download = "fields.json";
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      say("Downloaded fields.json.");
+    };
+    document.getElementById("export-copy").onclick = function () {
+      var text = exportText();
+      var fallback = function () {
+        var box = document.getElementById("export-text");
+        box.value = text; box.select();
+        try { document.execCommand("copy"); say("Copied fields.json."); } catch (e) { say("Select the JSON below and copy it."); }
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(function () { say("Copied fields.json."); }, fallback);
+      } else fallback();
+    };
+    syncLook();
+  }
+
 
   function sendChat(text, opts) {
     opts = opts || {};
@@ -177,6 +251,8 @@
         var label = document.createElement("label");
         label.textContent = def.label || key;
         var input;
+        // The current value, not the default, so the panel can be rebuilt after a preset switch.
+        var cur = fieldData.hasOwnProperty(key) ? fieldData[key] : def.value;
 
         if (def.type === "button") {
           input = document.createElement("button");
@@ -196,17 +272,17 @@
             o.value = k; o.textContent = def.options[k];
             input.appendChild(o);
           });
-          input.value = def.value;
+          input.value = cur;
         } else if (def.type === "checkbox") {
           input = document.createElement("input");
           input.type = "checkbox";
-          input.checked = !!def.value;
+          input.checked = !!cur;
         } else if (def.type === "sound-input") {
           // No file upload here: paste a URL, or use a generated test beep so the
           // sounds can be tried with nothing to hand.
           input = document.createElement("input");
           input.type = "text";
-          input.value = def.value || "";
+          input.value = cur || "";
           input.placeholder = "paste a sound URL";
           var beep = document.createElement("button");
           beep.className = "alt";
@@ -225,21 +301,21 @@
         } else if (def.type === "colorpicker") {
           input = document.createElement("input");
           input.type = "color";
-          input.value = String(def.value).toLowerCase();
+          input.value = String(cur).toLowerCase();
         } else if (def.type === "number") {
           input = document.createElement("input");
           input.type = "number";
           ["min", "max", "step"].forEach(function (a) { if (def[a] !== undefined) input[a] = def[a]; });
-          input.value = def.value;
+          input.value = cur;
         } else {
           input = document.createElement("input");
           input.type = "text";
-          input.value = def.value;
+          input.value = cur;
         }
 
         input.onchange = function () {
           if (def.type === "checkbox") fieldData[key] = input.checked;
-          else if (def.type === "number") fieldData[key] = input.value === "" ? def.value : parseFloat(input.value);
+          else if (def.type === "number") fieldData[key] = input.value === "" ? cur : parseFloat(input.value);
           else fieldData[key] = input.value;
           dispatchLoad();
         };
@@ -327,6 +403,9 @@
       '1920x1080 box, so what you see here lands on stream at double the size. Shrink it to watch long ' +
       'options start wrapping sooner. The card sizes itself to this box.</p>' +
 
+      '<h2>Look and export</h2>' +
+      '<div id="look-panel"></div>' +
+
       '<h2>Every setting (re-applies on change)</h2>' +
       '<p class="hint">Generated from <code>fields.json</code>, so it is exactly what StreamElements will offer. Buttons here are the Manual controls.</p>' +
       '<div id="all-settings"></div>' +
@@ -377,6 +456,7 @@
     });
 
     buildSettings(document.getElementById("all-settings"));
+    buildLook(document.getElementById("look-panel"));
     document.getElementById("s-stage").onchange = function () {
       var w = Math.max(200, parseInt(this.value, 10) || 960);
       var stage = document.getElementById("stage");
