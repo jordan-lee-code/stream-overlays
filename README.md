@@ -4,22 +4,22 @@ A StreamElements custom widget for a streamer playing something punishing, where
 
 <p align="center"><img src="docs/filling.png" alt="A soft black bar card reading Points to reset the run, 42 of 100, with the subs, bits and money left to go" width="500"></p>
 
-There are two mercies built in. Chat can spend channel points to **lock** the bar for a few minutes, which freezes it and buys the streamer a stretch of quiet. And when the bar does fill, there is a 90 second window in which anyone can **save the run** by subscribing or redeeming a reward, which puts the bar back to zero. Whether those are mercies or just more interesting ways to be cruel is for chat to work out.
+Two things soften it. Chat can spend channel points to **lock** the bar for a few minutes, which freezes it. And when the bar fills, there is a 90 second window in which anyone can **save the run** by subscribing or redeeming a reward, which puts the bar back to zero.
 
 It is one self-contained widget in plain JavaScript, with no dependencies and nothing to install.
 
 ## Features
 
-- **Fills three ways:** subs, bits and donations all fill the same bar, and so do channel point rewards.
-- **Locks:** a channel point reward freezes the bar for a length written in the reward's name, and subs, bits or donations piled up against it break it early.
-- **A save window:** when the bar fills, a countdown starts and chat can save the run with subs, bits, donations or a reward.
-- **A growing bar:** every real reset makes the next bar bigger, and the cost to save it grows by the same share.
-- **No-saving mode:** one huge gift ends a run outright, or triggers a joke banner instead.
-- **Dread:** over the last stretch the fill warms towards an alarm colour and the track starts to breathe.
-- **A line that explains itself:** what is left in subs, bits and money, in whatever state the bar is in.
-- **Sounds:** optional sounds for contributions, locks, a lock breaking, the bar filling, a save and a reset.
-- **Customisable:** around 160 settings cover wording, colours, fonts, sizes, spacing, sounds and every command word.
-- **Testable offline:** a local dev harness and an automated test script.
+- Fills three ways: subs, bits and donations all fill the same bar, and so do channel point rewards.
+- Locks: a channel point reward freezes the bar for a length written in the reward's name, and subs, bits or donations piled up against it break it early.
+- A save window: when the bar fills, a countdown starts and chat can save the run with subs, bits, donations or a reward.
+- A growing bar: every real reset makes the next bar bigger, and the cost to save it grows by the same share.
+- No-saving mode: one huge gift ends a run outright, or triggers a joke banner instead.
+- Alarm colour: over the last stretch the fill shifts towards an alarm colour and the track pulses.
+- A status line: what is left in subs, bits and money, in whatever state the bar is in.
+- Sounds: optional sounds for contributions, locks, a lock breaking, the bar filling, a save and a reset.
+- Customisable: around 160 settings cover wording, colours, fonts, sizes, spacing, sounds and every command word.
+- Testable offline: a local dev harness and an automated test script.
 
 ## Screenshots
 
@@ -37,7 +37,7 @@ It is one self-contained widget in plain JavaScript, with no dependencies and no
 
 ## Style presets
 
-One setting picks the look. The same twelve presets, with exactly the same colours, are in every overlay in this set, so whichever you choose, the overlays still look like one family on a stream. This is how each one looks in this overlay.
+One setting picks the look. The same twelve presets, with the same colours, are in every overlay in this set, so overlays from this set match whichever you choose. This is how each one looks in this overlay.
 
 <p><img src="docs/presets.png" alt="A grid of this overlay in each of the twelve style presets: Soft black, Soft white, Midnight blue, Sunset, Forest, Ocean, Rose, Neon, Cosy cabin, Cosy summer pastel, Celestial and Pastel goth" width="760"></p>
 
@@ -104,7 +104,7 @@ Chat redeems **Lock the Bar** and the bar freezes. While it is locked nothing fi
 
 Subs, cheers and donations are the way out: **25 points' worth piled up against a lock breaks it** (five tier 1 subs, 1,250 bits or 12.50 in donations). The line under the bar keeps score while they land, such as `3 subs / 750 bits / £7.50 to break`. The lock only absorbs what it needed, and the rest carries on onto the bar. Channel points cannot break a lock, because a lock that anything could get through would not be worth buying.
 
-The length comes from the reward's name. `Lock the Bar (2 mins)` locks for two minutes whatever it costs, so you can price the rewards however suits the channel. The name is matched on its start, any decoration in front of it is ignored, and the time can be written as `2 min`, `2 mins`, `5 minutes`, `30 sec`, `90s` or `1m30s`. When the name has no time, the price is used instead at a set number of points per minute, and a bare number such as `Lock the Bar 2` is deliberately not trusted.
+The length comes from the reward's name. `Lock the Bar (2 mins)` locks for two minutes whatever it costs, so you can price the rewards however suits the channel. The name is matched on its start, any decoration in front of it is ignored, and the time can be written as `2 min`, `2 mins`, `5 minutes`, `30 sec`, `90s` or `1m30s`. When the name has no time, the price is used instead at a set number of points per minute, and a bare number such as `Lock the Bar 2` is ignored, since it could be anything.
 
 Locks stack, so a second one adds to the first. A single lock is capped at 10 minutes and the running total at 20, so chat cannot keep the bar locked indefinitely. A moderator's lock ignores those caps.
 
@@ -126,7 +126,7 @@ On the first bar the pot target is 25 points, so five tier 1 subs save a bar tha
 
 - **Five Save the Run redeems save the run on any bar.** This is the one thing that does not grow with each reset, so channel points keep mattering on a big bar. Each redeem also adds to the pot, and whichever arrives first, the fifth redeem or the pot target, saves the run.
 - **Subs, cheers and donations add five seconds** back onto the clock as well as chipping in. A gift bomb earns the five seconds once.
-- **Subs do not count for the first ten seconds** of the window, so someone who subscribed a moment before the bar filled, or the overflow behind a gift bomb, cannot quietly save a run somebody was trying to end. Cheers, donations and redeems count straight away.
+- **Subs do not count for the first ten seconds** of the window, so someone who subscribed a moment before the bar filled, or the overflow behind a gift bomb, cannot save a run somebody was trying to end. Cheers, donations and redeems count straight away.
 - **The reward can be the only way.** Untick the setting that lets subs, cheers and donations help, and only the redeem saves the run. The save bar then counts redeems, such as `3 / 5 redeems`.
 - **A lock bought in the window is ignored,** since locking a full bar is not worth paying for.
 
@@ -173,7 +173,7 @@ Channel point rewards have to be created by hand on Twitch, in the Creator Dashb
 
 An overlay widget can ignore a redemption but cannot refund one, so on streams where the bar is not in play, switch the rewards off on Twitch as well as running `!baroff`.
 
-**A caveat worth knowing before the first stream.** StreamElements has not documented channel point redemptions for custom widgets. The widget is written against the shape a working community widget produces, with the title, cost and username on `event.data` and a fallback to the raw Twitch payload underneath. So the **Log every event to the browser console** setting is on by default. Take one real redeem of each reward on a quiet stream, open the browser source console, look for the `[rage-bar]` lines, and turn the setting off once you can see the title and cost coming through. Subs, bits and donations use documented events and are not in doubt.
+**Before the first stream.** StreamElements has not documented channel point redemptions for custom widgets. The widget is written against the shape a working community widget produces, with the title, cost and username on `event.data` and a fallback to the raw Twitch payload underneath. So the **Log every event to the browser console** setting is on by default. Take one real redeem of each reward on a quiet stream, open the browser source console, look for the `[rage-bar]` lines, and turn the setting off once you can see the title and cost coming through. Subs, bits and donations use documented events and are not in doubt.
 
 ## Chat commands
 
@@ -238,7 +238,7 @@ A browser that refuses to autoplay audio is caught and ignored. The **Manual con
 
 ## When the browser source is not running
 
-If OBS is closed during the save window and comes back later, the bar returns **still full, with a fresh window and whatever chat had already chipped in**, so a run nobody paid for is never quietly thrown away. If it is stale, `!barreset` clears it.
+If OBS is closed during the save window and comes back later, the bar returns **still full, with a fresh window and whatever chat had already chipped in**, so a run nobody paid for is not thrown away. If it is stale, `!barreset` clears it.
 
 If two copies of the widget run at once, which happens when the StreamElements overlay editor is left open beside OBS, they answer the same events and write to the same saved state. The second to load says so in the browser source console. Close one.
 
@@ -251,7 +251,7 @@ npm run dev
 # then open http://localhost:8000/dev/
 ```
 
-The harness stands in for StreamElements: it sends subs, gift bombs, cheers, tips and channel point redemptions, types chat commands, and shows what would be saved. Its **Every setting** section is generated from `widget/fields.json`, so it offers exactly what StreamElements will, each sound setting has a **Use a test beep** button, and the **Manual controls** group is the safety net to trust on a live stream. Fill the bar is how to rehearse the save window before anyone is watching. The local dev page also shows a Ko-fi support button in the corner. That button belongs to the harness only and is not part of the widget, so it never appears on stream.
+The harness stands in for StreamElements: it sends subs, gift bombs, cheers, tips and channel point redemptions, types chat commands, and shows what would be saved. Its **Every setting** section is generated from `widget/fields.json`, so it offers exactly what StreamElements will, each sound setting has a **Use a test beep** button, and the **Manual controls** group is the fallback on a live stream. Fill the bar is how to rehearse the save window before anyone is watching. The local dev page also shows a Ko-fi support button in the corner. That button belongs to the harness only and is not part of the widget, so it never appears on stream.
 
 At the top of the harness, **Look and export** switches the style preset on the live widget, and can download or copy a `fields.json` with your current settings as its defaults. Paste that into the Fields tab of a new custom widget in StreamElements and it starts out looking the way it does here.
 
@@ -287,7 +287,7 @@ docs/     screenshots used in this README
 - Floating texts queue five deep and then drop the oldest, so in a very busy minute some names will not get their moment on screen.
 - The bar persists across streams, not just within one. Nothing resets it between sessions except the reset commands.
 
-The widget uses the StreamElements events `onWidgetLoad`, `onEventReceived` (`subscriber-latest`, `cheer-latest`, `tip-latest`, `message`, `event` for channel points, `widget-button`) and `SE_API.store`. The JavaScript is deliberately ES5 style so it can be pasted straight into the StreamElements editor.
+The widget uses the StreamElements events `onWidgetLoad`, `onEventReceived` (`subscriber-latest`, `cheer-latest`, `tip-latest`, `message`, `event` for channel points, `widget-button`) and `SE_API.store`. The JavaScript is plain ES5, so it can be pasted straight into the StreamElements editor.
 
 ## Support
 
@@ -295,7 +295,7 @@ If this saves you time, you can support its development on Ko-fi:
 
 [![Support on Ko-fi](https://img.shields.io/badge/Ko--fi-Support%20me-ff38b8?logo=ko-fi&logoColor=white)](https://ko-fi.com/journeyingjordan)
 
-Thank you, it is genuinely appreciated.
+Thanks for using it.
 
 ## Contributing
 
