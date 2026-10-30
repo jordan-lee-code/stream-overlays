@@ -17,7 +17,7 @@ It is a single self-contained widget in plain JavaScript, with no dependencies a
 - Wording: the titles, how each total reads, and the currency symbol are settings.
 - Pops: a row pops when its total changes, and first place can be highlighted.
 - Sounds: optional sounds when a total changes and when someone takes first place.
-- Customisable: around 60 settings cover the boards, wording, rows, shape, outline, colours, fonts, sounds and animation.
+- Customisable: around 50 settings cover the boards, wording, rows, shape, outline, colours, fonts, sounds and animation.
 - Saved: totals survive a browser-source refresh, and a tie keeps whoever got there first.
 - Tests and a dev harness: a local harness and an automated test script, so nothing needs a live stream.
 
