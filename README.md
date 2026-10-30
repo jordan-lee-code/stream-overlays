@@ -18,7 +18,7 @@ It is one widget with no dependencies and nothing to install. The sub goals are 
 - Lock and pause: pause the clock, or lock it so new time is banked while you decide what to do.
 - Chat control: add, subtract, set, pause, resume, lock, power up and more, from chat, for the broadcaster or moderators.
 - Sub goals underneath: the same goals as `!incentive add 15 chat confessions`, filling as subs and bits land, in the same panel style.
-- Fourteen style presets: one setting styles the clock and the goals together, and the same fourteen presets are in every overlay in this set.
+- Twenty-two style presets: one setting styles the clock and the goals together, and the same twenty-two presets are in every overlay in this set.
 - Customisable: over 170 settings cover values, commands, sizes, colours, fonts, sounds and animation.
 - Saved: the clock, the cap, banked time, power-ups and lock all survive a browser-source refresh, and a refresh while running keeps counting through the gap.
 - Tests and a dev harness: a local harness with a time machine and an automated test script, so a 200 hour subathon can be tried in a minute.
@@ -35,9 +35,9 @@ It is one widget with no dependencies and nothing to install. The sub goals are 
 
 ## Style presets
 
-One setting picks the look, for the clock and the goals together. The same fourteen presets, with the same colours, are in every overlay in this set, so overlays from this set match whichever you choose. This is how each one looks here.
+One setting picks the look, for the clock and the goals together. The same twenty-two presets, with the same colours, are in every overlay in this set, so overlays from this set match whichever you choose. This is how each one looks here.
 
-<p><img src="docs/presets.png" alt="A grid of the clock and goals in each of the fourteen style presets: Soft black, Soft white, Midnight blue, Sunset, Forest, Ocean, Rose, Neon, Cosy cabin, Cosy summer pastel, Celestial, Pastel goth, Pastel pink and Fae green" width="760"></p>
+<p><img src="docs/presets.png" alt="A grid of the clock and goals in each of the twenty-two style presets: Soft black, Soft white, Midnight blue, Sunset, Forest, Ocean, Rose, Neon, Cosy cabin, Cosy summer pastel, Celestial, Pastel goth, Pastel pink, Fae green, Rainbow pride, Progress pride, Trans pride, Bi pride, Pan pride, Non-binary pride, Lesbian pride and Ace pride" width="760"></p>
 
 | Preset | Look |
 | --- | --- |
@@ -55,6 +55,16 @@ One setting picks the look, for the clock and the goals together. The same fourt
 | Pastel goth | Charcoal and lilac, in Quicksand. |
 | Pastel pink | Soft blush pink with rose, in Fredoka. |
 | Fae green | Mossy green with a firefly lime accent, in Almendra. |
+| Rainbow pride | Dark plum with the six rainbow stripes, in Fredoka. |
+| Progress pride | The six rainbow stripes with the chevron's pink and light blue. |
+| Trans pride | Dark blue with light blue, pink and white. |
+| Bi pride | Dark violet with magenta, purple and blue. |
+| Pan pride | Dark indigo with pink, yellow and light blue. |
+| Non-binary pride | Charcoal with yellow, white, purple and black. |
+| Lesbian pride | Dark wine with the orange to pink stripes. |
+| Ace pride | Near black with grey, white and purple. |
+
+The last eight are pride presets, built from the stripes of the rainbow, progress, trans, bi, pan, non-binary, lesbian and ace flags. A bar is striped like the flag where an overlay has one, and the slices of a wheel and the options of a poll take their colours from the stripes in order. The colours follow each flag's published design, and the progress flag shows its six rainbow stripes, because its chevron is a separate shape.
 
 Choose **Custom** to use the colour pickers and font instead. They are ignored while a preset is chosen.
 
@@ -210,7 +220,7 @@ A StreamElements widget can read chat but cannot write to it, so the clock canno
 
 ## Related overlays
 
-These overlays share the same default look and the same fourteen style presets, so they sit together on one stream.
+These overlays share the same default look and the same twenty-two style presets, so they sit together on one stream.
 
 - [Sub Goals Overlay](https://github.com/jordan-lee-code/sub-goals-overlay): sub and bits goals that fill as chat reaches them.
 - [Spin Wheel Overlay](https://github.com/jordan-lee-code/spin-wheel-overlay): a wheel for giveaways, raffles and forfeits.

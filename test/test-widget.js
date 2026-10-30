@@ -463,7 +463,7 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
 
   console.log("\n[style presets, shared with the other overlays]");
   const opts = fields.themePreset.options, keys = Object.keys(opts);
-  ok(keys.length === Object.keys(expectedPresets).length + 1 && keys[keys.length - 1] === "custom", "the dropdown has the fourteen shared presets and Custom (" + keys.length + ")");
+  ok(keys.length === Object.keys(expectedPresets).length + 1 && keys[keys.length - 1] === "custom", "the dropdown has the twenty-two shared presets and Custom (" + keys.length + ")");
   ok(fields.themePreset.value === "glass", "Soft black is the default");
   let allMatch = true;
   for (const key of Object.keys(expectedPresets)) {

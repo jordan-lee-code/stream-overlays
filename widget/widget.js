@@ -209,7 +209,7 @@
 
   var ALIGN = { top: "flex-start", middle: "center", bottom: "flex-end" };
 
-  /* Style presets. The same fourteen, with the same colours, in every overlay in this
+  /* Style presets. The same twenty-two, with the same colours, in every overlay in this
      set, generated from one table so they cannot drift apart, so any preset looks
      like one family across a whole stream. The default, Soft black, is a see-through
      black panel with white text. Custom uses the colour pickers instead. */
@@ -227,24 +227,40 @@
     celestial: { panel: "#2E1A47", text: "#F3ECFF", accent: "#E8C06B", track: "rgba(255, 255, 255, 0.18)", glow: "#E8C06B", font: "Cinzel" },
     pastelgoth: { panel: "#3A3340", text: "#F2E9F0", accent: "#C8B6E2", track: "rgba(255, 255, 255, 0.18)", glow: "#C8B6E2", font: "Quicksand" },
     pastelpink: { panel: "#FFE3EC", text: "#6A2E4B", accent: "#D95C8A", track: "rgba(106, 46, 75, 0.14)", glow: "#D95C8A", font: "Fredoka" },
-    faegreen: { panel: "#2C4A36", text: "#EEF5DA", accent: "#C9E265", track: "rgba(238, 245, 218, 0.2)", glow: "#C9E265", font: "Almendra" }
+    faegreen: { panel: "#2C4A36", text: "#EEF5DA", accent: "#C9E265", track: "rgba(238, 245, 218, 0.2)", glow: "#C9E265", font: "Almendra" },
+    pride: { panel: "rgba(20, 16, 34, 0.8)", text: "#FFFFFF", accent: "#FFEE00", track: "rgba(255, 255, 255, 0.2)", glow: "#FFEE00", font: "Fredoka", flag: ["#E50000", "#FF8D00", "#FFEE00", "#028121", "#004CFF", "#770088"] },
+    progress: { panel: "rgba(22, 16, 30, 0.8)", text: "#FFFFFF", accent: "#5BCEFA", track: "rgba(255, 255, 255, 0.2)", glow: "#5BCEFA", font: "Fredoka", flag: ["#E50000", "#FF8D00", "#FFEE00", "#028121", "#004CFF", "#770088"] },
+    trans: { panel: "rgba(18, 28, 44, 0.82)", text: "#FFFFFF", accent: "#F5A9B8", track: "rgba(255, 255, 255, 0.2)", glow: "#F5A9B8", font: "Fredoka", flag: ["#5BCEFA", "#F5A9B8", "#FFFFFF", "#F5A9B8", "#5BCEFA"] },
+    bi: { panel: "rgba(30, 14, 36, 0.82)", text: "#FFFFFF", accent: "#E0559F", track: "rgba(255, 255, 255, 0.2)", glow: "#E0559F", font: "Fredoka", flag: ["#D60270", "#D60270", "#9B4F96", "#0038A8", "#0038A8"] },
+    pan: { panel: "rgba(24, 20, 40, 0.82)", text: "#FFFFFF", accent: "#FFD800", track: "rgba(255, 255, 255, 0.2)", glow: "#FFD800", font: "Fredoka", flag: ["#FF218C", "#FFD800", "#21B1FF"] },
+    enby: { panel: "rgba(24, 24, 28, 0.86)", text: "#FFFFFF", accent: "#FFF433", track: "rgba(255, 255, 255, 0.2)", glow: "#FFF433", font: "Fredoka", flag: ["#FFF433", "#FFFFFF", "#9B59D0", "#2D2D2D"] },
+    lesbian: { panel: "rgba(40, 16, 20, 0.82)", text: "#FFFFFF", accent: "#FF9A56", track: "rgba(255, 255, 255, 0.2)", glow: "#FF9A56", font: "Fredoka", flag: ["#D52D00", "#EF7627", "#FF9A56", "#FFFFFF", "#D162A4", "#B55690", "#A30262"] },
+    ace: { panel: "rgba(16, 16, 22, 0.86)", text: "#F1F1F1", accent: "#B075C9", track: "rgba(255, 255, 255, 0.2)", glow: "#B075C9", font: "Fredoka", flag: ["#000000", "#A3A3A3", "#FFFFFF", "#800080"] }
   };
 
   // The colours the panel is actually drawn with: a preset's own, or the pickers'
   // when the preset is Custom.
+  // A flag is a list of stripes, top to bottom. A bar can wear it as horizontal bands.
+  function flagGradient(stripes) {
+    var n = stripes.length, parts = [];
+    for (var i = 0; i < n; i++) parts.push(stripes[i] + " " + (i * 100 / n) + "% " + ((i + 1) * 100 / n) + "%");
+    return "linear-gradient(180deg, " + parts.join(", ") + ")";
+  }
+
   function themeColours() {
     var L = cfg.look;
     if (cfg.themePreset === "custom") {
       return {
         panel: rgba(L.panel, L.opacity), text: L.text, waiting: L.waiting, done: L.done,
         title: L.titleColor, total: L.totalColor, thanks: L.thanksColor, accent: L.accent,
-        track: rgba(L.track, L.trackOpacity), glow: rgba(L.glow, 0.7), borderC: L.borderC, font: L.font
+        track: rgba(L.track, L.trackOpacity), glow: rgba(L.glow, 0.7), borderC: L.borderC, font: L.font, flag: ""
       };
     }
     var P = PRESETS[cfg.themePreset] || PRESETS.glass;
     return {
       panel: P.panel, text: P.text, waiting: P.text, done: P.text, title: P.text, total: P.text,
-      thanks: P.text, accent: P.accent, track: P.track, glow: rgba(P.glow, 0.7), borderC: P.accent, font: P.font
+      thanks: P.text, accent: P.accent, track: P.track, glow: rgba(P.glow, 0.7), borderC: P.accent, font: P.font,
+      flag: P.flag ? flagGradient(P.flag) : ""
     };
   }
 
@@ -286,6 +302,7 @@
     set("--total-font", stack(L.totalFont));
 
     set("--accent", T.accent);
+    set("--flag", T.flag || T.accent);
     set("--track", T.track);
     set("--glow", T.glow);
     set("--thanks-scale", String(L.thanksScale));
@@ -1171,7 +1188,15 @@
     celestial: { panel: "#2E1A47", text: "#F3ECFF", accent: "#E8C06B", track: "rgba(255, 255, 255, 0.18)", alarm: "#B5495B", font: "Cinzel" },
     pastelgoth: { panel: "#3A3340", text: "#F2E9F0", accent: "#C8B6E2", track: "rgba(255, 255, 255, 0.18)", alarm: "#C96A8E", font: "Quicksand" },
     pastelpink: { panel: "#FFE3EC", text: "#6A2E4B", accent: "#D95C8A", track: "rgba(106, 46, 75, 0.14)", alarm: "#D6456F", font: "Fredoka" },
-    faegreen: { panel: "#2C4A36", text: "#EEF5DA", accent: "#C9E265", track: "rgba(238, 245, 218, 0.2)", alarm: "#E0805A", font: "Almendra" }
+    faegreen: { panel: "#2C4A36", text: "#EEF5DA", accent: "#C9E265", track: "rgba(238, 245, 218, 0.2)", alarm: "#E0805A", font: "Almendra" },
+    pride: { panel: "rgba(20, 16, 34, 0.8)", text: "#FFFFFF", accent: "#FFEE00", track: "rgba(255, 255, 255, 0.2)", alarm: "#FF5C5C", font: "Fredoka", flag: ["#E50000", "#FF8D00", "#FFEE00", "#028121", "#004CFF", "#770088"] },
+    progress: { panel: "rgba(22, 16, 30, 0.8)", text: "#FFFFFF", accent: "#5BCEFA", track: "rgba(255, 255, 255, 0.2)", alarm: "#FF5C5C", font: "Fredoka", flag: ["#E50000", "#FF8D00", "#FFEE00", "#028121", "#004CFF", "#770088"] },
+    trans: { panel: "rgba(18, 28, 44, 0.82)", text: "#FFFFFF", accent: "#F5A9B8", track: "rgba(255, 255, 255, 0.2)", alarm: "#FF5C5C", font: "Fredoka", flag: ["#5BCEFA", "#F5A9B8", "#FFFFFF", "#F5A9B8", "#5BCEFA"] },
+    bi: { panel: "rgba(30, 14, 36, 0.82)", text: "#FFFFFF", accent: "#E0559F", track: "rgba(255, 255, 255, 0.2)", alarm: "#FF5C5C", font: "Fredoka", flag: ["#D60270", "#D60270", "#9B4F96", "#0038A8", "#0038A8"] },
+    pan: { panel: "rgba(24, 20, 40, 0.82)", text: "#FFFFFF", accent: "#FFD800", track: "rgba(255, 255, 255, 0.2)", alarm: "#FF5C5C", font: "Fredoka", flag: ["#FF218C", "#FFD800", "#21B1FF"] },
+    enby: { panel: "rgba(24, 24, 28, 0.86)", text: "#FFFFFF", accent: "#FFF433", track: "rgba(255, 255, 255, 0.2)", alarm: "#FF5C5C", font: "Fredoka", flag: ["#FFF433", "#FFFFFF", "#9B59D0", "#2D2D2D"] },
+    lesbian: { panel: "rgba(40, 16, 20, 0.82)", text: "#FFFFFF", accent: "#FF9A56", track: "rgba(255, 255, 255, 0.2)", alarm: "#FF5C5C", font: "Fredoka", flag: ["#D52D00", "#EF7627", "#FF9A56", "#FFFFFF", "#D162A4", "#B55690", "#A30262"] },
+    ace: { panel: "rgba(16, 16, 22, 0.86)", text: "#F1F1F1", accent: "#B075C9", track: "rgba(255, 255, 255, 0.2)", alarm: "#FF5C5C", font: "Fredoka", flag: ["#000000", "#A3A3A3", "#FFFFFF", "#800080"] }
   };
 
   var el = {};
