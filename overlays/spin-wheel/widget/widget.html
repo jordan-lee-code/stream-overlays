@@ -1,0 +1,38 @@
+<!-- Copyright (c) 2026 Jordan Lee (https://ko-fi.com/journeyingjordan). Released under the MIT licence: this notice must be kept in copies and substantial portions of the code. See LICENSE. -->
+<div id="wheel-app" class="mode-giveaway state-closed">
+  <div id="entry-toast" class="entry-toast" hidden></div>
+  <div id="lifelines" class="lifelines" hidden>Lifelines ♥♥♥♥</div>
+
+  <div class="wheel-stage">
+    <div class="wheel-clip">
+      <canvas id="wheel-canvas" width="620" height="620"></canvas>
+    </div>
+    <div id="wheel-pointer" class="wheel-pointer" aria-hidden="true"></div>
+    <div id="wheel-hub" class="wheel-hub" aria-hidden="true"></div>
+    <div id="wheel-empty" class="wheel-empty">
+      <span id="idle-message" class="idle-message">Type !spintowin to enter</span>
+    </div>
+  </div>
+
+  <div class="status-bar">
+    <span id="mode-badge" class="pill mode-badge">Raffle</span>
+    <span id="entry-count" class="pill entry-count">0 entries</span>
+    <span id="open-badge" class="pill open-badge">Closed</span>
+    <span id="entry-timer" class="pill entry-timer" hidden>Entries close in 0s</span>
+  </div>
+
+  <div id="goal-wrap" class="goal-wrap" hidden>
+    <div class="goal-label"><span id="goal-text">Goal</span></div>
+    <div class="goal-track"><div id="goal-fill" class="goal-fill"></div></div>
+  </div>
+
+  <div id="winner-overlay" class="winner-overlay" hidden>
+    <div class="winner-card">
+      <div id="winner-eyebrow" class="winner-eyebrow">Winner</div>
+      <div id="winner-name" class="winner-name">…</div>
+      <div id="winner-sub" class="winner-sub"></div>
+    </div>
+  </div>
+
+  <canvas id="confetti-canvas" class="confetti-canvas" width="900" height="900" aria-hidden="true"></canvas>
+</div>
