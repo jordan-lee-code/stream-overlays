@@ -911,6 +911,14 @@
       "pastelgoth": "Pastel goth",
       "pastelpink": "Pastel pink",
       "faegreen": "Fae green",
+      "pride": "Rainbow pride",
+      "progress": "Progress pride",
+      "trans": "Trans pride",
+      "bi": "Bi pride",
+      "pan": "Pan pride",
+      "enby": "Non-binary pride",
+      "lesbian": "Lesbian pride",
+      "ace": "Ace pride",
       "custom": "Custom (use the colours below)"
     },
     "group": "Theme"

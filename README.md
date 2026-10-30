@@ -29,15 +29,15 @@ It started as a raffle and grew into a wheel that also runs forfeit spins, weigh
 
 <p><img src="docs/forfeits.png" alt="A full circle wheel with six forfeits in shades of white and grey" width="420"></p>
 
-**Your own look.** Every part is a setting. This one uses custom slice colours, a thicker rim, white dividers, rounder pills and a pink theme. You can also pick any of the fourteen [style presets](#style-presets) with one setting.
+**Your own look.** Every part is a setting. This one uses custom slice colours, a thicker rim, white dividers, rounder pills and a pink theme. You can also pick any of the twenty-two [style presets](#style-presets) with one setting.
 
 <p><img src="docs/custom.png" alt="A full circle wheel with pastel slices, a pink rim and pointer" width="420"></p>
 
 ## Style presets
 
-One setting picks the look. The same fourteen presets, with the same colours, are in every overlay in this set, so overlays from this set match whichever you choose. This is how each one looks in this overlay.
+One setting picks the look. The same twenty-two presets, with the same colours, are in every overlay in this set, so overlays from this set match whichever you choose. This is how each one looks in this overlay.
 
-<p><img src="docs/presets.png" alt="A grid of this overlay in each of the fourteen style presets: Soft black, Soft white, Midnight blue, Sunset, Forest, Ocean, Rose, Neon, Cosy cabin, Cosy summer pastel, Celestial, Pastel goth, Pastel pink and Fae green" width="760"></p>
+<p><img src="docs/presets.png" alt="A grid of this overlay in each of the twenty-two style presets: Soft black, Soft white, Midnight blue, Sunset, Forest, Ocean, Rose, Neon, Cosy cabin, Cosy summer pastel, Celestial, Pastel goth, Pastel pink, Fae green, Rainbow pride, Progress pride, Trans pride, Bi pride, Pan pride, Non-binary pride, Lesbian pride and Ace pride" width="760"></p>
 
 | Preset | Look |
 | --- | --- |
@@ -55,6 +55,16 @@ One setting picks the look. The same fourteen presets, with the same colours, ar
 | Pastel goth | Charcoal and lilac, in Quicksand. |
 | Pastel pink | Soft blush pink with rose, in Fredoka. |
 | Fae green | Mossy green with a firefly lime accent, in Almendra. |
+| Rainbow pride | Dark plum with the six rainbow stripes, in Fredoka. |
+| Progress pride | The six rainbow stripes with the chevron's pink and light blue. |
+| Trans pride | Dark blue with light blue, pink and white. |
+| Bi pride | Dark violet with magenta, purple and blue. |
+| Pan pride | Dark indigo with pink, yellow and light blue. |
+| Non-binary pride | Charcoal with yellow, white, purple and black. |
+| Lesbian pride | Dark wine with the orange to pink stripes. |
+| Ace pride | Near black with grey, white and purple. |
+
+The last eight are pride presets, built from the stripes of the rainbow, progress, trans, bi, pan, non-binary, lesbian and ace flags. A bar is striped like the flag where an overlay has one, and the slices of a wheel and the options of a poll take their colours from the stripes in order. The colours follow each flag's published design, and the progress flag shows its six rainbow stripes, because its chevron is a separate shape.
 
 Choose **Custom** to use the colour pickers and font instead. They are ignored while a preset is chosen.
 
@@ -110,7 +120,7 @@ Chat submits questions with `!spinask`, and the wheel draws one that stays on sc
 
 The default look is *Soft black*: see-through black pills and cards, white text in BioRhyme, and slices in shades of white and grey. In the **Theme** group you can:
 
-- Pick a **style preset**: one of the fourteen shared presets (see [Style presets](#style-presets)). A preset sets the whole palette and font at once, and colours every part (pills, toast, winner card, goal bar, hub) from its own tones.
+- Pick a **style preset**: one of the twenty-two shared presets (see [Style presets](#style-presets)). A preset sets the whole palette and font at once, and colours every part (pills, toast, winner card, goal bar, hub) from its own tones.
 - Set the style preset to **Custom** to use your own colours and font. There is a colour picker for the panel (with an opacity), the text, the accent, the pointer, each of the six slices, and every individual part: pills, the joined toast, the winner card and its label, the empty-wheel message, the goal bar, the hub, the outline and the names on light and dark slices.
 - Choose the **wheel shape**: *Semicircle* (the default) shows only the top half so it takes about half the height, which suits tucking it along an edge of a scene, and *Full circle* is the classic wheel. Both spin and draw the same way.
 
@@ -131,7 +141,7 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | Wheel | The shape, idle drift, chat-colour slices, the rim and divider thickness, the size and boldness of the names, the hub ring and a shadow. |
 | Pills and cards | The roundness, padding and tilt of pills, the toast and the winner card, the goal bar's thickness, an outline, tails and shadows. |
 | Text | The size and boldness of the empty-wheel message, toast, pills, goal label, winner label, winner name, line under the winner and lifelines. |
-| Theme | One of the fourteen shared style presets (Soft black by default) or Custom colours and font, with a colour for every part. |
+| Theme | One of the twenty-two shared style presets (Soft black by default) or Custom colours and font, with a colour for every part. |
 | Animation | One switch for all animation, the spin and winner display times, and how long the toast, card, goal bar and countdown pulse take. |
 | Sounds | A sound and volume for someone joining, each tick and the winner, plus a master mute. |
 | Manual controls | Buttons for spin, open, close, clear, switch mode, reroll, re-show and the Truth or... controls, and to test each sound. |
@@ -191,7 +201,7 @@ The widget uses the StreamElements events `onWidgetLoad`, `onEventReceived` (`me
 
 ## Related overlays
 
-These overlays share the same default look and the same fourteen style presets, so they sit together on one stream.
+These overlays share the same default look and the same twenty-two style presets, so they sit together on one stream.
 
 - [Sub Goals Overlay](https://github.com/jordan-lee-code/sub-goals-overlay): sub and bits goals that fill as chat reaches them.
 - [Subathon Overlay](https://github.com/jordan-lee-code/subathon-overlay): a subathon clock with a cap, power-ups and sub goals.
