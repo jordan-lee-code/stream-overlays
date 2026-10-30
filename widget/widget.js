@@ -227,12 +227,12 @@
     pastelgoth: { panel: "#3A3340", text: "#F2E9F0", accent: "#C8B6E2", track: "rgba(255, 255, 255, 0.18)", glow: "#C8B6E2", font: "Quicksand" },
     pastelpink: { panel: "#FFE3EC", text: "#6A2E4B", accent: "#D95C8A", track: "rgba(106, 46, 75, 0.14)", glow: "#D95C8A", font: "Fredoka" },
     faegreen: { panel: "#2C4A36", text: "#EEF5DA", accent: "#C9E265", track: "rgba(238, 245, 218, 0.2)", glow: "#C9E265", font: "Almendra" },
-    pride: { panel: "rgba(20, 16, 34, 0.8)", text: "#FFFFFF", accent: "#FFED00", track: "rgba(255, 255, 255, 0.2)", glow: "#FFED00", font: "Fredoka", flag: ["#E40303", "#FF8C00", "#FFED00", "#008026", "#004DFF", "#750787"] },
-    progress: { panel: "rgba(22, 16, 30, 0.8)", text: "#FFFFFF", accent: "#5BCEFA", track: "rgba(255, 255, 255, 0.2)", glow: "#5BCEFA", font: "Fredoka", flag: ["#F5A9B8", "#5BCEFA", "#FFFFFF", "#613915", "#E40303", "#FF8C00", "#FFED00", "#008026", "#004DFF", "#750787"] },
+    pride: { panel: "rgba(20, 16, 34, 0.8)", text: "#FFFFFF", accent: "#FFEE00", track: "rgba(255, 255, 255, 0.2)", glow: "#FFEE00", font: "Fredoka", flag: ["#E50000", "#FF8D00", "#FFEE00", "#028121", "#004CFF", "#770088"] },
+    progress: { panel: "rgba(22, 16, 30, 0.8)", text: "#FFFFFF", accent: "#5BCEFA", track: "rgba(255, 255, 255, 0.2)", glow: "#5BCEFA", font: "Fredoka", flag: ["#E50000", "#FF8D00", "#FFEE00", "#028121", "#004CFF", "#770088"] },
     trans: { panel: "rgba(18, 28, 44, 0.82)", text: "#FFFFFF", accent: "#F5A9B8", track: "rgba(255, 255, 255, 0.2)", glow: "#F5A9B8", font: "Fredoka", flag: ["#5BCEFA", "#F5A9B8", "#FFFFFF", "#F5A9B8", "#5BCEFA"] },
     bi: { panel: "rgba(30, 14, 36, 0.82)", text: "#FFFFFF", accent: "#E0559F", track: "rgba(255, 255, 255, 0.2)", glow: "#E0559F", font: "Fredoka", flag: ["#D60270", "#D60270", "#9B4F96", "#0038A8", "#0038A8"] },
     pan: { panel: "rgba(24, 20, 40, 0.82)", text: "#FFFFFF", accent: "#FFD800", track: "rgba(255, 255, 255, 0.2)", glow: "#FFD800", font: "Fredoka", flag: ["#FF218C", "#FFD800", "#21B1FF"] },
-    enby: { panel: "rgba(24, 24, 28, 0.86)", text: "#FFFFFF", accent: "#FCF434", track: "rgba(255, 255, 255, 0.2)", glow: "#FCF434", font: "Fredoka", flag: ["#FCF434", "#FFFFFF", "#9C59D1", "#2C2C2C"] },
+    enby: { panel: "rgba(24, 24, 28, 0.86)", text: "#FFFFFF", accent: "#FFF433", track: "rgba(255, 255, 255, 0.2)", glow: "#FFF433", font: "Fredoka", flag: ["#FFF433", "#FFFFFF", "#9B59D0", "#2D2D2D"] },
     lesbian: { panel: "rgba(40, 16, 20, 0.82)", text: "#FFFFFF", accent: "#FF9A56", track: "rgba(255, 255, 255, 0.2)", glow: "#FF9A56", font: "Fredoka", flag: ["#D52D00", "#EF7627", "#FF9A56", "#FFFFFF", "#D162A4", "#B55690", "#A30262"] },
     ace: { panel: "rgba(16, 16, 22, 0.86)", text: "#F1F1F1", accent: "#B075C9", track: "rgba(255, 255, 255, 0.2)", glow: "#B075C9", font: "Fredoka", flag: ["#000000", "#A3A3A3", "#FFFFFF", "#800080"] }
   };

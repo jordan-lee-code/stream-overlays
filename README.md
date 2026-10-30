@@ -60,7 +60,7 @@ One setting picks the look. The same twenty-two presets, with the same colours, 
 | Pastel pink | Soft blush pink with rose, in Fredoka. |
 | Fae green | Mossy green with a firefly lime accent, in Almendra. |
 | Rainbow pride | Dark plum with the six rainbow stripes, in Fredoka. |
-| Progress pride | The rainbow plus the pink, light blue, brown and black of the progress flag. |
+| Progress pride | The six rainbow stripes with the chevron's pink and light blue. |
 | Trans pride | Dark blue with light blue, pink and white. |
 | Bi pride | Dark violet with magenta, purple and blue. |
 | Pan pride | Dark indigo with pink, yellow and light blue. |
