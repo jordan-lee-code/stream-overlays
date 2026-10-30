@@ -52,16 +52,16 @@ One setting picks the look. The same twenty-two presets, with the same colours, 
 | Pastel goth | Charcoal and lilac, in Quicksand. |
 | Pastel pink | Soft blush pink with rose, in Fredoka. |
 | Fae green | Mossy green with a firefly lime accent, in Almendra. |
-| Rainbow pride | Dark plum with the six rainbow stripes, in Fredoka. |
-| Progress pride | The six rainbow stripes with the chevron's pink and light blue. |
-| Trans pride | Dark blue with light blue, pink and white. |
-| Bi pride | Dark violet with magenta, purple and blue. |
-| Pan pride | Dark indigo with pink, yellow and light blue. |
-| Non-binary pride | Charcoal with yellow, white, purple and black. |
-| Lesbian pride | Dark wine with the orange to pink stripes. |
-| Ace pride | Near black with grey, white and purple. |
+| Rainbow pride | A soft wash of the six rainbow stripes, in Fredoka. |
+| Progress pride | The same stripes, with the chevron's pink and light blue in the wheel and poll colours. |
+| Trans pride | Light blue, pink and white. |
+| Bi pride | Magenta, purple and blue, with white text. |
+| Pan pride | Pink, yellow and light blue. |
+| Non-binary pride | Yellow, white, purple and black, softened so the text stays readable. |
+| Lesbian pride | The orange to pink stripes. |
+| Ace pride | Black, grey, white and purple, softened so the text stays readable. |
 
-The last eight are pride presets, built from the stripes of the rainbow, progress, trans, bi, pan, non-binary, lesbian and ace flags. A bar is striped like the flag where an overlay has one, and the slices of a wheel and the options of a poll take their colours from the stripes in order. The colours follow each flag's published design, and the progress flag shows its six rainbow stripes, because its chevron is a separate shape.
+The last eight are pride presets, built from the stripes of the rainbow, progress, trans, bi, pan, non-binary, lesbian and ace flags. The card or panel wears the flag as its background, with only as much of a wash over it as the text needs to stay readable, so flags with a black stripe come out softer. A bar is striped like the flag where an overlay has one, and the slices of a wheel and the options of a poll take their colours from the stripes in order. The colours follow each flag's published design, and the progress flag shows its six rainbow stripes, because its chevron is a separate shape.
 
 Choose **Custom** to use the colour pickers and font instead. They are ignored while a preset is chosen.
 

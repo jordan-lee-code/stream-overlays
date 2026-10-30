@@ -80,6 +80,7 @@
   gap: calc(var(--gap) * 1cqmin);
   padding: calc(var(--pad-v) * 1cqmin) calc(var(--pad-h) * 1cqmin);
   background: var(--accent);
+  background-image: var(--box-img, none);
   color: var(--c-count);
   border: var(--border-w) solid var(--c-border);
   border-radius: calc(var(--radius-pct) * 1cqmin);

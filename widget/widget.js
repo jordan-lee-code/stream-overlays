@@ -38,14 +38,14 @@
     pastelgoth: { panel: "#3A3340", strong: "#3A3340", text: "#F2E9F0", accent: "#C8B6E2", font: "Quicksand" },
     pastelpink: { panel: "#FFE3EC", strong: "#FFE3EC", text: "#6A2E4B", accent: "#D95C8A", font: "Fredoka" },
     faegreen: { panel: "#2C4A36", strong: "#2C4A36", text: "#EEF5DA", accent: "#C9E265", font: "Almendra" },
-    pride: { panel: "rgba(20, 16, 34, 0.8)", strong: "rgba(20, 16, 34, 0.92)", text: "#FFFFFF", accent: "#FFEE00", font: "Fredoka" },
-    progress: { panel: "rgba(22, 16, 30, 0.8)", strong: "rgba(22, 16, 30, 0.92)", text: "#FFFFFF", accent: "#5BCEFA", font: "Fredoka" },
-    trans: { panel: "rgba(18, 28, 44, 0.82)", strong: "rgba(18, 28, 44, 0.92)", text: "#FFFFFF", accent: "#F5A9B8", font: "Fredoka" },
-    bi: { panel: "rgba(30, 14, 36, 0.82)", strong: "rgba(30, 14, 36, 0.92)", text: "#FFFFFF", accent: "#E0559F", font: "Fredoka" },
-    pan: { panel: "rgba(24, 20, 40, 0.82)", strong: "rgba(24, 20, 40, 0.92)", text: "#FFFFFF", accent: "#FFD800", font: "Fredoka" },
-    enby: { panel: "rgba(24, 24, 28, 0.86)", strong: "rgba(24, 24, 28, 0.94)", text: "#FFFFFF", accent: "#FFF433", font: "Fredoka" },
-    lesbian: { panel: "rgba(40, 16, 20, 0.82)", strong: "rgba(40, 16, 20, 0.92)", text: "#FFFFFF", accent: "#FF9A56", font: "Fredoka" },
-    ace: { panel: "rgba(16, 16, 22, 0.86)", strong: "rgba(16, 16, 22, 0.94)", text: "#F1F1F1", accent: "#B075C9", font: "Fredoka" }
+    pride: { panel: "rgba(194, 168, 154, 0.9)", strong: "rgba(194, 168, 154, 0.96)", text: "#1A1426", accent: "#1A1426", font: "Fredoka", bgimg: "linear-gradient(rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0.45)), linear-gradient(135deg, #E50000, #FF8D00, #FFEE00, #028121, #004CFF, #770088)" },
+    progress: { panel: "rgba(194, 168, 154, 0.9)", strong: "rgba(194, 168, 154, 0.96)", text: "#1A1426", accent: "#1A1426", font: "Fredoka", bgimg: "linear-gradient(rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0.45)), linear-gradient(135deg, #E50000, #FF8D00, #FFEE00, #028121, #004CFF, #770088)" },
+    trans: { panel: "rgba(185, 201, 225, 0.9)", strong: "rgba(185, 201, 225, 0.96)", text: "#1A1426", accent: "#1A1426", font: "Fredoka", bgimg: "linear-gradient(135deg, #5BCEFA, #F5A9B8, #FFFFFF, #F5A9B8, #5BCEFA)" },
+    bi: { panel: "rgba(117, 39, 142, 0.9)", strong: "rgba(117, 39, 142, 0.96)", text: "#FFFFFF", accent: "#FFFFFF", font: "Fredoka", bgimg: "linear-gradient(135deg, #D60270, #D60270, #9B4F96, #0038A8, #0038A8)" },
+    pan: { panel: "rgba(181, 142, 132, 0.9)", strong: "rgba(181, 142, 132, 0.96)", text: "#1A1426", accent: "#1A1426", font: "Fredoka", bgimg: "linear-gradient(135deg, #FF218C, #FFD800, #21B1FF)" },
+    enby: { panel: "rgba(212, 202, 192, 0.9)", strong: "rgba(212, 202, 192, 0.96)", text: "#1A1426", accent: "#2D2D2D", font: "Fredoka", bgimg: "linear-gradient(rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0.45)), linear-gradient(135deg, #FFF433, #FFFFFF, #9B59D0, #2D2D2D)" },
+    lesbian: { panel: "rgba(232, 167, 169, 0.9)", strong: "rgba(232, 167, 169, 0.96)", text: "#1A1426", accent: "#1A1426", font: "Fredoka", bgimg: "linear-gradient(rgba(255, 255, 255, 0.40), rgba(255, 255, 255, 0.40)), linear-gradient(135deg, #D52D00, #EF7627, #FF9A56, #FFFFFF, #D162A4, #B55690, #A30262)" },
+    ace: { panel: "rgba(202, 187, 202, 0.9)", strong: "rgba(202, 187, 202, 0.96)", text: "#1A1426", accent: "#000000", font: "Fredoka", bgimg: "linear-gradient(rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0.55)), linear-gradient(135deg, #000000, #A3A3A3, #FFFFFF, #800080)" }
   };
   var BASE = PRESETS.glass;
 
@@ -184,7 +184,8 @@
     var p = PRESETS[cfg.themePreset] || BASE;
     return {
       bg: p.text, text: p.text, accent: p.panel, font: p.font,
-      count: p.accent, label: p.text, border: p.accent, lock: p.accent, float: p.accent, floatBg: p.strong
+      count: p.accent, label: p.text, border: p.accent, lock: p.accent, float: p.accent, floatBg: p.strong,
+      bgimg: p.bgimg || ""
     };
   }
 
@@ -194,6 +195,7 @@
     root.style.setProperty("--bg", t.bg);
     root.style.setProperty("--text", t.text);
     root.style.setProperty("--accent", t.accent);
+    root.style.setProperty("--box-img", t.bgimg || "none");
     root.style.setProperty("--font", '"' + t.font + '", "Baloo 2", "Segoe UI", sans-serif');
     root.style.setProperty("--c-count", t.count);
     root.style.setProperty("--c-label", t.label);
