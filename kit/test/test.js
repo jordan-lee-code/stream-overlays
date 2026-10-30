@@ -18,24 +18,24 @@ function test(name, fn) {
 }
 
 console.log("\n[the table]");
-test("there are twenty-two presets with unique keys and labels", () => {
-  assert.strictEqual(K.PRESETS.length, 22);
-  assert.strictEqual(new Set(K.PRESETS.map(x => x.key)).size, 22);
-  assert.strictEqual(new Set(K.PRESETS.map(x => x.label)).size, 22);
+test("there are twenty-one presets with unique keys and labels", () => {
+  assert.strictEqual(K.PRESETS.length, 21);
+  assert.strictEqual(new Set(K.PRESETS.map(x => x.key)).size, 21);
+  assert.strictEqual(new Set(K.PRESETS.map(x => x.label)).size, 21);
 });
 test("Soft black is first and the default", () => assert.strictEqual(K.PRESETS[0].key, "glass"));
 test("the dropdown lists every preset and ends with Custom", () => {
   const keys = Object.keys(K.options());
-  assert.strictEqual(keys.length, 23);
+  assert.strictEqual(keys.length, 22);
   assert.strictEqual(keys[keys.length - 1], "custom");
 });
 test("every preset has eight option colours and a font", () => K.PRESETS.forEach(x => {
   assert.strictEqual(x.segs.length, 8, x.key + " segs");
   assert.ok(x.font, x.key + " font");
 }));
-test("exactly the eight pride presets carry a flag and a background image", () => {
+test("exactly the seven pride presets carry a flag and a background image", () => {
   const flagged = K.PRESETS.filter(x => x.flag).map(x => x.key);
-  assert.deepStrictEqual(flagged, ["pride", "progress", "trans", "bi", "pan", "enby", "lesbian", "ace"]);
+  assert.deepStrictEqual(flagged, ["pride", "trans", "bi", "pan", "enby", "lesbian", "ace"]);
   K.PRESETS.forEach(x => assert.strictEqual(!!x.bgimg, !!x.flag, x.key));
 });
 test("the pride flags are the published stripes", () => {
@@ -44,7 +44,6 @@ test("the pride flags are the published stripes", () => {
   assert.deepStrictEqual(K.BY_KEY.pan.flag, ["#FF218C", "#FFD800", "#21B1FF"]);
   assert.strictEqual(K.BY_KEY.lesbian.flag.length, 7);
   assert.strictEqual(K.BY_KEY.pride.flag.length, 6);
-  assert.deepStrictEqual(K.BY_KEY.progress.flag, K.BY_KEY.pride.flag, "the progress flag's bands are the rainbow");
 });
 
 console.log("\n[contrast]");
@@ -105,8 +104,8 @@ test("sync brings a repo in line, keeps the code around the table, and a second 
   sync(dir);
   const widget = fs.readFileSync(path.join(dir, "widget/widget.js"), "utf8");
   assert.ok(widget.indexOf("faegreen:") !== -1 && widget.indexOf("var after = 1;") !== -1 && widget.indexOf("old: 1") === -1);
-  assert.strictEqual(Object.keys(JSON.parse(fs.readFileSync(path.join(dir, "widget/fields.json"), "utf8")).themePreset.options).length, 23);
-  assert.ok(fs.readFileSync(path.join(dir, "test/test-widget.js"), "utf8").indexOf("=== 23") !== -1);
+  assert.strictEqual(Object.keys(JSON.parse(fs.readFileSync(path.join(dir, "widget/fields.json"), "utf8")).themePreset.options).length, 22);
+  assert.ok(fs.readFileSync(path.join(dir, "test/test-widget.js"), "utf8").indexOf("=== 22") !== -1);
   assert.strictEqual(fs.readFileSync(path.join(dir, "test/mock.js"), "utf8"), fs.readFileSync(path.join(__dirname, "../shared/mock.js"), "utf8"));
   assert.deepStrictEqual(sync(dir, { check: true }).changes, []);
 });

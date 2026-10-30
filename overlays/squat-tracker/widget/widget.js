@@ -19,7 +19,7 @@
 
   var STORE_KEY = "squat_tracker_v1";
 
-  /* Style presets. The same twenty-two, with the same colours, in every overlay in this
+  /* Style presets. The same twenty-one, with the same colours, in every overlay in this
      set, generated from one table so they cannot drift apart, so any preset looks
      like one family across a whole stream. The default, Soft black, is a see-through
      black panel with white text. */
@@ -39,7 +39,6 @@
     pastelpink: { panel: "#FFE3EC", strong: "#FFE3EC", text: "#6A2E4B", accent: "#BF5179", font: "Fredoka" },
     faegreen: { panel: "#2C4A36", strong: "#2C4A36", text: "#EEF5DA", accent: "#C9E265", font: "Almendra" },
     pride: { panel: "rgba(194, 168, 154, 0.9)", strong: "rgba(194, 168, 154, 0.96)", text: "#1A1426", accent: "#1A1426", font: "Fredoka", bgimg: "linear-gradient(rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0.45)), linear-gradient(135deg, #E50000, #FF8D00, #FFEE00, #028121, #004CFF, #770088)" },
-    progress: { panel: "rgba(194, 168, 154, 0.9)", strong: "rgba(194, 168, 154, 0.96)", text: "#1A1426", accent: "#1A1426", font: "Fredoka", bgimg: "linear-gradient(rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0.45)), linear-gradient(135deg, #E50000, #FF8D00, #FFEE00, #028121, #004CFF, #770088)" },
     trans: { panel: "rgba(185, 201, 225, 0.9)", strong: "rgba(185, 201, 225, 0.96)", text: "#1A1426", accent: "#1A1426", font: "Fredoka", bgimg: "linear-gradient(135deg, #5BCEFA, #F5A9B8, #FFFFFF, #F5A9B8, #5BCEFA)" },
     bi: { panel: "rgba(117, 39, 142, 0.9)", strong: "rgba(117, 39, 142, 0.96)", text: "#FFFFFF", accent: "#FFFFFF", font: "Fredoka", bgimg: "linear-gradient(135deg, #D60270, #D60270, #9B4F96, #0038A8, #0038A8)" },
     pan: { panel: "rgba(181, 142, 132, 0.9)", strong: "rgba(181, 142, 132, 0.96)", text: "#1A1426", accent: "#1A1426", font: "Fredoka", bgimg: "linear-gradient(135deg, #FF218C, #FFD800, #21B1FF)" },

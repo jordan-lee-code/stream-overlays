@@ -14,7 +14,7 @@
 
   var STORE_KEY = "spin_wheel_v1";
 
-  /* Style presets. The same twenty-two, with the same colours, in every overlay in this
+  /* Style presets. The same twenty-one, with the same colours, in every overlay in this
      set, generated from one table so they cannot drift apart, so any preset looks
      like one family across a whole stream. The default, Soft black, is a see-through
      black panel with white text. */
@@ -110,14 +110,6 @@
       flag: ["#E50000", "#FF8D00", "#FFEE00", "#028121", "#004CFF", "#770088"],
       bgimg: "linear-gradient(rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0.45)), linear-gradient(135deg, #E50000, #FF8D00, #FFEE00, #028121, #004CFF, #770088)",
       parts: {"pillBg": "rgba(194, 168, 154, 0.9)", "pill": "#1A1426", "toastBg": "rgba(194, 168, 154, 0.96)", "toast": "#1A1426", "cardBg": "rgba(194, 168, 154, 0.96)", "card": "#1A1426", "eyebrowBg": "#1A1426", "eyebrow": "#FFFFFF", "idle": "#1A1426", "goal": "#1A1426", "goalTrack": "rgba(26, 20, 38, 0.34)", "goalFrom": "#E50000", "goalTo": "#004CFF", "hub": "rgba(194, 168, 154, 0.96)", "hubRing": "#1A1426", "spent": "#B3123A", "refused": "#B3123A", "labelDark": "#111111", "labelLight": "#FFFFFF", "divider": "rgba(255, 255, 255, 0.45)", "border": "transparent"}
-    },
-    progress: {
-      bg: "rgba(194, 168, 154, 0.9)", text: "#1A1426", accent: "#1A1426", pointer: "#1A1426",
-      segs: ["#E50000", "#FF8D00", "#FFEE00", "#028121", "#004CFF", "#770088"],
-      font: "Fredoka",
-      flag: ["#E50000", "#FF8D00", "#FFEE00", "#028121", "#004CFF", "#770088"],
-      bgimg: "linear-gradient(rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0.45)), linear-gradient(135deg, #E50000, #FF8D00, #FFEE00, #028121, #004CFF, #770088)",
-      parts: {"pillBg": "rgba(194, 168, 154, 0.9)", "pill": "#1A1426", "toastBg": "rgba(194, 168, 154, 0.96)", "toast": "#1A1426", "cardBg": "rgba(194, 168, 154, 0.96)", "card": "#1A1426", "eyebrowBg": "#1A1426", "eyebrow": "#FFFFFF", "idle": "#1A1426", "goal": "#1A1426", "goalTrack": "rgba(26, 20, 38, 0.34)", "goalFrom": "#F5A9B8", "goalTo": "#5BCEFA", "hub": "rgba(194, 168, 154, 0.96)", "hubRing": "#1A1426", "spent": "#B3123A", "refused": "#B3123A", "labelDark": "#111111", "labelLight": "#FFFFFF", "divider": "rgba(255, 255, 255, 0.45)", "border": "transparent"}
     },
     trans: {
       bg: "rgba(185, 201, 225, 0.9)", text: "#1A1426", accent: "#1A1426", pointer: "#1A1426",

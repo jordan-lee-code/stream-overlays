@@ -19,7 +19,7 @@
 
   var STORE_KEY = "chat_poll_v1";
 
-  /* Style presets. The same twenty-two, with the same colours, in every overlay in this
+  /* Style presets. The same twenty-one, with the same colours, in every overlay in this
      set, generated from one table so they cannot drift apart, so any preset looks
      like one family across a whole stream. The default, Soft black, is a see-through
      black panel with white text. */
@@ -112,13 +112,6 @@
       bg: "rgba(194, 168, 154, 0.9)", text: "#1A1426", accent: "#1A1426", onAccent: "#FFFFFF",
       row: "rgba(0, 0, 0, 0.08)", track: "rgba(26, 20, 38, 0.34)",
       segs: ["#E50000", "#FF8D00", "#FFEE00", "#028121", "#004CFF", "#770088", "#E50000", "#FF8D00"],
-      font: "Fredoka",
-      bgimg: "linear-gradient(rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0.45)), linear-gradient(135deg, #E50000, #FF8D00, #FFEE00, #028121, #004CFF, #770088)"
-    },
-    progress: {
-      bg: "rgba(194, 168, 154, 0.9)", text: "#1A1426", accent: "#1A1426", onAccent: "#FFFFFF",
-      row: "rgba(0, 0, 0, 0.08)", track: "rgba(26, 20, 38, 0.34)",
-      segs: ["#E50000", "#FF8D00", "#FFEE00", "#028121", "#004CFF", "#770088", "#F5A9B8", "#5BCEFA"],
       font: "Fredoka",
       bgimg: "linear-gradient(rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0.45)), linear-gradient(135deg, #E50000, #FF8D00, #FFEE00, #028121, #004CFF, #770088)"
     },

@@ -101,7 +101,7 @@ module.exports = function createEnv(root) {
     // the same order, with Custom last. `appId` is the card that carries the --w-* variables.
     async checkPresets(appId) {
       const opts = fields.themePreset.options, keys = Object.keys(opts);
-      env.ok(keys.length === Object.keys(expectedPresets).length + 1 && keys[keys.length - 1] === "custom", "the dropdown has the twenty-two shared presets and Custom (" + keys.length + ")");
+      env.ok(keys.length === Object.keys(expectedPresets).length + 1 && keys[keys.length - 1] === "custom", "the dropdown has the twenty-one shared presets and Custom (" + keys.length + ")");
       env.ok(fields.themePreset.value === "glass", "Soft black is the default");
       let all = true;
       for (const key of Object.keys(expectedPresets)) {

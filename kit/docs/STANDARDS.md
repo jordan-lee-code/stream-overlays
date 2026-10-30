@@ -4,7 +4,7 @@ These are the patterns the overlays in this set follow, written down so a new ov
 
 ## Style presets
 
-Every overlay offers the same twenty-two presets, with the same colours and fonts, in the same order, under a setting called `themePreset` whose default is `glass` (Soft black). The last choice is `custom`, which uses the overlay's own colour pickers and font instead. The colour pickers are ignored for every other choice.
+Every overlay offers the same twenty-one presets, with the same colours and fonts, in the same order, under a setting called `themePreset` whose default is `glass` (Soft black). The last choice is `custom`, which uses the overlay's own colour pickers and font instead. The colour pickers are ignored for every other choice.
 
 The table lives in [`src/presets.js`](../src/presets.js). Each overlay holds a generated copy in its widget, in the shape its own code reads, and the sync tool keeps the two in step.
 
@@ -21,13 +21,12 @@ A see-through panel sits over whatever is on stream, which is not known, so it i
 
 ### Pride presets
 
-The eight pride presets (rainbow, progress, trans, bi, pan, non-binary, lesbian and ace) are designed from the stripes of their flags, taken from each flag's published design.
+The seven pride presets (rainbow, trans, bi, pan, non-binary, lesbian and ace) are designed from the stripes of their flags, taken from each flag's published design.
 
 - The panel's background is the flag as a soft gradient, with a scrim over it. The scrim is the weakest one that keeps the text at 4.6 or better against every stripe, worked out in `designPanel`, in white or dark text as the flag needs. Trans, bi and pan need no scrim. A flag with a black stripe, such as ace and non-binary, needs a lighter wash.
 - A plain solid colour stays as the fallback, so anything that only understands a colour is unaffected.
 - A bar is striped like the flag, with a thin dark outline so a pale stripe keeps its edge, and only the pride presets get either.
 - A wheel's slices and a poll's options take their colours from the stripes in order.
-- The progress flag's bars are its six rainbow stripes, because its chevron is a separate shape and not stripes.
 
 ## Settings
 

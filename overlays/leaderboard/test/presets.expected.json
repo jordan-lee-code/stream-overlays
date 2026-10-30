@@ -141,22 +141,6 @@
     ],
     "bgimg": "linear-gradient(rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0.45)), linear-gradient(135deg, #E50000, #FF8D00, #FFEE00, #028121, #004CFF, #770088)"
   },
-  "progress": {
-    "label": "Progress pride",
-    "panel": "rgba(194, 168, 154, 0.9)",
-    "text": "#1A1426",
-    "accent": "#1A1426",
-    "font": "Fredoka",
-    "flag": [
-      "#E50000",
-      "#FF8D00",
-      "#FFEE00",
-      "#028121",
-      "#004CFF",
-      "#770088"
-    ],
-    "bgimg": "linear-gradient(rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0.45)), linear-gradient(135deg, #E50000, #FF8D00, #FFEE00, #028121, #004CFF, #770088)"
-  },
   "trans": {
     "label": "Trans pride",
     "panel": "rgba(185, 201, 225, 0.9)",

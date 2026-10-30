@@ -26,15 +26,15 @@ It is a single self-contained widget in plain JavaScript, with no dependencies a
 
 <p><img src="docs/locked.png" alt="The sticker with a small padlock in its corner" width="340"></p>
 
-**Your own look.** Every part is a setting. This one uses custom colours, an outline, rounder corners, a tilt, a lighter caption and a tail. You can also pick any of the twenty-two [style presets](#style-presets) with one setting.
+**Your own look.** Every part is a setting. This one uses custom colours, an outline, rounder corners, a tilt, a lighter caption and a tail. You can also pick any of the twenty-one [style presets](#style-presets) with one setting.
 
 <p><img src="docs/custom.png" alt="A pink sticker with a light outline, a tilt and the caption squats today" width="340"></p>
 
 ## Style presets
 
-One setting picks the look. The same twenty-two presets, with the same colours, are in every overlay in this set, so overlays from this set match whichever you choose. This is how each one looks in this overlay. The presets are defined once, in the [kit](../../kit), and a test keeps this overlay in step with it.
+One setting picks the look. The same twenty-one presets, with the same colours, are in every overlay in this set, so overlays from this set match whichever you choose. This is how each one looks in this overlay. The presets are defined once, in the [kit](../../kit), and a test keeps this overlay in step with it.
 
-<p><img src="docs/presets.png" alt="A grid of this overlay in each of the twenty-two style presets: Soft black, Soft white, Midnight blue, Sunset, Forest, Ocean, Rose, Neon, Cosy cabin, Cosy summer pastel, Celestial, Pastel goth, Pastel pink, Fae green, Rainbow pride, Progress pride, Trans pride, Bi pride, Pan pride, Non-binary pride, Lesbian pride and Ace pride" width="760"></p>
+<p><img src="docs/presets.png" alt="A grid of this overlay in each of the twenty-one style presets: Soft black, Soft white, Midnight blue, Sunset, Forest, Ocean, Rose, Neon, Cosy cabin, Cosy summer pastel, Celestial, Pastel goth, Pastel pink, Fae green, Rainbow pride, Trans pride, Bi pride, Pan pride, Non-binary pride, Lesbian pride and Ace pride" width="760"></p>
 
 | Preset | Look |
 | --- | --- |
@@ -53,7 +53,6 @@ One setting picks the look. The same twenty-two presets, with the same colours, 
 | Pastel pink | Soft blush pink with rose, in Fredoka. |
 | Fae green | Mossy green with a firefly lime accent, in Almendra. |
 | Rainbow pride | A soft wash of the six rainbow stripes, in Fredoka. |
-| Progress pride | The same stripes, with the chevron's pink and light blue in the wheel and poll colours. |
 | Trans pride | Light blue, pink and white. |
 | Bi pride | Magenta, purple and blue, with white text. |
 | Pan pride | Pink, yellow and light blue. |
@@ -61,7 +60,7 @@ One setting picks the look. The same twenty-two presets, with the same colours, 
 | Lesbian pride | The orange to pink stripes. |
 | Ace pride | Black, grey, white and purple, softened so the text stays readable. |
 
-The last eight are pride presets, built from the stripes of the rainbow, progress, trans, bi, pan, non-binary, lesbian and ace flags. The card or panel wears the flag as its background, with only as much of a wash over it as the text needs to stay readable, so flags with a black stripe come out softer. A bar is striped like the flag where an overlay has one, and the slices of a wheel and the options of a poll take their colours from the stripes in order. The colours follow each flag's published design, and the progress flag shows its six rainbow stripes, because its chevron is a separate shape.
+The last seven are pride presets, built from the stripes of the rainbow, trans, bi, pan, non-binary, lesbian and ace flags. The card or panel wears the flag as its background, with only as much of a wash over it as the text needs to stay readable, so flags with a black stripe come out softer. A bar is striped like the flag where an overlay has one, and the slices of a wheel and the options of a poll take their colours from the stripes in order. The colours follow each flag's published design,.
 
 Choose **Custom** to use the colour pickers and font instead. They are ignored while a preset is chosen.
 
@@ -120,7 +119,7 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | Look | A caption under the number, the floating `+N` (its prefix, suffix and how long it stays), the padlock, and the tail. |
 | Sticker | The size of the number, caption and floating text, corner roundness, padding, the gap between number and caption, tilt, an outline and shadows. |
 | Text | The boldness of the number, caption and floating text, and the caption's opacity and letter spacing. |
-| Theme | One of the twenty-two shared style presets (Soft black by default) or Custom colours and font, with separate colours for the box, number, caption, outline, padlock and floating text, and an opacity for the box. |
+| Theme | One of the twenty-one shared style presets (Soft black by default) or Custom colours and font, with separate colours for the box, number, caption, outline, padlock and floating text, and an opacity for the box. |
 | Animation | One switch for all animation, how far the sticker swells when the count changes, and how long that takes. |
 | Sounds | A sound and volume for a gift adding squats, for locking and for unlocking, plus a master mute. |
 | Manual controls | Buttons to simulate a gift, adjust, lock and reset, and to test each sound. |
@@ -172,7 +171,7 @@ The JavaScript is plain ES5, so it can be pasted straight into the StreamElement
 
 ## Related overlays
 
-These overlays share the same default look and the same twenty-two style presets, so they sit together on one stream.
+These overlays share the same default look and the same twenty-one style presets, so they sit together on one stream.
 
 - [Sub Goals Overlay](../sub-goals): sub and bits goals that fill as chat reaches them.
 - [Subathon Overlay](../subathon): a subathon clock with a cap, power-ups and sub goals.

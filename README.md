@@ -1,6 +1,6 @@
 # Stream Overlays
 
-A set of StreamElements custom widgets for Twitch streams. Each is plain JavaScript with no dependencies and nothing to install: you paste its four files into a StreamElements custom widget. They share one design, twenty-two style presets including eight pride flags, so they look like one family on a stream.
+A set of StreamElements custom widgets for Twitch streams. Each is plain JavaScript with no dependencies and nothing to install: you paste its four files into a StreamElements custom widget. They share one design, twenty-one style presets including seven pride flags, so they look like one family on a stream.
 
 | Overlay | What it does |
 | --- | --- |

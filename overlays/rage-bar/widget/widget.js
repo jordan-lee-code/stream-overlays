@@ -27,7 +27,7 @@
      later why the bar went backwards. */
   var INSTANCE = Math.random().toString(36).slice(2, 10);
 
-  /* Style presets. The same twenty-two, with the same colours, in every overlay in this
+  /* Style presets. The same twenty-one, with the same colours, in every overlay in this
      set, generated from one table so they cannot drift apart, so any preset looks
      like one family across a whole stream. The default, Soft black, is a see-through
      black panel with white text. */
@@ -107,13 +107,6 @@
       bgimg: "linear-gradient(rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0.45)), linear-gradient(135deg, #E50000, #FF8D00, #FFEE00, #028121, #004CFF, #770088)",
       flag: ["#E50000", "#FF8D00", "#FFEE00", "#028121", "#004CFF", "#770088"],
       fillFrom: "#E50000", fillTo: "#004CFF", alarm: "#B3123A",
-      parts: {"title": "#1A1426", "timer": "#1A1426", "readout": "#1A1426", "note": "#1A1426", "border": "#1A1426", "track": "rgba(26, 20, 38, 0.34)", "lock": "#1A1426", "lockHole": "rgba(194, 168, 154, 0.96)", "float": "#1A1426", "floatBg": "rgba(194, 168, 154, 0.96)", "alert": "#FFFFFF", "alertFill": "#FFFFFF", "alertTrack": "rgba(0, 0, 0, 0.22)"}
-    },
-    progress: {
-      bg: "rgba(194, 168, 154, 0.9)", text: "#1A1426", accent: "#1A1426", font: "Fredoka",
-      bgimg: "linear-gradient(rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0.45)), linear-gradient(135deg, #E50000, #FF8D00, #FFEE00, #028121, #004CFF, #770088)",
-      flag: ["#E50000", "#FF8D00", "#FFEE00", "#028121", "#004CFF", "#770088"],
-      fillFrom: "#F5A9B8", fillTo: "#5BCEFA", alarm: "#B3123A",
       parts: {"title": "#1A1426", "timer": "#1A1426", "readout": "#1A1426", "note": "#1A1426", "border": "#1A1426", "track": "rgba(26, 20, 38, 0.34)", "lock": "#1A1426", "lockHole": "rgba(194, 168, 154, 0.96)", "float": "#1A1426", "floatBg": "rgba(194, 168, 154, 0.96)", "alert": "#FFFFFF", "alertFill": "#FFFFFF", "alertTrack": "rgba(0, 0, 0, 0.22)"}
     },
     trans: {
