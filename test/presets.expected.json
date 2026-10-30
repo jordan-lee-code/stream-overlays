@@ -1,0 +1,100 @@
+{
+  "glass": {
+    "label": "Soft black (default)",
+    "panel": "rgba(0, 0, 0, 0.55)",
+    "text": "#FFFFFF",
+    "accent": "#FFFFFF",
+    "font": "BioRhyme"
+  },
+  "frost": {
+    "label": "Soft white",
+    "panel": "rgba(255, 255, 255, 0.72)",
+    "text": "#1B2130",
+    "accent": "#1B2130",
+    "font": "BioRhyme"
+  },
+  "midnight": {
+    "label": "Midnight blue",
+    "panel": "rgba(10, 18, 46, 0.72)",
+    "text": "#E8EEFF",
+    "accent": "#7FA8FF",
+    "font": "BioRhyme"
+  },
+  "sunset": {
+    "label": "Sunset",
+    "panel": "rgba(48, 18, 42, 0.72)",
+    "text": "#FFF1E6",
+    "accent": "#FF9A5A",
+    "font": "BioRhyme"
+  },
+  "forest": {
+    "label": "Forest",
+    "panel": "rgba(12, 36, 28, 0.72)",
+    "text": "#EAF7EE",
+    "accent": "#6FD6A0",
+    "font": "BioRhyme"
+  },
+  "ocean": {
+    "label": "Ocean",
+    "panel": "rgba(6, 36, 50, 0.72)",
+    "text": "#E6F8FF",
+    "accent": "#4CD3E0",
+    "font": "BioRhyme"
+  },
+  "rose": {
+    "label": "Rose",
+    "panel": "rgba(58, 14, 34, 0.72)",
+    "text": "#FFE9F1",
+    "accent": "#FF8FB8",
+    "font": "BioRhyme"
+  },
+  "neon": {
+    "label": "Neon",
+    "panel": "rgba(4, 4, 16, 0.82)",
+    "text": "#FFFFFF",
+    "accent": "#00F0FF",
+    "font": "BioRhyme"
+  },
+  "cosycabin": {
+    "label": "Cosy cabin",
+    "panel": "#F5ECD6",
+    "text": "#57442E",
+    "accent": "#7C6142",
+    "font": "Chicle"
+  },
+  "pastel": {
+    "label": "Cosy summer pastel",
+    "panel": "#FFF6E9",
+    "text": "#6B4F3A",
+    "accent": "#FF8A65",
+    "font": "Baloo 2"
+  },
+  "celestial": {
+    "label": "Celestial",
+    "panel": "#2E1A47",
+    "text": "#F3ECFF",
+    "accent": "#E8C06B",
+    "font": "Cinzel"
+  },
+  "pastelgoth": {
+    "label": "Pastel goth",
+    "panel": "#3A3340",
+    "text": "#F2E9F0",
+    "accent": "#C8B6E2",
+    "font": "Quicksand"
+  },
+  "pastelpink": {
+    "label": "Pastel pink",
+    "panel": "#FFE3EC",
+    "text": "#6A2E4B",
+    "accent": "#D95C8A",
+    "font": "Fredoka"
+  },
+  "faegreen": {
+    "label": "Fae green",
+    "panel": "#2C4A36",
+    "text": "#EEF5DA",
+    "accent": "#C9E265",
+    "font": "Almendra"
+  }
+}

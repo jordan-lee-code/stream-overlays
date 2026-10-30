@@ -1,0 +1,33 @@
+{
+  "name": "reminder-overlay",
+  "version": "1.0.0",
+  "description": "A StreamElements custom widget: set a reminder from chat with !reminder 15m clean room, and it stays on screen until you clear it.",
+  "private": true,
+  "license": "MIT",
+  "author": "Jordan Lee",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jordan-lee-code/reminder-overlay.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jordan-lee-code/reminder-overlay/issues"
+  },
+  "homepage": "https://github.com/jordan-lee-code/reminder-overlay#readme",
+  "keywords": [
+    "streamelements",
+    "twitch",
+    "overlay",
+    "widget",
+    "reminder",
+    "timer",
+    "productivity"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "funding": "https://ko-fi.com/journeyingjordan",
+  "scripts": {
+    "test": "node test/test-widget.js",
+    "dev": "python3 -m http.server 8000"
+  }
+}

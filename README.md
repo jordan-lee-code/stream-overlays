@@ -1,0 +1,177 @@
+# Reminder Overlay
+
+A StreamElements custom widget for the things you promised yourself you would do while streaming. Type `!reminder 15m clean room`, and fifteen minutes later it appears on screen. It stays there, through a refresh and however long you ignore it, until you type `!reminder clear`.
+
+<p align="center"><img src="docs/default.png" alt="A soft black rounded card with a small REMINDER title and the words clean room in large type" width="380"></p>
+
+It is a single self-contained widget in plain JavaScript, with no dependencies and nothing to install. Nothing shows on screen until a reminder is due, so it can sit in a scene all the time.
+
+## Features
+
+- Set from chat: `!reminder 15m clean room`, with times like `90s`, `1h30m`, `1:30:00` or a bare number of minutes.
+- Stays until cleared: a reminder that is due appears and is never timed out. It survives a refresh, and one that came due while the overlay was closed shows as soon as it loads.
+- Several at once: reminders stack in the order they came due, with a count of any more.
+- Clear, snooze and cancel: `!reminder clear` takes away what is showing, `snooze` hides it for a while and brings it back, and `cancel` drops one that is still waiting.
+- Hard to miss: the border pulses while a reminder is showing, and a sound can play again every few seconds until you deal with it.
+- Waiting reminders: optionally show what is coming, with a countdown.
+- Moderator control: the streamer, and by default moderators, can set and clear them. Viewers cannot.
+- Customisable: around 50 settings cover the wording, sizes, shape, outline, colours, fonts, sounds and animation.
+- Saved: reminders, waiting and showing, survive a browser-source refresh.
+- Tests and a dev harness: a local harness with a time machine and an automated test script, so a reminder fifteen minutes away can be tried in a click.
+
+## Screenshots
+
+**Several at once.** Reminders stack in the order they came due, and any beyond the limit are counted.
+
+<p><img src="docs/several.png" alt="Three reminders stacked, with a count of one more" width="380"></p>
+
+**Your own look.** Choose Custom for the style preset and every colour, the font, the outline and the wording are settings.
+
+<p><img src="docs/custom.png" alt="A pink reminder in a script font with a light outline" width="380"></p>
+
+## Style presets
+
+One setting picks the look. The same fourteen presets, with the same colours, are in every overlay in this set, so overlays from this set match whichever you choose. This is how each one looks in this overlay.
+
+<p><img src="docs/presets.png" alt="A grid of this overlay in each of the fourteen style presets: Soft black, Soft white, Midnight blue, Sunset, Forest, Ocean, Rose, Neon, Cosy cabin, Cosy summer pastel, Celestial, Pastel goth, Pastel pink and Fae green" width="760"></p>
+
+| Preset | Look |
+| --- | --- |
+| Soft black (default) | See-through black with white text. |
+| Soft white | Frosted white with dark text. |
+| Midnight blue | Deep navy with a periwinkle accent. |
+| Sunset | Deep plum with orange and coral. |
+| Forest | Deep green with a mint accent. |
+| Ocean | Deep teal with an aqua accent. |
+| Rose | Deep berry with a pink accent. |
+| Neon | Near black with cyan and magenta. |
+| Cosy cabin | Cream and brown, in Chicle. |
+| Cosy summer pastel | Warm cream and coral, in Baloo 2. |
+| Celestial | Deep purple and gold, in Cinzel. |
+| Pastel goth | Charcoal and lilac, in Quicksand. |
+| Pastel pink | Soft blush pink with rose, in Fredoka. |
+| Fae green | Mossy green with a firefly lime accent, in Almendra. |
+
+Choose **Custom** to use the colour pickers and font instead. They are ignored while a preset is chosen.
+
+## Quick start
+
+1. In StreamElements, edit your overlay and add **+ Add Widget, Static/Custom, Custom Widget**.
+2. Select the widget, open **Settings, Open Editor**, and paste each file from `widget/` into the matching tab: `widget.html` into HTML, `widget.css` into CSS, `widget.js` into JS, and `fields.json` into Fields.
+3. Click **Done**. The settings are grouped into Commands, Reminders, Size, Manual controls, Look, Custom colours, Sounds and Troubleshooting.
+4. Size and position the widget. The text scales with the box, and nothing shows until a reminder is due.
+
+The widget reads Twitch chat and events through StreamElements, so it works as soon as it is on an active overlay.
+
+## Chat commands
+
+The command word is a setting. Viewers can type the bare `!reminder` to make the title pop, and everything else needs the broadcaster or, by default, a moderator.
+
+| Command | What it does |
+| --- | --- |
+| `!reminder 15m clean room` | Shows "clean room" in fifteen minutes. |
+| `!reminder 1h30m` | Shows the default text in an hour and a half. |
+| `!reminder clear` | Takes away the reminders that are showing. Ones still waiting are kept. |
+| `!reminder clear all` | Takes away everything, waiting ones too. |
+| `!reminder snooze 10m` | Hides the reminders that are showing, and brings them back in ten minutes. A bare `snooze` uses the default time. |
+| `!reminder cancel 2` | Cancels the second waiting reminder, soonest first. |
+| `!reminder cancel room` | Cancels the first waiting reminder with those words in it. |
+
+**Writing the time.** The time is the first word after the command, with no spaces inside it: `90s`, `15m`, `1h30m`, `1d`, `1.5h`, `1:30:00` (hours, minutes, seconds), `5:00` (minutes and seconds), or a bare number, which is minutes. Everything after it is the reminder. A reminder can be set up to two days ahead.
+
+## It stays until cleared
+
+A reminder that is due appears and stays. It has no timeout. Refreshing the browser source does not lose it, and neither does closing OBS: reminders are saved with the time they are due, so one that came due while the overlay was closed appears as soon as it loads.
+
+Because it cannot be missed, it can also be annoying, which is the point. Tick the repeat setting to play the sound again every few seconds until it is cleared, or `snooze` it if you are not ready yet.
+
+## Configuration
+
+Every setting has a plain label in StreamElements, grouped as follows.
+
+| Group | What it covers |
+| --- | --- |
+| Commands | The command word and who may use it. |
+| Reminders | The text for a reminder with no words, the snooze time, how many show at once and can wait, the repeating sound, and the list of waiting reminders. |
+| Size | Text, title and waiting-reminder sizes, the space between reminders, and the pulsing border. |
+| Manual controls | Buttons to show a test reminder, clear, clear everything, and snooze. |
+| Look | Title, the style preset, font, boldness, corners, padding, outline, shadow and Animate. |
+| Custom colours | Panel, text, accent, bar and alert colours, used when the style preset is Custom. |
+| Sounds | A sound and volume for a reminder arriving, with a Test button and a master mute. |
+| Troubleshooting | A debug log of every event to the browser-source console. |
+
+The full list, with defaults, is in [`widget/fields.json`](widget/fields.json). The colour and font pickers apply only when the style preset is **Custom**.
+
+## Local development
+
+There is no build step and no dependencies. Serve the project root and open the dev harness:
+
+```sh
+npm run dev
+# then open http://localhost:8000/dev/
+```
+
+The harness stands in for StreamElements. It sends chat commands as a viewer, moderator or broadcaster, with quick buttons for the common ones. A **time machine** skips the clock forward, so a reminder fifteen minutes away appears in a click. Its **Every setting** section is generated from `widget/fields.json`, so it offers exactly what StreamElements will.
+
+At the top of the harness, **Look and export** switches the style preset on the live widget, and can download or copy a `fields.json` with your current settings as its defaults. Paste that into the Fields tab of a new custom widget in StreamElements and it starts out looking the way it does here.
+
+The harness must be served over http rather than opened as a file, and fonts come from Google Fonts. It also shows a Ko-fi support button in the corner. That button belongs to the harness only and is not part of the widget, so it never appears on stream.
+
+## Testing
+
+```sh
+npm test
+```
+
+This runs the real `widget/widget.js` headlessly against a small mock of the page and StreamElements, with a clock the test controls, and exits non-zero on any failure. It covers every way of writing the time, setting, stacking, clearing, snoozing and cancelling, who may do what, reminders that came due while the overlay was closed, the waiting list, the repeating sound, every look setting and saving across a refresh. It also checks the style presets against the shared palette, and that every setting in `fields.json` is read by the widget and every button does something.
+
+## Project layout
+
+```
+widget/   the widget: HTML, CSS, JS and the StreamElements fields
+dev/      the local dev harness
+test/     the automated tests
+docs/     screenshots used in this README
+```
+
+## Compatibility and limitations
+
+The widget uses the StreamElements events `onWidgetLoad` and `onEventReceived` with `message` and `widget-button`, and `SE_API.store`.
+
+A reminder is timed by the clock of the computer running the overlay, and it only appears while the widget is loaded. If the overlay is closed when a reminder is due, it appears the next time the overlay loads.
+
+A StreamElements widget can read chat but cannot write to it, so setting a reminder gives no reply in chat. You will see it appear when it is due, or turn on **Show the reminders that are still waiting** to see them counting down.
+
+The JavaScript is plain ES5, so it can be pasted straight into the StreamElements editor.
+
+## Related overlays
+
+These overlays share the same default look and the same fourteen style presets, so they sit together on one stream.
+
+- [Sub Goals Overlay](https://github.com/jordan-lee-code/sub-goals-overlay): sub and bits goals that fill as chat reaches them.
+- [Subathon Overlay](https://github.com/jordan-lee-code/subathon-overlay): a subathon clock with a cap, power-ups and sub goals.
+- [Spin Wheel Overlay](https://github.com/jordan-lee-code/spin-wheel-overlay): a wheel for giveaways, raffles and forfeits.
+- [Chat Poll Overlay](https://github.com/jordan-lee-code/chat-poll-overlay): quick polls voted on by typing an option.
+- [Squat Tracker Overlay](https://github.com/jordan-lee-code/squat-tracker-overlay): a running count driven by gifted sub bombs.
+- [Rage Bar Overlay](https://github.com/jordan-lee-code/rage-bar-overlay): a bar chat fills with subs, bits and channel points.
+- [Chat Counter Overlay](https://github.com/jordan-lee-code/counter-overlay): a counter chat commands change, for deaths, wins and anything else.
+- [Leaderboard Overlay](https://github.com/jordan-lee-code/leaderboard-overlay): top gifters, cheerers and tippers.
+- [Hype Meter Overlay](https://github.com/jordan-lee-code/hype-meter-overlay): a meter that chat activity fills, with levels.
+- [Recent Activity Overlay](https://github.com/jordan-lee-code/recent-activity-overlay): the latest subs, gifts, bits, tips, follows and raids.
+- [Stream Goals Overlay](https://github.com/jordan-lee-code/stream-goals-overlay): sub and bits goals that start again for each stream.
+
+## Support
+
+If this saves you time, you can support its development on Ko-fi:
+
+[![Support on Ko-fi](https://img.shields.io/badge/Ko--fi-Support%20me-ff38b8?logo=ko-fi&logoColor=white)](https://ko-fi.com/journeyingjordan)
+
+Thanks for using it.
+
+## Contributing
+
+Contributions are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## License
+
+[MIT](LICENSE). The copyright notice, including the Ko-fi link, must be kept in copies and substantial portions of the code.
