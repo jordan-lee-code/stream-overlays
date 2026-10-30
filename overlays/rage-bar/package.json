@@ -1,0 +1,33 @@
+{
+  "name": "rage-bar-overlay",
+  "version": "1.0.0",
+  "description": "A StreamElements custom widget: a bar that chat fills with subs, bits and channel points.",
+  "private": true,
+  "license": "MIT",
+  "author": "Jordan Lee",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jordan-lee-code/rage-bar-overlay.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jordan-lee-code/rage-bar-overlay/issues"
+  },
+  "homepage": "https://github.com/jordan-lee-code/rage-bar-overlay#readme",
+  "keywords": [
+    "streamelements",
+    "twitch",
+    "overlay",
+    "stream-overlay",
+    "channel-points",
+    "widget"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "funding": "https://ko-fi.com/journeyingjordan",
+  "scripts": {
+    "test": "node test/test-widget.js",
+    "build": "node build/build-overlay.js",
+    "dev": "python3 -m http.server 8000"
+  }
+}

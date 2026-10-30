@@ -1,0 +1,1194 @@
+{
+  "viewCommand": {
+    "type": "text",
+    "label": "Show the bar (anyone). Mods can also adjust it: !bar +5, !bar -5, !bar set 30",
+    "value": "!bar",
+    "group": "Commands"
+  },
+  "lockCommand": {
+    "type": "text",
+    "label": "Lock the bar by hand (mods). A bare number is seconds, so !barlock 60 is a minute; !barlock 5m and !barlock 1h work too, and a mod's lock ignores the usual caps",
+    "value": "!barlock",
+    "group": "Commands"
+  },
+  "unlockCommand": {
+    "type": "text",
+    "label": "Take the lock off again (mods)",
+    "value": "!barunlock",
+    "group": "Commands"
+  },
+  "nopeCommand": {
+    "type": "text",
+    "label": "Save the run by hand while the clock is running (mods)",
+    "value": "!barnope",
+    "group": "Commands"
+  },
+  "fillCommand": {
+    "type": "text",
+    "label": "Fill the bar and start the clock (mods), for rehearsing the panic",
+    "value": "!barfill",
+    "group": "Commands"
+  },
+  "subCommand": {
+    "type": "text",
+    "label": "Pretend some subs just arrived, for testing (mods): !barsub 5, or !barsub 3 t3 for tier 3. A minus takes them back off as a correction: !barsub -1. Behaves exactly like a real gift, including ending the run outright if it is big enough",
+    "value": "!barsub",
+    "group": "Commands"
+  },
+  "bitsCommand": {
+    "type": "text",
+    "label": "Add a number of bits to the bar by hand (mods): !barbits 500. It behaves exactly like a real cheer. A minus takes them back off as a correction: !barbits -500",
+    "value": "!barbits",
+    "group": "Commands"
+  },
+  "onCommand": {
+    "type": "text",
+    "label": "Switch the bar on for a Getting Over It stream (mods). Anything that was counting down carries on from where it stopped",
+    "value": "!baron",
+    "group": "Commands"
+  },
+  "offCommand": {
+    "type": "text",
+    "label": "Switch the bar off for every other stream (mods). Subs, bits, tips and redeems stop counting and the clocks stand still",
+    "value": "!baroff",
+    "group": "Commands"
+  },
+  "resetCommand": {
+    "type": "text",
+    "label": "Clear everything back to an empty, unlocked bar (mods). Add a bar number to go to that bar, so !barreset 1 goes back to the first one",
+    "value": "!barreset",
+    "group": "Commands"
+  },
+  "whoCanManage": {
+    "type": "dropdown",
+    "label": "Who can drive the bar from chat",
+    "value": "mods",
+    "options": {
+      "broadcaster": "Broadcaster only",
+      "mods": "Broadcaster + moderators"
+    },
+    "group": "Commands"
+  },
+  "capacity": {
+    "type": "number",
+    "label": "How many points the first bar holds before the run resets (a tier 1 sub is 5 points by default, so 100 is twenty subs, or 5,000 bits, or 50 in donations). Every bar after it is bigger",
+    "value": 100,
+    "min": 1,
+    "max": 100000,
+    "step": 1,
+    "group": "Bar"
+  },
+  "capacityGrowth": {
+    "type": "number",
+    "label": "How much bigger each bar is than the last after a successful reset, and how much more it costs to save the run (1.5 means half as big again, 2 means double, 1 means it never grows). Always rounded to whole numbers",
+    "value": 1.5,
+    "min": 1,
+    "max": 10,
+    "step": 0.05,
+    "group": "Bar"
+  },
+  "nopeSeconds": {
+    "type": "number",
+    "label": "Seconds chat gets to save the run once the bar is full",
+    "value": 90,
+    "min": 5,
+    "max": 600,
+    "step": 5,
+    "group": "Bar"
+  },
+  "resetHoldSeconds": {
+    "type": "number",
+    "label": "Seconds the reset banner stays up before the bar clears itself",
+    "value": 10,
+    "min": 1,
+    "max": 120,
+    "step": 1,
+    "group": "Bar"
+  },
+  "saveExtendSeconds": {
+    "type": "number",
+    "label": "Seconds a sub, a cheer or a donation adds back onto the clock while chat is saving the run, on top of chipping into the save (0 turns it off)",
+    "value": 5,
+    "min": 0,
+    "max": 60,
+    "step": 1,
+    "group": "Bar"
+  },
+  "saveGraceSeconds": {
+    "type": "number",
+    "label": "Seconds after the bar fills that subs do not count towards saving it, so subs that were meant to fill the bar do not end up saving it (0 turns it off)",
+    "value": 10,
+    "min": 0,
+    "max": 60,
+    "step": 1,
+    "group": "Bar"
+  },
+  "dreadFrom": {
+    "type": "number",
+    "label": "How close to the top the bar starts warming towards the alarm colour and breathing, in points (25 means the last five tier 1 subs' worth). 0 turns it off",
+    "value": 25,
+    "min": 0,
+    "max": 10000,
+    "step": 1,
+    "group": "Bar"
+  },
+  "overkillCosplay": {
+    "type": "checkbox",
+    "label": "Instead of ending the run outright, a contribution this big is just a very big contribution, with a joke line instead of ending anything",
+    "value": false,
+    "group": "Bar"
+  },
+  "overkillSubs": {
+    "type": "number",
+    "label": "One contribution worth this many points ends the run outright, with no window to save it (500 is a hundred gifted tier 1 subs). It doubles every time the bar grows up to it, so an ordinary bar never catches it. 0 turns it off",
+    "value": 500,
+    "min": 0,
+    "max": 1000000,
+    "step": 4,
+    "group": "Bar"
+  },
+  "debug": {
+    "type": "checkbox",
+    "label": "Log every event to the browser console (leave on until the channel point rewards are confirmed working)",
+    "value": true,
+    "group": "Bar"
+  },
+  "cosplayTitle": {
+    "type": "text",
+    "label": "The line that shows instead of ending the run, when the above is ticked",
+    "value": "You didn't get over it, time to cosplay",
+    "group": "Copy"
+  },
+  "label": {
+    "type": "text",
+    "label": "Name above the bar while it is filling",
+    "value": "POINTS TO RESET THE RUN",
+    "group": "Copy"
+  },
+  "pendingTitle": {
+    "type": "text",
+    "label": "Headline while the bar is full and the clock is running",
+    "value": "SAVE THE RUN",
+    "group": "Copy"
+  },
+  "resetTitle": {
+    "type": "text",
+    "label": "Headline when nobody saved it",
+    "value": "Time to reset!",
+    "group": "Copy"
+  },
+  "overkillTitle": {
+    "type": "text",
+    "label": "Headline when one person ended it outright and there was no window at all",
+    "value": "NO SAVING THIS ONE",
+    "group": "Copy"
+  },
+  "showFloat": {
+    "type": "checkbox",
+    "label": "Float a little +N above the card naming whoever just spent",
+    "value": true,
+    "group": "Copy"
+  },
+  "hideWhenOff": {
+    "type": "checkbox",
+    "label": "Hide the bar entirely while it is switched off, rather than showing it faded",
+    "value": false,
+    "group": "Copy"
+  },
+  "showLock": {
+    "type": "checkbox",
+    "label": "Show a little padlock on the card while the bar is locked",
+    "value": true,
+    "group": "Copy"
+  },
+  "subTier1": {
+    "type": "number",
+    "label": "Points a tier 1 sub fills (Prime counts as tier 1). Donations are priced against this one too",
+    "value": 5,
+    "min": 0,
+    "max": 100000,
+    "step": 0.5,
+    "group": "Fill values"
+  },
+  "subTier2": {
+    "type": "number",
+    "label": "Points a tier 2 sub fills",
+    "value": 7,
+    "min": 0,
+    "max": 100000,
+    "step": 0.5,
+    "group": "Fill values"
+  },
+  "subTier3": {
+    "type": "number",
+    "label": "Points a tier 3 sub fills",
+    "value": 20,
+    "min": 0,
+    "max": 100000,
+    "step": 0.5,
+    "group": "Fill values"
+  },
+  "bitsPer100": {
+    "type": "number",
+    "label": "Points every 100 bits fills (2 makes 5,000 bits fill the first bar of 100 points, the same as twenty tier 1 subs)",
+    "value": 2,
+    "min": 0,
+    "max": 100000,
+    "step": 0.05,
+    "group": "Fill values"
+  },
+  "tipPerSub": {
+    "type": "number",
+    "label": "How much money in a Ko-fi or StreamElements donation counts as one tier 1 sub (2.50 makes 1 in donations worth 2 points, and 50 fill the first bar, in whatever currency the channel takes)",
+    "value": 2.5,
+    "min": 0.01,
+    "max": 10000,
+    "step": 0.01,
+    "group": "Fill values"
+  },
+  "currencySymbol": {
+    "type": "text",
+    "label": "Currency symbol shown in the line under the bar for how much money is left to go",
+    "value": "\u00a3",
+    "group": "Fill values"
+  },
+  "fillRewardTitle": {
+    "type": "text",
+    "label": "Channel point reward that fills the bar (matched on the start of the title)",
+    "value": "Fill the Bar",
+    "group": "Fill values"
+  },
+  "fillRewardAmount": {
+    "type": "number",
+    "label": "Points that reward fills (5 means a redeem is worth a tier 1 sub)",
+    "value": 5,
+    "min": 0,
+    "max": 100000,
+    "step": 0.25,
+    "group": "Fill values"
+  },
+  "pushBackRewardTitle": {
+    "type": "text",
+    "label": "Channel point reward that pushes the bar back (matched on the start of the title). Only works while the bar is filling",
+    "value": "Push Back the Bar",
+    "group": "Fill values"
+  },
+  "pushBackAmount": {
+    "type": "number",
+    "label": "How many points that reward takes off the first bar (10 is two tier 1 subs' worth, a tenth of it). It grows with each bar by the same amount the bar does. 0 turns the reward off",
+    "value": 10,
+    "min": 0,
+    "max": 100000,
+    "step": 1,
+    "group": "Fill values"
+  },
+  "lockRewardTitle": {
+    "type": "text",
+    "label": "Channel point reward that locks the bar (matched on the start of the title, so one setting covers Lock the Bar (2 min), (5 min) and so on)",
+    "value": "Lock the Bar",
+    "group": "Lock"
+  },
+  "pointsPerLockedMinute": {
+    "type": "number",
+    "label": "Only used when a lock reward's name has no time in it: channel points per locked minute. A name like \"Lock the Bar (2 mins)\" always locks for exactly that long, whatever it costs",
+    "value": 1000,
+    "min": 1,
+    "max": 1000000,
+    "step": 100,
+    "group": "Lock"
+  },
+  "lockMinMinutes": {
+    "type": "number",
+    "label": "Shortest a single lock can be, in minutes",
+    "value": 0.5,
+    "min": 0.25,
+    "max": 60,
+    "step": 0.25,
+    "group": "Lock"
+  },
+  "lockMaxMinutes": {
+    "type": "number",
+    "label": "Longest a single lock can be, in minutes",
+    "value": 10,
+    "min": 0.25,
+    "max": 120,
+    "step": 0.5,
+    "group": "Lock"
+  },
+  "lockMaxTotalMinutes": {
+    "type": "number",
+    "label": "Longest the lock can ever run, in minutes, however many people stack it up",
+    "value": 20,
+    "min": 0.25,
+    "max": 240,
+    "step": 1,
+    "group": "Lock"
+  },
+  "lockBreakSubs": {
+    "type": "number",
+    "label": "Points of subs, cheers and donations piled up against a lock that break it (25 is five tier 1 subs, so a tier 3 counts as four, and 1,250 bits or 12.50 in donations does it too). 0 means a lock cannot be broken",
+    "value": 25,
+    "min": 0,
+    "max": 10000,
+    "step": 1,
+    "group": "Lock"
+  },
+  "manualLockMinutes": {
+    "type": "number",
+    "label": "Minutes the Lock button below applies",
+    "value": 5,
+    "min": 0.25,
+    "max": 240,
+    "step": 0.5,
+    "group": "Lock"
+  },
+  "nopeRewardTitle": {
+    "type": "text",
+    "label": "Channel point reward that chips in to save the run (matched on the start of the title, so several rewards at different prices all pay into the same pot alongside subs and bits)",
+    "value": "Save the Run",
+    "group": "Nope"
+  },
+  "nopeTargetSubs": {
+    "type": "number",
+    "label": "How many points it takes to save the first bar, so 25 means five tier 1 subs' worth of anything at all. It grows with every bar by the same amount the bar does, so saving one always costs about the same share of it",
+    "value": 25,
+    "min": 1,
+    "max": 100000,
+    "step": 1,
+    "group": "Nope"
+  },
+  "nopeRedeemsToSave": {
+    "type": "number",
+    "label": "This many Save the Run redeems in one window save the run outright, however big the bar has grown, so channel points always count. Each redeem also chips into the save as usual (0 turns the flat cancel off)",
+    "value": 5,
+    "min": 0,
+    "max": 100,
+    "step": 1,
+    "group": "Nope"
+  },
+  "moneySavesRun": {
+    "type": "checkbox",
+    "label": "Subs, cheers and donations can help save the run (untick to make Save the Run redeems the only way to save it, counted as a plain number of redeems)",
+    "value": true,
+    "group": "Nope"
+  },
+  "saveRewardCost": {
+    "type": "number",
+    "label": "What the Save the Run reward costs in channel points on Twitch, so that the line under the bar can say how many channel points are left to save the run when subs, cheers and donations are switched off as ways to save it (0 hides the figure)",
+    "value": 10000,
+    "min": 0,
+    "max": 100000000,
+    "step": 500,
+    "group": "Nope"
+  },
+  "nopePointsPerSub": {
+    "type": "number",
+    "label": "Channel points that count as one point towards saving the run (so 2000 means a Save the Run redeem at 10000 is worth a tier 1 sub)",
+    "value": 2000,
+    "min": 1,
+    "max": 10000000,
+    "step": 500,
+    "group": "Nope"
+  },
+  "subWord": {
+    "type": "text",
+    "label": "Word for one sub (1 sub to go)",
+    "value": "sub",
+    "group": "Wording"
+  },
+  "subsWord": {
+    "type": "text",
+    "label": "Word for several subs",
+    "value": "subs",
+    "group": "Wording"
+  },
+  "bitsWord": {
+    "type": "text",
+    "label": "Word for bits",
+    "value": "bits",
+    "group": "Wording"
+  },
+  "toGoText": {
+    "type": "text",
+    "label": "Ending of the line under the bar while it is filling",
+    "value": "to go",
+    "group": "Wording"
+  },
+  "toBreakText": {
+    "type": "text",
+    "label": "Ending of the line while the bar is locked and subs are breaking the lock",
+    "value": "to break",
+    "group": "Wording"
+  },
+  "toSaveText": {
+    "type": "text",
+    "label": "Ending of the line while the run can be saved",
+    "value": "to save",
+    "group": "Wording"
+  },
+  "offNote": {
+    "type": "text",
+    "label": "Line under the bar while it is switched off",
+    "value": "switched off",
+    "group": "Wording"
+  },
+  "endedByText": {
+    "type": "text",
+    "label": "Line under the bar when someone ended the run outright ({who} is their name)",
+    "value": "ended by {who}",
+    "group": "Wording"
+  },
+  "redeemWord": {
+    "type": "text",
+    "label": "Word for one channel point redeem",
+    "value": "redeem",
+    "group": "Wording"
+  },
+  "redeemsWord": {
+    "type": "text",
+    "label": "Word for several redeems",
+    "value": "redeems",
+    "group": "Wording"
+  },
+  "pointsWord": {
+    "type": "text",
+    "label": "Word for channel points",
+    "value": "points",
+    "group": "Wording"
+  },
+  "secondsSuffix": {
+    "type": "text",
+    "label": "Text after the save countdown number",
+    "value": "s",
+    "group": "Wording"
+  },
+  "readoutBarText": {
+    "type": "text",
+    "label": "Bar readout while filling ({n} and {total} are filled in)",
+    "value": "{n} / {total}",
+    "group": "Wording"
+  },
+  "readoutRedeemsText": {
+    "type": "text",
+    "label": "Bar readout while the run can be saved by redeems",
+    "value": "{n} / {total} redeems",
+    "group": "Wording"
+  },
+  "readoutPointsText": {
+    "type": "text",
+    "label": "Bar readout while the run can be saved with points",
+    "value": "{n} / {total} points",
+    "group": "Wording"
+  },
+  "bankedText": {
+    "type": "text",
+    "label": "Text after a floating amount that is banked during the reset",
+    "value": "banked",
+    "group": "Wording"
+  },
+  "lockedByText": {
+    "type": "text",
+    "label": "Floating text when someone locks the bar ({who} is their name)",
+    "value": "LOCKED BY {who}",
+    "group": "Wording"
+  },
+  "lockedText": {
+    "type": "text",
+    "label": "Floating text when a lock has no name",
+    "value": "LOCKED",
+    "group": "Wording"
+  },
+  "lockBrokenByText": {
+    "type": "text",
+    "label": "Floating text when someone breaks a lock",
+    "value": "LOCK BROKEN BY {who}",
+    "group": "Wording"
+  },
+  "lockBrokenText": {
+    "type": "text",
+    "label": "Floating text when a lock is broken with no name",
+    "value": "LOCK BROKEN",
+    "group": "Wording"
+  },
+  "savedByText": {
+    "type": "text",
+    "label": "Floating text when someone saves the run",
+    "value": "SAVED BY {who}",
+    "group": "Wording"
+  },
+  "savedText": {
+    "type": "text",
+    "label": "Floating text when a save has no name",
+    "value": "SAVED",
+    "group": "Wording"
+  },
+  "radius": {
+    "type": "number",
+    "label": "Card corner roundness, as a percentage of the box's smaller side",
+    "value": 6,
+    "min": 0,
+    "max": 50,
+    "step": 0.5,
+    "group": "Card"
+  },
+  "paddingV": {
+    "type": "number",
+    "label": "Space above and below the contents, as a percentage of the box's smaller side",
+    "value": 5,
+    "min": 0,
+    "max": 40,
+    "step": 0.5,
+    "group": "Card"
+  },
+  "paddingH": {
+    "type": "number",
+    "label": "Space either side of the contents, as a percentage of the box's smaller side",
+    "value": 6,
+    "min": 0,
+    "max": 40,
+    "step": 0.5,
+    "group": "Card"
+  },
+  "gap": {
+    "type": "number",
+    "label": "Space between the heading, bar and readout, as a percentage of the box's smaller side",
+    "value": 2.5,
+    "min": 0,
+    "max": 20,
+    "step": 0.5,
+    "group": "Card"
+  },
+  "tilt": {
+    "type": "number",
+    "label": "Tilt in degrees (negative leans left, 0 is straight)",
+    "value": 0,
+    "min": -20,
+    "max": 20,
+    "step": 0.5,
+    "group": "Card"
+  },
+  "borderWidth": {
+    "type": "number",
+    "label": "Outline width in pixels (0 for none)",
+    "value": 0,
+    "min": 0,
+    "max": 30,
+    "step": 1,
+    "group": "Card"
+  },
+  "shadow": {
+    "type": "checkbox",
+    "label": "Soft shadow under the card",
+    "value": false,
+    "group": "Card"
+  },
+  "textShadow": {
+    "type": "checkbox",
+    "label": "Soft shadow behind the text, to help it read over bright scenes",
+    "value": false,
+    "group": "Card"
+  },
+  "showTail": {
+    "type": "checkbox",
+    "label": "Show the little circle tail under the card",
+    "value": false,
+    "group": "Card"
+  },
+  "trackHeight": {
+    "type": "number",
+    "label": "Bar thickness, as a percentage of the box's smaller side",
+    "value": 11,
+    "min": 3,
+    "max": 40,
+    "step": 0.5,
+    "group": "Card"
+  },
+  "titleScale": {
+    "type": "number",
+    "label": "Size of the heading compared with the default (1 is the default)",
+    "value": 1,
+    "min": 0.4,
+    "max": 3,
+    "step": 0.05,
+    "group": "Text"
+  },
+  "titleWeight": {
+    "type": "dropdown",
+    "label": "Boldness of the heading",
+    "value": "800",
+    "options": {
+      "400": "Regular",
+      "500": "Medium",
+      "600": "Semi-bold",
+      "700": "Bold",
+      "800": "Extra bold"
+    },
+    "group": "Text"
+  },
+  "timerScale": {
+    "type": "number",
+    "label": "Size of the countdown compared with the default (1 is the default)",
+    "value": 1,
+    "min": 0.4,
+    "max": 3,
+    "step": 0.05,
+    "group": "Text"
+  },
+  "timerWeight": {
+    "type": "dropdown",
+    "label": "Boldness of the countdown",
+    "value": "700",
+    "options": {
+      "400": "Regular",
+      "500": "Medium",
+      "600": "Semi-bold",
+      "700": "Bold",
+      "800": "Extra bold"
+    },
+    "group": "Text"
+  },
+  "readoutScale": {
+    "type": "number",
+    "label": "Size of the readout compared with the default (1 is the default)",
+    "value": 1,
+    "min": 0.4,
+    "max": 3,
+    "step": 0.05,
+    "group": "Text"
+  },
+  "readoutWeight": {
+    "type": "dropdown",
+    "label": "Boldness of the readout",
+    "value": "700",
+    "options": {
+      "400": "Regular",
+      "500": "Medium",
+      "600": "Semi-bold",
+      "700": "Bold",
+      "800": "Extra bold"
+    },
+    "group": "Text"
+  },
+  "noteScale": {
+    "type": "number",
+    "label": "Size of the line under the bar compared with the default (1 is the default)",
+    "value": 1,
+    "min": 0.4,
+    "max": 3,
+    "step": 0.05,
+    "group": "Text"
+  },
+  "noteWeight": {
+    "type": "dropdown",
+    "label": "Boldness of the line under the bar",
+    "value": "700",
+    "options": {
+      "400": "Regular",
+      "500": "Medium",
+      "600": "Semi-bold",
+      "700": "Bold",
+      "800": "Extra bold"
+    },
+    "group": "Text"
+  },
+  "floatScale": {
+    "type": "number",
+    "label": "Size of the floating text compared with the default (1 is the default)",
+    "value": 1,
+    "min": 0.4,
+    "max": 3,
+    "step": 0.05,
+    "group": "Text"
+  },
+  "floatWeight": {
+    "type": "dropdown",
+    "label": "Boldness of the floating text",
+    "value": "700",
+    "options": {
+      "400": "Regular",
+      "500": "Medium",
+      "600": "Semi-bold",
+      "700": "Bold",
+      "800": "Extra bold"
+    },
+    "group": "Text"
+  },
+  "titleSpacing": {
+    "type": "number",
+    "label": "Space between the heading's letters, in em",
+    "value": 0.06,
+    "min": 0,
+    "max": 0.5,
+    "step": 0.01,
+    "group": "Text"
+  },
+  "titleUppercase": {
+    "type": "checkbox",
+    "label": "Show the heading in capitals",
+    "value": true,
+    "group": "Text"
+  },
+  "readoutOpacity": {
+    "type": "number",
+    "label": "Readout opacity (0 to 1)",
+    "value": 0.85,
+    "min": 0,
+    "max": 1,
+    "step": 0.05,
+    "group": "Text"
+  },
+  "noteOpacity": {
+    "type": "number",
+    "label": "Opacity of the line under the bar (0 to 1)",
+    "value": 0.95,
+    "min": 0,
+    "max": 1,
+    "step": 0.05,
+    "group": "Text"
+  },
+  "themePreset": {
+    "type": "dropdown",
+    "label": "Style preset (pick Custom to use your own colours below)",
+    "value": "glass",
+    "options": {
+      "glass": "Soft black (default)",
+      "frost": "Soft white",
+      "midnight": "Midnight blue",
+      "sunset": "Sunset",
+      "forest": "Forest",
+      "ocean": "Ocean",
+      "rose": "Rose",
+      "neon": "Neon",
+      "cosycabin": "Cosy cabin",
+      "pastel": "Cosy summer pastel",
+      "celestial": "Celestial",
+      "pastelgoth": "Pastel goth",
+      "pastelpink": "Pastel pink",
+      "faegreen": "Fae green",
+      "pride": "Rainbow pride",
+      "progress": "Progress pride",
+      "trans": "Trans pride",
+      "bi": "Bi pride",
+      "pan": "Pan pride",
+      "enby": "Non-binary pride",
+      "lesbian": "Lesbian pride",
+      "ace": "Ace pride",
+      "custom": "Custom (use the colours below)"
+    },
+    "group": "Theme"
+  },
+  "fontFamily": {
+    "type": "googleFont",
+    "label": "Font",
+    "value": "BioRhyme",
+    "group": "Theme"
+  },
+  "colorBg": {
+    "type": "colorpicker",
+    "label": "Card colour (used when the preset is Custom)",
+    "value": "#000000",
+    "group": "Theme"
+  },
+  "panelOpacity": {
+    "type": "number",
+    "label": "Card and floating text opacity (used when the preset is Custom; 0 is invisible, 1 is solid)",
+    "value": 0.55,
+    "min": 0,
+    "max": 1,
+    "step": 0.05,
+    "group": "Theme"
+  },
+  "colorText": {
+    "type": "colorpicker",
+    "label": "Text colour (used when the preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Theme"
+  },
+  "colorAccent": {
+    "type": "colorpicker",
+    "label": "Accent colour (used when the preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Theme"
+  },
+  "colorFillFrom": {
+    "type": "colorpicker",
+    "label": "Bar fill, start (used when the preset is Custom)",
+    "value": "#D9D9D9",
+    "group": "Theme"
+  },
+  "colorFillTo": {
+    "type": "colorpicker",
+    "label": "Bar fill, end (used when the preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Theme"
+  },
+  "colorAlarm": {
+    "type": "colorpicker",
+    "label": "Alarm colour: the card while the run can be saved, and the last stretch (used when the preset is Custom)",
+    "value": "#D64545",
+    "group": "Theme"
+  },
+  "colorTitle": {
+    "type": "colorpicker",
+    "label": "Heading colour (used when the preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Theme"
+  },
+  "colorTimer": {
+    "type": "colorpicker",
+    "label": "Countdown colour (used when the preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Theme"
+  },
+  "colorReadout": {
+    "type": "colorpicker",
+    "label": "Readout colour (used when the preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Theme"
+  },
+  "colorNote": {
+    "type": "colorpicker",
+    "label": "Line under the bar colour (used when the preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Theme"
+  },
+  "colorBorder": {
+    "type": "colorpicker",
+    "label": "Outline colour (used when the preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Theme"
+  },
+  "colorTrack": {
+    "type": "colorpicker",
+    "label": "Empty part of the bar colour (used when the preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Theme"
+  },
+  "colorLock": {
+    "type": "colorpicker",
+    "label": "Padlock colour (used when the preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Theme"
+  },
+  "colorLockHole": {
+    "type": "colorpicker",
+    "label": "Padlock keyhole colour (used when the preset is Custom)",
+    "value": "#111111",
+    "group": "Theme"
+  },
+  "colorFloat": {
+    "type": "colorpicker",
+    "label": "Floating text colour (used when the preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Theme"
+  },
+  "colorFloatBg": {
+    "type": "colorpicker",
+    "label": "Floating text background colour (used when the preset is Custom)",
+    "value": "#000000",
+    "group": "Theme"
+  },
+  "colorAlert": {
+    "type": "colorpicker",
+    "label": "Text while the card is in alarm colour (used when the preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Theme"
+  },
+  "colorAlertFill": {
+    "type": "colorpicker",
+    "label": "Bar fill while the card is in alarm colour (used when the preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Theme"
+  },
+  "trackOpacity": {
+    "type": "number",
+    "label": "Empty bar opacity (used when the preset is Custom)",
+    "value": 0.2,
+    "min": 0,
+    "max": 1,
+    "step": 0.02,
+    "group": "Theme"
+  },
+  "lockedOpacity": {
+    "type": "number",
+    "label": "How faint the fill goes while the bar is locked (0 to 1)",
+    "value": 0.6,
+    "min": 0,
+    "max": 1,
+    "step": 0.05,
+    "group": "Theme"
+  },
+  "offOpacity": {
+    "type": "number",
+    "label": "How faint the whole card goes while the bar is switched off (0 to 1)",
+    "value": 0.55,
+    "min": 0,
+    "max": 1,
+    "step": 0.05,
+    "group": "Theme"
+  },
+  "animations": {
+    "type": "checkbox",
+    "label": "Animate (untick to switch every animation off)",
+    "value": true,
+    "group": "Animation"
+  },
+  "fillSeconds": {
+    "type": "number",
+    "label": "Seconds the bar takes to fill",
+    "value": 0.55,
+    "min": 0,
+    "max": 5,
+    "step": 0.05,
+    "group": "Animation"
+  },
+  "popScale": {
+    "type": "number",
+    "label": "How far the card swells when the bar moves (1 for no swell)",
+    "value": 1.04,
+    "min": 1,
+    "max": 2,
+    "step": 0.01,
+    "group": "Animation"
+  },
+  "popSeconds": {
+    "type": "number",
+    "label": "Seconds the swell takes",
+    "value": 0.42,
+    "min": 0.1,
+    "max": 3,
+    "step": 0.02,
+    "group": "Animation"
+  },
+  "floatSeconds": {
+    "type": "number",
+    "label": "Seconds each floating text stays on screen",
+    "value": 1.6,
+    "min": 0.3,
+    "max": 10,
+    "step": 0.1,
+    "group": "Animation"
+  },
+  "dreadSeconds": {
+    "type": "number",
+    "label": "Seconds one breath of the last-stretch glow takes",
+    "value": 2.2,
+    "min": 0.4,
+    "max": 10,
+    "step": 0.1,
+    "group": "Animation"
+  },
+  "panicSeconds": {
+    "type": "number",
+    "label": "Seconds one pulse of the save window takes",
+    "value": 0.8,
+    "min": 0.2,
+    "max": 5,
+    "step": 0.05,
+    "group": "Animation"
+  },
+  "refuseSeconds": {
+    "type": "number",
+    "label": "Seconds the shake takes when a contribution is turned away",
+    "value": 0.42,
+    "min": 0.1,
+    "max": 3,
+    "step": 0.02,
+    "group": "Animation"
+  },
+  "enableSounds": {
+    "type": "checkbox",
+    "label": "Play sounds (the streamer cannot watch the overlay while playing, so this is how they find out)",
+    "value": true,
+    "group": "Sounds"
+  },
+  "fullSound": {
+    "type": "sound-input",
+    "label": "When the bar fills and the clock starts",
+    "value": "",
+    "group": "Sounds"
+  },
+  "fullVolume": {
+    "type": "slider",
+    "label": "Volume",
+    "value": 70,
+    "min": 0,
+    "max": 100,
+    "step": 5,
+    "group": "Sounds"
+  },
+  "savedSound": {
+    "type": "sound-input",
+    "label": "When chat saves the run",
+    "value": "",
+    "group": "Sounds"
+  },
+  "savedVolume": {
+    "type": "slider",
+    "label": "Volume",
+    "value": 60,
+    "min": 0,
+    "max": 100,
+    "step": 5,
+    "group": "Sounds"
+  },
+  "resetSound": {
+    "type": "sound-input",
+    "label": "When the run is gone, whether the clock ran out or somebody ended it outright",
+    "value": "",
+    "group": "Sounds"
+  },
+  "resetVolume": {
+    "type": "slider",
+    "label": "Volume",
+    "value": 70,
+    "min": 0,
+    "max": 100,
+    "step": 5,
+    "group": "Sounds"
+  },
+  "addSound": {
+    "type": "sound-input",
+    "label": "Sound when a contribution lands on the bar. Leave empty for none.",
+    "value": "",
+    "group": "Sounds"
+  },
+  "addVolume": {
+    "type": "number",
+    "label": "Contribution sound volume (0 to 100)",
+    "value": 40,
+    "min": 0,
+    "max": 100,
+    "step": 5,
+    "group": "Sounds"
+  },
+  "lockSound": {
+    "type": "sound-input",
+    "label": "Sound when the bar is locked. Leave empty for none.",
+    "value": "",
+    "group": "Sounds"
+  },
+  "lockVolume": {
+    "type": "number",
+    "label": "Lock sound volume (0 to 100)",
+    "value": 60,
+    "min": 0,
+    "max": 100,
+    "step": 5,
+    "group": "Sounds"
+  },
+  "breakSound": {
+    "type": "sound-input",
+    "label": "Sound when a lock is broken. Leave empty for none.",
+    "value": "",
+    "group": "Sounds"
+  },
+  "breakVolume": {
+    "type": "number",
+    "label": "Lock-broken sound volume (0 to 100)",
+    "value": 60,
+    "min": 0,
+    "max": 100,
+    "step": 5,
+    "group": "Sounds"
+  },
+  "manualStep": {
+    "type": "number",
+    "label": "How many points the fill button below adds",
+    "value": 25,
+    "min": 0,
+    "max": 100000,
+    "step": 1,
+    "group": "Manual controls"
+  },
+  "btnFillStep": {
+    "type": "button",
+    "label": "Fill the bar a little (five tier 1 subs' worth by default, so testing does not take a hundred clicks)",
+    "value": "Fill a bit",
+    "group": "Manual controls"
+  },
+  "btnFillBar": {
+    "type": "button",
+    "label": "Fill it all the way and start the clock (this is how you rehearse the panic before going live)",
+    "value": "Fill it",
+    "group": "Manual controls"
+  },
+  "btnNope": {
+    "type": "button",
+    "label": "Save the run by hand, as though someone had noped it",
+    "value": "Nope it",
+    "group": "Manual controls"
+  },
+  "btnLock": {
+    "type": "button",
+    "label": "Lock the bar by hand",
+    "value": "Lock",
+    "group": "Manual controls"
+  },
+  "btnUnlock": {
+    "type": "button",
+    "label": "Take the lock off again",
+    "value": "Unlock",
+    "group": "Manual controls"
+  },
+  "btnOn": {
+    "type": "button",
+    "label": "Switch the bar on",
+    "value": "On",
+    "group": "Manual controls"
+  },
+  "btnOff": {
+    "type": "button",
+    "label": "Switch the bar off (nothing chat spends counts until it is back on)",
+    "value": "Off",
+    "group": "Manual controls"
+  },
+  "btnReset": {
+    "type": "button",
+    "label": "Clear everything back to an empty, unlocked bar (the bar keeps the size it has grown to)",
+    "value": "Reset",
+    "group": "Manual controls"
+  },
+  "btnRestartEscalation": {
+    "type": "button",
+    "label": "Clear everything and go right back to the first bar, at its starting size",
+    "value": "Back to the first bar",
+    "group": "Manual controls"
+  },
+  "btnSoundAdd": {
+    "type": "button",
+    "label": "Test the contribution sound",
+    "value": "Play contribution sound",
+    "group": "Manual controls"
+  },
+  "btnSoundLock": {
+    "type": "button",
+    "label": "Test the lock sound",
+    "value": "Play lock sound",
+    "group": "Manual controls"
+  },
+  "btnSoundBreak": {
+    "type": "button",
+    "label": "Test the lock-broken sound",
+    "value": "Play lock-broken sound",
+    "group": "Manual controls"
+  },
+  "btnSoundFull": {
+    "type": "button",
+    "label": "Test the full sound",
+    "value": "Play full sound",
+    "group": "Manual controls"
+  },
+  "btnSoundSaved": {
+    "type": "button",
+    "label": "Test the saved sound",
+    "value": "Play saved sound",
+    "group": "Manual controls"
+  },
+  "btnSoundReset": {
+    "type": "button",
+    "label": "Test the reset sound",
+    "value": "Play reset sound",
+    "group": "Manual controls"
+  }
+}
