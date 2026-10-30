@@ -19,7 +19,7 @@
 
   var STORE_KEY = "squat_tracker_v1";
 
-  /* Style presets. The same fourteen, with the same colours, in every overlay in this
+  /* Style presets. The same twenty-two, with the same colours, in every overlay in this
      set, generated from one table so they cannot drift apart, so any preset looks
      like one family across a whole stream. The default, Soft black, is a see-through
      black panel with white text. */
@@ -37,7 +37,15 @@
     celestial: { panel: "#2E1A47", strong: "#2E1A47", text: "#F3ECFF", accent: "#E8C06B", font: "Cinzel" },
     pastelgoth: { panel: "#3A3340", strong: "#3A3340", text: "#F2E9F0", accent: "#C8B6E2", font: "Quicksand" },
     pastelpink: { panel: "#FFE3EC", strong: "#FFE3EC", text: "#6A2E4B", accent: "#D95C8A", font: "Fredoka" },
-    faegreen: { panel: "#2C4A36", strong: "#2C4A36", text: "#EEF5DA", accent: "#C9E265", font: "Almendra" }
+    faegreen: { panel: "#2C4A36", strong: "#2C4A36", text: "#EEF5DA", accent: "#C9E265", font: "Almendra" },
+    pride: { panel: "rgba(20, 16, 34, 0.8)", strong: "rgba(20, 16, 34, 0.92)", text: "#FFFFFF", accent: "#FFEE00", font: "Fredoka" },
+    progress: { panel: "rgba(22, 16, 30, 0.8)", strong: "rgba(22, 16, 30, 0.92)", text: "#FFFFFF", accent: "#5BCEFA", font: "Fredoka" },
+    trans: { panel: "rgba(18, 28, 44, 0.82)", strong: "rgba(18, 28, 44, 0.92)", text: "#FFFFFF", accent: "#F5A9B8", font: "Fredoka" },
+    bi: { panel: "rgba(30, 14, 36, 0.82)", strong: "rgba(30, 14, 36, 0.92)", text: "#FFFFFF", accent: "#E0559F", font: "Fredoka" },
+    pan: { panel: "rgba(24, 20, 40, 0.82)", strong: "rgba(24, 20, 40, 0.92)", text: "#FFFFFF", accent: "#FFD800", font: "Fredoka" },
+    enby: { panel: "rgba(24, 24, 28, 0.86)", strong: "rgba(24, 24, 28, 0.94)", text: "#FFFFFF", accent: "#FFF433", font: "Fredoka" },
+    lesbian: { panel: "rgba(40, 16, 20, 0.82)", strong: "rgba(40, 16, 20, 0.92)", text: "#FFFFFF", accent: "#FF9A56", font: "Fredoka" },
+    ace: { panel: "rgba(16, 16, 22, 0.86)", strong: "rgba(16, 16, 22, 0.94)", text: "#F1F1F1", accent: "#B075C9", font: "Fredoka" }
   };
   var BASE = PRESETS.glass;
 
