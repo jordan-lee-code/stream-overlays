@@ -37,7 +37,7 @@
       font: "BioRhyme"
     },
     midnight: {
-      bg: "rgba(10, 18, 46, 0.72)", text: "#E8EEFF", accent: "#7FA8FF", onAccent: "#0A122E",
+      bg: "rgba(10, 18, 46, 0.72)", text: "#E8EEFF", accent: "#89AFFF", onAccent: "#0A122E",
       row: "rgba(127, 168, 255, 0.12)", track: "rgba(127, 168, 255, 0.22)",
       segs: ["#7FA8FF", "#4F77D6", "#A9C4FF", "#3A5BB0", "#C9DAFF", "#6A90E8", "#8FB0FF", "#2B4690"],
       font: "BioRhyme"
@@ -61,7 +61,7 @@
       font: "BioRhyme"
     },
     rose: {
-      bg: "rgba(58, 14, 34, 0.72)", text: "#FFE9F1", accent: "#FF8FB8", onAccent: "#3A0E22",
+      bg: "rgba(58, 14, 34, 0.72)", text: "#FFE9F1", accent: "#FF98BE", onAccent: "#3A0E22",
       row: "rgba(255, 143, 184, 0.12)", track: "rgba(255, 143, 184, 0.24)",
       segs: ["#FF8FB8", "#E0558C", "#FFB3D1", "#C23C74", "#FFD3E3", "#F06FA2", "#FF9DC3", "#A82B62"],
       font: "BioRhyme"
@@ -79,7 +79,7 @@
       font: "Chicle"
     },
     pastel: {
-      bg: "#FFF6E9", text: "#6B4F3A", accent: "#FF8A65", onAccent: "#FFF6E9",
+      bg: "#FFF6E9", text: "#6B4F3A", accent: "#BF684C", onAccent: "#FFF6E9",
       row: "rgba(255, 255, 255, 0.42)", track: "rgba(0, 0, 0, 0.11)",
       segs: ["#FF8A65", "#F7B5CA", "#A8E6CF", "#9BD3E3", "#FFD1A9", "#C7B9E8", "#FFE08A", "#F49BA5"],
       font: "Baloo 2"
@@ -97,7 +97,7 @@
       font: "Quicksand"
     },
     pastelpink: {
-      bg: "#FFE3EC", text: "#6A2E4B", accent: "#D95C8A", onAccent: "#FFF5F9",
+      bg: "#FFE3EC", text: "#6A2E4B", accent: "#BF5179", onAccent: "#FFF5F9",
       row: "rgba(255, 255, 255, 0.5)", track: "rgba(106, 46, 75, 0.14)",
       segs: ["#F7A8C6", "#FFC8DD", "#E0679A", "#FBB1BD", "#D98BB0", "#FFD6E6", "#F28DB2", "#C95F8B"],
       font: "Fredoka"
