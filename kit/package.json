@@ -1,0 +1,34 @@
+{
+  "name": "overlay-kit",
+  "version": "1.0.0",
+  "private": true,
+  "license": "MIT",
+  "author": "Jordan Lee",
+  "description": "The standards shared by a set of StreamElements overlays: the style presets, the contrast rules, and a tool that keeps each overlay in step.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jordan-lee-code/overlay-kit.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jordan-lee-code/overlay-kit/issues"
+  },
+  "homepage": "https://github.com/jordan-lee-code/overlay-kit#readme",
+  "keywords": [
+    "streamelements",
+    "twitch",
+    "overlay",
+    "design-tokens",
+    "presets"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "funding": "https://ko-fi.com/journeyingjordan",
+  "bin": {
+    "overlay-kit": "bin/overlay-kit.js"
+  },
+  "scripts": {
+    "test": "node test/test.js",
+    "check-contrast": "node bin/overlay-kit.js check-contrast"
+  }
+}
