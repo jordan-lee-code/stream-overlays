@@ -19,7 +19,7 @@
 
   var STORE_KEY = "chat_poll_v1";
 
-  /* Style presets. The same fourteen, with the same colours, in every overlay in this
+  /* Style presets. The same twenty-two, with the same colours, in every overlay in this
      set, generated from one table so they cannot drift apart, so any preset looks
      like one family across a whole stream. The default, Soft black, is a see-through
      black panel with white text. */
@@ -107,6 +107,54 @@
       row: "rgba(238, 245, 218, 0.12)", track: "rgba(238, 245, 218, 0.2)",
       segs: ["#C9E265", "#8FB84E", "#E6F29A", "#6E9A45", "#F2F7C0", "#A8CB62", "#B7D96D", "#4F7A3A"],
       font: "Almendra"
+    },
+    pride: {
+      bg: "rgba(20, 16, 34, 0.8)", text: "#FFFFFF", accent: "#FFEE00", onAccent: "#141022",
+      row: "rgba(255, 255, 255, 0.12)", track: "rgba(255, 255, 255, 0.2)",
+      segs: ["#E50000", "#FF8D00", "#FFEE00", "#028121", "#004CFF", "#770088", "#E50000", "#FF8D00"],
+      font: "Fredoka"
+    },
+    progress: {
+      bg: "rgba(22, 16, 30, 0.8)", text: "#FFFFFF", accent: "#5BCEFA", onAccent: "#101820",
+      row: "rgba(255, 255, 255, 0.12)", track: "rgba(255, 255, 255, 0.2)",
+      segs: ["#E50000", "#FF8D00", "#FFEE00", "#028121", "#004CFF", "#770088", "#F5A9B8", "#5BCEFA"],
+      font: "Fredoka"
+    },
+    trans: {
+      bg: "rgba(18, 28, 44, 0.82)", text: "#FFFFFF", accent: "#F5A9B8", onAccent: "#14202E",
+      row: "rgba(255, 255, 255, 0.12)", track: "rgba(255, 255, 255, 0.2)",
+      segs: ["#5BCEFA", "#F5A9B8", "#FFFFFF", "#5BCEFA", "#F5A9B8", "#FFFFFF", "#5BCEFA", "#F5A9B8"],
+      font: "Fredoka"
+    },
+    bi: {
+      bg: "rgba(30, 14, 36, 0.82)", text: "#FFFFFF", accent: "#E0559F", onAccent: "#1E0E24",
+      row: "rgba(255, 255, 255, 0.12)", track: "rgba(255, 255, 255, 0.2)",
+      segs: ["#D60270", "#9B4F96", "#0038A8", "#D60270", "#9B4F96", "#0038A8", "#D60270", "#9B4F96"],
+      font: "Fredoka"
+    },
+    pan: {
+      bg: "rgba(24, 20, 40, 0.82)", text: "#FFFFFF", accent: "#FFD800", onAccent: "#181428",
+      row: "rgba(255, 255, 255, 0.12)", track: "rgba(255, 255, 255, 0.2)",
+      segs: ["#FF218C", "#FFD800", "#21B1FF", "#FF218C", "#FFD800", "#21B1FF", "#FF218C", "#FFD800"],
+      font: "Fredoka"
+    },
+    enby: {
+      bg: "rgba(24, 24, 28, 0.86)", text: "#FFFFFF", accent: "#FFF433", onAccent: "#181818",
+      row: "rgba(255, 255, 255, 0.12)", track: "rgba(255, 255, 255, 0.2)",
+      segs: ["#FFF433", "#FFFFFF", "#9B59D0", "#2D2D2D", "#FFF433", "#FFFFFF", "#9B59D0", "#2D2D2D"],
+      font: "Fredoka"
+    },
+    lesbian: {
+      bg: "rgba(40, 16, 20, 0.82)", text: "#FFFFFF", accent: "#FF9A56", onAccent: "#2A1014",
+      row: "rgba(255, 255, 255, 0.12)", track: "rgba(255, 255, 255, 0.2)",
+      segs: ["#D52D00", "#EF7627", "#FF9A56", "#FFFFFF", "#D162A4", "#B55690", "#A30262", "#EF7627"],
+      font: "Fredoka"
+    },
+    ace: {
+      bg: "rgba(16, 16, 22, 0.86)", text: "#F1F1F1", accent: "#B075C9", onAccent: "#101016",
+      row: "rgba(255, 255, 255, 0.12)", track: "rgba(255, 255, 255, 0.2)",
+      segs: ["#A3A3A3", "#FFFFFF", "#800080", "#000000", "#A3A3A3", "#FFFFFF", "#800080", "#000000"],
+      font: "Fredoka"
     }
   };
   var BASE = PRESETS.glass;

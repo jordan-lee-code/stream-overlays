@@ -27,15 +27,15 @@ It was built for rounds like Two Truths and a Lie, but it suits any quick vote. 
 
 <p><img src="docs/result.png" alt="A finished poll with the winning option highlighted under the label Chat says" width="340"></p>
 
-**Your own look.** Every part of the card is a setting. This one uses custom colours, an outline, a different font for the heading and pink option colours. You can also pick any of the fourteen [style presets](#style-presets) with one setting.
+**Your own look.** Every part of the card is a setting. This one uses custom colours, an outline, a different font for the heading and pink option colours. You can also pick any of the twenty-two [style presets](#style-presets) with one setting.
 
 <p><img src="docs/custom.png" alt="A poll card in a customised pink theme with a script heading" width="340"></p>
 
 ## Style presets
 
-One setting picks the look. The same fourteen presets, with the same colours, are in every overlay in this set, so overlays from this set match whichever you choose. This is how each one looks in this overlay.
+One setting picks the look. The same twenty-two presets, with the same colours, are in every overlay in this set, so overlays from this set match whichever you choose. This is how each one looks in this overlay.
 
-<p><img src="docs/presets.png" alt="A grid of this overlay in each of the fourteen style presets: Soft black, Soft white, Midnight blue, Sunset, Forest, Ocean, Rose, Neon, Cosy cabin, Cosy summer pastel, Celestial, Pastel goth, Pastel pink and Fae green" width="760"></p>
+<p><img src="docs/presets.png" alt="A grid of this overlay in each of the twenty-two style presets: Soft black, Soft white, Midnight blue, Sunset, Forest, Ocean, Rose, Neon, Cosy cabin, Cosy summer pastel, Celestial, Pastel goth, Pastel pink, Fae green, Rainbow pride, Progress pride, Trans pride, Bi pride, Pan pride, Non-binary pride, Lesbian pride and Ace pride" width="760"></p>
 
 | Preset | Look |
 | --- | --- |
@@ -53,6 +53,16 @@ One setting picks the look. The same fourteen presets, with the same colours, ar
 | Pastel goth | Charcoal and lilac, in Quicksand. |
 | Pastel pink | Soft blush pink with rose, in Fredoka. |
 | Fae green | Mossy green with a firefly lime accent, in Almendra. |
+| Rainbow pride | Dark plum with the six rainbow stripes, in Fredoka. |
+| Progress pride | The six rainbow stripes with the chevron's pink and light blue. |
+| Trans pride | Dark blue with light blue, pink and white. |
+| Bi pride | Dark violet with magenta, purple and blue. |
+| Pan pride | Dark indigo with pink, yellow and light blue. |
+| Non-binary pride | Charcoal with yellow, white, purple and black. |
+| Lesbian pride | Dark wine with the orange to pink stripes. |
+| Ace pride | Near black with grey, white and purple. |
+
+The last eight are pride presets, built from the stripes of the rainbow, progress, trans, bi, pan, non-binary, lesbian and ace flags. A bar is striped like the flag where an overlay has one, and the slices of a wheel and the options of a poll take their colours from the stripes in order. The colours follow each flag's published design, and the progress flag shows its six rainbow stripes, because its chevron is a separate shape.
 
 Choose **Custom** to use the colour pickers and font instead. They are ignored while a preset is chosen.
 
@@ -116,7 +126,7 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | Copy | The heading, the result and tie labels, the hint line, the words for vote and votes, and a troubleshooting overlay. |
 | Card | **Size of everything**, corner roundness, padding, spacing, an outline, shadows, the tail and tilt of the timer and result label, and the size of each option's bar. |
 | Text | The size and boldness of the heading, countdown, result label, options, letter chips, counts and footer, an own font for the heading, and the opacity of counts, footer and options that did not win. |
-| Theme | One of the fourteen shared style presets (Soft black by default) or Custom colours and font, with a colour for every part and each of the eight options, and an opacity for the panel. |
+| Theme | One of the twenty-two shared style presets (Soft black by default) or Custom colours and font, with a colour for every part and each of the eight options, and an opacity for the panel. |
 | Animation | One switch for all animation, and how long the bars, the card and the pulse take. |
 | Sounds | A sound and volume for a poll opening, a vote, each of the last seconds and the result, plus a master mute. |
 | Manual controls | Buttons to start a demo poll, add time, end, restart, cancel and undo, and to test each sound. |
@@ -196,7 +206,7 @@ The widget uses the StreamElements events `onWidgetLoad`, `onEventReceived` with
 
 ## Related overlays
 
-These overlays share the same default look and the same fourteen style presets, so they sit together on one stream.
+These overlays share the same default look and the same twenty-two style presets, so they sit together on one stream.
 
 - [Sub Goals Overlay](https://github.com/jordan-lee-code/sub-goals-overlay): sub and bits goals that fill as chat reaches them.
 - [Subathon Overlay](https://github.com/jordan-lee-code/subathon-overlay): a subathon clock with a cap, power-ups and sub goals.
