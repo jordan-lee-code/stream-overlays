@@ -8,17 +8,17 @@ It is a single self-contained widget in plain JavaScript, with no dependencies a
 
 ## Features
 
-- **Gift bombs become squats:** counted in whole blocks and rounded down, so a gift of 16 subs adds 15 squats and a gift of 27 adds 25.
-- **Correct on real events:** a gift bomb counts once, not once per recipient (see [How counting works](#how-counting-works)).
-- **Chat control:** adjust, set, reset, lock and unlock the count from chat, for the broadcaster or moderators.
-- **A lock for the workout:** stop new gifts adding to the pile while squats are being done, while manual changes keep working.
-- **Scales to its box:** the number fills whatever size you draw the widget in StreamElements.
-- **A matching look:** a soft see-through black panel with white text in BioRhyme, the same default as the other overlays in this set, so they look like one family on a stream.
-- **Customisable:** around 60 settings cover the shape, spacing, outline, shadows, tilt, sizes, weights and colours of every part of the sticker, the floating text, sounds and animation.
-- **Counting options:** carry leftover subs between gifts, count single gifts, new subs and resubs, and cap the count.
-- **Sounds:** optional sounds when a gift adds squats and when the count is locked or unlocked.
-- **Saved:** the count and the lock survive a browser-source refresh.
-- **Testable offline:** a local dev harness and an automated test script, no live stream needed.
+- Gift bombs become squats: counted in whole blocks and rounded down, so a gift of 16 subs adds 15 squats and a gift of 27 adds 25.
+- Gift bombs counted once: not once per recipient (see [How counting works](#how-counting-works)).
+- Chat control: adjust, set, reset, lock and unlock the count from chat, for the broadcaster or moderators.
+- A lock for the workout: stop new gifts adding to the pile while squats are being done, while manual changes keep working.
+- Scales to its box: the number fills whatever size you draw the widget in StreamElements.
+- A shared look: the default is a see-through black panel with white text in BioRhyme, the same as the other overlays in this set.
+- Customisable: around 60 settings cover the shape, spacing, outline, shadows, tilt, sizes, weights and colours of every part of the sticker, the floating text, sounds and animation.
+- Counting options: carry leftover subs between gifts, count single gifts, new subs and resubs, and cap the count.
+- Sounds: optional sounds when a gift adds squats and when the count is locked or unlocked.
+- Saved: the count and the lock survive a browser-source refresh.
+- Testable offline: a local dev harness and an automated test script, no live stream needed.
 
 ## Screenshots
 
@@ -32,7 +32,7 @@ It is a single self-contained widget in plain JavaScript, with no dependencies a
 
 ## Style presets
 
-One setting picks the look. The same twelve presets, with exactly the same colours, are in every overlay in this set, so whichever you choose, the overlays still look like one family on a stream. This is how each one looks in this overlay.
+One setting picks the look. The same twelve presets, with the same colours, are in every overlay in this set, so overlays from this set match whichever you choose. This is how each one looks in this overlay.
 
 <p><img src="docs/presets.png" alt="A grid of this overlay in each of the twelve style presets: Soft black, Soft white, Midnight blue, Sunset, Forest, Ocean, Rose, Neon, Cosy cabin, Cosy summer pastel, Celestial and Pastel goth" width="760"></p>
 
@@ -156,7 +156,7 @@ docs/     screenshots used in this README
 
 The widget uses the StreamElements events `onWidgetLoad`, `onEventReceived` with `subscriber-latest`, `message` and `widget-button`, and `SE_API.store`. Gift counting follows the `bulkGifted` announcement event, so a client that never sent it would undercount. StreamElements does send it.
 
-The JavaScript is deliberately ES5 style so it can be pasted straight into the StreamElements editor.
+The JavaScript is plain ES5, so it can be pasted straight into the StreamElements editor.
 
 ## Related overlays
 
@@ -173,7 +173,7 @@ If this saves you time, you can support its development on Ko-fi:
 
 [![Support on Ko-fi](https://img.shields.io/badge/Ko--fi-Support%20me-ff38b8?logo=ko-fi&logoColor=white)](https://ko-fi.com/journeyingjordan)
 
-Thank you, it is genuinely appreciated.
+Thanks for using it.
 
 ## Contributing
 
