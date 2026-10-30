@@ -12,6 +12,9 @@
   display: flex;
   flex-direction: column;
   gap: var(--sa-gap, 12px);
+  /* The width reference for the clock's cqw sizes. A container's own cqw units resolve
+     against its parent, so the clock card cannot be the container itself. */
+  container-type: inline-size;
   -webkit-font-smoothing: antialiased;
 }
 #subathon-root.goals-first { flex-direction: column-reverse; }
@@ -40,9 +43,6 @@
   --sa-border: 0 solid #FFFFFF;
   --sa-shadow: none;
 
-  /* A width container, so the digits are sized in cqw and the card looks the same
-     however wide the box is drawn in StreamElements. */
-  container-type: inline-size;
   flex: 0 0 auto;
   width: 100%;
   padding: calc(var(--sa-pad) * 1em) 3cqw;

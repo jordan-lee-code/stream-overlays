@@ -9,9 +9,9 @@
   <style>
     html, body { margin: 0; height: 100%; font-family: "Quicksand", "Segoe UI", sans-serif; }
     body { background: #e9edf2; color: #2b2f36; }
-    #layout { display: flex; min-height: 100vh; align-items: stretch; }
+    #layout { display: flex; height: 100vh; align-items: stretch; }
     #stage-wrap {
-      flex: 1; display: flex; align-items: center; justify-content: center; padding: 20px;
+      flex: 1; display: flex; align-items: center; justify-content: center; padding: 20px; overflow: auto;
       background-color: #cfd6dd;
       background-image:
         linear-gradient(45deg, #c2cad2 25%, transparent 25%, transparent 75%, #c2cad2 75%),
@@ -19,7 +19,7 @@
       background-size: 28px 28px; background-position: 0 0, 14px 14px;
     }
     /* A fixed box for the widget to fill, as a StreamElements widget box does. */
-    #stage { width: 620px; height: 640px; max-width: 92vw; }
+    #stage { width: 620px; height: 640px; max-width: 92vw; outline: 2px dashed rgba(0, 0, 0, 0.25); outline-offset: 4px; }
     #controls {
       width: 380px; flex: 0 0 380px; background: #fff; border-left: 1px solid #d4dae1;
       padding: 18px; overflow-y: auto; box-shadow: -4px 0 18px rgba(0,0,0,0.06);
