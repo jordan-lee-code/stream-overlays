@@ -29,7 +29,8 @@
     "#copy-panel .copy-btn.done { background: #dff5e1; border-color: #7bc58a; }" +
     "#copy-panel .copy-btn.failed { background: #fde3e3; border-color: #e08a8a; }" +
     "#copy-panel #copy-msg { min-height: 1.3em; margin: 8px 0 0; font-size: 12px; }" +
-    "#copy-panel textarea { display: block; width: 100%; height: 90px; margin-top: 8px; font-size: 11px; }";
+    "#copy-panel textarea { display: block; width: 100%; height: 90px; margin-top: 8px; font-size: 11px; }" +
+    "#copy-panel textarea[hidden] { display: none; }";
 
   function fetchText(url) {
     return fetch(url).then(function (r) {

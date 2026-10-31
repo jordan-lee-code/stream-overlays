@@ -122,6 +122,12 @@ One exception is a test that needs a real browser. The Chat Poll's layout test m
 
 Each overlay has a harness for trying it without going live: it fires the events StreamElements would send, including the per-recipient follow-ups of a gift bomb, sends chat commands as a viewer, moderator or broadcaster, shows the saved state, and generates an **Every setting** panel from `fields.json`. Where time matters it has a time machine. At the top, **Look and export** switches the style preset on the live widget and downloads or copies a `fields.json` with the current settings as its defaults. The template is in [`shared/`](../shared).
 
+Every dev page also loads [`shared/copy-panel.js`](../shared/copy-panel.js), which adds a panel of four buttons at the top, one for each tab of StreamElements' custom widget editor: `widget.html`, `widget.css`, `widget.js` and `fields.json` with the settings as they are configured on the page, preset included. The page's own script offers its settings to the panel as `window.__exportFields`, which is its existing export, and the panel fetches the other three files from the widget folder. The kit copies the panel into each overlay's `dev/` folder, and a test checks that every dev page loads it.
+
+## The website
+
+GitHub Pages serves each overlay's dev page and widget files, so nobody has to download the repository: `scripts/build-site.js` copies `widget/` and `dev/` from each overlay, adds a landing page with a card for each, and the Pages workflow publishes it whenever `main` changes. A card's picture is `docs/card.png`, drawn from the overlay's `docs/gallery.json` scene with `overlay-kit gallery <dir> --card`, and every overlay needs one. Text on a card comes from the overlay's `package.json` and README title and is escaped, never run as markup.
+
 ## Releases
 
 - The repository has one version, and a release is a git tag on it. Each overlay's `package.json` carries the same version.

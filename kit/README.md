@@ -23,6 +23,7 @@ node kit/bin/overlay-kit.js check-settings overlays/counter   # do its settings 
 node kit/bin/overlay-kit.js check-presets overlays/counter    # does this overlay match? (exit 1 if not)
 node kit/bin/overlay-kit.js sync-presets overlays/counter     # bring it in line
 node kit/bin/overlay-kit.js gallery overlays/counter          # redraw docs/presets.png (needs Chromium)
+node kit/bin/overlay-kit.js gallery overlays/counter --card   # redraw docs/card.png, the picture on the website's card
 ```
 
 `sync-presets` rewrites only what it owns: the `PRESETS` table in the widget, the `themePreset` dropdown in `widget/fields.json`, the palette the tests expect, the shared helpers block in the widget, and `test/mock.js` and `test/clock.js`. Code around the table is left alone. It works out the shape an overlay needs from the folder's name, and anything it does not know is treated as a clock-shaped overlay. `--kind` and `--file` override that.
