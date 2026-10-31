@@ -6,7 +6,9 @@
  *   { "width": 400, "height": 270, "fields": { "goal": 25 }, "script": "chat('!count +12');" }
  * `fields` are settings to override. `script` runs shortly after the widget loads, with these
  * helpers: se(listener, event), chat(text, { nick, mod, broadcaster }), sub(event), cheer(bits, who),
- * tip(amount, who), gift(count) and button(field). */
+ * tip(amount, who), gift(count) and button(field).
+ * `setup` is script that runs before the widget does, for an overlay that reads from somewhere outside the page: it can
+ * stand in for the network (window.fetch) so a picture never depends on one. */
 "use strict";
 const fs = require("fs");
 const os = require("os");
@@ -26,7 +28,7 @@ function findChromium(preferred) {
 // Inline the script so a page can never end its own script tag early.
 const safe = s => s.replace(/<\/script/gi, "<\\/script");
 
-function page(dir, widget, fields, script, w, h) {
+function page(dir, widget, fields, script, w, h, setup) {
   const read = f => fs.readFileSync(path.join(dir, "widget", f), "utf8");
   const defs = JSON.parse(read("fields.json")), data = {};
   Object.keys(defs).forEach(k => { if (defs[k].type !== "button" && "value" in defs[k]) data[k] = defs[k].value; });
@@ -35,6 +37,7 @@ function page(dir, widget, fields, script, w, h) {
 #stage{position:absolute;left:20px;top:20px;width:${w}px;height:${h}px}</style><style>${read("widget.css")}</style>
 <link rel="stylesheet" href="${FONTS}"></head><body><div id="stage">${read("widget.html")}</div>
 <script>var __s={};window.SE_API={store:{set:function(k,v){__s[k]=JSON.parse(JSON.stringify(v));return Promise.resolve()},get:function(k){return Promise.resolve(__s[k]?JSON.parse(JSON.stringify(__s[k])):null)}}};</script>
+<script>${safe(setup || "")}</script>
 <script>${safe(read("widget.js"))}</script>
 <script>
 var FD=${JSON.stringify(data)};
@@ -70,7 +73,7 @@ function gallery(dir, opts) {
   const presets = K.PRESETS.filter(x => !opts.only || opts.only.indexOf(x.key) !== -1);
   const tiles = presets.map(x => {
     const out = path.join(tmp, x.key + ".png");
-    shoot(chromium, page(dir, x, Object.assign({}, cfg.fields || {}, { themePreset: x.key }), cfg.script || "", w, h), out, w, h, budget);
+    shoot(chromium, page(dir, x, Object.assign({}, cfg.fields || {}, { themePreset: x.key }), cfg.script || "", w, h, cfg.setup), out, w, h, budget);
     if (opts.log) opts.log("  " + x.label);
     return { label: x.label, file: out };
   });
@@ -98,7 +101,7 @@ function card(dir, opts) {
   const cfg = JSON.parse(fs.readFileSync(cfgPath, "utf8"));
   const w = cfg.width, h = cfg.height, chromium = findChromium(opts.chromium);
   const target = path.resolve(opts.out || path.join(dir, "docs", "card.png"));
-  shoot(chromium, page(dir, K.PRESETS[0], Object.assign({}, cfg.fields || {}, { themePreset: K.PRESETS[0].key }), cfg.script || "", w, h), target, w, h, cfg.budget || 6000);
+  shoot(chromium, page(dir, K.PRESETS[0], Object.assign({}, cfg.fields || {}, { themePreset: K.PRESETS[0].key }), cfg.script || "", w, h, cfg.setup), target, w, h, cfg.budget || 6000);
   try { fs.rmSync(target.replace(/\.png$/, ".html"), { force: true }); } catch (e) { /* best effort */ }
   return { target };
 }

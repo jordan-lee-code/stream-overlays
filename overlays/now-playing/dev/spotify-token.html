@@ -1,0 +1,97 @@
+<!doctype html>
+<!-- Copyright (c) 2026 Jordan Lee (https://ko-fi.com/journeyingjordan). Released under the MIT licence: this notice must be kept in copies and substantial portions of the code. See LICENSE. -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Get a Spotify refresh token for the Now Playing Overlay</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: "Quicksand", "Segoe UI", system-ui, sans-serif; color: #2b2f36; background: #f3eefb; line-height: 1.5; }
+    main { max-width: 640px; margin: 0 auto; padding: 32px 20px 48px; }
+    h1 { font-size: 1.5rem; margin: 0 0 8px; }
+    ol { padding-left: 22px; }
+    li { margin: 6px 0; }
+    code, .uri { background: #fff; border: 1px solid #d9cff0; border-radius: 6px; padding: 1px 6px; word-break: break-all; }
+    .uri { display: block; padding: 8px 10px; margin: 6px 0; user-select: all; }
+    input[type=text], textarea { width: 100%; font: inherit; font-size: 14px; padding: 8px; border: 1px solid #c3b5e6; border-radius: 8px; }
+    textarea { height: 90px; font-size: 12px; }
+    button { font: inherit; font-weight: 700; padding: 8px 14px; margin: 8px 8px 0 0; border: 0; border-radius: 999px; background: #5b3fa0; color: #fff; cursor: pointer; }
+    button:hover, button:focus { background: #46307f; }
+    #error { color: #a3123a; font-weight: 700; }
+    .note { font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Get a Spotify refresh token</h1>
+  <p>The Now Playing Overlay can read what you are playing from Spotify. It needs a refresh token, which you get by signing in once, here. The page only asks for permission to see what is playing, and it never sees your password.</p>
+  <ol>
+    <li>At <code>developer.spotify.com/dashboard</code>, create an app. Under its redirect URIs, add exactly this address, and save:
+      <span class="uri" id="redirect"></span></li>
+    <li>Paste the app's <strong>client ID</strong> here:
+      <input type="text" id="client" autocomplete="off" spellcheck="false" placeholder="Client ID"></li>
+    <li><button type="button" id="go">Sign in with Spotify</button></li>
+  </ol>
+  <p id="error" hidden></p>
+  <div id="result" hidden>
+    <h2>Your refresh token</h2>
+    <textarea id="token" readonly></textarea>
+    <button type="button" id="copy">Copy it</button>
+    <p class="note">Paste it into the overlay's <strong>Spotify refresh token</strong> setting, with the client ID. Anyone who sees your overlay's address can read the token from its settings, so keep the address to yourself. This page sent your client ID and a one-time code to Spotify, and nothing to anyone else, and it does not keep the token.</p>
+  </div>
+</main>
+<script src="spotify-pkce.js"></script>
+<script>
+(function () {
+  "use strict";
+  var P = window.SpotifyPkce, $ = function (id) { return document.getElementById(id); };
+  var redirectUri = location.origin + location.pathname;
+  $("redirect").textContent = redirectUri;
+  $("client").value = localStorage.getItem("np_spotify_client") || "";
+
+  function fail(message) { $("error").textContent = message; $("error").hidden = false; }
+
+  $("go").addEventListener("click", function () {
+    var clientId = $("client").value.replace(/^\s+|\s+$/g, "");
+    if (!clientId) { fail("Paste your client ID first."); return; }
+    var verifier = P.randomString(64), state = P.randomString(24);
+    P.challenge(verifier).then(function (c) {
+      localStorage.setItem("np_spotify_client", clientId);
+      sessionStorage.setItem("np_spotify", JSON.stringify({ verifier: verifier, state: state, clientId: clientId }));
+      location.href = P.authorizeUrl({ clientId: clientId, redirectUri: redirectUri, state: state, challenge: c });
+    }, function () { fail("This browser cannot do the sign-in. Open the page over https, or on 127.0.0.1."); });
+  });
+
+  $("copy").addEventListener("click", function () {
+    var box = $("token");
+    box.select();
+    var done = function () { $("copy").textContent = "Copied"; };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(box.value).then(done, function () { document.execCommand("copy"); done(); });
+    else { document.execCommand("copy"); done(); }
+  });
+
+  // Back from Spotify with a code (or a refusal).
+  var q = new URLSearchParams(location.search);
+  if (q.has("error")) { fail("Spotify said: " + q.get("error") + ". Nothing was changed."); history.replaceState(null, "", location.pathname); }
+  else if (q.has("code")) {
+    var saved = null;
+    try { saved = JSON.parse(sessionStorage.getItem("np_spotify")); } catch (e) { saved = null; }
+    var code = q.get("code"), state = q.get("state");
+    sessionStorage.removeItem("np_spotify");
+    history.replaceState(null, "", location.pathname);
+    if (!saved || saved.state !== state) fail("That sign-in did not start on this page, so it was ignored. Try again from the start.");
+    else {
+      fetch("https://accounts.spotify.com/api/token", { method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded" }, body: P.tokenBody({ code: code, redirectUri: redirectUri, clientId: saved.clientId, verifier: saved.verifier }) })
+        .then(function (r) { return r.json(); })
+        .then(function (j) {
+          if (!j.refresh_token) { fail("Spotify did not give a refresh token" + (j.error_description ? ": " + j.error_description : ".")); return; }
+          $("token").value = j.refresh_token;
+          $("result").hidden = false;
+        }, function () { fail("Could not reach Spotify. Check your connection and try again."); });
+    }
+  }
+}());
+</script>
+</body>
+</html>

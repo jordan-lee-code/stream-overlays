@@ -210,6 +210,7 @@ These overlays share the same default look and the same twenty-two style presets
 
 - [Recent Activity Overlay](../recent-activity): the latest subs, gifts, bits, tips, follows and raids.
 - [Under Camera Overlay](../under-camera): a nameplate for under your camera, with your name, pronouns and rotating lines.
+- [Now Playing Overlay](../now-playing): what you are playing, from Last.fm, Tuna, Spotify or Pear Desktop, with album art and a progress bar.
 
 ## Support
 

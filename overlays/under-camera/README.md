@@ -194,6 +194,7 @@ These overlays share the same default look and the same twenty-two style presets
 
 - [Recent Activity Overlay](../recent-activity): the latest subs, gifts, bits, tips, follows and raids.
 - [Over Camera Overlay](../over-camera): a cover for your camera that you and your moderators control from chat.
+- [Now Playing Overlay](../now-playing): what you are playing, from Last.fm, Tuna, Spotify or Pear Desktop, with album art and a progress bar.
 
 ## Support
 
