@@ -6,6 +6,7 @@
    ordering, persistence and theming. */
 const fs = require("fs"), vm = require("vm");
 const ROOT = require("path").join(__dirname, "..");
+const vclock = require("./clock")();   // time is pretend: timers and the Date the widget reads follow it, so the test never sleeps
 const src = fs.readFileSync(ROOT + "/widget/widget.js", "utf8");
 const fields = JSON.parse(fs.readFileSync(ROOT + "/widget/fields.json", "utf8"));
 
@@ -68,7 +69,7 @@ class Audio {
 }
 const sandbox = {
   window, document, CustomEvent, SE_API, Audio,
-  setTimeout, clearTimeout, setInterval, clearInterval, Date, console, Math, Promise, JSON, parseFloat, parseInt, isNaN, String, Array, Object
+  setTimeout: vclock.setTimeout, clearTimeout: vclock.clearTimeout, setInterval: vclock.setInterval, clearInterval: vclock.clearInterval, Date: vclock.Date, console, Math, Promise, JSON, parseFloat, parseInt, isNaN, String, Array, Object
 };
 sandbox.global = sandbox; vm.createContext(sandbox); vm.runInContext(src, sandbox);
 
@@ -98,7 +99,7 @@ function sub(event) { window.dispatchEvent(new CustomEvent("onEventReceived", { 
 const tip = n => window.dispatchEvent(new CustomEvent("onEventReceived", { detail: { listener: "tip-latest", event: { amount: n, name: "Tipper", currency: "USD" } } }));
 const cheer = n => window.dispatchEvent(new CustomEvent("onEventReceived", { detail: { listener: "cheer-latest", event: { amount: n, name: "Cheerer" } } }));
 const bomb = n => sub({ gifted: true, bulkGifted: true, amount: n, sender: "GenerousViewer" });
-const wait = ms => new Promise(r => setTimeout(r, ms));
+const wait = ms => vclock.advance(ms);
 
 // Reads the rendered rows back out of the mock DOM: name, "n/target" text, bar
 // width, and whether the row is celebrating or on its way out.
@@ -231,7 +232,9 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   load({ tipSymbol: "\u00a3", tipsPerSub: 5, bitsCalcSeconds: 0.3 }); await wait(5);
   tip(3);
   ok(elements["incentive-bits"].hidden === false && elements["incentive-bits-gain"].textContent === "+\u00a33", "a tip shows its amount in the strip (" + elements["incentive-bits-gain"].textContent + ")");
-  await wait(600);
+  // The counter climbs to the amount over the strip's calculation time, so wait for it to arrive
+  // and not for a fixed time, which a slow machine overruns.
+  for (let i = 0; i < 200 && elements["incentive-bits-status"].textContent !== "\u00a33/\u00a35"; i++) await wait(25);
   ok(elements["incentive-bits-status"].textContent === "\u00a33/\u00a35", "and fills towards the next sub (" + elements["incentive-bits-status"].textContent + ")");
 
   console.log("\n[tip currency format]");

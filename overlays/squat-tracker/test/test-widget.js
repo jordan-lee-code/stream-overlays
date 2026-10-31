@@ -5,6 +5,7 @@
    permissions, the lock, reset, the zero floor, theming and persistence. */
 const fs = require("fs"), vm = require("vm");
 const ROOT = require("path").join(__dirname, "..");
+const vclock = require("./clock")();   // time is pretend: timers and the Date the widget reads follow it, so the test never sleeps
 const src = fs.readFileSync(ROOT + "/widget/widget.js", "utf8");
 const fields = JSON.parse(fs.readFileSync(ROOT + "/widget/fields.json", "utf8"));
 
@@ -42,7 +43,7 @@ class Audio {
 }
 const sandbox = {
   window, document, CustomEvent, SE_API, Audio,
-  setTimeout, clearTimeout, console, Math, Promise, JSON, parseFloat, parseInt, isNaN, String
+  setTimeout: vclock.setTimeout, clearTimeout: vclock.clearTimeout, console, Math, Promise, JSON, parseFloat, parseInt, isNaN, String
 };
 sandbox.global = sandbox; vm.createContext(sandbox); vm.runInContext(src, sandbox);
 
@@ -68,7 +69,7 @@ function chat(text, o) {
 }
 function button(field) { window.dispatchEvent(new CustomEvent("onEventReceived", { detail: { listener: "widget-button", event: { field } } })); }
 function gift(event) { window.dispatchEvent(new CustomEvent("onEventReceived", { detail: { listener: "subscriber-latest", event } })); }
-const wait = ms => new Promise(r => setTimeout(r, ms));
+const wait = ms => vclock.advance(ms);
 const count = () => elements["squat-count"].textContent;
 
 let pass = 0, fail = 0;

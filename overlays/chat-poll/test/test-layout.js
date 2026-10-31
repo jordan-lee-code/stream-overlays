@@ -15,7 +15,7 @@
 const fs = require("fs");
 const os = require("os");
 const path = require("path");
-const { execSync, execFileSync } = require("child_process");
+const { execSync, execFile } = require("child_process");
 
 const ROOT = path.join(__dirname, "..");
 const W = path.join(ROOT, "widget");
@@ -63,7 +63,8 @@ try {
   console.log("  (no network for the Chicle font, measuring with the fallback face)");
 }
 
-function measure(scenario) {
+// Each scenario gets its own page and its own browser profile, so several can be measured at once.
+function measure(scenario, index) {
   const fd = Object.assign({}, defaults, scenario.fields || {});
 
   /* `lateFont` reproduces a cold browser source: the poll opens while Chicle is
@@ -122,15 +123,19 @@ setTimeout(function(){
 },60);
 <\/script></body></html>`;
 
-  const file = path.join(tmp, "page.html");
+  const file = path.join(tmp, "page-" + index + ".html");
   fs.writeFileSync(file, page);
-  const dom = execFileSync(CHROME, [
-    "--headless", "--disable-gpu", "--no-sandbox", "--virtual-time-budget=8000",
-    "--dump-dom", "file://" + file
-  ], { encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] });
-  const m = dom.match(/<title>([^<]*)<\/title>/);
-  if (!m) throw new Error("the page never reported its measurements");
-  return JSON.parse(m[1]);
+  return new Promise((resolve, reject) => {
+    execFile(CHROME, [
+      "--headless", "--disable-gpu", "--no-sandbox", "--virtual-time-budget=8000",
+      "--user-data-dir=" + path.join(tmp, "profile-" + index), "--dump-dom", "file://" + file
+    ], { encoding: "utf8", maxBuffer: 64 * 1024 * 1024 }, (err, dom) => {
+      if (err) { reject(err); return; }
+      const m = dom.match(/<title>([^<]*)<\/title>/);
+      if (!m) { reject(new Error("the page never reported its measurements")); return; }
+      try { resolve(JSON.parse(m[1])); } catch (e) { reject(e); }
+    });
+  });
 }
 
 const SHORT = "Spaghetti, Sandwich, Coleslaw, Ice Cream";
@@ -181,9 +186,20 @@ function ok(cond, msg) {
   else { fail++; console.log("  FAIL " + msg); }
 }
 
-for (const s of scenarios) {
+// The browsers run side by side, a few at a time, and the results are then read out in order.
+async function measureAll() {
+  const results = new Array(scenarios.length);
+  let next = 0;
+  await Promise.all(Array.from({ length: Math.min(6, scenarios.length) }, async () => {
+    while (next < scenarios.length) { const at = next++; results[at] = await measure(scenarios[at], at); }
+  }));
+  return results;
+}
+
+measureAll().then((results) => {
+scenarios.forEach((s, i) => {
   console.log("\n[" + s.name + "]");
-  const r = measure(s);
+  const r = results[i];
 
   ok(r.worstRow <= r.cardInner + 1,
     "no row overflows the card (widest row " + r.worstRow + " vs " + r.cardInner + " of space)");
@@ -200,9 +216,10 @@ for (const s of scenarios) {
   ok(!r.countClipped,
     "no count or percentage is clipped (widest shown: " +
     r.counts.reduce(function (a, b) { return b.length > a.length ? b : a; }, "") + ")");
-}
+});
 
 try { fs.rmSync(tmp, { recursive: true, force: true }); } catch (e) { /* best effort */ }
 
 console.log("\n=== " + pass + " passed, " + fail + " failed ===");
 process.exit(fail ? 1 : 0);
+}, (e) => { console.error(e.message || e); process.exit(1); });

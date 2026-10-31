@@ -25,7 +25,7 @@ node kit/bin/overlay-kit.js sync-presets overlays/counter     # bring it in line
 node kit/bin/overlay-kit.js gallery overlays/counter          # redraw docs/presets.png (needs Chromium)
 ```
 
-`sync-presets` rewrites only what it owns: the `PRESETS` table in the widget, the `themePreset` dropdown in `widget/fields.json`, the palette the tests expect, and `test/mock.js`. Code around the table is left alone. It works out the shape an overlay needs from the folder's name, and anything it does not know is treated as a clock-shaped overlay. `--kind` and `--file` override that.
+`sync-presets` rewrites only what it owns: the `PRESETS` table in the widget, the `themePreset` dropdown in `widget/fields.json`, the palette the tests expect, the shared helpers block in the widget, and `test/mock.js` and `test/clock.js`. Code around the table is left alone. It works out the shape an overlay needs from the folder's name, and anything it does not know is treated as a clock-shaped overlay. `--kind` and `--file` override that.
 
 `gallery` reads `docs/gallery.json` in the overlay's folder, which says what to draw: a width and height, settings to override, and a short script that fires a few events. It renders the overlay once in every preset and lays them out as the picture in its README.
 

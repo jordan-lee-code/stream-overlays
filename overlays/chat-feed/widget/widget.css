@@ -1,0 +1,176 @@
+/* Copyright (c) 2026 Jordan Lee (https://ko-fi.com/journeyingjordan). Released under the MIT licence: this notice must be kept in copies and substantial portions of the code. See LICENSE. */
+/* Every value below is a custom property that widget.js sets from the editor fields, so
+   the defaults can be restyled from the settings panel without touching this file. */
+
+#cf-root {
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  /* The width reference for the cqw sizes below. A container's own cqw units resolve
+     against its parent, so the card cannot be the container itself. */
+  container-type: inline-size;
+  -webkit-font-smoothing: antialiased;
+}
+#cf-root * { box-sizing: border-box; }
+#cf-root [hidden] { display: none !important; }
+
+/* The Animate field: when it is off, nothing moves or eases. */
+#cf-root.no-motion,
+#cf-root.no-motion * {
+  animation: none !important;
+  transition: none !important;
+}
+
+#cf-app {
+  --w-bg: rgba(0, 0, 0, 0.55);
+  --w-text: #FFFFFF;
+  --w-accent: #FFFFFF;
+  --w-track: #444444;
+  --w-alarm: #D64545;
+  --w-font: "BioRhyme", Georgia, serif;
+  --w-radius: 24px;
+  --w-pad: 0.5;
+  --w-weight: 800;
+  --w-border: 0 solid #FFFFFF;
+  --w-shadow: none;
+
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: calc(var(--w-pad) * 1em) 3cqw;
+  font-family: var(--w-font);
+  font-size: var(--cf-size, 4.2cqw);
+  color: var(--w-text);
+  background: var(--w-bg);
+  background-image: var(--w-bgimg, none);
+  border: var(--w-border);
+  border-radius: var(--w-radius);
+  box-shadow: var(--w-shadow);
+  line-height: 1.2;
+  overflow: hidden;
+}
+
+@keyframes cf-pop {
+  0% { transform: scale(0.92); }
+  55% { transform: scale(1.04); }
+  100% { transform: scale(1); }
+}
+@keyframes cf-in {
+  0% { opacity: 0; transform: translateY(0.5em); }
+  100% { opacity: 1; transform: none; }
+}
+
+.cf-title {
+  flex: 0 0 auto;
+  font-size: 1.15em;
+  font-weight: var(--w-weight);
+  letter-spacing: 0.03em;
+  margin-bottom: 0.3em;
+  text-align: center;
+}
+#cf-app.pop { animation: cf-pop 0.4s ease; }
+
+/* Messages sit at the bottom and push the older ones up and out of the top. */
+.cf-list {
+  flex: 1 1 auto;
+  min-height: 0;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow: hidden;
+}
+#cf-app.newest-top .cf-list { justify-content: flex-start; }
+/* Messages scroll away through a soft edge instead of being cut off hard. */
+.cf-list { -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 1.8em); mask-image: linear-gradient(to bottom, transparent 0, #000 1.8em); }
+#cf-app.newest-top .cf-list { -webkit-mask-image: linear-gradient(to top, transparent 0, #000 1.8em); mask-image: linear-gradient(to top, transparent 0, #000 1.8em); }
+
+.cf-msg {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6em;
+  margin-top: var(--cf-gap, 0.45em);
+  min-width: 0;
+  transition: opacity 0.5s ease;
+}
+#cf-app.newest-top .cf-msg { margin-top: 0; margin-bottom: var(--cf-gap, 0.45em); }
+.cf-msg.new { animation: cf-in 0.35s ease; }
+.cf-msg.fading { opacity: 0; }
+
+.cf-avatar {
+  position: relative;
+  flex: 0 0 auto;
+  width: var(--cf-avatar, 2.2em);
+  height: var(--cf-avatar, 2.2em);
+  overflow: hidden;
+  border-radius: var(--cf-avatar-r, 50%);
+  background: var(--w-track);
+  color: var(--w-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 1em;
+}
+.cf-avatar img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+
+.cf-body { flex: 1 1 auto; min-width: 0; }
+.cf-head { display: flex; flex-wrap: wrap; align-items: center; gap: 0.35em; font-weight: var(--w-weight); }
+.cf-badges { display: inline-flex; gap: 0.2em; }
+.cf-badges img { width: 1.05em; height: 1.05em; }
+.cf-name { font-weight: var(--w-weight); overflow-wrap: anywhere; }
+.cf-pron { font-size: 0.72em; font-weight: 700; opacity: 0.9; }
+.cf-pron.style-tag {
+  padding: 0.02em 0.55em;
+  letter-spacing: 0.03em;
+  color: var(--w-accent);
+  background: var(--w-track);
+  border-radius: 999px;
+  opacity: 1;
+}
+.cf-sep { display: none; }
+.cf-text { font-weight: 600; overflow-wrap: anywhere; }
+.cf-emote { height: 1.5em; vertical-align: middle; margin: -0.2em 0.05em; }
+.cf-gif { display: block; max-width: 100%; max-height: calc(var(--cf-gif, 6) * 1em); margin-top: 0.25em; border-radius: 0.5em; object-fit: contain; }
+.cf-msg.action .cf-text { font-style: italic; }
+
+/* Name and message on one line. */
+#cf-app.inline .cf-head, #cf-app.inline .cf-text { display: inline; }
+#cf-app.inline .cf-head > * { margin-right: 0.35em; }
+#cf-app.inline .cf-head > .cf-sep { display: inline; margin-left: -0.35em; }
+#cf-app.inline .cf-badges { display: inline-flex; vertical-align: middle; }
+#cf-app.inline .cf-pron { vertical-align: middle; }
+
+/* Each message on its own card, with no panel behind the lot. */
+#cf-app.bubbles {
+  background: none;
+  background-image: none;
+  border: 0;
+  box-shadow: none;
+  padding: 0;
+}
+#cf-app.bubbles .cf-msg {
+  padding: calc(var(--w-pad) * 0.6em + 0.15em) 0.8em;
+  background: var(--w-bg);
+  background-image: var(--w-bgimg, none);
+  border: var(--w-border);
+  border-radius: var(--w-radius);
+  box-shadow: var(--w-shadow);
+}
+#cf-app.bubbles .cf-title {
+  align-self: center;
+  padding: 0.15em 0.9em;
+  background: var(--w-bg);
+  background-image: var(--w-bgimg, none);
+  border-radius: var(--w-radius);
+}

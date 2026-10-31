@@ -5,6 +5,7 @@
    restart, extend, undo), ties, blind polls, escaping, theming and persistence. */
 const fs = require("fs"), vm = require("vm");
 const ROOT = require("path").join(__dirname, "..");
+const vclock = require("./clock")();   // time is pretend: timers and the Date the widget reads follow it, so the test never sleeps
 const src = fs.readFileSync(ROOT + "/widget/widget.js", "utf8");
 const fields = JSON.parse(fs.readFileSync(ROOT + "/widget/fields.json", "utf8"));
 
@@ -45,8 +46,8 @@ class Audio {
   play() { this.played = true; return Promise.resolve(); }
 }
 const sandbox = {
-  window, document, CustomEvent, SE_API, Audio, Date, RegExp, Array, Object,
-  setTimeout, clearTimeout, setInterval, clearInterval,
+  window, document, CustomEvent, SE_API, Audio, Date: vclock.Date, RegExp, Array, Object,
+  setTimeout: vclock.setTimeout, clearTimeout: vclock.clearTimeout, setInterval: vclock.setInterval, clearInterval: vclock.clearInterval,
   console, Math, Promise, JSON, parseFloat, parseInt, isNaN, String, encodeURIComponent
 };
 sandbox.global = sandbox; vm.createContext(sandbox); vm.runInContext(src, sandbox);
@@ -75,7 +76,7 @@ const boss = { broadcaster: true, nick: "Streamer" };
 function button(field) {
   window.dispatchEvent(new CustomEvent("onEventReceived", { detail: { listener: "widget-button", event: { field } } }));
 }
-const wait = ms => new Promise(r => setTimeout(r, ms));
+const wait = ms => vclock.advance(ms);
 
 // ---- reading the rendered card ----
 const html = () => elements["vote-options"].innerHTML;

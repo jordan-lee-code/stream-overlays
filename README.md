@@ -16,6 +16,7 @@ A set of StreamElements custom widgets for Twitch streams. Each is plain JavaScr
 | [Recent Activity](overlays/recent-activity) | The latest subs, gifts, bits, tips, follows and raids. |
 | [Stream Goals](overlays/stream-goals) | Sub and bits goals that start again for each stream. |
 | [Reminder](overlays/reminder) | Reminders you set from chat, which stay on screen until cleared. |
+| [Chat Feed](overlays/chat-feed) | On-screen chat with profile pictures and pronouns, in the same style presets. |
 
 ## Using an overlay
 

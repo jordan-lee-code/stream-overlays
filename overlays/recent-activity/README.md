@@ -183,6 +183,7 @@ These overlays share the same default look and the same twenty-one style presets
 - [Hype Meter Overlay](../hype-meter): a meter that chat activity fills, with levels.
 - [Stream Goals Overlay](../stream-goals): sub and bits goals that start again for each stream.
 - [Reminder Overlay](../reminder): reminders you set from chat, which stay on screen until cleared.
+- [Chat Feed Overlay](../chat-feed): on-screen chat with profile pictures and pronouns.
 
 ## Support
 

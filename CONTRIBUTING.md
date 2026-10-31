@@ -9,6 +9,8 @@ You need Node.js 18 or newer for the tests, and Python 3 (or any static file ser
 ```sh
 npm test                          # every check in the repo
 node scripts/test-all.js counter  # just one overlay (the kit's checks always run)
+TEST_JOBS=1 npm test              # one suite at a time, if you want quieter output while debugging
+node scripts/stress.js 20 counter   # one suite 20 times at once, to look for a test that fails only sometimes (heavy: CI does this)
 cd overlays/counter && npm run dev   # an overlay's dev harness, at http://localhost:8000/dev/
 ```
 

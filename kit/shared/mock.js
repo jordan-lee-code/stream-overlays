@@ -3,6 +3,7 @@
    onWidgetLoad and onEventReceived events StreamElements sends, and lets the test read
    the rendered result back out. */
 const fs = require("fs"), vm = require("vm"), path = require("path");
+const createClock = require("./clock");
 
 module.exports = function createEnv(root) {
   const src = fs.readFileSync(path.join(root, "widget/widget.js"), "utf8");
@@ -58,20 +59,38 @@ module.exports = function createEnv(root) {
     constructor(s) { this.src = s; this.volume = 1; audioLog.push(this); }
     play() { this.played = true; return Promise.resolve(); }
   }
-  const env = { fake: 1700000000000 };
+  // A pretend network. A test sets what each address answers with: `env.net(url => ({ text: "..." }))`
+  // or `({ json: [...] })`, `({ ok: false })`, or throws to be offline. Every request is logged.
+  const fetchLog = [];
+  let netHandler = () => { throw new Error("offline"); };
+  const fetch = url => {
+    fetchLog.push(String(url));
+    return Promise.resolve().then(() => netHandler(String(url))).then(r => ({
+      ok: r.ok !== false, status: r.ok === false ? 404 : 200,
+      text: () => Promise.resolve(r.text === undefined ? JSON.stringify(r.json) : r.text),
+      json: () => Promise.resolve(r.json)
+    }));
+  };
+  // Time is pretend. The widget's timers run on this clock, and `wait` moves it, so a test never
+  // sleeps. The date the widget reads is separate and stays still until a test sets `env.fake`,
+  // which is how a test makes minutes or hours pass for a widget that works from the date.
+  const clock = createClock();
+  const env = { fake: 1700000000000, clock };
   class FakeDate extends Date { static now() { return env.fake; } }
   const sandbox = {
-    window, document, CustomEvent, SE_API, Audio, Date: FakeDate,
-    setTimeout, clearTimeout, setInterval, clearInterval, console, Math, Promise, JSON,
+    window, document, CustomEvent, SE_API, Audio, Date: FakeDate, fetch,
+    setTimeout: clock.setTimeout, clearTimeout: clock.clearTimeout, setInterval: clock.setInterval, clearInterval: clock.clearInterval,
+    console, Math, Promise, JSON,
     parseFloat, parseInt, isNaN, String, Array, Object, encodeURIComponent, RegExp
   };
   sandbox.global = sandbox; vm.createContext(sandbox); vm.runInContext(src, sandbox);
 
   let pass = 0, fail = 0;
-  const wait = ms => new Promise(r => setTimeout(r, ms));
+  const wait = ms => clock.advance(ms);
   let lastFD = {};
   Object.assign(env, {
-    src, fields, expectedPresets, E, storeData, audioLog, wait,
+    src, fields, expectedPresets, E, storeData, audioLog, wait, fetchLog,
+    net(fn) { netHandler = fn; fetchLog.length = 0; },
     ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } else { fail++; console.log("  FAIL " + msg); } },
     section(t) { console.log("\n[" + t + "]"); },
     fieldData(ov) {

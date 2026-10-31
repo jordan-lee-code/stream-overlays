@@ -1,0 +1,37 @@
+name: Flake check
+
+# Runs every suite many times at once, which makes the runner slow and busy, to find a test that
+# fails only sometimes. It is separate from the normal checks so those stay quick. It runs when a
+# pull request touches the tests, the shared clock or mock, or the runner, by hand from the Actions
+# tab, and once a week.
+on:
+  pull_request:
+    paths:
+      - "overlays/*/test/**"
+      - "kit/shared/**"
+      - "kit/test/**"
+      - "scripts/**"
+      - ".github/workflows/stress.yml"
+  workflow_dispatch:
+    inputs:
+      copies:
+        description: "How many runs of each suite"
+        default: "30"
+  schedule:
+    - cron: "17 5 * * 1"
+
+jobs:
+  stress:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [18, 20, 22]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Run every suite many times at once
+        run: node scripts/stress.js ${{ github.event.inputs.copies || 20 }}

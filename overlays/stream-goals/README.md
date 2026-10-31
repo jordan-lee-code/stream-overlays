@@ -181,6 +181,7 @@ These overlays share the same default look and the same twenty-one style presets
 - [Hype Meter Overlay](../hype-meter): a meter that chat activity fills, with levels.
 - [Recent Activity Overlay](../recent-activity): the latest subs, gifts, bits, tips, follows and raids.
 - [Reminder Overlay](../reminder): reminders you set from chat, which stay on screen until cleared.
+- [Chat Feed Overlay](../chat-feed): on-screen chat with profile pictures and pronouns.
 
 ## Support
 

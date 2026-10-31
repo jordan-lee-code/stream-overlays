@@ -22,6 +22,13 @@
     var badges = role === "broadcaster" ? [{ type: "broadcaster" }] : role === "mod" ? [{ type: "moderator" }] : [];
     se("message", { data: { text: text, nick: "tester", displayName: "Tester", badges: badges, tags: { mod: role === "mod" ? "1" : "0" } } });
   }
+  // A chat message with the extras a real one carries: colour, badges and emotes.
+  var sent = 0;
+  function message(o) {
+    var nick = String(o.nick || "tester");
+    se("message", { data: { text: o.text, nick: nick.toLowerCase(), displayName: o.name || nick, userId: "u-" + nick.toLowerCase(), msgId: "m" + (++sent),
+      badges: o.badges || [], emotes: o.emotes || [], displayColor: o.color || "", tags: { color: o.color || "", mod: "0", gifs: o.gifs || "" }, isAction: !!o.action } });
+  }
   var names = ["Alice", "Bea", "Cass", "Dev", "Eli", "Fern", "Gus", "Hana"];
   var n = 0; function who() { return names[n++ % names.length]; }
   function fill(obj, name) { return JSON.parse(JSON.stringify(obj).split("{who}").join(name)); }
@@ -144,6 +151,7 @@
       sec.buttons.forEach(function (b) {
         c.appendChild(btn(b.label, function () {
           if (b.kind === "chat") chat(b.text, b.role || "broadcaster");
+          else if (b.kind === "message") message(JSON.parse(JSON.stringify(b.message).split("{who}").join(who())));
           else if (b.kind === "bomb") {
             var gifter = who();
             se("subscriber-latest", { gifted: true, bulkGifted: true, amount: b.n, tier: "1000", sender: gifter, name: gifter });
@@ -152,6 +160,34 @@
         }));
       });
     });
+
+    if (CFG.chatter) {
+      c.appendChild(el("h2", { text: "Say something as a chatter" }));
+      c.appendChild(el("p", { "class": "hint", text: CFG.chatter.hint }));
+      var login = el("input", { type: "text", id: "chatter-login", value: CFG.chatter.login });
+      var line = el("input", { type: "text", id: "chatter-text", value: CFG.chatter.text });
+      c.appendChild(login); c.appendChild(line);
+      // Who they are on stream: a name colour and the badges they would wear.
+      var colour = el("input", { type: "color", id: "chatter-colour", value: "#FF7BAC" });
+      var BADGES = { broadcaster: "5527c58c-fb7d-422d-b71b-f309dcb85cc1", moderator: "3267646d-33f0-4b17-b3df-f923a41db1d0", vip: "b817aba4-fad8-49e2-b88a-7cc744dfa6ec", subscriber: "5d9f2208-5dd8-11e7-8513-2ff4adfae661" };
+      var roles = el("div", { "class": "row" }, [el("label", { text: "Name colour" }), colour]);
+      c.appendChild(roles);
+      var ticks = el("div", { "class": "row" }), picked = {};
+      Object.keys(BADGES).forEach(function (r) {
+        var box = el("input", { type: "checkbox" });
+        box.addEventListener("change", function () { picked[r] = box.checked; });
+        ticks.appendChild(el("label", {}, [box, document.createTextNode(" " + r)]));
+      });
+      c.appendChild(ticks);
+      var sendAs = function (action) {
+        var badges = Object.keys(picked).filter(function (r) { return picked[r]; }).map(function (r) {
+          return { type: r, version: "1", description: r.charAt(0).toUpperCase() + r.slice(1), url: "https://static-cdn.jtvnw.net/badges/v1/" + BADGES[r] + "/1" };
+        });
+        message({ nick: login.value.replace(/^\s+|\s+$/g, ""), text: line.value, color: colour.value.toUpperCase(), badges: badges, action: action });
+      };
+      c.appendChild(btn("Send", function () { sendAs(false); }));
+      c.appendChild(btn("Send as /me", function () { sendAs(true); }));
+    }
 
     c.appendChild(el("h2", { text: "Chat" }));
     var box = el("input", { type: "text", id: "chat-text", value: CFG.chatDefault });
