@@ -90,6 +90,9 @@
   overflow: hidden;
 }
 #cf-app.newest-top .cf-list { justify-content: flex-start; }
+/* Messages scroll away through a soft edge instead of being cut off hard. */
+.cf-list { -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 1.8em); mask-image: linear-gradient(to bottom, transparent 0, #000 1.8em); }
+#cf-app.newest-top .cf-list { -webkit-mask-image: linear-gradient(to top, transparent 0, #000 1.8em); mask-image: linear-gradient(to top, transparent 0, #000 1.8em); }
 
 .cf-msg {
   flex: 0 0 auto;

@@ -58,34 +58,60 @@ const until = async (test, ms) => { for (let i = 0; i < (ms || 2000) / 25 && !te
   await load({ maxMessages: 999 }); for (let i = 0; i < 40; i++) say("m" + i, { nick: "u" + (i % 5) });
   ok(rowEls().length === 30, "never more than thirty (" + rowEls().length + ")");
 
-  section("filling the box");
+  section("scrolling to fit the box");
   // The mock has no layout, so give the list one: a box of a set height, rows of a set height,
   // stacked from the bottom (newest at the bottom) or from the top (newest at the top).
+  // Every row's style also keeps a record of what it was set to, so a glide can be seen.
   const layout = (height, rowH, fromTop) => {
     const list = E("cf-list");
     list.getBoundingClientRect = () => {
       list.children.forEach((c, i) => {
+        if (!c._logged) { c._logged = true; c._log = []; c.style = new Proxy(c.style, { set(o, k, v) { c._log.push([k, v]); o[k] = v; return true; } }); }
         c.getBoundingClientRect = () => {
-          const n = list.children.length, top = fromTop ? i * rowH : height - (n - i) * rowH;
+          const n = list.children.length, at = list.children.indexOf(c), top = fromTop ? at * rowH : height - (n - at) * rowH;
           return { top, bottom: top + rowH };
         };
       });
       return { top: 0, bottom: height };
     };
   };
-  await load({ maxMessages: 30 }); layout(100, 30, false);
+  await load({ maxMessages: 30, animate: false }); layout(100, 30, false);
   for (const n of ["a", "b", "c", "d", "e", "f"]) say("hi " + n, { nick: n, name: n.toUpperCase() });
-  ok(names().join() === "D,E,F", "it shows as many as fit, and never one cut off at the top (" + names() + ")");
-  await load({ maxMessages: 30, order: "top" }); layout(100, 30, true);
+  ok(names().join() === "C,D,E,F", "older messages scroll off the top, and one only part way off is kept (" + names() + ")");
+  await load({ maxMessages: 30, animate: false, order: "top" }); layout(100, 30, true);
   for (const n of ["a", "b", "c", "d", "e", "f"]) say("hi " + n, { nick: n, name: n.toUpperCase() });
-  ok(names().join() === "F,E,D", "and with the newest at the top, never one cut off at the bottom (" + names() + ")");
-  await load({ maxMessages: 5 }); layout(10000, 30, false);
+  ok(names().join() === "F,E,D,C", "and with the newest at the top they scroll off the bottom (" + names() + ")");
+  await load({ maxMessages: 5, animate: false }); layout(10000, 30, false);
   for (let i = 0; i < 9; i++) say("hi", { nick: "u" + i, name: "U" + i });
   ok(rowEls().length === 5, "the setting is a ceiling even when the box has room for more (" + rowEls().length + ")");
-  await load({ maxMessages: 30 }); layout(10, 30, false);
+  await load({ maxMessages: 30, animate: false }); layout(10, 30, false);
   say("tall", { nick: "alice" }); say("taller", { nick: "bram" });
-  ok(rowEls().length === 1, "one message too tall for the box is still shown, rather than an empty box (" + rowEls().length + ")");
-  ok(env.fields.maxMessages.value === 30 && env.fieldData().maxMessages === 30, "the default is the most it can hold, so it fills the box");
+  ok(rowEls().length === 1 && names().join() === "Bram", "a message taller than the box is still shown, and the one before it has scrolled away (" + names() + ")");
+  ok(env.fields.maxMessages.value === 30 && env.fieldData().maxMessages === 30, "the default is the most it can hold, so the box decides");
+
+  section("older messages glide up");
+  await load({ maxMessages: 30 }); layout(200, 30, false);
+  say("one", { nick: "a", name: "A" }); say("two", { nick: "b", name: "B" });
+  E("cf-list").getBoundingClientRect();              // measuring is what starts the recording
+  const first = rowEls()[0]; first._log.length = 0;
+  say("three", { nick: "c", name: "C" });
+  const moves = first._log.filter(x => x[0] === "transform").map(x => x[1]);
+  ok(moves.length === 2 && moves[0] === "translateY(30px)" && moves[1] === "none", "an older message starts where it was and eases to where it is (" + moves + ")");
+  ok(first._log.some(x => x[0] === "transition" && /transform/.test(x[1])), "with a transition on the move");
+  ok(first._log.findIndex(x => x[1] === "none" && x[0] === "transition") < first._log.findIndex(x => x[0] === "transform"), "which is switched off while it is put back at the start");
+  await load({ maxMessages: 30, order: "top" }); layout(200, 30, true);
+  say("one", { nick: "a", name: "A" }); E("cf-list").getBoundingClientRect();
+  const top = rowEls()[0]; top._log.length = 0; say("two", { nick: "b", name: "B" });
+  ok(top._log.some(x => x[0] === "transform" && x[1] === "translateY(-30px)"), "and with the newest at the top they glide down (" + top._log.filter(x => x[0] === "transform").map(x => x[1]) + ")");
+  await load({ maxMessages: 30, animate: false }); layout(200, 30, false);
+  say("one", { nick: "a" }); E("cf-list").getBoundingClientRect();
+  const still = rowEls()[0]; still._log.length = 0; say("two", { nick: "b" });
+  ok(still._log.filter(x => x[0] === "transform").length === 0, "nothing glides when Animate is off");
+  await load({ maxMessages: 30 }); layout(200, 30, false); say("one", { nick: "a" }); E("cf-list").getBoundingClientRect();
+  const steady = rowEls()[0]; steady._log.length = 0;
+  say("!command", { nick: "b" }); say("hi", { nick: "nightbot" });
+  ok(steady._log.length === 0 && rowEls().length === 1, "a message that is left out moves nothing");
+  say("hi", { nick: "c" }); ok(steady._log.length > 0 && rowEls().length === 2, "and one that is shown does");
   delete E("cf-list").getBoundingClientRect;     // the later sections run with no layout at all
 
   section("fading away");

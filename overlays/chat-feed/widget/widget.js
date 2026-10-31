@@ -500,30 +500,58 @@
       action: !!data.isAction, color: /^#[0-9a-f]{6}$/i.test(color) ? color : "", at: Date.now(), fading: false
     };
     m.li = buildRow(m);
+    var before = snapshot();
     if (cfg.newestTop) el.list.insertBefore(m.li, el.list.firstChild);
     else el.list.appendChild(m.li);
     msgs.push(m);
     while (msgs.length > cfg.max) drop(msgs[0]);
     fit();
+    glide(before);
     playUrl(cfg, cfg.sound, cfg.volume);
     if (demo) { if (demo.pronouns) setPronoun(m, demo.pronouns); return; }
     if (!validLogin(nick)) return;
     if (cfg.showAvatars) avatarFor(nick, function (url) { setAvatar(m, url); });
     if (cfg.showPronouns) pronounsFor(nick, function (p) { setPronoun(m, p); });
   }
-  // The box shows as many messages as fit. The oldest is dropped while it would be cut off at the
-  // edge, which is the top when the newest is at the bottom and the bottom when it is at the top.
-  // Where the page cannot measure (a test, or before the first paint) nothing is dropped.
+  // Chat scrolls: a new message arrives at one end and the older ones move away from it, so a
+  // message is removed only once it has gone completely out of view, which is above the box
+  // when the newest is at the bottom and below it when the newest is at the top. How many are
+  // on screen is whatever the box's height holds. Where the page cannot measure (a test, or
+  // before the first paint) nothing is removed this way.
   function fit() {
     if (!el.list || typeof el.list.getBoundingClientRect !== "function") return;
     for (var guard = 0; guard < 60 && msgs.length > 1; guard++) {
-      var box = el.list.getBoundingClientRect();
-      var kids = el.list.children, edge = cfg.newestTop ? kids[kids.length - 1] : kids[0];
+      var box = el.list.getBoundingClientRect(), kids = el.list.children;
+      var edge = cfg.newestTop ? kids[kids.length - 1] : kids[0];
       if (!edge || typeof edge.getBoundingClientRect !== "function") return;
       var r = edge.getBoundingClientRect();
-      if (!(cfg.newestTop ? r.bottom > box.bottom + 1 : r.top < box.top - 1)) return;
+      if (!(cfg.newestTop ? r.top >= box.bottom - 1 : r.bottom <= box.top + 1)) return;
       drop(msgs[0]);
     }
+  }
+  // Where each message is now, so that after a new one is added the older ones can glide from
+  // where they were to where they are, instead of jumping.
+  function snapshot() {
+    var out = [];
+    if (!cfg.animate) return out;
+    msgs.forEach(function (m) {
+      if (m.li && typeof m.li.getBoundingClientRect === "function") out.push({ m: m, top: m.li.getBoundingClientRect().top });
+    });
+    return out;
+  }
+  function glide(before) {
+    var moved = [];
+    before.forEach(function (b) {
+      if (msgs.indexOf(b.m) === -1) return;
+      var d = b.top - b.m.li.getBoundingClientRect().top;
+      if (Math.abs(d) < 1) return;
+      b.m.li.style.transition = "none";
+      b.m.li.style.transform = "translateY(" + d + "px)";
+      moved.push(b.m.li);
+    });
+    if (!moved.length) return;
+    void el.list.offsetWidth;                  // settle the starting point before easing away from it
+    moved.forEach(function (li) { li.style.transition = "transform 0.35s ease, opacity 0.5s ease"; li.style.transform = "none"; });
   }
   function drop(m) {
     var at = msgs.indexOf(m);
@@ -534,7 +562,7 @@
 
   function tick() {
     if (!loaded) return;
-    fit();                       // a picture or emote that has loaded can make a message taller
+    fit();                       // a picture or emote that has loaded can move things along
     if (!cfg.fadeMs) return;
     var t = Date.now();
     msgs.slice().forEach(function (m) {

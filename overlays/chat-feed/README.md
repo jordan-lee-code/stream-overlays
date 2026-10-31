@@ -13,7 +13,7 @@ It is a single self-contained widget in plain JavaScript, with no dependencies a
 - Pronouns: shown beside the name as a small tag, in brackets, or as plain text, with a way to set them by hand.
 - Readable names: a chat colour that would be hard to read on your panel is swapped for the accent colour.
 - Two layouts: the name above the message or on the same line, and one panel behind everything or a card for each message.
-- Fills the box: it shows as many messages as fit, and never leaves one cut in half at the edge.
+- Scrolls like chat: a new message arrives at the bottom, the older ones glide up and fade out through the top edge, and how many show depends on how tall you make the box in StreamElements. With the newest at the top it scrolls the other way.
 - Tidy by default: chat commands, and the usual bots, are left out, and you can add names of your own.
 - Moderation: `!chatfeed hide name` takes someone off the screen, and a message StreamElements deletes disappears from it too.
 - Fading: messages can fade away after a number of seconds, or stay until newer ones push them off.
@@ -71,7 +71,7 @@ Choose **Custom** to use the colour pickers and font instead. They are ignored w
 1. In StreamElements, edit your overlay and add **+ Add Widget, Static/Custom, Custom Widget**.
 2. Select the widget, open **Settings, Open Editor**, and paste each file from `widget/` into the matching tab: `widget.html` into HTML, `widget.css` into CSS, `widget.js` into JS, and `fields.json` into Fields.
 3. Click **Done**. The settings are grouped into Commands, Feed, Messages, Avatars, Pronouns, Size, Look, Custom colours, Manual controls, Sounds and Troubleshooting.
-4. Size and position the widget. It fills the box you draw, the text scales with the box, and the newest message sits at the bottom.
+4. Size and position the widget. It fills the box you draw and the text scales with the box. The newest message sits at the bottom and older ones scroll up and out, so a taller box shows more of the conversation.
 5. Press **Show example messages** under Manual controls to see how it looks before anyone has said anything.
 
 The widget reads Twitch chat through StreamElements, so it works as soon as it is on an active overlay.
@@ -104,7 +104,7 @@ People choose their pronouns on the pronoun service itself, so someone who has n
 - **Emotes** appear as pictures where they were typed, using the emotes StreamElements sends with the message. A Twitch emote is placed by its position in the message, and any other emote is found by its name, as a whole word. An animated picture is handed to the browser as it is, so it animates if the address StreamElements sends is an animated one. An emote with no picture on a secure address stays as the word.
 - **Third-party emotes.** The widget does not look emotes up itself. Whether 7TV, BTTV and FrankerFaceZ emotes show depends on StreamElements including them in the message for your channel, which I have not been able to confirm. Turn on `debug` and look at the `emotes` list for one of them to see what arrives.
 - **Deleted messages.** When StreamElements reports a message deleted, or all of a banned person's messages deleted, they disappear from the screen.
-- **Length.** Up to thirty messages can be on screen. A long message wraps inside the box.
+- **Length.** The box decides how many messages show, and a message is removed once it has scrolled completely out of view. **Most messages kept on screen** (thirty at most, and thirty by default) is only a ceiling. A long message wraps inside the box.
 
 ## Chat commands
 
