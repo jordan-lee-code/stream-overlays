@@ -1,0 +1,92 @@
+/* Copyright (c) 2026 Jordan Lee (https://ko-fi.com/journeyingjordan). Released under the MIT licence: this notice must be kept in copies and substantial portions of the code. See LICENSE. */
+/* Every value below is a custom property that widget.js sets from the editor fields, so
+   the defaults can be restyled from the settings panel without touching this file. */
+
+#uc-root {
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  /* The width reference for the cqw sizes below. A container's own cqw units resolve
+     against its parent, so the card cannot be the container itself. */
+  container-type: inline-size;
+  -webkit-font-smoothing: antialiased;
+}
+#uc-root * { box-sizing: border-box; }
+#uc-root [hidden] { display: none !important; }
+
+/* The Animate field: when it is off, nothing moves or eases. */
+#uc-root.no-motion,
+#uc-root.no-motion * {
+  animation: none !important;
+  transition: none !important;
+}
+
+#uc-app {
+  --w-bg: rgba(0, 0, 0, 0.55);
+  --w-text: #FFFFFF;
+  --w-accent: #FFFFFF;
+  --w-track: #444444;
+  --w-alarm: #D64545;
+  --w-font: "BioRhyme", Georgia, serif;
+  --w-radius: 24px;
+  --w-pad: 0.5;
+  --w-weight: 800;
+  --w-border: 0 solid #FFFFFF;
+  --w-shadow: none;
+
+  flex: 0 0 auto;
+  width: 100%;
+  padding: calc(var(--w-pad) * 1em) 3cqw;
+  font-family: var(--w-font);
+  font-size: var(--uc-size, 5cqw);
+  text-align: center;
+  color: var(--w-text);
+  background: var(--w-bg);
+  background-image: var(--w-bgimg, none);
+  border: var(--w-border);
+  border-radius: var(--w-radius);
+  box-shadow: var(--w-shadow);
+  line-height: 1.2;
+}
+#uc-app.align-left { text-align: left; }
+#uc-app.align-right { text-align: right; }
+
+.uc-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.1em 0.5em;
+}
+#uc-app.align-left .uc-head { justify-content: flex-start; }
+#uc-app.align-right .uc-head { justify-content: flex-end; }
+.uc-name {
+  font-size: calc(1em * var(--uc-title, 1.5));
+  font-weight: var(--w-weight);
+  letter-spacing: 0.02em;
+  overflow-wrap: anywhere;
+}
+.uc-pron { font-size: 0.7em; font-weight: 700; opacity: 0.9; }
+.uc-pron.style-tag {
+  padding: 0.02em 0.55em;
+  letter-spacing: 0.03em;
+  color: var(--w-accent);
+  background: var(--w-track);
+  border-radius: 999px;
+  opacity: 1;
+}
+.uc-tagline { margin-top: var(--uc-gap, 0.3em); font-size: 0.85em; font-weight: 700; overflow-wrap: anywhere; }
+.uc-line {
+  margin-top: var(--uc-gap, 0.3em);
+  font-size: 0.7em;
+  font-weight: 700;
+  color: var(--w-accent);
+  overflow-wrap: anywhere;
+  transition: opacity 0.3s ease;
+}
+.uc-line.swap { opacity: 0; }

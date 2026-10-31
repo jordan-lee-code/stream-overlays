@@ -1,0 +1,322 @@
+/* Copyright (c) 2026 Jordan Lee (https://ko-fi.com/journeyingjordan). Released under the MIT licence: this notice must be kept in copies and substantial portions of the code. See LICENSE. */
+/* Under Camera Overlay. StreamElements custom widget logic. */
+(function () {
+  "use strict";
+
+  var PRESETS = {
+    glass: { panel: "rgba(0, 0, 0, 0.55)", text: "#FFFFFF", accent: "#FFFFFF", track: "rgba(255, 255, 255, 0.2)", alarm: "#D64545", font: "BioRhyme" },
+    frost: { panel: "rgba(255, 255, 255, 0.72)", text: "#1B2130", accent: "#1B2130", track: "rgba(0, 0, 0, 0.14)", alarm: "#C0392B", font: "BioRhyme" },
+    midnight: { panel: "rgba(10, 18, 46, 0.72)", text: "#E8EEFF", accent: "#89AFFF", track: "rgba(127, 168, 255, 0.22)", alarm: "#FF6B6B", font: "BioRhyme" },
+    sunset: { panel: "rgba(48, 18, 42, 0.72)", text: "#FFF1E6", accent: "#FF9A5A", track: "rgba(255, 154, 90, 0.24)", alarm: "#FF4D4D", font: "BioRhyme" },
+    forest: { panel: "rgba(12, 36, 28, 0.72)", text: "#EAF7EE", accent: "#6FD6A0", track: "rgba(111, 214, 160, 0.22)", alarm: "#FF7A59", font: "BioRhyme" },
+    ocean: { panel: "rgba(6, 36, 50, 0.72)", text: "#E6F8FF", accent: "#4CD3E0", track: "rgba(76, 211, 224, 0.22)", alarm: "#FF6B6B", font: "BioRhyme" },
+    rose: { panel: "rgba(58, 14, 34, 0.72)", text: "#FFE9F1", accent: "#FF98BE", track: "rgba(255, 143, 184, 0.24)", alarm: "#FF4D6D", font: "BioRhyme" },
+    neon: { panel: "rgba(4, 4, 16, 0.82)", text: "#FFFFFF", accent: "#00F0FF", track: "rgba(0, 240, 255, 0.2)", alarm: "#FF3366", font: "BioRhyme" },
+    cosycabin: { panel: "#F5ECD6", text: "#57442E", accent: "#7C6142", track: "rgba(0, 0, 0, 0.11)", alarm: "#C05746", font: "Chicle" },
+    pastel: { panel: "#FFF6E9", text: "#6B4F3A", accent: "#BF684C", track: "rgba(0, 0, 0, 0.11)", alarm: "#F4587A", font: "Baloo 2" },
+    celestial: { panel: "#2E1A47", text: "#F3ECFF", accent: "#E8C06B", track: "rgba(255, 255, 255, 0.18)", alarm: "#B5495B", font: "Cinzel" },
+    pastelgoth: { panel: "#3A3340", text: "#F2E9F0", accent: "#C8B6E2", track: "rgba(255, 255, 255, 0.18)", alarm: "#C96A8E", font: "Quicksand" },
+    pastelpink: { panel: "#FFE3EC", text: "#6A2E4B", accent: "#BF5179", track: "rgba(106, 46, 75, 0.14)", alarm: "#D6456F", font: "Fredoka" },
+    pastelsage: { panel: "#DEEBD8", text: "#2B4636", accent: "#4A7A5A", track: "rgba(43, 70, 54, 0.14)", alarm: "#C5533F", font: "Fredoka" },
+    faegreen: { panel: "#2C4A36", text: "#EEF5DA", accent: "#C9E265", track: "rgba(238, 245, 218, 0.2)", alarm: "#E0805A", font: "Almendra" },
+    pride: { panel: "rgba(194, 168, 154, 0.9)", text: "#1A1426", accent: "#1A1426", track: "rgba(26, 20, 38, 0.34)", alarm: "#B3123A", font: "Fredoka", flag: ["#E50000", "#FF8D00", "#FFEE00", "#028121", "#004CFF", "#770088"], bgimg: "linear-gradient(rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0.45)), linear-gradient(135deg, #E50000, #FF8D00, #FFEE00, #028121, #004CFF, #770088)" },
+    trans: { panel: "rgba(185, 201, 225, 0.9)", text: "#1A1426", accent: "#1A1426", track: "rgba(26, 20, 38, 0.34)", alarm: "#B3123A", font: "Fredoka", flag: ["#5BCEFA", "#F5A9B8", "#FFFFFF", "#F5A9B8", "#5BCEFA"], bgimg: "linear-gradient(135deg, #5BCEFA, #F5A9B8, #FFFFFF, #F5A9B8, #5BCEFA)" },
+    bi: { panel: "rgba(117, 39, 142, 0.9)", text: "#FFFFFF", accent: "#FFFFFF", track: "rgba(255, 255, 255, 0.24)", alarm: "#FF6B6B", font: "Fredoka", flag: ["#D60270", "#D60270", "#9B4F96", "#0038A8", "#0038A8"], bgimg: "linear-gradient(135deg, #D60270, #D60270, #9B4F96, #0038A8, #0038A8)" },
+    pan: { panel: "rgba(181, 142, 132, 0.9)", text: "#1A1426", accent: "#1A1426", track: "rgba(26, 20, 38, 0.34)", alarm: "#B3123A", font: "Fredoka", flag: ["#FF218C", "#FFD800", "#21B1FF"], bgimg: "linear-gradient(135deg, #FF218C, #FFD800, #21B1FF)" },
+    enby: { panel: "rgba(212, 202, 192, 0.9)", text: "#1A1426", accent: "#2D2D2D", track: "rgba(26, 20, 38, 0.34)", alarm: "#B3123A", font: "Fredoka", flag: ["#FFF433", "#FFFFFF", "#9B59D0", "#2D2D2D"], bgimg: "linear-gradient(rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0.45)), linear-gradient(135deg, #FFF433, #FFFFFF, #9B59D0, #2D2D2D)" },
+    lesbian: { panel: "rgba(232, 167, 169, 0.9)", text: "#1A1426", accent: "#1A1426", track: "rgba(26, 20, 38, 0.34)", alarm: "#B3123A", font: "Fredoka", flag: ["#D52D00", "#EF7627", "#FF9A56", "#FFFFFF", "#D162A4", "#B55690", "#A30262"], bgimg: "linear-gradient(rgba(255, 255, 255, 0.40), rgba(255, 255, 255, 0.40)), linear-gradient(135deg, #D52D00, #EF7627, #FF9A56, #FFFFFF, #D162A4, #B55690, #A30262)" },
+    ace: { panel: "rgba(202, 187, 202, 0.9)", text: "#1A1426", accent: "#000000", track: "rgba(26, 20, 38, 0.34)", alarm: "#B3123A", font: "Fredoka", flag: ["#000000", "#A3A3A3", "#FFFFFF", "#800080"], bgimg: "linear-gradient(rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0.55)), linear-gradient(135deg, #000000, #A3A3A3, #FFFFFF, #800080)" }
+  };
+
+  // ---- shared by every overlay in this set ----
+  function str(v, d) { return (v === undefined || v === null || v === "") ? d : String(v); }
+  // For wording where an empty field is a real choice (no tag, no currency symbol, no title).
+  // StreamElements sends "" for a cleared field, which str() would turn back into the default.
+  function txt(v, d) { return (v === undefined || v === null) ? d : String(v); }
+  function num(v, d) { var n = parseFloat(v); return isNaN(n) ? d : n; }
+  function bool(v, d) {
+    if (v === undefined || v === null || v === "") return d;
+    return v === true || v === "true" || v === 1 || v === "1" || v === "on";
+  }
+  function clamp(n, lo, hi) { return Math.max(lo, Math.min(hi, n)); }
+  function pad2(n) { return (n < 10 ? "0" : "") + n; }
+  function byId(id) { return document.getElementById(id); }
+  function rgba(hex, opacity) {
+    var m = /^#?([0-9a-f]{3}|[0-9a-f]{6})$/i.exec(String(hex === undefined || hex === null ? "" : hex).trim());
+    if (!m) return "rgba(0, 0, 0, " + clamp(opacity, 0, 1) + ")";
+    var h = m[1];
+    if (h.length === 3) h = h.replace(/./g, function (c) { return c + c; });
+    var n = parseInt(h, 16);
+    return "rgba(" + ((n >> 16) & 255) + ", " + ((n >> 8) & 255) + ", " + (n & 255) + ", " + clamp(opacity, 0, 1) + ")";
+  }
+  function rolesOf(data) {
+    var r = { broadcaster: false, mod: false, sub: false, vip: false };
+    var badges = (data && data.badges) || [];
+    for (var i = 0; i < badges.length; i++) {
+      var t = String(badges[i].type || "").toLowerCase();
+      if (t === "broadcaster") r.broadcaster = true;
+      else if (t === "moderator") r.mod = true;
+      else if (t === "subscriber" || t === "founder") r.sub = true;
+      else if (t === "vip") r.vip = true;
+    }
+    var tags = (data && data.tags) || {};
+    if (tags.mod === "1" || tags.mod === 1) r.mod = true;
+    if (tags.subscriber === "1" || tags.subscriber === 1 || tags.subscriber === true) r.sub = true;
+    if (tags.vip === "1" || tags.vip === 1) r.vip = true;
+    if (typeof tags.badges === "string") {
+      if (/broadcaster/.test(tags.badges)) r.broadcaster = true;
+      if (/vip/.test(tags.badges)) r.vip = true;
+    }
+    return r;
+  }
+  // Shrinks a card until it fits the box it has been given, and never enlarges it. The text already scales with
+  // the box's width, so this is for a box that is short for its width, where the card would run off the bottom.
+  // CSS zoom keeps the card full width and scales its text, padding and corners together. The height does not
+  // shrink in step with the zoom, because the text wraps differently as it gets smaller, so the zoom is searched
+  // for and not calculated.
+  // `share` is how much of the box the card may use: a number, or a function for a card that shares the box
+  // with something that comes and goes.
+  function fitToBox(root, app, share) {
+    if (!root || !app || !app.style || typeof app.getBoundingClientRect !== "function") return;
+    app.style.zoom = "";
+    var room = root.clientHeight * (typeof share === "function" ? share() : (share || 1));
+    if (!(room > 0) || app.getBoundingClientRect().height <= room + 0.5) return;
+    var lo = 0.1, hi = 1;
+    for (var i = 0; i < 9; i++) {
+      var mid = (lo + hi) / 2;
+      app.style.zoom = String(mid);
+      if (app.getBoundingClientRect().height <= room + 0.5) lo = mid; else hi = mid;
+    }
+    app.style.zoom = String(Math.round(lo * 1000) / 1000);
+  }
+  // Keeps a card fitted as the box is resized, as its content changes, and once its font has loaded. A change of
+  // class is left out on purpose: that is how a card pops when something happens, and measuring in the middle of
+  // the pop would shrink it for good.
+  // `opts.share` is passed on to fitToBox, `opts.also` is another element whose appearing or disappearing should
+  // refit the card, and `opts.after` is called whenever the zoom actually changes, for something else that depends on
+  // how much room is left.
+  function watchFit(root, app, on, opts) {
+    if (!root || !app) return;
+    opts = opts || {};
+    app.__fitShare = opts.share;
+    app.__fitAfter = opts.after;
+    app.__fitOn = !!on;
+    if (!app.__fitWatching) {
+      app.__fitWatching = true;
+      var queued = false;
+      app.__fitSoon = function () {
+        if (queued) return;
+        queued = true;
+        // A timer and not an animation frame: measuring layout needs no frame, and a page that is hidden or has
+        // nothing animating may not produce one.
+        setTimeout(function () {
+          queued = false;
+          var was = app.__fitZoom || "";
+          if (app.__fitOn) fitToBox(root, app, app.__fitShare); else if (app.style) app.style.zoom = "";
+          app.__fitZoom = (app.style && app.style.zoom) || "";
+          if (app.__fitZoom !== was && app.__fitAfter) app.__fitAfter();
+        }, 30);
+      };
+      if (typeof ResizeObserver === "function") new ResizeObserver(app.__fitSoon).observe(root);
+      if (typeof MutationObserver === "function") {
+        new MutationObserver(app.__fitSoon).observe(app, { childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: ["hidden"] });
+        if (opts.also) new MutationObserver(app.__fitSoon).observe(opts.also, { childList: true, subtree: true, attributes: true, attributeFilter: ["hidden"] });
+      }
+      if (typeof document !== "undefined" && document.fonts && document.fonts.ready) document.fonts.ready.then(app.__fitSoon);
+    }
+    app.__fitSoon();
+  }
+  // ---- end of the shared primitives ----
+  // The settings every overlay in this set shares. Each widget adds its own on top.
+  function readCommon(f, d) {
+    f = f || {}; d = d || {};
+    return {
+      command: str(f.command, d.command || "!command"),
+      whoCanManage: str(f.whoCanManage, "mods"),
+      title: txt(f.title, d.title || ""),
+      showTitle: bool(f.showTitle, true),
+      themePreset: str(f.themePreset, "glass"),
+      colorPanel: str(f.colorPanel, "#000000"),
+      panelOpacity: num(f.panelOpacity, 0.55),
+      cText: str(f.cText, "#FFFFFF"),
+      cAccent: str(f.cAccent, "#FFFFFF"),
+      cTrack: str(f.cTrack, "#444444"),
+      cWarn: str(f.cWarn, "#D64545"),
+      fontFamily: str(f.fontFamily, "BioRhyme"),
+      radius: Math.max(0, num(f.radius, 24)),
+      borderWidth: Math.max(0, num(f.borderWidth, 0)),
+      borderColor: str(f.borderColor, "#FFFFFF"),
+      shadow: bool(f.shadow, false),
+      pad: Math.max(0, num(f.pad, 0.5)),
+      weight: clamp(num(f.weight, 800), 100, 900),
+      animate: bool(f.animate, true),
+      fit: bool(f.fit, true),
+      mute: bool(f.mute, false),
+      debug: bool(f.debug, false)
+    };
+  }
+  function themeOf(c) {
+    var p = c.themePreset !== "custom" ? PRESETS[c.themePreset] : null;
+    if (p) return p;
+    return { panel: rgba(c.colorPanel, c.panelOpacity), text: c.cText, accent: c.cAccent, track: c.cTrack, alarm: c.cWarn, font: c.fontFamily };
+  }
+  function loadFont(linkId, name) {
+    if (!name || typeof document === "undefined" || !document.head) return;
+    var link = byId(linkId);
+    if (!link) {
+      link = document.createElement("link");
+      link.id = linkId; link.rel = "stylesheet";
+      document.head.appendChild(link);
+    }
+    link.href = "https://fonts.googleapis.com/css2?family=" + encodeURIComponent(name).replace(/%20/g, "+") + ":wght@400;700;800&display=swap";
+  }
+  // A flag is a list of stripes, top to bottom. A bar can wear it as horizontal bands.
+  function flagGradient(stripes) {
+    var n = stripes.length, parts = [];
+    for (var i = 0; i < n; i++) parts.push(stripes[i] + " " + (i * 100 / n) + "% " + ((i + 1) * 100 / n) + "%");
+    return "linear-gradient(180deg, " + parts.join(", ") + ")";
+  }
+  function applyCommonTheme(c, root, app, fontLinkId) {
+    var t = themeOf(c), s = app.style;
+    s.setProperty("--w-bg", t.panel);
+    s.setProperty("--w-text", t.text);
+    s.setProperty("--w-accent", t.accent);
+    s.setProperty("--w-track", t.track);
+    s.setProperty("--w-alarm", t.alarm);
+    s.setProperty("--w-flag", t.flag ? flagGradient(t.flag) : t.accent);
+    s.setProperty("--w-bgimg", t.bgimg || "none");
+    s.setProperty("--w-edge", t.flag ? "inset 0 0 0 1px rgba(20, 16, 38, 0.38)" : "none");
+    s.setProperty("--w-font", '"' + t.font + '", Georgia, serif');
+    s.setProperty("--w-radius", c.radius + "px");
+    s.setProperty("--w-pad", c.pad);
+    s.setProperty("--w-weight", c.weight);
+    s.setProperty("--w-border", c.borderWidth + "px solid " + c.borderColor);
+    s.setProperty("--w-shadow", c.shadow ? "0 0.3em 1.2em rgba(0, 0, 0, 0.45)" : "none");
+    root.classList.toggle("no-motion", !c.animate);
+    watchFit(root, app, c.fit);
+    loadFont(fontLinkId, t.font);
+    return t;
+  }
+  function canManage(c, roles) {
+    if (roles.broadcaster) return true;
+    return c.whoCanManage === "mods" && roles.mod;
+  }
+  function playUrl(c, url, volume) {
+    if (c.mute || !url || typeof Audio === "undefined") return;
+    try {
+      var a = new Audio(url);
+      a.volume = clamp(volume / 100, 0, 1);
+      var p = a.play();
+      if (p && typeof p.catch === "function") p.catch(function () {});
+    } catch (e) { /* a sound that will not play is never worth breaking the widget */ }
+  }
+  function hasStore() {
+    return typeof SE_API !== "undefined" && SE_API && SE_API.store && typeof SE_API.store.set === "function";
+  }
+  function storeSave(key, value) {
+    if (!hasStore()) return;
+    try { SE_API.store.set(key, value); } catch (e) { /* it still works unsaved */ }
+  }
+  function storeLoad(key, done) {
+    if (!hasStore() || typeof SE_API.store.get !== "function") { done(null); return; }
+    var got = SE_API.store.get(key);
+    if (got && typeof got.then === "function") got.then(done, function () { done(null); });
+    else done(got);
+  }
+  function debugLog(c, tag, listener, event) {
+    if (!c.debug || typeof console === "undefined" || !console.log) return;
+    try { console.log("[" + tag + "]", listener, JSON.stringify(event)); } catch (e) { /* unprintable payloads are skipped */ }
+  }
+  // ---- end of the shared settings and theme ----
+
+  var SWAP_MS = 300;                 // how long a line takes to fade before the next replaces it
+  var MAX_LINES = 20;
+  var DEFAULT_LINES = "Thanks for being here | Drink some water | Be kind in chat";
+  var el = {};
+  var cfg = {};
+  var lines = [];
+  var at = 0;
+  var rotation = null;
+
+  // "one | two | three" becomes a list of lines, with blanks left out.
+  function splitLines(s) {
+    return String(s).split("|").map(function (x) { return x.replace(/^\s+|\s+$/g, ""); }).filter(Boolean).slice(0, MAX_LINES);
+  }
+
+  function readConfig(f) {
+    f = f || {};
+    var c = readCommon(f, { title: "Your name" });
+    c.pronouns = txt(f.pronouns, "");
+    c.showPronouns = bool(f.showPronouns, true);
+    c.pronounStyle = str(f.pronounStyle, "tag");
+    c.tagline = txt(f.tagline, "Welcome in");
+    c.showTagline = bool(f.showTagline, true);
+    c.lines = splitLines(txt(f.lines, DEFAULT_LINES));
+    c.showLines = bool(f.showLines, true);
+    c.rotateMs = clamp(num(f.rotateSeconds, 8), 2, 600) * 1000;
+    var a = str(f.align, "center");
+    c.align = a === "left" || a === "right" ? a : "center";
+    c.textSize = Math.max(2, num(f.textSize, 5));
+    c.titleScale = clamp(num(f.titleScale, 1.5), 0.5, 4);
+    c.rowGap = Math.max(0, num(f.rowGap, 0.3));
+    return c;
+  }
+
+  function show(node, text) {
+    node.textContent = text;
+    node.hidden = !text;
+  }
+  function render() {
+    if (!el.app) return;
+    show(el.name, cfg.showTitle ? cfg.title : "");
+    var p = cfg.showPronouns ? cfg.pronouns : "";
+    el.pron.className = "uc-pron style-" + cfg.pronounStyle;
+    show(el.pron, p && cfg.pronounStyle === "brackets" ? "(" + p + ")" : p);
+    show(el.tagline, cfg.showTagline ? cfg.tagline : "");
+    show(el.line, cfg.showLines && lines.length ? lines[at % lines.length] : "");
+    el.app.classList.toggle("align-left", cfg.align === "left");
+    el.app.classList.toggle("align-right", cfg.align === "right");
+  }
+
+  // The lines take turns. With Animate on each fades out, the next takes its place, and it fades back in.
+  function next() {
+    if (!el.line || lines.length < 2) return;
+    at = (at + 1) % lines.length;
+    if (!cfg.animate) { show(el.line, lines[at]); return; }
+    el.line.classList.add("swap");
+    setTimeout(function () {
+      show(el.line, lines[at]);
+      el.line.classList.remove("swap");
+    }, SWAP_MS);
+  }
+  function startRotation() {
+    if (rotation) { clearInterval(rotation); rotation = null; }
+    if (cfg.showLines && lines.length > 1) rotation = setInterval(next, cfg.rotateMs);
+  }
+
+  function applyLook() {
+    applyCommonTheme(cfg, el.root, el.app, "uc-font-link");
+    var s = el.app.style;
+    s.setProperty("--uc-size", cfg.textSize + "cqw");
+    s.setProperty("--uc-title", cfg.titleScale);
+    s.setProperty("--uc-gap", cfg.rowGap + "em");
+  }
+  function bind() {
+    var ids = { root: "uc-root", app: "uc-app", name: "uc-name", pron: "uc-pron", tagline: "uc-tagline", line: "uc-line" };
+    for (var k in ids) { if (ids.hasOwnProperty(k)) el[k] = byId(ids[k]); }
+  }
+
+  window.addEventListener("onWidgetLoad", function (obj) {
+    cfg = readConfig((obj && obj.detail && obj.detail.fieldData) || {});
+    bind();
+    if (!el.app) return;
+    lines = cfg.lines; at = 0;
+    applyLook();
+    render();
+    startRotation();
+  });
+  window.addEventListener("onEventReceived", function (obj) {
+    var d = obj && obj.detail;
+    if (d) debugLog(cfg, "undercamera", d.listener, d.event || {});
+  });
+})();

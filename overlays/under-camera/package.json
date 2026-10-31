@@ -1,0 +1,36 @@
+{
+  "name": "under-camera-overlay",
+  "version": "1.0.0",
+  "description": "A StreamElements custom widget for under your camera: a nameplate with your name, pronouns, a tagline and a few rotating lines, in the same style presets as the rest of the set.",
+  "private": true,
+  "license": "MIT",
+  "author": "Jordan Lee",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jordan-lee-code/stream-overlays.git",
+    "directory": "overlays/under-camera"
+  },
+  "bugs": {
+    "url": "https://github.com/jordan-lee-code/stream-overlays/issues"
+  },
+  "homepage": "https://github.com/jordan-lee-code/stream-overlays/tree/main/overlays/under-camera",
+  "keywords": [
+    "streamelements",
+    "twitch",
+    "overlay",
+    "widget",
+    "camera",
+    "nameplate",
+    "lower-third",
+    "pronouns",
+    "overlay-frame"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "funding": "https://ko-fi.com/journeyingjordan",
+  "scripts": {
+    "test": "node test/test-widget.js",
+    "dev": "python3 -m http.server 8000"
+  }
+}
