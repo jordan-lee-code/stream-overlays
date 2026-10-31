@@ -116,6 +116,15 @@
     "flag": null,
     "bgimg": null
   },
+  "pastelsage": {
+    "label": "Pastel sage",
+    "panel": "#DEEBD8",
+    "text": "#2B4636",
+    "accent": "#4A7A5A",
+    "font": "Fredoka",
+    "flag": null,
+    "bgimg": null
+  },
   "faegreen": {
     "label": "Fae green",
     "panel": "#2C4A36",

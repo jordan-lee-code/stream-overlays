@@ -4,7 +4,7 @@ These are the patterns the overlays in this set follow, written down so a new ov
 
 ## Style presets
 
-Every overlay offers the same twenty-one presets, with the same colours and fonts, in the same order, under a setting called `themePreset` whose default is `glass` (Soft black). The last choice is `custom`, which uses the overlay's own colour pickers and font instead. The colour pickers are ignored for every other choice.
+Every overlay offers the same twenty-two presets, with the same colours and fonts, in the same order, under a setting called `themePreset` whose default is `glass` (Soft black). The last choice is `custom`, which uses the overlay's own colour pickers and font instead. The colour pickers are ignored for every other choice.
 
 The table lives in [`src/presets.js`](../src/presets.js). Each overlay holds a generated copy in its widget, in the shape its own code reads, and the sync tool keeps the two in step.
 

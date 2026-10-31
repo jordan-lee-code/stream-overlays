@@ -6,7 +6,7 @@ The overlays are plain widgets that you paste into StreamElements, so each carri
 
 ## What is in it
 
-- **The style presets** ([`src/presets.js`](src/presets.js)): twenty-one of them, from Soft black to seven pride flags, as one table, with a generator for the shape each overlay's code uses.
+- **The style presets** ([`src/presets.js`](src/presets.js)): twenty-two of them, from Soft black to seven pride flags, as one table, with a generator for the shape each overlay's code uses.
 - **The contrast standards** ([`src/contrast.js`](src/contrast.js)): text 4.5 or better against its panel and accent 3.5 or better, tried over both a dark and a light backdrop, with their own measure for the pride presets.
 - **The tool** ([`bin/overlay-kit.js`](bin/overlay-kit.js)): brings an overlay's palette table, dropdown, expected test data and shared test mock in line with the kit, reports where it has drifted, checks the contrast, and renders each overlay's preset gallery.
 - **The shared sources** ([`shared/`](shared)): the helper code, card styles, test mock and dev harness template the newer overlays were made from.

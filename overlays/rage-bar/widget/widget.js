@@ -70,7 +70,7 @@
      later why the bar went backwards. */
   var INSTANCE = Math.random().toString(36).slice(2, 10);
 
-  /* Style presets. The same twenty-one, with the same colours, in every overlay in this
+  /* Style presets. The same twenty-two, with the same colours, in every overlay in this
      set, generated from one table so they cannot drift apart, so any preset looks
      like one family across a whole stream. The default, Soft black, is a see-through
      black panel with white text. */
@@ -139,6 +139,11 @@
       bg: "#FFE3EC", text: "#6A2E4B", accent: "#BF5179", font: "Fredoka",
       fillFrom: "#F7A8C6", fillTo: "#E0679A", alarm: "#D6456F",
       parts: {"title": "#6A2E4B", "timer": "#6A2E4B", "readout": "#6A2E4B", "note": "#6A2E4B", "border": "#BF5179", "track": "rgba(106, 46, 75, 0.14)", "lock": "#BF5179", "lockHole": "#FFE3EC", "float": "#6A2E4B", "floatBg": "#FFE3EC", "alert": "#FFFFFF", "alertFill": "#FFFFFF", "alertTrack": "rgba(0, 0, 0, 0.22)"}
+    },
+    pastelsage: {
+      bg: "#DEEBD8", text: "#2B4636", accent: "#4A7A5A", font: "Fredoka",
+      fillFrom: "#B3D3B8", fillTo: "#6FA283", alarm: "#C5533F",
+      parts: {"title": "#2B4636", "timer": "#2B4636", "readout": "#2B4636", "note": "#2B4636", "border": "#4A7A5A", "track": "rgba(43, 70, 54, 0.14)", "lock": "#4A7A5A", "lockHole": "#DEEBD8", "float": "#2B4636", "floatBg": "#DEEBD8", "alert": "#FFFFFF", "alertFill": "#FFFFFF", "alertTrack": "rgba(0, 0, 0, 0.22)"}
     },
     faegreen: {
       bg: "#2C4A36", text: "#EEF5DA", accent: "#C9E265", font: "Almendra",

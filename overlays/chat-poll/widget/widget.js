@@ -62,7 +62,7 @@
 
   var STORE_KEY = "chat_poll_v1";
 
-  /* Style presets. The same twenty-one, with the same colours, in every overlay in this
+  /* Style presets. The same twenty-two, with the same colours, in every overlay in this
      set, generated from one table so they cannot drift apart, so any preset looks
      like one family across a whole stream. The default, Soft black, is a see-through
      black panel with white text. */
@@ -143,6 +143,12 @@
       bg: "#FFE3EC", text: "#6A2E4B", accent: "#BF5179", onAccent: "#FFF5F9",
       row: "rgba(255, 255, 255, 0.5)", track: "rgba(106, 46, 75, 0.14)",
       segs: ["#F7A8C6", "#FFC8DD", "#E0679A", "#FBB1BD", "#D98BB0", "#FFD6E6", "#F28DB2", "#C95F8B"],
+      font: "Fredoka"
+    },
+    pastelsage: {
+      bg: "#DEEBD8", text: "#2B4636", accent: "#4A7A5A", onAccent: "#F5FAF2",
+      row: "rgba(255, 255, 255, 0.5)", track: "rgba(43, 70, 54, 0.14)",
+      segs: ["#A8CBB0", "#CFE4C9", "#6FA283", "#BCD8B3", "#8DB89B", "#DCEBD3", "#7DAE8C", "#5B8F6D"],
       font: "Fredoka"
     },
     faegreen: {
