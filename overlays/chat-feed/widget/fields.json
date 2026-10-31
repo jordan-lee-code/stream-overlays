@@ -17,8 +17,8 @@
   },
   "maxMessages": {
     "type": "number",
-    "label": "Messages on screen at once",
-    "value": 8,
+    "label": "Most messages kept on screen (the box shows as many as fit, up to this many)",
+    "value": 30,
     "group": "Feed",
     "min": 1,
     "max": 30,

@@ -13,6 +13,7 @@ It is a single self-contained widget in plain JavaScript, with no dependencies a
 - Pronouns: shown beside the name as a small tag, in brackets, or as plain text, with a way to set them by hand.
 - Readable names: a chat colour that would be hard to read on your panel is swapped for the accent colour.
 - Two layouts: the name above the message or on the same line, and one panel behind everything or a card for each message.
+- Fills the box: it shows as many messages as fit, and never leaves one cut in half at the edge.
 - Tidy by default: chat commands, and the usual bots, are left out, and you can add names of your own.
 - Moderation: `!chatfeed hide name` takes someone off the screen, and a message StreamElements deletes disappears from it too.
 - Fading: messages can fade away after a number of seconds, or stay until newer ones push them off.
@@ -100,7 +101,8 @@ People choose their pronouns on the pronoun service itself, so someone who has n
 
 - **What is left out.** Messages that start with `!` are chat commands and are not shown, unless you untick that. The usual bots (Nightbot, StreamElements, Streamlabs, Moobot, Fossabot and Wizebot) are left out, and **Never show these chatters** is a list you can change. The widget's own command is never shown.
 - **Name colours.** By default a name uses the colour the chatter chose. If that colour would be hard to read on your panel, tried over a black and a grey backdrop, the name uses the accent colour instead. You can always use the accent or the text colour.
-- **Emotes** appear as pictures where they were typed. An emote that does not fit its message, or whose picture is not on a secure address, stays as the word.
+- **Emotes** appear as pictures where they were typed, using the emotes StreamElements sends with the message. A Twitch emote is placed by its position in the message, and any other emote is found by its name, as a whole word. An animated picture is handed to the browser as it is, so it animates if the address StreamElements sends is an animated one. An emote with no picture on a secure address stays as the word.
+- **Third-party emotes.** The widget does not look emotes up itself. Whether 7TV, BTTV and FrankerFaceZ emotes show depends on StreamElements including them in the message for your channel, which I have not been able to confirm. Turn on `debug` and look at the `emotes` list for one of them to see what arrives.
 - **Deleted messages.** When StreamElements reports a message deleted, or all of a banned person's messages deleted, they disappear from the screen.
 - **Length.** Up to thirty messages can be on screen. A long message wraps inside the box.
 
@@ -155,7 +157,7 @@ The harness must be served over http rather than opened as a file, fonts come fr
 npm test
 ```
 
-This runs the real `widget/widget.js` headlessly against a small mock of the page, StreamElements and the network, with a clock the test controls, and exits non-zero on any failure. It covers messages and their order, fading, what is left out, emotes and badges, the picture and pronoun lookups (what is cached, retried and refused, a service being down, and an answer that is not the shape expected), name colours, layout, every command, deleted messages, the style presets, sounds and malformed events.
+This runs the real `widget/widget.js` headlessly against a small mock of the page, StreamElements and the network, with a clock the test controls, and exits non-zero on any failure. It covers messages and their order, fading, what is left out, emotes (by position and by name, including animated and non-Twitch ones) and badges, the picture and pronoun lookups (what is cached, retried and refused, a service being down, and an answer that is not the shape expected), name colours, layout, every command, deleted messages, the style presets, sounds and malformed events.
 
 ## Project layout
 
@@ -170,7 +172,7 @@ docs/     screenshots used in this README
 
 The widget uses the StreamElements events `onWidgetLoad` and `onEventReceived` with `message`, `delete-message`, `delete-messages` and `widget-button`, and `SE_API.store`. It makes `fetch` requests to the two services above.
 
-The pronoun record and the picture lookup were checked against the live services. The StreamElements side was not tested on a live stream: the position of emotes in a message, the address of badge pictures, and the events for deleted messages follow the shape StreamElements's own chat widget uses. Tick **debug** in Troubleshooting for your first stream to log each event, and please open an issue if something differs.
+The pronoun record and the picture lookup were checked against the live services. The shape of a message, its badges and emotes, and the events for deleted messages match the sample message and chat widget that StreamElements publishes, but the widget has not been run on a live stream. I do not know which non-Twitch emotes StreamElements includes in a message, or whether an animated Twitch emote arrives with an animated picture. Tick **debug** in Troubleshooting for your first stream to log each event, and please open an issue if something differs.
 
 It shows messages as they arrive while it is running and does not read earlier chat, so a freshly added widget starts empty. It is not a chat box for typing in, and a widget cannot write to chat, so `!chatfeed` makes the panel pop rather than replying.
 

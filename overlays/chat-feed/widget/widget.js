@@ -204,7 +204,7 @@
     f = f || {};
     var c = readCommon(f, { command: "!chatfeed", title: "Chat" });
     c.showTitle = bool(f.showTitle, false);
-    c.max = clamp(Math.floor(num(f.maxMessages, 8)), 1, 30);
+    c.max = clamp(Math.floor(num(f.maxMessages, 30)), 1, 30);
     c.fadeMs = Math.max(0, num(f.fadeAfter, 45)) * 1000;
     c.newestTop = str(f.order, "bottom") === "top";
     c.hideCommands = bool(f.hideCommands, true);
@@ -504,11 +504,26 @@
     else el.list.appendChild(m.li);
     msgs.push(m);
     while (msgs.length > cfg.max) drop(msgs[0]);
+    fit();
     playUrl(cfg, cfg.sound, cfg.volume);
     if (demo) { if (demo.pronouns) setPronoun(m, demo.pronouns); return; }
     if (!validLogin(nick)) return;
     if (cfg.showAvatars) avatarFor(nick, function (url) { setAvatar(m, url); });
     if (cfg.showPronouns) pronounsFor(nick, function (p) { setPronoun(m, p); });
+  }
+  // The box shows as many messages as fit. The oldest is dropped while it would be cut off at the
+  // edge, which is the top when the newest is at the bottom and the bottom when it is at the top.
+  // Where the page cannot measure (a test, or before the first paint) nothing is dropped.
+  function fit() {
+    if (!el.list || typeof el.list.getBoundingClientRect !== "function") return;
+    for (var guard = 0; guard < 60 && msgs.length > 1; guard++) {
+      var box = el.list.getBoundingClientRect();
+      var kids = el.list.children, edge = cfg.newestTop ? kids[kids.length - 1] : kids[0];
+      if (!edge || typeof edge.getBoundingClientRect !== "function") return;
+      var r = edge.getBoundingClientRect();
+      if (!(cfg.newestTop ? r.bottom > box.bottom + 1 : r.top < box.top - 1)) return;
+      drop(msgs[0]);
+    }
   }
   function drop(m) {
     var at = msgs.indexOf(m);
@@ -518,7 +533,9 @@
   function dropWhere(test) { msgs.slice().forEach(function (m) { if (test(m)) drop(m); }); }
 
   function tick() {
-    if (!loaded || !cfg.fadeMs) return;
+    if (!loaded) return;
+    fit();                       // a picture or emote that has loaded can make a message taller
+    if (!cfg.fadeMs) return;
     var t = Date.now();
     msgs.slice().forEach(function (m) {
       if (m.fading || t - m.at < cfg.fadeMs) return;

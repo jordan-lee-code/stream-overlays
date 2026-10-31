@@ -58,6 +58,36 @@ const until = async (test, ms) => { for (let i = 0; i < (ms || 2000) / 25 && !te
   await load({ maxMessages: 999 }); for (let i = 0; i < 40; i++) say("m" + i, { nick: "u" + (i % 5) });
   ok(rowEls().length === 30, "never more than thirty (" + rowEls().length + ")");
 
+  section("filling the box");
+  // The mock has no layout, so give the list one: a box of a set height, rows of a set height,
+  // stacked from the bottom (newest at the bottom) or from the top (newest at the top).
+  const layout = (height, rowH, fromTop) => {
+    const list = E("cf-list");
+    list.getBoundingClientRect = () => {
+      list.children.forEach((c, i) => {
+        c.getBoundingClientRect = () => {
+          const n = list.children.length, top = fromTop ? i * rowH : height - (n - i) * rowH;
+          return { top, bottom: top + rowH };
+        };
+      });
+      return { top: 0, bottom: height };
+    };
+  };
+  await load({ maxMessages: 30 }); layout(100, 30, false);
+  for (const n of ["a", "b", "c", "d", "e", "f"]) say("hi " + n, { nick: n, name: n.toUpperCase() });
+  ok(names().join() === "D,E,F", "it shows as many as fit, and never one cut off at the top (" + names() + ")");
+  await load({ maxMessages: 30, order: "top" }); layout(100, 30, true);
+  for (const n of ["a", "b", "c", "d", "e", "f"]) say("hi " + n, { nick: n, name: n.toUpperCase() });
+  ok(names().join() === "F,E,D", "and with the newest at the top, never one cut off at the bottom (" + names() + ")");
+  await load({ maxMessages: 5 }); layout(10000, 30, false);
+  for (let i = 0; i < 9; i++) say("hi", { nick: "u" + i, name: "U" + i });
+  ok(rowEls().length === 5, "the setting is a ceiling even when the box has room for more (" + rowEls().length + ")");
+  await load({ maxMessages: 30 }); layout(10, 30, false);
+  say("tall", { nick: "alice" }); say("taller", { nick: "bram" });
+  ok(rowEls().length === 1, "one message too tall for the box is still shown, rather than an empty box (" + rowEls().length + ")");
+  ok(env.fields.maxMessages.value === 30 && env.fieldData().maxMessages === 30, "the default is the most it can hold, so it fills the box");
+  delete E("cf-list").getBoundingClientRect;     // the later sections run with no layout at all
+
   section("fading away");
   await load({ fadeAfter: 10, animate: false });
   say("old", { nick: "alice" }); await skip(8000); say("newer", { nick: "bram" }); await skip(4000);
