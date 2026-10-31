@@ -16,6 +16,15 @@ function test(name, fn) {
   try { fn(); pass++; console.log("  PASS " + name); }
   catch (e) { fail++; console.log("  FAIL " + name + "\n       " + e.message.split("\n")[0]); }
 }
+// Tests that wait on something. They run one after another once the plain ones are done.
+let later = Promise.resolve();
+function atest(name, fn) {
+  later = later.then(async () => {
+    try { await fn(); pass++; console.log("  PASS " + name); }
+    catch (e) { fail++; console.log("  FAIL " + name + "\n       " + e.message.split("\n")[0]); }
+  });
+}
+function asection(title) { later = later.then(() => console.log("\n[" + title + "]")); }
 
 console.log("\n[the table]");
 test("there are twenty-one presets with unique keys and labels", () => {
@@ -79,6 +88,65 @@ Object.keys(K.generators).forEach(kind => {
     K.PRESETS.forEach(x => assert.strictEqual(!!out[x.key].bgimg, !!x.bgimg, x.key));
   });
 });
+
+asection("the pretend clock");
+{
+  const createClock = require("../shared/clock");
+  atest("timers fire in order of when they are due, and only once they are", async () => {
+    const c = createClock(), log = [];
+    c.setTimeout(() => log.push("b"), 200); c.setTimeout(() => log.push("a"), 100); c.setTimeout(() => log.push("c"), 300);
+    await c.advance(150); assert.deepStrictEqual(log, ["a"]);
+    await c.advance(100); assert.deepStrictEqual(log, ["a", "b"]);
+    await c.advance(100); assert.deepStrictEqual(log, ["a", "b", "c"]);
+  });
+  atest("an hour passes without a moment really passing", async () => {
+    const c = createClock(), began = Date.now();
+    await c.advance(3600000);
+    assert.ok(Date.now() - began < 200 && c.now() === 1700000000000 + 3600000);
+  });
+  atest("an interval repeats, and stops when it is cleared", async () => {
+    const c = createClock(); let n = 0;
+    const id = c.setInterval(() => n++, 500);
+    await c.advance(2100); assert.strictEqual(n, 4);
+    c.clearInterval(id); await c.advance(5000); assert.strictEqual(n, 4);
+  });
+  atest("a timer can be cleared before it fires", async () => {
+    const c = createClock(); let hit = false;
+    c.clearTimeout(c.setTimeout(() => { hit = true; }, 10)); await c.advance(100);
+    assert.ok(!hit && c.pending() === 0);
+  });
+  atest("a timer set by a timer fires in the same stretch of time if it falls due in it", async () => {
+    const c = createClock(), log = [];
+    c.setTimeout(() => { log.push("first"); c.setTimeout(() => log.push("second"), 50); c.setTimeout(() => log.push("late"), 5000); }, 100);
+    await c.advance(200); assert.deepStrictEqual(log, ["first", "second"]);
+  });
+  atest("promises settle between timers, so an answer that arrives through one can schedule the next", async () => {
+    const c = createClock(), log = [];
+    c.setTimeout(() => { Promise.resolve().then(() => Promise.resolve()).then(() => { log.push("answered"); c.setTimeout(() => log.push("then"), 10); }); }, 100);
+    await c.advance(200); assert.deepStrictEqual(log, ["answered", "then"]);
+  });
+  atest("a timer sees the time it was due, not the time the stretch ends", async () => {
+    const c = createClock(0), seen = [];
+    c.setTimeout(() => seen.push(c.now()), 120); c.setTimeout(() => seen.push(c.now()), 340);
+    await c.advance(1000); assert.deepStrictEqual(seen, [120, 340]);
+  });
+  atest("arguments are passed, and equal times keep the order they were set in", async () => {
+    const c = createClock(), log = [];
+    c.setTimeout((x, y) => log.push(x + y), 10, "a", "b"); c.setTimeout(() => log.push("same time"), 10);
+    await c.advance(10); assert.deepStrictEqual(log, ["ab", "same time"]);
+  });
+  atest("its Date follows the clock, with or without a date given", async () => {
+    const c = createClock(5000);
+    assert.strictEqual(c.Date.now(), 5000); assert.strictEqual(new c.Date().getTime(), 5000);
+    await c.advance(250); assert.strictEqual(new c.Date().getTime(), 5250);
+    assert.strictEqual(new c.Date(2026, 0, 1).getFullYear(), 2026);
+    assert.ok(new c.Date() instanceof Date);
+  });
+  atest("a timer that always schedules another is stopped rather than run for ever", async () => {
+    const c = createClock(); const again = () => c.setTimeout(again, 0); again();
+    await assert.rejects(() => c.advance(10), /keeps scheduling timers/);
+  });
+}
 
 console.log("\n[the shared helpers]");
 {
@@ -156,6 +224,7 @@ test("sync brings a repo in line, keeps the code around the table, and a second 
   assert.strictEqual(Object.keys(JSON.parse(fs.readFileSync(path.join(dir, "widget/fields.json"), "utf8")).themePreset.options).length, 22);
   assert.ok(fs.readFileSync(path.join(dir, "test/test-widget.js"), "utf8").indexOf("=== 22") !== -1);
   assert.strictEqual(fs.readFileSync(path.join(dir, "test/mock.js"), "utf8"), fs.readFileSync(path.join(__dirname, "../shared/mock.js"), "utf8"));
+  assert.strictEqual(fs.readFileSync(path.join(dir, "test/clock.js"), "utf8"), fs.readFileSync(path.join(__dirname, "../shared/clock.js"), "utf8"));
   assert.deepStrictEqual(sync(dir, { check: true }).changes, []);
 });
 test("each kind of overlay is recognised by name", () => {
@@ -167,5 +236,7 @@ test("a folder with no widget is refused with a clear message", () => {
   assert.throws(() => sync(fs.mkdtempSync(path.join(os.tmpdir(), "empty-")), { check: true }), /No widget\/widget\.js/);
 });
 
-console.log("\n=== " + pass + " passed, " + fail + " failed ===");
-process.exit(fail ? 1 : 0);
+later.then(() => {
+  console.log("\n=== " + pass + " passed, " + fail + " failed ===");
+  process.exit(fail ? 1 : 0);
+});

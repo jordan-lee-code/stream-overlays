@@ -5,6 +5,7 @@
    goals, theming, persistence, entry toast, and forfeit cross-off. */
 const fs = require("fs"), vm = require("vm");
 const ROOT = require("path").join(__dirname, "..");
+const vclock = require("./clock")();   // time is pretend: timers and the Date the widget reads follow it, so the test never sleeps
 const src = fs.readFileSync(ROOT + "/widget/widget.js", "utf8");
 const fields = JSON.parse(fs.readFileSync(ROOT + "/widget/fields.json", "utf8"));
 
@@ -62,8 +63,8 @@ class Audio {
 }
 const sandbox = {
   window, document, CustomEvent, SE_API, Audio, performance,
-  requestAnimationFrame: cb => setTimeout(() => cb(performance.now()), 0),
-  setTimeout, clearTimeout, setInterval, clearInterval, Date,
+  requestAnimationFrame: cb => vclock.setTimeout(() => cb(performance.now()), 1),
+  setTimeout: vclock.setTimeout, clearTimeout: vclock.clearTimeout, setInterval: vclock.setInterval, clearInterval: vclock.clearInterval, Date: vclock.Date,
   console, Math, Promise, JSON, parseFloat, parseInt, isNaN, String
 };
 sandbox.global = sandbox; vm.createContext(sandbox); vm.runInContext(src, sandbox);
@@ -93,7 +94,7 @@ function chat(text, o) {
 }
 function button(field) { window.dispatchEvent(new CustomEvent("onEventReceived", { detail: { listener: "widget-button", event: { field } } })); }
 function event(listener, amount) { window.dispatchEvent(new CustomEvent("onEventReceived", { detail: { listener, event: { amount } } })); }
-const wait = ms => new Promise(r => setTimeout(r, ms));
+const wait = ms => vclock.advance(ms);
 const app = elements["wheel-app"];
 const entryCount = () => elements["entry-count"].textContent;
 const winnerName = () => elements["winner-name"].textContent;

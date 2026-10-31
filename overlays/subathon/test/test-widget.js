@@ -59,11 +59,12 @@ class Audio {
   play() { this.played = true; return Promise.resolve(); }
 }
 // The test owns the clock the widget sees. Real timers still drive the widget's own tick.
+const vclock = require("./clock")();   // timers are pretend; the date the widget reads is moved by hand through `fake`
 let fake = 1700000000000;
 class FakeDate extends Date { static now() { return fake; } }
 const sandbox = {
   window, document, CustomEvent, SE_API, Audio, Date: FakeDate,
-  setTimeout, clearTimeout, setInterval, clearInterval, console, Math, Promise, JSON,
+  setTimeout: vclock.setTimeout, clearTimeout: vclock.clearTimeout, setInterval: vclock.setInterval, clearInterval: vclock.clearInterval, console, Math, Promise, JSON,
   parseFloat, parseInt, isNaN, String, Array, Object, encodeURIComponent
 };
 sandbox.global = sandbox; vm.createContext(sandbox); vm.runInContext(src, sandbox);
@@ -93,7 +94,7 @@ const sub = e => ev("subscriber-latest", e);
 const cheer = n => ev("cheer-latest", { amount: n, name: "Cheerer" });
 const tip = n => ev("tip-latest", { amount: n, name: "Tipper" });
 const bomb = n => sub({ gifted: true, bulkGifted: true, amount: n, sender: "GenerousViewer" });
-const wait = ms => new Promise(r => setTimeout(r, ms));
+const wait = ms => vclock.advance(ms);
 // Move the pretend clock on, then give the widget's own tick time to notice.
 async function advance(ms) { fake += ms; await wait(260); }
 async function settled() { await wait(260); }

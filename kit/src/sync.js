@@ -103,8 +103,10 @@ function sync(dir, opts) {
   }
 
   // 4. the shared test mock
-  const mockPath = path.join(dir, "test/mock.js");
+  const mockPath = path.join(dir, "test/mock.js"), clockPath = path.join(dir, "test/clock.js");
   if (fs.existsSync(mockPath)) write("test/mock.js", read(path.join(__dirname, "..", "shared", "mock.js")), "the shared test mock");
+  // The mock needs the clock, and a suite with its own page mock can use it too, by having the file.
+  if (fs.existsSync(mockPath) || fs.existsSync(clockPath)) write("test/clock.js", read(path.join(__dirname, "..", "shared", "clock.js")), "the shared test clock");
 
   return { info, changes };
 }

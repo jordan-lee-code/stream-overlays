@@ -6,6 +6,7 @@
    ordering, persistence and theming. */
 const fs = require("fs"), vm = require("vm");
 const ROOT = require("path").join(__dirname, "..");
+const vclock = require("./clock")();   // time is pretend: timers and the Date the widget reads follow it, so the test never sleeps
 const src = fs.readFileSync(ROOT + "/widget/widget.js", "utf8");
 const fields = JSON.parse(fs.readFileSync(ROOT + "/widget/fields.json", "utf8"));
 
@@ -68,7 +69,7 @@ class Audio {
 }
 const sandbox = {
   window, document, CustomEvent, SE_API, Audio,
-  setTimeout, clearTimeout, setInterval, clearInterval, Date, console, Math, Promise, JSON, parseFloat, parseInt, isNaN, String, Array, Object
+  setTimeout: vclock.setTimeout, clearTimeout: vclock.clearTimeout, setInterval: vclock.setInterval, clearInterval: vclock.clearInterval, Date: vclock.Date, console, Math, Promise, JSON, parseFloat, parseInt, isNaN, String, Array, Object
 };
 sandbox.global = sandbox; vm.createContext(sandbox); vm.runInContext(src, sandbox);
 
@@ -98,7 +99,7 @@ function sub(event) { window.dispatchEvent(new CustomEvent("onEventReceived", { 
 const tip = n => window.dispatchEvent(new CustomEvent("onEventReceived", { detail: { listener: "tip-latest", event: { amount: n, name: "Tipper", currency: "USD" } } }));
 const cheer = n => window.dispatchEvent(new CustomEvent("onEventReceived", { detail: { listener: "cheer-latest", event: { amount: n, name: "Cheerer" } } }));
 const bomb = n => sub({ gifted: true, bulkGifted: true, amount: n, sender: "GenerousViewer" });
-const wait = ms => new Promise(r => setTimeout(r, ms));
+const wait = ms => vclock.advance(ms);
 
 // Reads the rendered rows back out of the mock DOM: name, "n/target" text, bar
 // width, and whether the row is celebrating or on its way out.

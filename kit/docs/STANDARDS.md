@@ -106,7 +106,17 @@ Each overlay's tests run its real `widget/widget.js` headlessly against a small 
 - that every setting is in a group;
 - that the licence notice is present and the docs use no em or en dashes.
 
-A test that needs time passes a pretend clock forward and does not wait.
+### Time in tests
+
+A test never waits on the real clock. A suite that sleeps through a widget's timers takes minutes, and one that waits a fixed time can fail on a slow machine when the wait turns out to be a little short. The shared [`shared/clock.js`](../shared/clock.js) is a pretend clock: the widget's `setTimeout` and `setInterval` run on it, and `await clock.advance(ms)` runs every timer that falls due in that time, in order, and returns at once. Promises settle between timers, so the store and the pretend network answer as they would have.
+
+- A suite that gives the widget a still date and moves it by hand (a countdown, a day number) keeps its own `Date` and uses the clock only for timers.
+- A suite whose widget measures elapsed time with `Date.now()` gives it `clock.Date`, whose time is the clock's.
+- A test that needs something to have happened waits for it with `advance` in a short loop, and never for a fixed time that is merely long enough.
+
+The kit copies `clock.js` into each overlay's `test/` folder with `sync-presets`, next to the mock, so a copy that differs is reported.
+
+One exception is a test that needs a real browser. The Chat Poll's layout test measures real layout in headless Chromium, so it runs its scenarios side by side and waits for the browsers, not for time.
 
 ## The dev harness
 
