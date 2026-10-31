@@ -118,7 +118,7 @@
       }));
     });
     [100, 500, 1000].forEach(function (k) { c.appendChild(btn(k + " bits", function () { se("cheer-latest", { amount: k, name: who() }); })); });
-    c.appendChild(btn("5 tip", function () { se("tip-latest", { amount: 5, name: who() }); }));
+    [2, 3, 5, 10].forEach(function (k) { c.appendChild(btn(k + " tip", function () { se("tip-latest", { amount: k, name: who(), currency: "USD" }); })); });
     c.appendChild(btn("Follow", function () { se("follower-latest", { name: who() }); }));
     c.appendChild(btn("Raid", function () { se("raid-latest", { name: who(), amount: 40 }); }));
 
@@ -129,7 +129,7 @@
     c.appendChild(el("p", { "class": "hint", text: "Quick commands:" }));
     ["!subathon pause", "!subathon resume", "!subathon add 30m", "!subathon subtract 10m", "!subathon powerup 2 30m", "!subathon powerup off",
       "!subathon sleep", "!subathon wake", "!subathon lock", "!subathon unlock", "!subathon release", "!subathon day 3", "!subathon day +1",
-      "!incentive add 5 karaoke", "!incentive add 10 play a game", "!incentive add 15 chat confessions", "!incentive stop", "!incentive start"
+      "!incentive tip 5", "!incentive add 5 karaoke", "!incentive add 10 play a game", "!incentive add 15 chat confessions", "!incentive stop", "!incentive start"
     ].forEach(function (t) { c.appendChild(btn(t, function () { chat(t, "broadcaster"); })); });
 
     c.appendChild(el("h2", { text: "Saved state" }));
