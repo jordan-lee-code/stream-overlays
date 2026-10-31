@@ -225,7 +225,7 @@
 
   var ALIGN = { top: "flex-start", middle: "center", bottom: "flex-end" };
 
-  /* Style presets. The same twenty-one, with the same colours, in every overlay in this
+  /* Style presets. The same twenty-two, with the same colours, in every overlay in this
      set, generated from one table so they cannot drift apart, so any preset looks
      like one family across a whole stream. The default, Soft black, is a see-through
      black panel with white text. Custom uses the colour pickers instead. */
@@ -243,6 +243,7 @@
     celestial: { panel: "#2E1A47", text: "#F3ECFF", accent: "#E8C06B", track: "rgba(255, 255, 255, 0.18)", glow: "#E8C06B", font: "Cinzel" },
     pastelgoth: { panel: "#3A3340", text: "#F2E9F0", accent: "#C8B6E2", track: "rgba(255, 255, 255, 0.18)", glow: "#C8B6E2", font: "Quicksand" },
     pastelpink: { panel: "#FFE3EC", text: "#6A2E4B", accent: "#BF5179", track: "rgba(106, 46, 75, 0.14)", glow: "#BF5179", font: "Fredoka" },
+    pastelsage: { panel: "#DEEBD8", text: "#2B4636", accent: "#4A7A5A", track: "rgba(43, 70, 54, 0.14)", glow: "#4A7A5A", font: "Fredoka" },
     faegreen: { panel: "#2C4A36", text: "#EEF5DA", accent: "#C9E265", track: "rgba(238, 245, 218, 0.2)", glow: "#C9E265", font: "Almendra" },
     pride: { panel: "rgba(194, 168, 154, 0.9)", text: "#1A1426", accent: "#1A1426", track: "rgba(26, 20, 38, 0.34)", glow: "#1A1426", font: "Fredoka", flag: ["#E50000", "#FF8D00", "#FFEE00", "#028121", "#004CFF", "#770088"], bgimg: "linear-gradient(rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0.45)), linear-gradient(135deg, #E50000, #FF8D00, #FFEE00, #028121, #004CFF, #770088)" },
     trans: { panel: "rgba(185, 201, 225, 0.9)", text: "#1A1426", accent: "#1A1426", track: "rgba(26, 20, 38, 0.34)", glow: "#1A1426", font: "Fredoka", flag: ["#5BCEFA", "#F5A9B8", "#FFFFFF", "#F5A9B8", "#5BCEFA"], bgimg: "linear-gradient(135deg, #5BCEFA, #F5A9B8, #FFFFFF, #F5A9B8, #5BCEFA)" },

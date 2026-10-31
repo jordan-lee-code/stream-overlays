@@ -17,7 +17,7 @@ It is a single self-contained widget in plain JavaScript, with no dependencies a
 - Scrolls like chat: a new message arrives at the bottom, the older ones glide up and fade out through the top edge, and how many show depends on how tall you make the box in StreamElements. With the newest at the top it scrolls the other way.
 - Tidy by default: chat commands, and the usual bots, are left out, and you can add names of your own.
 - Moderation: `!chatfeed hide name` takes someone off the screen, and a message StreamElements deletes disappears from it too.
-- Fading: messages can fade away after a number of seconds, or stay until newer ones push them off.
+- Fading: messages stay until newer ones push them off, or you can have them fade away after a number of seconds.
 - Customisable: around 45 settings cover how many messages show, the layout, pictures, pronouns, sizes, shape, outline, colours, fonts, sounds and animation.
 - Tests and a dev harness: a local harness where you can type a real Twitch login and see their real picture and pronouns, and an automated test script, so nothing needs a live stream.
 
@@ -35,9 +35,9 @@ The pictures in these screenshots are drawn examples, not real profiles.
 
 ## Style presets
 
-One setting picks the look. The same twenty-one presets, with the same colours, are in every overlay in this set, so overlays from this set match whichever you choose. This is how each one looks in this overlay. The presets are defined once, in the [kit](../../kit), and a test keeps this overlay in step with it.
+One setting picks the look. The same twenty-two presets, with the same colours, are in every overlay in this set, so overlays from this set match whichever you choose. This is how each one looks in this overlay. The presets are defined once, in the [kit](../../kit), and a test keeps this overlay in step with it.
 
-<p><img src="docs/presets.png" alt="A grid of this overlay in each of the twenty-one style presets: Soft black, Soft white, Midnight blue, Sunset, Forest, Ocean, Rose, Neon, Cosy cabin, Cosy summer pastel, Celestial, Pastel goth, Pastel pink, Fae green, Rainbow pride, Trans pride, Bi pride, Pan pride, Non-binary pride, Lesbian pride and Ace pride" width="760"></p>
+<p><img src="docs/presets.png" alt="A grid of this overlay in each of the twenty-two style presets: Soft black, Soft white, Midnight blue, Sunset, Forest, Ocean, Rose, Neon, Cosy cabin, Cosy summer pastel, Celestial, Pastel goth, Pastel pink, Pastel sage, Fae green, Rainbow pride, Trans pride, Bi pride, Pan pride, Non-binary pride, Lesbian pride and Ace pride" width="760"></p>
 
 | Preset | Look |
 | --- | --- |
@@ -54,6 +54,7 @@ One setting picks the look. The same twenty-one presets, with the same colours, 
 | Celestial | Deep purple and gold, in Cinzel. |
 | Pastel goth | Charcoal and lilac, in Quicksand. |
 | Pastel pink | Soft blush pink with rose, in Fredoka. |
+| Pastel sage | Soft sage green with deep green, in Fredoka. |
 | Fae green | Mossy green with a firefly lime accent, in Almendra. |
 | Rainbow pride | A soft wash of the six rainbow stripes, in Fredoka. |
 | Trans pride | Light blue, pink and white. |
@@ -126,7 +127,7 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | Group | What it covers |
 | --- | --- |
 | Commands | The command word and who may use it. |
-| Feed | How many messages show, how long they stay, which end the newest goes, commands and names to leave out. |
+| Feed | How many messages show, whether they fade away after a time (they do not by default, and stay until newer messages push them off), which end the newest goes, commands and names to leave out. |
 | Messages | One panel or a card for each message, where the name goes, the name colour, badges and emotes. |
 | Avatars | Whether pictures show, their shape and their size. |
 | Pronouns | Whether they show, how they are written, and pronouns set by hand. |
@@ -185,7 +186,7 @@ The JavaScript is plain ES5, so it can be pasted straight into the StreamElement
 
 ## Related overlays
 
-These overlays share the same default look and the same twenty-one style presets, so they sit together on one stream.
+These overlays share the same default look and the same twenty-two style presets, so they sit together on one stream.
 
 - [Sub Goals Overlay](../sub-goals): sub and bits goals that fill as chat reaches them.
 - [Subathon Overlay](../subathon): a subathon clock with a cap, power-ups and sub goals.

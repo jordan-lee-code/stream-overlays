@@ -175,7 +175,7 @@
       Object.keys(fieldDefs.themePreset.options).forEach(function (k) { sel.appendChild(el("option", { value: k, text: fieldDefs.themePreset.options[k] })); });
       sel.addEventListener("change", function () { fieldData.themePreset = sel.value; rebuildSettings(); load(); });
       row.appendChild(sel); c.appendChild(row);
-      c.appendChild(el("p", { "class": "hint", text: "The same twenty-one presets are in every overlay in this set. Custom uses the colour settings below." }));
+      c.appendChild(el("p", { "class": "hint", text: "The same twenty-two presets are in every overlay in this set. Custom uses the colour settings below." }));
     }
     var msg = el("p", { "class": "hint", id: "export-msg" });
     c.appendChild(btn("Download fields.json", function () {

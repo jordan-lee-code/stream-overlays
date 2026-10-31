@@ -82,7 +82,7 @@
     var def = fieldDefs.themePreset;
     host.innerHTML =
       (def ? '<div class="row"><label for="look-preset">Style preset</label> <select id="look-preset"></select></div>' +
-        '<p class="hint">The same twenty-one presets are in every overlay in this set. Custom uses the colour settings below.</p>' : '') +
+        '<p class="hint">The same twenty-two presets are in every overlay in this set. Custom uses the colour settings below.</p>' : '') +
       '<div class="row"><button id="export-download" class="go">Download fields.json</button>' +
       '<button id="export-copy" class="alt">Copy fields.json</button></div>' +
       '<p class="hint">Your current settings as a fields.json for StreamElements. Paste it into the Fields tab of a new custom widget and it starts out as you see it here.</p>' +

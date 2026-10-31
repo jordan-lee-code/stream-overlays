@@ -77,7 +77,7 @@
         load();
       });
       row.appendChild(sel); c.appendChild(row);
-      c.appendChild(el("p", { "class": "hint", text: "The same twenty-one presets are in every overlay in this set, and one choice styles the clock and the goals together. Custom uses the colour settings below." }));
+      c.appendChild(el("p", { "class": "hint", text: "The same twenty-two presets are in every overlay in this set, and one choice styles the clock and the goals together. Custom uses the colour settings below." }));
     }
     var msg = el("p", { "class": "hint", id: "export-msg" });
     c.appendChild(btn("Download fields.json", function () {

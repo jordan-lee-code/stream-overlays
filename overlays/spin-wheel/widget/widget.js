@@ -57,7 +57,7 @@
 
   var STORE_KEY = "spin_wheel_v1";
 
-  /* Style presets. The same twenty-one, with the same colours, in every overlay in this
+  /* Style presets. The same twenty-two, with the same colours, in every overlay in this
      set, generated from one table so they cannot drift apart, so any preset looks
      like one family across a whole stream. The default, Soft black, is a see-through
      black panel with white text. */
@@ -139,6 +139,12 @@
       segs: ["#F7A8C6", "#FFC8DD", "#E0679A", "#FBB1BD", "#D98BB0", "#FFD6E6"],
       font: "Fredoka",
       parts: {"pillBg": "#FFE3EC", "pill": "#6A2E4B", "toastBg": "#FFE3EC", "toast": "#6A2E4B", "cardBg": "#FFE3EC", "card": "#6A2E4B", "eyebrowBg": "#BF5179", "eyebrow": "#FFF5F9", "idle": "#6A2E4B", "goal": "#6A2E4B", "goalTrack": "rgba(106, 46, 75, 0.14)", "goalFrom": "#F7A8C6", "goalTo": "#E0679A", "hub": "#FFE3EC", "hubRing": "#BF5179", "spent": "#D6456F", "refused": "#D6456F", "labelDark": "#4a1d33", "labelLight": "#FFFFFF", "divider": "rgba(255, 255, 255, 0.75)", "border": "transparent"}
+    },
+    pastelsage: {
+      bg: "#DEEBD8", text: "#2B4636", accent: "#4A7A5A", pointer: "#4A7A5A",
+      segs: ["#A8CBB0", "#CFE4C9", "#6FA283", "#BCD8B3", "#8DB89B", "#DCEBD3"],
+      font: "Fredoka",
+      parts: {"pillBg": "#DEEBD8", "pill": "#2B4636", "toastBg": "#DEEBD8", "toast": "#2B4636", "cardBg": "#DEEBD8", "card": "#2B4636", "eyebrowBg": "#4A7A5A", "eyebrow": "#F5FAF2", "idle": "#2B4636", "goal": "#2B4636", "goalTrack": "rgba(43, 70, 54, 0.14)", "goalFrom": "#B3D3B8", "goalTo": "#6FA283", "hub": "#DEEBD8", "hubRing": "#4A7A5A", "spent": "#C5533F", "refused": "#C5533F", "labelDark": "#1E382A", "labelLight": "#FFFFFF", "divider": "rgba(255, 255, 255, 0.75)", "border": "transparent"}
     },
     faegreen: {
       bg: "#2C4A36", text: "#EEF5DA", accent: "#C9E265", pointer: "#C9E265",
