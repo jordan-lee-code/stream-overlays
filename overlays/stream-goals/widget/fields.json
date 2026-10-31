@@ -161,9 +161,32 @@
   },
   "currency": {
     "type": "text",
-    "label": "Currency symbol for tips",
+    "label": "Currency symbol for tips (a blank shows none)",
     "value": "£",
     "group": "Counting"
+  },
+  "currencyAfter": {
+    "type": "checkbox",
+    "label": "Put the symbol after the amount (5€ or 5 kr) instead of before it (£5)",
+    "value": false,
+    "group": "Counting"
+  },
+  "decimalComma": {
+    "type": "checkbox",
+    "label": "Use a comma for the decimal (5,50) instead of a point (5.50)",
+    "value": false,
+    "group": "Counting"
+  },
+  "decimals": {
+    "type": "dropdown",
+    "label": "Cents on a tip amount",
+    "value": "auto",
+    "group": "Counting",
+    "options": {
+      "auto": "Only when there are some (£5 and £5.50)",
+      "always": "Always (£5.00)",
+      "none": "Never, rounded to a whole number (£6)"
+    }
   },
   "reachedText": {
     "type": "text",
