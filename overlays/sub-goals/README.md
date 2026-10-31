@@ -230,6 +230,8 @@ These overlays share the same default look and the same twenty-two style presets
 - [Stream Goals Overlay](../stream-goals): sub and bits goals that start again for each stream.
 - [Reminder Overlay](../reminder): reminders you set from chat, which stay on screen until cleared.
 - [Chat Feed Overlay](../chat-feed): on-screen chat with profile pictures and pronouns.
+- [Over Camera Overlay](../over-camera): a cover for your camera that you and your moderators control from chat.
+- [Under Camera Overlay](../under-camera): a nameplate for under your camera, with your name, pronouns and rotating lines.
 
 ## Support
 

@@ -59,6 +59,13 @@
     }
     return r;
   }
+  // The colour of a panel with its transparency taken out, for something that has to be solid whatever the preset.
+  function solid(css) {
+    var m = /^rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/i.exec(String(css || "")) || /^#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i.exec(String(css || "").trim());
+    if (!m) return "rgb(0, 0, 0)";
+    var hex = m[0].charAt(0) === "#";
+    return "rgb(" + (hex ? parseInt(m[1], 16) : +m[1]) + ", " + (hex ? parseInt(m[2], 16) : +m[2]) + ", " + (hex ? parseInt(m[3], 16) : +m[3]) + ")";
+  }
   // Shrinks a card until it fits the box it has been given, and never enlarges it. The text already scales with
   // the box's width, so this is for a box that is short for its width, where the card would run off the bottom.
   // CSS zoom keeps the card full width and scales its text, padding and corners together. The height does not

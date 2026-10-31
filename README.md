@@ -17,6 +17,8 @@ A set of StreamElements custom widgets for Twitch streams. Each is plain JavaScr
 | [Stream Goals](overlays/stream-goals) | Sub and bits goals that start again for each stream. |
 | [Reminder](overlays/reminder) | Reminders you set from chat, which stay on screen until cleared. |
 | [Chat Feed](overlays/chat-feed) | On-screen chat with profile pictures and pronouns, in the same style presets. |
+| [Over Camera](overlays/over-camera) | A cover for your camera that you and your moderators control from chat: off, brb, away, or a message of your own. |
+| [Under Camera](overlays/under-camera) | A nameplate for under your camera: your name, pronouns, a line about your stream and rotating lines. |
 
 ## Using an overlay
 

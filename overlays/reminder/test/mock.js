@@ -52,7 +52,13 @@ module.exports = function createEnv(root) {
   const storeData = {};
   const SE_API = { store: {
     set(k, v) { storeData[k] = JSON.parse(JSON.stringify(v)); return Promise.resolve(); },
-    get(k) { return Promise.resolve(storeData[k] ? JSON.parse(JSON.stringify(storeData[k])) : null); }
+    // A test can make the store slow, with env.storeLatency in pretend milliseconds, or one that never answers, with Infinity.
+    get(k) {
+      const v = storeData[k] ? JSON.parse(JSON.stringify(storeData[k])) : null;
+      if (env.storeLatency === undefined) return Promise.resolve(v);
+      if (env.storeLatency === Infinity) return new Promise(() => {});
+      return new Promise(r => clock.setTimeout(() => r(v), env.storeLatency));
+    }
   } };
   const audioLog = [];
   class Audio {
