@@ -141,6 +141,7 @@
 .cf-sep { display: none; }
 .cf-text { font-weight: 600; overflow-wrap: anywhere; }
 .cf-emote { height: 1.5em; vertical-align: middle; margin: -0.2em 0.05em; }
+.cf-gif { display: block; max-width: 100%; max-height: calc(var(--cf-gif, 6) * 1em); margin-top: 0.25em; border-radius: 0.5em; object-fit: contain; }
 .cf-msg.action .cf-text { font-style: italic; }
 
 /* Name and message on one line. */

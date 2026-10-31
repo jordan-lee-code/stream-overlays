@@ -9,6 +9,7 @@ It is a single self-contained widget in plain JavaScript, with no dependencies a
 ## Features
 
 - Chat on screen: names in each person's chat colour, their badges, and emotes as pictures, with `/me` messages in italics.
+- GIFs: the GIFs that Twitch now lets higher tier subscribers send in chat are shown in the message, at a height you choose, and can be switched off.
 - Profile pictures: a round, rounded or square picture beside each message, or the person's initial when there is none.
 - Pronouns: shown beside the name as a small tag, in brackets, or as plain text, with a way to set them by hand.
 - Readable names: a chat colour that would be hard to read on your panel is swapped for the accent colour.
@@ -84,6 +85,7 @@ StreamElements does not send a chatter's profile picture or pronouns with their 
 | --- | --- | --- |
 | Profile pictures | [decapi.me](https://decapi.me), which answers with the address of the person's Twitch profile picture | The person's Twitch login. |
 | Pronouns | [pronouns.alejo.io](https://pr.alejo.io/), the service behind the Twitch chat pronouns extension, where people choose theirs | The person's Twitch login. |
+| GIFs | [giphy.com](https://giphy.com), where Twitch hosts the GIFs chatters send | Nothing about the person. Your browser source asks for the GIF's address, as any page showing a GIF would. |
 
 Neither request carries the message, and neither service is run by this project. Both requests are made from the browser source on your machine, so those services can see your address as they would for any web page. If you would rather not use one, untick **Show profile pictures** or **Show pronouns** under Avatars or Pronouns, and nothing is asked of that service.
 
@@ -103,6 +105,7 @@ People choose their pronouns on the pronoun service itself, so someone who has n
 - **Name colours.** By default a name uses the colour the chatter chose. If that colour would be hard to read on your panel, tried over a black and a grey backdrop, the name uses the accent colour instead. You can always use the accent or the text colour.
 - **Emotes** appear as pictures where they were typed, using the emotes StreamElements sends with the message. A Twitch emote is placed by its position in the message, and any other emote is found by its name, as a whole word. An animated picture is handed to the browser as it is, so it animates if the address StreamElements sends is an animated one. An emote with no picture on a secure address stays as the word.
 - **Third-party emotes.** The widget does not look emotes up itself. Whether 7TV, BTTV and FrankerFaceZ emotes show depends on StreamElements including them in the message for your channel, which I have not been able to confirm. Turn on `debug` and look at the `emotes` list for one of them to see what arrives.
+- **GIFs.** Twitch sends a GIF as a `gifs` tag on the message, with its position in the text, and the text holds a placeholder such as `[Yes GIF by someone]`. The widget puts the GIF where the placeholder is. Twitch asks that the address is used exactly as given, so it is never changed, and only a secure address on Giphy's own domain is shown, so a message cannot make the widget load anything else. Untick **Show GIFs** under Messages, or turn the size down, if you want them off or smaller. Twitch limits who can send GIFs and lets a streamer switch them off, and `!chatfeed hide name` takes someone's messages off the screen if you need to.
 - **Deleted messages.** When StreamElements reports a message deleted, or all of a banned person's messages deleted, they disappear from the screen.
 - **Length.** The box decides how many messages show, and a message is removed once it has scrolled completely out of view. **Most messages kept on screen** (thirty at most, and thirty by default) is only a ceiling. A long message wraps inside the box.
 
@@ -157,7 +160,7 @@ The harness must be served over http rather than opened as a file, fonts come fr
 npm test
 ```
 
-This runs the real `widget/widget.js` headlessly against a small mock of the page, StreamElements and the network, with a clock the test controls, and exits non-zero on any failure. It covers messages and their order, fading, what is left out, emotes (by position and by name, including animated and non-Twitch ones) and badges, the picture and pronoun lookups (what is cached, retried and refused, a service being down, and an answer that is not the shape expected), name colours, layout, every command, deleted messages, the style presets, sounds and malformed events.
+This runs the real `widget/widget.js` headlessly against a small mock of the page, StreamElements and the network, with a clock the test controls, and exits non-zero on any failure. It covers messages and their order, fading, what is left out, emotes (by position and by name, including animated and non-Twitch ones), GIFs (including addresses that are not on Giphy, that are not secure, or that are malformed) and badges, the picture and pronoun lookups (what is cached, retried and refused, a service being down, and an answer that is not the shape expected), name colours, layout, every command, deleted messages, the style presets, sounds and malformed events.
 
 ## Project layout
 
@@ -170,9 +173,9 @@ docs/     screenshots used in this README
 
 ## Compatibility and limitations
 
-The widget uses the StreamElements events `onWidgetLoad` and `onEventReceived` with `message`, `delete-message`, `delete-messages` and `widget-button`, and `SE_API.store`. It makes `fetch` requests to the two services above.
+The widget uses the StreamElements events `onWidgetLoad` and `onEventReceived` with `message`, `delete-message`, `delete-messages` and `widget-button`, and `SE_API.store`. It makes `fetch` requests to the two lookup services above, and the browser loads GIFs from Giphy.
 
-The pronoun record and the picture lookup were checked against the live services. The shape of a message, its badges and emotes, and the events for deleted messages match the sample message and chat widget that StreamElements publishes, but the widget has not been run on a live stream. I do not know which non-Twitch emotes StreamElements includes in a message, or whether an animated Twitch emote arrives with an animated picture. Tick **debug** in Troubleshooting for your first stream to log each event, and please open an issue if something differs.
+The pronoun record and the picture lookup were checked against the live services. The shape of a message, its badges and emotes, and the events for deleted messages match the sample message and chat widget that StreamElements publishes, but the widget has not been run on a live stream. I do not know which non-Twitch emotes StreamElements includes in a message, whether an animated Twitch emote arrives with an animated picture, or whether StreamElements passes Twitch's newer `gifs` tag along with the rest of a message's tags. The widget reads it from the message's `tags` (or from a `gifs` list on the message, if StreamElements adds one), so a GIF appears only if it is there, and otherwise you see the placeholder text. Tick **debug** in Troubleshooting for your first stream to log each event, and please open an issue if something differs.
 
 It shows messages as they arrive while it is running and does not read earlier chat, so a freshly added widget starts empty. It is not a chat box for typing in, and a widget cannot write to chat, so `!chatfeed` makes the panel pop rather than replying.
 

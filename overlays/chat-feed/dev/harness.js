@@ -91,6 +91,17 @@
           }
         },
         {
+          "label": "GIF (Twitch's own example)",
+          "kind": "message",
+          "message": {
+            "nick": "demo_{who}",
+            "name": "{who}",
+            "text": "[Y A Y Yes GIF by Djemilah Birnie]",
+            "color": "#FF9A5A",
+            "gifs": "0-33|joSNxeswxuc74Juo8X|https://media4.giphy.com/media/joSNxeswxuc74Juo8X/giphy.gif"
+          }
+        },
+        {
           "label": "Long message",
           "kind": "message",
           "message": {
@@ -155,7 +166,7 @@
   function message(o) {
     var nick = String(o.nick || "tester");
     se("message", { data: { text: o.text, nick: nick.toLowerCase(), displayName: o.name || nick, userId: "u-" + nick.toLowerCase(), msgId: "m" + (++sent),
-      badges: o.badges || [], emotes: o.emotes || [], displayColor: o.color || "", tags: { color: o.color || "", mod: "0" }, isAction: !!o.action } });
+      badges: o.badges || [], emotes: o.emotes || [], displayColor: o.color || "", tags: { color: o.color || "", mod: "0", gifs: o.gifs || "" }, isAction: !!o.action } });
   }
   var names = ["Alice", "Bea", "Cass", "Dev", "Eli", "Fern", "Gus", "Hana"];
   var n = 0; function who() { return names[n++ % names.length]; }

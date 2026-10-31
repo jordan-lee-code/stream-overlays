@@ -27,7 +27,7 @@
   function message(o) {
     var nick = String(o.nick || "tester");
     se("message", { data: { text: o.text, nick: nick.toLowerCase(), displayName: o.name || nick, userId: "u-" + nick.toLowerCase(), msgId: "m" + (++sent),
-      badges: o.badges || [], emotes: o.emotes || [], displayColor: o.color || "", tags: { color: o.color || "", mod: "0" }, isAction: !!o.action } });
+      badges: o.badges || [], emotes: o.emotes || [], displayColor: o.color || "", tags: { color: o.color || "", mod: "0", gifs: o.gifs || "" }, isAction: !!o.action } });
   }
   var names = ["Alice", "Bea", "Cass", "Dev", "Eli", "Fern", "Gus", "Hana"];
   var n = 0; function who() { return names[n++ % names.length]; }

@@ -211,6 +211,8 @@
     c.ignore = csv(str(f.ignoreNames, "nightbot, streamelements, streamlabs, moobot, fossabot, wizebot"));
     c.showBadges = bool(f.showBadges, true);
     c.showEmotes = bool(f.showEmotes, true);
+    c.showGifs = bool(f.showGifs, true);
+    c.gifSize = clamp(num(f.gifSize, 6), 2, 20);
     c.nameColor = str(f.nameColor, "chat");
     c.inline = str(f.nameLine, "above") === "inline";
     c.bubbles = str(f.cardStyle, "panel") === "bubbles";
@@ -387,6 +389,25 @@
     var m = /[A-Za-z0-9À-ɏ]/.exec(String(name || ""));
     return m ? m[0].toUpperCase() : "?";
   }
+  // Twitch sends a GIF as a `gifs` tag on the message: entries of start-end|id|address, with
+  // positions counted like an emote's, and the message text holding a placeholder such as
+  // "[Yes GIF by someone]". The address has to be used exactly as given, so it is never changed,
+  // and only a secure address on Giphy's own domain is shown, whatever a message says.
+  var GIF_URL = /^https:\/\/(?:[a-z0-9-]+\.)*giphy\.com\/[^\s"'<>]+$/i;
+  function gifsOf(data) {
+    var out = [], raw = data && (data.gifs || (data.tags && data.tags.gifs));
+    function take(start, end, id, url) {
+      start = Math.floor(num(start, -1)); end = Math.floor(num(end, -1));
+      if (start >= 0 && end >= start && typeof url === "string" && GIF_URL.test(url)) out.push({ start: start, end: end, url: url, id: String(id || "") });
+    }
+    if (Array.isArray(raw)) raw.forEach(function (g) { if (g && typeof g === "object") take(g.start, g.end, g.id, g.url); });
+    else if (typeof raw === "string") {
+      // An address can hold a comma, so an entry ends only where the next one begins.
+      var re = /(?:^|,)(\d+)-(\d+)\|([^|]*)\|(.*?)(?=,\d+-\d+\||$)/g, m;
+      while ((m = re.exec(raw)) !== null) take(m[1], m[2], m[3], m[4]);
+    }
+    return out;
+  }
   // The picture for an emote: its middle size, or any other, and only on a secure address.
   function emoteUrl(e) {
     var u = e && e.urls && (e.urls["2"] || e.urls["1"] || e.urls["4"]);
@@ -396,9 +417,12 @@
   // character, counted from the start of the text, and that is used first. An emote with no
   // usable position, which is what other emote services may send, is found by name instead:
   // any word in the message that is exactly the emote's name. An emote that does not fit stays text.
-  function segments(text, emotes) {
+  function segments(text, emotes, gifs) {
     var list = Array.isArray(emotes) ? emotes : [];
     var good = [], byName = {};
+    (Array.isArray(gifs) ? gifs : []).forEach(function (g) {
+      if (g.end < text.length) good.push({ start: g.start, end: g.end, url: g.url, name: text.slice(g.start, g.end + 1), gif: true });
+    });
     list.forEach(function (e) {
       if (!e || typeof e !== "object") return;
       var url = emoteUrl(e);
@@ -464,8 +488,8 @@
     head.appendChild(node("span", "cf-sep", ":"));
     body.appendChild(head);
     var text = node("div", "cf-text");
-    segments(m.text, cfg.showEmotes ? m.emotes : []).forEach(function (s) {
-      if (s.emote) { var img = node("img", "cf-emote"); img.src = s.emote.url; img.alt = s.emote.name; text.appendChild(img); }
+    segments(m.text, cfg.showEmotes ? m.emotes : [], cfg.showGifs ? m.gifs : []).forEach(function (s) {
+      if (s.emote) { var img = node("img", s.emote.gif ? "cf-gif" : "cf-emote"); img.src = s.emote.url; img.alt = s.emote.name; text.appendChild(img); }
       else text.appendChild(node("span", "", s.text));
     });
     body.appendChild(text);
@@ -496,7 +520,7 @@
     var color = data.displayColor || tags.color || "";
     var m = {
       id: seq++, msgId: String(data.msgId || tags.id || ""), userId: String(data.userId || tags["user-id"] || ""), nick: nick,
-      name: String(data.displayName || data.nick || "Someone"), text: text, emotes: data.emotes || [], badges: badgesOf(data),
+      name: String(data.displayName || data.nick || "Someone"), text: text, emotes: data.emotes || [], gifs: gifsOf(data), badges: badgesOf(data),
       action: !!data.isAction, color: /^#[0-9a-f]{6}$/i.test(color) ? color : "", at: Date.now(), fading: false
     };
     m.li = buildRow(m);
@@ -627,6 +651,7 @@
     var s = el.app.style;
     s.setProperty("--cf-size", cfg.textSize + "cqw");
     s.setProperty("--cf-gap", cfg.rowGap + "em");
+    s.setProperty("--cf-gif", cfg.gifSize);
     s.setProperty("--cf-avatar", cfg.avatarSize + "em");
     s.setProperty("--cf-avatar-r", cfg.avatarShape === "square" ? "0" : cfg.avatarShape === "rounded" ? "22%" : "50%");
     el.app.classList.toggle("inline", cfg.inline);

@@ -98,6 +98,21 @@
     "value": true,
     "group": "Messages"
   },
+  "showGifs": {
+    "type": "checkbox",
+    "label": "Show GIFs that chatters send (loaded from giphy.com)",
+    "value": true,
+    "group": "Messages"
+  },
+  "gifSize": {
+    "type": "number",
+    "label": "Tallest a GIF can be, as a multiple of the text size",
+    "value": 6,
+    "group": "Messages",
+    "min": 2,
+    "max": 20,
+    "step": 0.5
+  },
   "showAvatars": {
     "type": "checkbox",
     "label": "Show profile pictures (looks each chatter up on decapi.me)",
