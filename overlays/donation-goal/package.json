@@ -1,0 +1,35 @@
+{
+  "name": "donation-goal-overlay",
+  "version": "1.0.0",
+  "description": "A StreamElements custom widget: a donation goal that fills as tips arrive, with a latest donor line, in the same style presets as the rest of the set.",
+  "private": true,
+  "license": "MIT",
+  "author": "Jordan Lee",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jordan-lee-code/stream-overlays.git",
+    "directory": "overlays/donation-goal"
+  },
+  "bugs": {
+    "url": "https://github.com/jordan-lee-code/stream-overlays/issues"
+  },
+  "homepage": "https://github.com/jordan-lee-code/stream-overlays/tree/main/overlays/donation-goal",
+  "keywords": [
+    "streamelements",
+    "twitch",
+    "overlay",
+    "widget",
+    "donations",
+    "tips",
+    "goal",
+    "progress-bar"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "funding": "https://ko-fi.com/journeyingjordan",
+  "scripts": {
+    "test": "node test/test-widget.js",
+    "dev": "python3 -m http.server 8000"
+  }
+}
