@@ -167,7 +167,26 @@
       var login = el("input", { type: "text", id: "chatter-login", value: CFG.chatter.login });
       var line = el("input", { type: "text", id: "chatter-text", value: CFG.chatter.text });
       c.appendChild(login); c.appendChild(line);
-      c.appendChild(btn("Send", function () { message({ nick: login.value.replace(/^\s+|\s+$/g, ""), text: line.value }); }));
+      // Who they are on stream: a name colour and the badges they would wear.
+      var colour = el("input", { type: "color", id: "chatter-colour", value: "#FF7BAC" });
+      var BADGES = { broadcaster: "5527c58c-fb7d-422d-b71b-f309dcb85cc1", moderator: "3267646d-33f0-4b17-b3df-f923a41db1d0", vip: "b817aba4-fad8-49e2-b88a-7cc744dfa6ec", subscriber: "5d9f2208-5dd8-11e7-8513-2ff4adfae661" };
+      var roles = el("div", { "class": "row" }, [el("label", { text: "Name colour" }), colour]);
+      c.appendChild(roles);
+      var ticks = el("div", { "class": "row" }), picked = {};
+      Object.keys(BADGES).forEach(function (r) {
+        var box = el("input", { type: "checkbox" });
+        box.addEventListener("change", function () { picked[r] = box.checked; });
+        ticks.appendChild(el("label", {}, [box, document.createTextNode(" " + r)]));
+      });
+      c.appendChild(ticks);
+      var sendAs = function (action) {
+        var badges = Object.keys(picked).filter(function (r) { return picked[r]; }).map(function (r) {
+          return { type: r, version: "1", description: r.charAt(0).toUpperCase() + r.slice(1), url: "https://static-cdn.jtvnw.net/badges/v1/" + BADGES[r] + "/1" };
+        });
+        message({ nick: login.value.replace(/^\s+|\s+$/g, ""), text: line.value, color: colour.value.toUpperCase(), badges: badges, action: action });
+      };
+      c.appendChild(btn("Send", function () { sendAs(false); }));
+      c.appendChild(btn("Send as /me", function () { sendAs(true); }));
     }
 
     c.appendChild(el("h2", { text: "Chat" }));
