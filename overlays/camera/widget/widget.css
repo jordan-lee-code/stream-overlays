@@ -1,0 +1,179 @@
+/* Copyright (c) 2026 Jordan Lee (https://ko-fi.com/journeyingjordan). Released under the MIT licence: this notice must be kept in copies and substantial portions of the code. See LICENSE. */
+/* Every value below is a custom property that widget.js sets from the editor fields, so
+   the defaults can be restyled from the settings panel without touching this file.
+   The widget sits in front of your camera. It is laid out as a column: a window the camera shows through, framed in
+   the preset's colours, taking whatever room the nameplate leaves, and the nameplate joined above or below it. When the
+   camera is covered, the cover fills the window. Resize the box and the window, the frame and the plate follow it. */
+#cam-root {
+  --w-bg: rgba(0, 0, 0, 0.55);
+  --w-text: #FFFFFF;
+  --w-accent: #FFFFFF;
+  --w-track: #444444;
+  --w-alarm: #D64545;
+  --w-font: "BioRhyme", Georgia, serif;
+  --w-radius: 24px;
+  --w-pad: 0.5;
+  --w-weight: 800;
+  --w-border: 0 solid #FFFFFF;
+  --w-shadow: none;
+
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* The box is the reference for the column's width when the window keeps an aspect. */
+  container-type: size;
+  -webkit-font-smoothing: antialiased;
+}
+#cam-root * { box-sizing: border-box; }
+#cam-root [hidden] { display: none !important; }
+/* The Animate field: when it is off, nothing moves or eases. */
+#cam-root.no-motion,
+#cam-root.no-motion * {
+  animation: none !important;
+  transition: none !important;
+}
+.cam-col {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  /* The width reference for the plate's text, so it scales with the camera window and not the whole box. */
+  container-type: inline-size;
+}
+/* With an aspect set, the column is as wide as lets the window keep it, in the room the plate leaves. The plate's
+   text scales with the column's width, so its height is a fixed share of that width (--cam-plate-k), and the width
+   that fits is worked out in one step: width = height * ratio / (1 + k * ratio). No measuring chases its own tail. */
+#cam-root.locked .cam-col {
+  height: auto;
+  width: min(100cqw, calc(100cqh * var(--cam-ar, 1.7778) / (1 + var(--cam-plate-k, 0.3) * var(--cam-ar, 1.7778))));
+}
+/* The plate goes above the window instead of below it. The room it takes is the same either way. */
+#cam-root.plate-above .cam-col { flex-direction: column-reverse; }
+/* The window the camera shows through. It is the reference for the cover's text and the frame's thickness. */
+.cam-win { position: relative; flex: 1 1 0; min-height: 0; container-type: size; }
+#cam-root.locked .cam-win { flex: none; width: 100%; aspect-ratio: var(--cam-ar, 1.7778); }
+
+/* The cover: always solid, whatever the preset's panel, and it goes up at once. It only fades when it comes down. */
+.cam-cover {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4cqmin;
+  text-align: center;
+  font-family: var(--w-font);
+  font-size: calc(var(--cam-cover, 9) * 1cqmin);
+  line-height: 1.15;
+  color: var(--w-text);
+  background-color: var(--cam-solid, #111111);
+  background-image: var(--w-bgimg, none);
+  border-radius: var(--cam-radius, var(--w-radius));
+  overflow: hidden;
+  opacity: 1;
+  visibility: visible;
+  transition: none;
+}
+.cam-cover.live {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.35s ease, visibility 0s linear 0.35s;
+}
+.cam-inner { max-width: 100%; }
+.cam-icon { font-size: 1.9em; line-height: 1.1; margin-bottom: 0.1em; }
+.cam-text {
+  font-weight: var(--w-weight);
+  letter-spacing: 0.02em;
+  overflow-wrap: anywhere;
+}
+.cam-sub {
+  margin-top: 0.3em;
+  font-size: 0.62em;
+  font-weight: 700;
+  color: var(--w-accent);
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+/* The frame: a ring round the window, in the preset's colour, or its flag, or the panel's, or one you pick, above the cover
+   and the camera. It is the border box of the window with the padding box cut out of it, so it follows the corners. */
+.cam-ring {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border: calc(var(--cam-frame, 1.5) * 1cqw) solid transparent;
+  border-radius: var(--cam-radius, var(--w-radius));
+  background: var(--cam-frame-fill, transparent);
+  background-origin: border-box;
+  -webkit-mask: linear-gradient(#000 0 0) padding-box, linear-gradient(#000 0 0) border-box;
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) padding-box, linear-gradient(#000 0 0) border-box;
+  mask-composite: exclude;
+}
+#cam-root.no-frame .cam-ring { display: none; }
+
+/* Over everything, and the whole box, until the saved state and the fonts are known. */
+.cam-hold { position: absolute; inset: 0; z-index: 5; background: var(--cam-solid, #111111); }
+.cam-hold.done { display: none; }
+
+.cam-app {
+  flex: 0 0 auto;
+  width: 100%;
+  padding: calc(var(--w-pad) * 1em) 3cqw;
+  font-family: var(--w-font);
+  font-size: var(--cam-size, 5cqw);
+  text-align: center;
+  color: var(--w-text);
+  background: var(--w-bg);
+  background-image: var(--w-bgimg, none);
+  border: var(--w-border);
+  border-radius: var(--w-radius);
+  box-shadow: var(--w-shadow);
+  line-height: 1.2;
+}
+.cam-app.align-left { text-align: left; }
+.cam-app.align-right { text-align: right; }
+.cam-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.1em 0.5em;
+}
+.cam-app.align-left .cam-head { justify-content: flex-start; }
+.cam-app.align-right .cam-head { justify-content: flex-end; }
+.cam-name {
+  font-size: calc(1em * var(--cam-title, 1.5));
+  font-weight: var(--w-weight);
+  letter-spacing: 0.02em;
+  overflow-wrap: anywhere;
+}
+.cam-pron { font-size: 0.7em; font-weight: 700; opacity: 0.9; }
+.cam-pron.style-tag {
+  padding: 0.02em 0.55em;
+  letter-spacing: 0.03em;
+  color: var(--w-accent);
+  background: var(--w-track);
+  border-radius: 999px;
+  opacity: 1;
+}
+.cam-tagline { margin-top: var(--cam-gap, 0.3em); font-size: 0.85em; font-weight: 700; overflow-wrap: anywhere; }
+/* Every rotating line sits in the same cell, and only one shows. The plate is as tall as the tallest of them, so a longer
+   line never changes the plate's height, which would move the window the camera sits in. */
+.cam-lines { display: grid; margin-top: var(--cam-gap, 0.3em); }
+.cam-line {
+  grid-area: 1 / 1;
+  font-size: 0.7em;
+  font-weight: 700;
+  color: var(--w-accent);
+  overflow-wrap: anywhere;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.cam-line.on { opacity: 1; }

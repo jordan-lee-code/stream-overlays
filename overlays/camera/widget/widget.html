@@ -1,0 +1,23 @@
+<!-- Copyright (c) 2026 Jordan Lee (https://ko-fi.com/journeyingjordan). Released under the MIT licence: this notice must be kept in copies and substantial portions of the code. See LICENSE. -->
+<div id="cam-root">
+  <div id="cam-col" class="cam-col">
+    <!-- The window the camera shows through. It is empty while the camera is live, and the cover fills it when the camera is covered. -->
+    <div id="cam-win" class="cam-win">
+      <div id="cam-cover" class="cam-cover holding">
+        <div class="cam-inner">
+          <div id="cam-icon" class="cam-icon" hidden></div>
+          <div id="cam-text" class="cam-text"></div>
+          <div id="cam-sub" class="cam-sub" hidden></div>
+        </div>
+      </div>
+      <div id="cam-ring" class="cam-ring"></div>
+    </div>
+    <div id="cam-app" class="cam-app">
+      <div class="cam-head"><span id="cam-name" class="cam-name"></span><span id="cam-pron" class="cam-pron" hidden></span></div>
+      <div id="cam-tagline" class="cam-tagline" hidden></div>
+      <div id="cam-lines" class="cam-lines" hidden></div>
+    </div>
+  </div>
+  <!-- Covers the whole box from the first moment, until the saved state and the fonts have loaded, so a refresh can never show the camera. -->
+  <div id="cam-hold" class="cam-hold"></div>
+</div>
