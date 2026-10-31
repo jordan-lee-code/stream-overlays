@@ -122,6 +122,8 @@ function sync(dir, opts) {
 
   // 5. the copy panel every dev page loads, so people can copy an overlay's files without downloading it
   if (fs.existsSync(path.join(dir, "dev/index.html"))) write("dev/copy-panel.js", read(path.join(__dirname, "..", "shared", "copy-panel.js")), "the shared copy panel");
+  if (fs.existsSync(path.join(dir, "dev/index.html"))) write("dev/box-size.js", read(path.join(__dirname, "..", "shared", "box-size.js")), "the shared box-size control");
+  if (fs.existsSync(path.join(dir, "dev/index.html"))) write("dev/dev.css", read(path.join(__dirname, "..", "shared", "dev.css")), "the shared dev page stylesheet");
 
   return { info, changes };
 }

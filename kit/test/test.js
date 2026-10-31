@@ -186,6 +186,22 @@ asection("the website");
       assert.strictEqual(fs.readFileSync(path.join(dev, "copy-panel.js"), "utf8"), fs.readFileSync(path.join(__dirname, "../shared/copy-panel.js"), "utf8"), n + " has a different panel");
     });
   });
+  atest("every dev page looks the same: it loads the shared stylesheet and box-size bar, and adds only the size of its own stage", () => {
+    names.forEach(n => {
+      const dev = path.join(repoRoot, "overlays", n, "dev");
+      const html = fs.readFileSync(path.join(dev, "index.html"), "utf8");
+      assert.ok(html.indexOf('<link rel="stylesheet" href="dev.css">') !== -1, n + " does not load the shared stylesheet");
+      assert.ok(html.indexOf('<script src="box-size.js"></script>') !== -1, n + " does not load the box-size bar");
+      ["dev.css", "box-size.js"].forEach(f => assert.strictEqual(fs.readFileSync(path.join(dev, f), "utf8"), fs.readFileSync(path.join(__dirname, "../shared", f), "utf8"), n + " has a different " + f));
+      // What a page may style for itself is its stage: a few rules, and none of the panel's.
+      const own = (/<style>([\s\S]*?)<\/style>/.exec(html) || [0, ""])[1];
+      assert.ok(!/#controls|button|h2|summary|\.row|details|body/.test(own), n + " styles the panel itself, and the shared stylesheet is meant to be the only place");
+      assert.strictEqual((html.match(/<style>/g) || []).length, 1, n + " has more than one style block");
+    });
+  });
+  atest("no harness has a stage-size control of its own, because the box-size bar is the one way to resize the box", () => {
+    names.forEach(n => assert.ok(!/stage\.style\.(width|height)\s*=/.test(fs.readFileSync(path.join(repoRoot, "overlays", n, "dev", "harness.js"), "utf8")), n + " resizes its own stage"));
+  });
   atest("text from an overlay's package or README is escaped, never run as markup", () => {
     const fake = fs.mkdtempSync(path.join(os.tmpdir(), "site-root-"));
     const dir = path.join(fake, "overlays", "evil");

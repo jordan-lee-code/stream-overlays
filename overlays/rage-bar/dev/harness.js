@@ -93,7 +93,7 @@
     host.innerHTML =
       (def ? '<div class="row"><label for="look-preset">Style preset</label> <select id="look-preset"></select></div>' +
         '<p class="hint">The same twenty-two presets are in every overlay in this set. Custom uses the colour settings below.</p>' : '') +
-      '<div class="row"><button id="export-download" class="go">Download fields.json</button>' +
+      '<div class="row"><button id="export-download">Download fields.json</button>' +
       '<button id="export-copy" class="alt">Copy fields.json</button></div>' +
       '<p class="hint">Your current settings as a fields.json for StreamElements. Paste it into the Fields tab of a new custom widget and it starts out as you see it here.</p>' +
       '<p id="export-msg" class="hint"></p>' +
@@ -324,6 +324,10 @@
   function buildControls() {
     var c = document.getElementById("controls");
     c.innerHTML =
+      '<h1>Rage Bar Overlay</h1>' +
+      '<p class="hint">Send subs, bits, tips and channel points to fill the bar, and try the settings below.</p>' +
+      '<h2>Look and export</h2>' +
+      '<div id="look-panel"></div>' +
       '<h2>Where the bar is</h2>' +
       '<pre id="state">reading...</pre>' +
 
@@ -422,10 +426,6 @@
       '<p class="hint">A bare number is seconds, so !bar lock 60 is one minute. 90s, 5m and 1h ' +
       'all work too, and a mod\'s lock ignores the caps chat plays by. The quick buttons send as ' +
       'the broadcaster; untick it and tick mod, or neither, to feel the permissions.</p>' +
-
-      '<h2>Look and export</h2>' +
-      '<div id="look-panel"></div>' +
-
       '<h2>Every setting (re-applies on change)</h2>' +
       '<p class="hint">Generated from <code>fields.json</code>, so it is exactly what StreamElements will offer. The Manual controls group holds the settings panel buttons: they are the whole safety net on a live stream, so they are worth trusting, and Fill the bar is how to rehearse the save window before anyone is watching.</p>' +
       '<div id="all-settings"></div>' +
@@ -547,16 +547,18 @@
     });
   }
 
-  // The stage is the real 1920 by 960 widget box, scaled down to fit the pane.
+  // The stage is the widget's real box, 1920 by 960 unless the box-size bar has changed it, scaled down to fit the pane.
   function fitStage() {
     var wrap = document.getElementById("stage-wrap");
     var box = document.getElementById("stage-box");
     var stage = document.getElementById("stage");
     if (!wrap || !box || !stage) return;
-    var s = Math.min((wrap.clientWidth - 40) / 1920, (wrap.clientHeight - 40) / 960, 1);
+    var w = stage.offsetWidth || 1920, h = stage.offsetHeight || 960;
+    // The pane keeps 20px round the box, and 64px under it for the box-size bar.
+    var s = Math.min((wrap.clientWidth - 40) / w, (wrap.clientHeight - 84) / h, 1);
     if (!(s > 0)) s = 0.1;
-    box.style.width = Math.round(1920 * s) + "px";
-    box.style.height = Math.round(960 * s) + "px";
+    box.style.width = Math.round(w * s) + "px";
+    box.style.height = Math.round(h * s) + "px";
     stage.style.transform = "scale(" + s + ")";
   }
 

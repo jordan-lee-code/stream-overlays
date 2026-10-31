@@ -85,7 +85,7 @@
     host.innerHTML =
       (def ? '<div class="row"><label for="look-preset">Style preset</label> <select id="look-preset"></select></div>' +
         '<p class="hint">The same twenty-two presets are in every overlay in this set. Custom uses the colour settings below.</p>' : '') +
-      '<div class="row"><button id="export-download" class="go">Download fields.json</button>' +
+      '<div class="row"><button id="export-download">Download fields.json</button>' +
       '<button id="export-copy" class="alt">Copy fields.json</button></div>' +
       '<p class="hint">Your current settings as a fields.json for StreamElements. Paste it into the Fields tab of a new custom widget and it starts out as you see it here.</p>' +
       '<p id="export-msg" class="hint"></p>' +
@@ -294,6 +294,10 @@
   function buildControls() {
     var c = document.getElementById("controls");
     c.innerHTML =
+      '<h1>Squat Tracker Overlay</h1>' +
+      '<p class="hint">Send gifted subs to add squats, and try the settings below.</p>' +
+      '<h2>Look and export</h2>' +
+      '<div id="look-panel"></div>' +
       '<h2>Gift a bomb of subs</h2>' +
       '<div class="row">' +
         '<label>Subs <input id="gift-amount" type="number" min="1" value="16" style="width:80px"></label>' +
@@ -334,10 +338,6 @@
       '<p class="hint">While the count is locked a padlock sits on the sticker and gift bombs ' +
       'add nothing, but !squats -5 and the reset still work, which is the shape of a stream ' +
       'where the squats are being worked off rather than piling up.</p>' +
-
-      '<h2>Look and export</h2>' +
-      '<div id="look-panel"></div>' +
-
       '<h2>Every setting (re-applies on change)</h2>' +
       '<p class="hint">Generated from <code>fields.json</code>, so it is exactly what StreamElements will offer. Buttons here are the Manual controls.</p>' +
       '<div id="all-settings"></div>' +
