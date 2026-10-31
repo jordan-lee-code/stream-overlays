@@ -127,6 +127,8 @@
       // Tips are worked in whole cents so two tips never add up wrongly. A rate of 0 switches them off.
       tipCentsPerSub: Math.max(0, Math.round(num(f.tipsPerSub, 5) * 100)),
       tipSymbol: txt(f.tipSymbol, "$"),
+      tipSymbolAfter: bool(f.tipSymbolAfter, false),
+      tipDecimalComma: bool(f.tipDecimalComma, false),
 
       maxVisible: Math.max(1, Math.round(num(f.maxVisible, 4))),
       goalOrder: str(f.goalOrder, "target"),
@@ -663,7 +665,16 @@
     });
     if (!goalSoundTakesOver(unlocked)) playSound("bits");
   }
-  function money(cents) { return cfg.tipSymbol + (cents / 100).toFixed(2).replace(/\.00$/, ""); }
+  // The symbol goes before the amount ($5) or after it (5 kr, 5\u20ac). A lone sign sits tight
+  // against the number and a word gets a space, and the decimal can be a comma (5,50).
+  function money(cents) {
+    var n = (cents / 100).toFixed(2).replace(/\.00$/, "");
+    if (cfg.tipDecimalComma) n = n.replace(".", ",");
+    var sym = cfg.tipSymbol;
+    if (!sym) return n;
+    if (!cfg.tipSymbolAfter) return sym + n;
+    return n + (/^[A-Za-z\u00c0-\u024f]/.test(sym) ? " " : "") + sym;
+  }
 
   // The cheer lands as a "+300 bits" chip over a small bar. After a moment the bar
   // fills towards the next sub, slowly and evenly, while the number beside it counts

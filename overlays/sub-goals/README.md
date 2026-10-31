@@ -110,7 +110,7 @@ StreamElements reports a gift bomb as several events. One announcement carries t
 
 Bits count at 500 to a sub by default. A cheer too small to make a whole sub is kept, so 300 bits followed by another 300 makes one sub with 100 left over. A rate of 0 switches bits off.
 
-Tips work the same way. The tip rate is an amount in your channel's currency (the figure StreamElements sends with the tip), 5 to a sub by default, so a 3 followed by another 3 makes one sub with 1 left over. Bits and tips keep separate leftovers. A rate of 0 switches tips off, and the currency symbol in the strip is a setting.
+Tips work the same way. The tip rate is an amount in your channel's currency (the figure StreamElements sends with the tip), 5 to a sub by default, so a 3 followed by another 3 makes one sub with 1 left over. Bits and tips keep separate leftovers. A rate of 0 switches tips off. The currency symbol in the strip is a setting too: it can go before the amount (`$5`) or after it (`5€`, or `5 kr` for a word, which gets a space), and the decimal can be a comma (`5,50`). These change only how the strip reads, not how a tip is counted.
 
 If a count ever looks wrong on a live stream, tick **Log each subscriber and cheer event** in the Troubleshooting settings. Each event is then logged to the browser-source console exactly as it arrived.
 
@@ -131,7 +131,7 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | Commands | The command word, who can use it, and the word for each action. |
 | Counting | Whether new subs and gifts count, whether tracking starts on, and a starting count. |
 | Bits | The bits rate, the animation, how long the bar takes to calculate, and how long the strip stays. |
-| Tips | The tip amount that counts as one sub, and the currency symbol for the strip. |
+| Tips | The tip amount that counts as one sub, the currency symbol for the strip, whether it goes before or after the amount, and a comma or point for the decimal. |
 | Goals | How many show at once, their order, whether reached goals stay, and the celebration time. |
 | Wording | The words for sub and subs, the celebrating text, the reached text and the paused note. |
 | Look | The style preset (one of twenty-one, or Custom), the font, the heading, panel shape and padding, bar thickness and spacing, the thank you message, and the switch for animation. |
