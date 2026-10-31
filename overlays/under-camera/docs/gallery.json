@@ -40,6 +40,12 @@
       "fields": {
         "showWindow": false
       }
+    },
+    {
+      "label": "plate above",
+      "fields": {
+        "platePosition": "above"
+      }
     }
   ]
 }

@@ -92,6 +92,14 @@ const app = () => E("uc-app");
   await load({ aspect: "sideways" }); ok(!root().classList.contains("locked"), "and anything else is free");
   await load({ aspect: "16:9", showWindow: false }); ok(!root().classList.contains("locked") && root().classList.contains("no-window"), "no window, no shape to keep");
 
+  section("which side the nameplate is on");
+  await load(); ok(!root().classList.contains("plate-above"), "the nameplate is below the window by default");
+  await load({ platePosition: "above" }); ok(root().classList.contains("plate-above"), "and can go above it");
+  await load({ platePosition: "below" }); ok(!root().classList.contains("plate-above"), "or be set below");
+  await load({ platePosition: "sideways" }); ok(!root().classList.contains("plate-above"), "anything else is below");
+  await load({ platePosition: "above", aspect: "16:9" }); ok(root().classList.contains("plate-above") && root().classList.contains("locked") && env.vars("uc-col")["--uc-ar"] === "1.7778", "it works with a window that keeps its shape");
+  await load({ platePosition: "above", showWindow: false }); ok(root().classList.contains("no-window"), "and with no window it is the nameplate alone, wherever it is set");
+
   section("the frame");
   const fill = () => env.vars("uc-col")["--uc-frame-fill"];
   await load(); ok(fill() === "var(--w-flag)" && env.vars("uc-col")["--w-flag"] === "#FFFFFF", "by default it takes the preset's colour: the accent (" + fill() + ", " + env.vars("uc-col")["--w-flag"] + ")");

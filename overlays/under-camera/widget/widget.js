@@ -267,6 +267,7 @@
     c.rotateMs = clamp(num(f.rotateSeconds, 8), 2, 600) * 1000;
     var a = str(f.align, "center");
     c.align = a === "left" || a === "right" ? a : "center";
+    c.plateAbove = str(f.platePosition, "below") === "above";
     c.showWindow = bool(f.showWindow, true);
     var ratio = ASPECTS[str(f.aspect, "free")];
     c.ratio = ratio || 0;                // 0 is free: the window takes whatever room there is
@@ -332,6 +333,7 @@
     s.setProperty("--uc-frame", cfg.frameWidth);
     s.setProperty("--uc-frame-fill", cfg.frameStyle === "custom" ? cfg.colorFrame : cfg.frameStyle === "panel" ? solid(t.panel) : "var(--w-flag)");
     s.setProperty("--uc-ar", cfg.ratio ? String(Math.round(cfg.ratio * 10000) / 10000) : "");
+    el.root.classList.toggle("plate-above", cfg.plateAbove);
     el.root.classList.toggle("locked", cfg.showWindow && cfg.ratio > 0);
     el.root.classList.toggle("no-window", !cfg.showWindow);
     el.root.classList.toggle("no-frame", !cfg.showFrame || !cfg.showWindow);

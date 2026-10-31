@@ -60,6 +60,8 @@
   width: min(100cqw, calc(100cqh * var(--uc-ar, 1.7778) / (1 + var(--uc-plate-k, 0.3) * var(--uc-ar, 1.7778))));
 }
 #uc-root.no-window .uc-col { height: auto; }
+/* The plate goes above the window instead of below it. The room it takes is the same either way. */
+#uc-root.plate-above .uc-col { flex-direction: column-reverse; }
 
 .uc-win { position: relative; flex: 1 1 0; min-height: 0; }
 #uc-root.locked .uc-win { flex: none; width: 100%; aspect-ratio: var(--uc-ar, 1.7778); }

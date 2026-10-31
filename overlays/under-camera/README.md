@@ -13,6 +13,7 @@ It is a single self-contained widget in plain JavaScript, with no dependencies a
 - Your name, and your pronouns beside it as a small tag, in brackets, or as plain text.
 - A line under your name, such as what you play or a welcome.
 - Rotating lines: any number of short lines, separated by `|`, that take turns at a pace you choose, fading from one to the next. A single line simply stays.
+- Above or below the camera: the nameplate can go on either side of the window, and the window, the frame and the plate stay joined and the same width either way.
 - Aligned to the left, the middle or the right.
 - Every part can be switched off, so it can be a name alone or just the rotating lines.
 - Customisable: around 35 settings cover the plate, the lines, the window and its frame, sizes, shape, outline, colours, fonts and animation.
@@ -25,7 +26,11 @@ It is a single self-contained widget in plain JavaScript, with no dependencies a
 
 <p><img src="docs/pride.png" alt="A window framed in the trans flag's blue, pink and white stripes, with a plate beneath it" width="420"></p>
 
-**In another preset,** here Pastel pink, with a 4 by 3 window, a frame in the panel's colour, the text on the left and the pronouns in brackets.
+**The nameplate above the camera.** Set **Where the nameplate goes** to above, and the plate sits on top of the window with the frame below it.
+
+<p><img src="docs/above.png" alt="A pale green plate showing the name Mina, a she/her tag and two lines, with a green framed empty window joined beneath it" width="420"></p>
+
+**In another preset,** here Pastel pink, with a 4 by 3 window, a frame in the panel's colour, the nameplate below, the text on the left and the pronouns in brackets.
 
 <p><img src="docs/pastel.png" alt="A pale pink frame around a 4 by 3 window, with a pale pink plate beneath it showing the name Mina plays, (she/her), the line Cosy games and good company, and the line !discord to join us" width="420"></p>
 
@@ -75,7 +80,7 @@ Choose **Custom** to use the colour pickers and font instead. They are ignored w
 
 ## The camera window and the frame
 
-The widget is laid out as a column: the window and its frame on top, and the nameplate joined underneath, the same width as the window. The window takes whatever room the nameplate leaves, so **resizing the widget in StreamElements resizes everything with it**.
+The widget is laid out as a column: the window and its frame, and the nameplate joined to it, the same width as the window. The nameplate is **below** the window by default, and **Where the nameplate goes** under Plate puts it **above** instead. The window takes whatever room the nameplate leaves, so **resizing the widget in StreamElements resizes everything with it**.
 
 - **Free** (the default) fills the room, so the box's shape is the window's shape.
 - **A shape** (16 by 9, 4 by 3, 3 by 2, square or portrait) keeps that shape and centres the window and plate in the box, as large as will fit.
@@ -122,7 +127,7 @@ Every setting has a plain label in StreamElements, grouped as follows.
 
 | Group | What it covers |
 | --- | --- |
-| Plate | Your name, your pronouns and how they are written, the line under your name, and where the text sits. |
+| Plate | Your name, your pronouns and how they are written, the line under your name, where the text sits, and whether the nameplate is above or below the window. |
 | Rotating lines | The lines, whether they show, and how long each stays. |
 | Camera window | Whether there is a window for the camera, and its shape. |
 | Frame | Whether there is a frame, how thick it is, and its colour. |
