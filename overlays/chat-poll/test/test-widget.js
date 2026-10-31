@@ -616,6 +616,20 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   load({ themePreset: "glass" }); await wait(5);
   ok(elements["vote-app"].style["--bg-img"] === "none", "and every other preset leaves the card plain");
   ok(elements["vote-app"].style["--edge"] === "none", "with no outline either");
+  console.log("\n[growing to fill the box]");
+  ok(fields.grow && fields.grow.type === "checkbox" && fields.grow.value === true, "Grow to fill the box is a setting, on by default");
+  // The mock has no layout, so the card and the box are given sizes by hand: a card that wants 300 by 200 pixels at its
+  // natural size, in a box with 900 by 400 to spare, which is limited by its height.
+  const sized = () => { const c = elements["vote-card"], a = elements["vote-app"]; c.offsetWidth = 300; c.scrollWidth = 300; c.offsetHeight = 200; c.scrollHeight = 200; a.clientWidth = 900; a.clientHeight = 400; };
+  sized(); load({ grow: true }); await wait(5); sized(); chat("!vote Pizza, Tacos, Sushi", { broadcaster: true }); await wait(5);
+  const grown = parseFloat(elements["vote-card"].style["--fit"]);
+  ok(grown > 1.5 && grown <= 2, "with growing on, a card that wants 300 by 200 in a box of 900 by 400 is scaled up to meet the box's height (" + grown + ")");
+  sized(); load({ grow: false }); await wait(5); sized(); chat("!vote Pizza, Tacos, Sushi", { broadcaster: true }); await wait(5);
+  ok(parseFloat(elements["vote-card"].style["--fit"]) === 1, "with it off, the card is never made larger than its natural size (" + elements["vote-card"].style["--fit"] + ")");
+  const tight = () => { sized(); elements["vote-app"].clientHeight = 100; };
+  tight(); load({ grow: true }); await wait(5); tight(); chat("!vote Pizza, Tacos, Sushi", { broadcaster: true }); await wait(5);
+  ok(parseFloat(elements["vote-card"].style["--fit"]) < 1, "and a box that is too small still shrinks the card, either way (" + elements["vote-card"].style["--fit"] + ")");
+  load({}); await wait(5);
   console.log("\n=== " + pass + " passed, " + fail + " failed ===");
   process.exit(fail ? 1 : 0);
 })();

@@ -71,7 +71,7 @@ Choose **Custom** to use the colour pickers and font instead. They are ignored w
 1. In StreamElements, edit your overlay and add **+ Add Widget, Static/Custom, Custom Widget**.
 2. Select the widget, open **Settings, Open Editor**, and paste each file from `widget/` into the matching tab: `widget.html` into HTML, `widget.css` into CSS, `widget.js` into JS, and `fields.json` into Fields.
 3. Click **Done**. The settings are grouped into Commands, Poll rules, Copy, Card, Text, Look, Custom colours, Animation, Sounds and Manual controls.
-4. Size the widget box to the full 1920 by 1080 canvas. The card sits against the left edge and its text scales with the box, so a full-size box renders at full resolution and any later shrinking in OBS keeps it sharp.
+4. Size the widget box to however much of the screen you want the poll to have. The card sits against the left edge and grows to the largest size that fits the box, so a box twice as big gives a card twice as big, and it renders at full resolution at any size, so shrinking later in OBS keeps it sharp. A full 1920 by 1080 box makes a large card, and a small box a small one.
 
 If you would rather import, `npm run build` writes `dist/chat-voting.overlay.json`. StreamElements does not document its overlay import format, so pasting the files in (above) is the reliable route.
 
@@ -124,7 +124,7 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | Commands | The command words and who may use them. |
 | Poll rules | The default duration, changing your vote, exact or loose matching, live or blind results, tie handling, the undo grace window, how long a result stays on screen and how many seconds from the end the timer pulses. |
 | Copy | The heading, the result and tie labels, the hint line, the words for vote and votes, and a troubleshooting overlay. |
-| Card | **Size of everything**, corner roundness, padding, spacing, an outline, shadows, the tail and tilt of the timer and result label, and the size of each option's bar. |
+| Card | **Grow to fill the box**, **Size of everything** (used when growing is unticked), corner roundness, padding, spacing, an outline, shadows, the tail and tilt of the timer and result label, and the size of each option's bar. |
 | Text | The size and boldness of the heading, countdown, result label, options, letter chips, counts and footer, an own font for the heading, and the opacity of counts, footer and options that did not win. |
 | Look and Custom colours | One of the twenty-two shared style presets (Soft black by default) or Custom colours and font, with a colour for every part and each of the eight options, and an opacity for the panel. |
 | Animation | One switch for all animation, and how long the bars, the card and the pulse take. |
