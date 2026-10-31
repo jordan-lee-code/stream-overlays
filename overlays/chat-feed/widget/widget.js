@@ -387,16 +387,26 @@
     var m = /[A-Za-z0-9À-ɏ]/.exec(String(name || ""));
     return m ? m[0].toUpperCase() : "?";
   }
-  // Splits a message around its emotes. StreamElements gives each emote's first and last
-  // character, counted from the start of the text. One that does not fit is left as text.
+  // The picture for an emote: its middle size, or any other, and only on a secure address.
+  function emoteUrl(e) {
+    var u = e && e.urls && (e.urls["2"] || e.urls["1"] || e.urls["4"]);
+    return typeof u === "string" && u.indexOf("https://") === 0 ? u : "";
+  }
+  // Splits a message around its emotes. StreamElements gives a Twitch emote's first and last
+  // character, counted from the start of the text, and that is used first. An emote with no
+  // usable position, which is what other emote services may send, is found by name instead:
+  // any word in the message that is exactly the emote's name. An emote that does not fit stays text.
   function segments(text, emotes) {
-    var good = [];
-    (Array.isArray(emotes) ? emotes : []).forEach(function (e) {
+    var list = Array.isArray(emotes) ? emotes : [];
+    var good = [], byName = {};
+    list.forEach(function (e) {
       if (!e || typeof e !== "object") return;
+      var url = emoteUrl(e);
+      if (!url) return;
+      if (e.name && !byName[e.name]) byName[e.name] = { url: url, name: String(e.name) };
       var s = Math.floor(num(e.start, -1)), n = Math.floor(num(e.end, -1));
-      var u = e.urls && (e.urls["2"] || e.urls["1"] || e.urls["4"]);
-      if (s < 0 || n < s || n >= text.length || typeof u !== "string" || u.indexOf("https://") !== 0) return;
-      good.push({ start: s, end: n, url: u, name: String(e.name || text.slice(s, n + 1)) });
+      if (s < 0 || n < s || n >= text.length) return;
+      good.push({ start: s, end: n, url: url, name: String(e.name || text.slice(s, n + 1)) });
     });
     good.sort(function (a, b) { return a.start - b.start; });
     var out = [], pos = 0;
@@ -407,7 +417,21 @@
       pos = e.end + 1;
     });
     if (pos < text.length) out.push({ text: text.slice(pos) });
-    return out.length ? out : [{ text: text }];
+    if (!out.length) out.push({ text: text });
+    // Then any word in the plain stretches that is an emote's name.
+    var named = [];
+    out.forEach(function (seg) {
+      if (seg.emote) { named.push(seg); return; }
+      var run = "";
+      seg.text.split(/(\s+)/).forEach(function (tok) {
+        if (tok && byName.hasOwnProperty(tok)) {
+          if (run) { named.push({ text: run }); run = ""; }
+          named.push({ emote: byName[tok] });
+        } else run += tok;
+      });
+      if (run) named.push({ text: run });
+    });
+    return named;
   }
   function badgesOf(data) {
     var out = [], b = data && Array.isArray(data.badges) ? data.badges : [];

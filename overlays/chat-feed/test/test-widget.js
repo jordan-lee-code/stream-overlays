@@ -91,6 +91,18 @@ const until = async (test, ms) => { for (let i = 0; i < (ms || 2000) / 25 && !te
   ok(texts()[2] === "[x]lap", "an overlapping emote is ignored, not doubled (" + texts()[2] + ")");
   say("bad", { nick: "alice", emotes: [{ name: "z", start: 1, end: 99, urls: urls(5) }, { name: "q", start: 0, end: 1, urls: { "2": "javascript:alert(1)" } }, null, { name: "n" }] });
   ok(texts()[3] === "bad", "an emote that does not fit, or has an unsafe address, stays as text (" + texts()[3] + ")");
+  const cdn = n => ({ "1": "https://cdn.example/" + n + "/1x.webp", "2": "https://cdn.example/" + n + "/2x.webp", "4": "https://cdn.example/" + n + "/4x.webp" });
+  say("nice catJAM and catJAM again", { nick: "alice", emotes: [{ type: "7tv", name: "catJAM", id: "x1", gif: true, urls: cdn("x1") }] });
+  ok(texts()[4] === "nice [catJAM] and [catJAM] again", "an emote sent with no position is found by its name, every time it appears (" + texts()[4] + ")");
+  ok(part(rowEls()[4], "cf-emote").src === "https://cdn.example/x1/2x.webp", "and an animated picture is passed straight through for the browser to animate");
+  say("catJAMs and xcatJAM and catJAM!", { nick: "alice", emotes: [{ name: "catJAM", urls: cdn("x1") }] });
+  ok(texts()[5] === "catJAMs and xcatJAM and catJAM!", "only a whole word counts, so a name inside another word or with punctuation stays text (" + texts()[5] + ")");
+  say("Kappa catJAM", { nick: "alice", emotes: [{ type: "twitch", name: "Kappa", start: 0, end: 4, urls: urls(25) }, { type: "bttv", name: "catJAM", urls: cdn("x1") }] });
+  ok(texts()[6] === "[Kappa] [catJAM]", "Twitch emotes by position and others by name can share a message (" + texts()[6] + ")");
+  say("Kappa Kappa", { nick: "alice", emotes: [{ type: "twitch", name: "Kappa", start: 0, end: 4, urls: urls(25) }] });
+  ok(texts()[7] === "[Kappa] [Kappa]", "a name that is also at a known position is not doubled (" + texts()[7] + ")");
+  say("catJAM", { nick: "alice", emotes: [{ name: "catJAM", urls: { "2": "http://insecure.example/x.gif" } }, { name: "catJAM", urls: { "2": "javascript:alert(1)" } }] });
+  ok(texts()[texts().length - 1] === "catJAM", "an emote with no secure picture is never used, even by name (" + texts()[texts().length - 1] + ")");
   await load({ showEmotes: false }); say("hi Kappa", { nick: "alice", emotes: [{ name: "Kappa", start: 3, end: 7, urls: urls(25) }] });
   ok(texts()[0] === "hi Kappa", "emotes can be left as words");
   await load();
