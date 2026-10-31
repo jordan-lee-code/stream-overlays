@@ -357,6 +357,12 @@
     "value": true,
     "group": "Look"
   },
+  "fit": {
+    "type": "checkbox",
+    "label": "Shrink to fit the box: when the box is too short for everything, the whole card gets smaller instead of running off the bottom",
+    "value": true,
+    "group": "Look"
+  },
   "colorPanel": {
     "type": "colorpicker",
     "label": "Panel colour (used when the style preset is Custom)",

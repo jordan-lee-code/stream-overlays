@@ -89,6 +89,62 @@ Object.keys(K.generators).forEach(kind => {
   });
 });
 
+asection("fitting a card to its box");
+{
+  // The shared fit code, run against a card whose height does not shrink in step with its zoom, because the
+  // text re-wraps as it gets smaller, which is how the real thing behaves.
+  const code = fs.readFileSync(path.join(__dirname, "../shared/common.js"), "utf8");
+  function make(naturalHeight, roomHeight) {
+    const timers = [];
+    const sandbox = { setTimeout: fn => { timers.push(fn); return timers.length; }, document: undefined, window: {} };
+    vm.createContext(sandbox);
+    vm.runInContext("(function(){" + code + "\n this.fitToBox = fitToBox; this.watchFit = watchFit; }).call(globalThis)", sandbox);
+    const app = { style: { zoom: "" }, getBoundingClientRect() { const z = parseFloat(this.style.zoom || "1"); return { height: naturalHeight * Math.pow(z, 1.5) }; } };
+    const root = { clientHeight: roomHeight };
+    return { sandbox, app, root, run: () => { while (timers.length) timers.shift()(); } };
+  }
+  const zoomOf = x => parseFloat(x.app.style.zoom || "1");
+  atest("a card that fits is left alone", () => { const x = make(100, 200); x.sandbox.fitToBox(x.root, x.app); assert.strictEqual(x.app.style.zoom, ""); });
+  atest("a card that is too tall is shrunk until it fits, and no further than it has to be", () => {
+    const x = make(400, 100); x.sandbox.fitToBox(x.root, x.app);
+    const h = x.app.getBoundingClientRect().height;
+    assert.ok(h <= 100.5 && h >= 97, "height " + h + " at zoom " + x.app.style.zoom);
+  });
+  atest("it is never enlarged, however much room there is", () => { const x = make(100, 5000); x.sandbox.fitToBox(x.root, x.app); assert.ok(zoomOf(x) === 1); });
+  atest("it never shrinks to nothing, even in a box with no room for it", () => { const x = make(5000, 10); x.sandbox.fitToBox(x.root, x.app); assert.strictEqual(zoomOf(x), 0.1); });
+  atest("a share of the box can be asked for, as a number or as a function", () => {
+    const a = make(400, 200); a.sandbox.fitToBox(a.root, a.app, 0.5);
+    assert.ok(a.app.getBoundingClientRect().height <= 100.5);
+    const b = make(400, 200); b.sandbox.fitToBox(b.root, b.app, () => 0.25);
+    assert.ok(b.app.getBoundingClientRect().height <= 50.5);
+  });
+  atest("a card, or a box with no layout, is skipped without harm", () => {
+    const x = make(400, 100); x.sandbox.fitToBox(x.root, {}); x.sandbox.fitToBox(null, x.app); x.sandbox.fitToBox(x.root, { style: {} });
+    x.sandbox.fitToBox({ clientHeight: 0 }, x.app); assert.strictEqual(x.app.style.zoom, "");
+  });
+  atest("a box that grows gives the card back its size, and the zoom is found afresh each time", () => {
+    const x = make(400, 100); x.sandbox.fitToBox(x.root, x.app); const small = zoomOf(x);
+    x.root.clientHeight = 300; x.sandbox.fitToBox(x.root, x.app); const bigger = zoomOf(x);
+    x.root.clientHeight = 1000; x.sandbox.fitToBox(x.root, x.app);
+    assert.ok(small < bigger && bigger < 1 && zoomOf(x) === 1, small + " " + bigger + " " + zoomOf(x));
+  });
+  atest("watching fits the card, and the switch turns it off and clears the zoom", () => {
+    const x = make(400, 100); x.sandbox.watchFit(x.root, x.app, true); x.run();
+    assert.ok(zoomOf(x) < 1);
+    x.sandbox.watchFit(x.root, x.app, false); x.run();
+    assert.strictEqual(x.app.style.zoom, "");
+  });
+  atest("something that depends on the room is told when the zoom changes, and only then", () => {
+    const x = make(400, 100); let told = 0;
+    x.sandbox.watchFit(x.root, x.app, true, { after: () => { told++; } }); x.run();
+    assert.strictEqual(told, 1);
+    x.app.__fitSoon(); x.run(); x.app.__fitSoon(); x.run();
+    assert.strictEqual(told, 1, "told again with nothing changed");
+    x.root.clientHeight = 200; x.app.__fitSoon(); x.run();
+    assert.strictEqual(told, 2);
+  });
+}
+
 asection("the website");
 {
   const site = require("../../scripts/build-site");

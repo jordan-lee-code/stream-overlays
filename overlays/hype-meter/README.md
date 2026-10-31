@@ -69,7 +69,7 @@ Choose **Custom** to use the colour pickers and font instead. They are ignored w
 1. In StreamElements, edit your overlay and add **+ Add Widget, Static/Custom, Custom Widget**.
 2. Select the widget, open **Settings, Open Editor**, and paste each file from `widget/` into the matching tab: `widget.html` into HTML, `widget.css` into CSS, `widget.js` into JS, and `fields.json` into Fields.
 3. Click **Done**. The settings are grouped into Commands, Levels, Earning, Decay, Meter, Manual controls, Look, Custom colours, Sounds and Troubleshooting.
-4. Size and position the widget. The text and bar scale with the box.
+4. Size and position the widget. The text and bar scale with the box. If the box is too short for everything, the card shrinks to fit instead of running off the bottom (untick **Shrink to fit the box** under Look to turn that off).
 
 The widget reads Twitch chat and events through StreamElements, so it works as soon as it is on an active overlay.
 
@@ -122,7 +122,7 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | Decay | How fast it falls when quiet, and how long it waits first. |
 | Meter | The points, dots and level number, the level-up banner, text and bar sizes. |
 | Manual controls | Buttons to add points, change level, reset, pause and resume. |
-| Look | Title, the style preset, font, boldness, corners, padding, outline, shadow and Animate. |
+| Look | Title, the style preset, font, boldness, corners, padding, outline, shadow, Animate and whether it shrinks to fit the box. |
 | Custom colours | Panel, text, accent, bar and alert colours, used when the style preset is Custom. |
 | Sounds | A sound and volume for a level, the top level and losing a level, with Test buttons and a master mute. |
 | Troubleshooting | A debug log of every event to the browser-source console. |

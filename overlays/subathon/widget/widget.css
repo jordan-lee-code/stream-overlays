@@ -209,7 +209,7 @@
   text-shadow: var(--text-shadow);
   /* A share of the box's width, so the panel looks the same at any box size, and
      shrunk a little further by widget.js if the content is too tall for the box. */
-  font-size: max(8px, calc(var(--size) * var(--fit-h)));
+  font-size: max(5px, calc(var(--size) * var(--fit-h)));
   line-height: var(--lh);
 }
 

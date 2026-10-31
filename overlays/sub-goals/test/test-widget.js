@@ -611,7 +611,9 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   mockBoxH = 400; mockPanelH = 500; reload(); await wait(10);
   ok(fitH() === "0.792", "content too tall for the box is scaled down to fit it (" + fitH() + ")");
   mockBoxH = 100; mockPanelH = 900; reload(); await wait(10);
-  ok(fitH() === "0.3", "but never to nothing (" + fitH() + ")");
+  ok(fitH() === "0.11", "a short box takes it down a long way, so that it still fits (" + fitH() + ")");
+  mockBoxH = 40; mockPanelH = 900; reload(); await wait(10);
+  ok(fitH() === "0.1", "but never to nothing (" + fitH() + ")");
   mockBoxH = 400; mockPanelH = 300; reload(); await wait(10);
   ok(fitH() === "1", "and it returns to full size when there is room again (" + fitH() + ")");
   mockBoxH = 0; mockPanelH = 0;

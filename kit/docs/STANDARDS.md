@@ -42,6 +42,7 @@ A setting that more than one overlay needs has the same name, label and group ev
 | `weight`, `radius`, `pad` | Boldness, corner roundness and padding. |
 | `borderWidth`, `borderColor`, `shadow` | The outline and the shadow. |
 | `animate` | One switch for all motion. When it is off, nothing moves or eases. |
+| `fit` | Shrinks the whole card until it fits the box it is given, and never enlarges it. |
 | `colorPanel`, `panelOpacity`, `cText`, `cAccent`, `cTrack`, `cWarn` | The Custom colours. |
 | `mute` | Silences every sound. |
 | `debug` | Logs every event to the browser-source console. |
@@ -96,6 +97,7 @@ StreamElements sends an empty string for a field the streamer has cleared. A wor
 - A widget fills the box it is given and sizes its text in container query units (`cqw`) from a **size** setting, so it looks the same at any box size. The container is an outer root, because a container's own `cqw` resolves against its parent.
 - Colours reach the CSS through custom properties set from the settings: `--w-bg`, `--w-text`, `--w-accent`, `--w-track`, `--w-alarm`, `--w-bgimg`, `--w-flag` and `--w-edge`.
 - The **animate** switch adds a `no-motion` class that removes every animation and transition.
+- A widget fits the box it is given, at any size and shape. The text scales with the box's width, and the **fit** switch covers the height: when the card is taller than the box it is shrunk until it fits, with CSS `zoom` so that it stays full width and its text, padding and corners shrink together, and it is never enlarged. The zoom is searched for and not calculated, because the height does not shrink in step with it as the text wraps differently. The shared `fitToBox` and `watchFit` do this, and re-fit when the box is resized, when the content changes and when the font has loaded. A card that shares its box with something else gives `watchFit` a `share` of the box, and a function to call when the zoom changes. CSS `zoom` is supported by Chromium, which OBS and StreamElements use, and by current Firefox; a browser without it simply does not shrink the card. A card that already fills its box (a chat feed) has nothing to shrink, and a widget with its own fitting (the poll, the sub goals, the wheel) keeps it.
 
 ## Tests
 
@@ -115,6 +117,8 @@ A test never waits on the real clock. A suite that sleeps through a widget's tim
 - A test that needs something to have happened waits for it with `advance` in a short loop, and never for a fixed time that is merely long enough.
 
 The kit copies `clock.js` into each overlay's `test/` folder with `sync-presets`, next to the mock, so a copy that differs is reported.
+
+`scripts/check-scaling.js` draws every overlay in headless Chromium in boxes of four shapes and fails if any of what is visible runs outside its box. It is its own job in CI, because it needs a browser. A box of 400 by 90 is left out on purpose: it cannot hold a clock and a list of goals together, whatever the widget does.
 
 One exception is a test that needs a real browser. The Chat Poll's layout test measures real layout in headless Chromium, so it runs its scenarios side by side and waits for the browsers, not for time.
 

@@ -25,6 +25,7 @@
   "funding": "https://ko-fi.com/journeyingjordan",
   "scripts": {
     "test": "node scripts/test-all.js",
-    "check-contrast": "node kit/bin/overlay-kit.js check-contrast"
+    "check-contrast": "node kit/bin/overlay-kit.js check-contrast",
+    "check-scaling": "node scripts/check-scaling.js"
   }
 }
