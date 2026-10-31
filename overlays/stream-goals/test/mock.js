@@ -22,6 +22,7 @@ module.exports = function createEnv(root) {
         toggle(c, on) { if (on === undefined) on = !this._s.has(c); if (on) this._s.add(c); else this._s.delete(c); }
       },
       setAttribute(k, v) { this._attrs[k] = v; }, getAttribute(k) { return this._attrs[k]; },
+      removeAttribute(k) { delete this._attrs[k]; if (k === "src") this.src = ""; },
       addEventListener() {},
       appendChild(c) { return this.insertBefore(c, null); },
       insertBefore(c, ref) {
@@ -65,17 +66,22 @@ module.exports = function createEnv(root) {
     constructor(s) { this.src = s; this.volume = 1; audioLog.push(this); }
     play() { this.played = true; return Promise.resolve(); }
   }
-  // A pretend network. A test sets what each address answers with: `env.net(url => ({ text: "..." }))`
-  // or `({ json: [...] })`, `({ ok: false })`, or throws to be offline. Every request is logged.
-  const fetchLog = [];
+  // A pretend network. A test sets what each address answers with: `env.net((url, opts) => ({ text: "..." }))`
+  // or `({ json: [...] })`, `({ ok: false })`, `({ status: 204 })`, `({ json: {}, headers: { "Retry-After": 7 } })`, or throws to
+  // be offline. Every request is logged, and `env.fetchOpts` has the options each was made with (method, headers, body).
+  const fetchLog = [], fetchOpts = [];
   let netHandler = () => { throw new Error("offline"); };
-  const fetch = url => {
-    fetchLog.push(String(url));
-    return Promise.resolve().then(() => netHandler(String(url))).then(r => ({
-      ok: r.ok !== false, status: r.ok === false ? 404 : 200,
-      text: () => Promise.resolve(r.text === undefined ? JSON.stringify(r.json) : r.text),
-      json: () => Promise.resolve(r.json)
-    }));
+  const fetch = (url, opts) => {
+    fetchLog.push(String(url)); fetchOpts.push(opts || null);
+    return Promise.resolve().then(() => netHandler(String(url), opts || {})).then(r => {
+      const status = r.status || (r.ok === false ? 404 : 200);
+      return {
+        ok: r.ok !== false && status < 400, status,
+        headers: { get: k => ((r.headers || {})[k] === undefined ? null : String(r.headers[k])) },
+        text: () => Promise.resolve(r.text === undefined ? JSON.stringify(r.json) : r.text),
+        json: () => Promise.resolve(r.json)
+      };
+    });
   };
   // Time is pretend. The widget's timers run on this clock, and `wait` moves it, so a test never
   // sleeps. The date the widget reads is separate and stays still until a test sets `env.fake`,
@@ -95,8 +101,8 @@ module.exports = function createEnv(root) {
   const wait = ms => clock.advance(ms);
   let lastFD = {};
   Object.assign(env, {
-    src, fields, expectedPresets, E, storeData, audioLog, wait, fetchLog,
-    net(fn) { netHandler = fn; fetchLog.length = 0; },
+    src, fields, expectedPresets, E, storeData, audioLog, wait, fetchLog, fetchOpts,
+    net(fn) { netHandler = fn; fetchLog.length = 0; fetchOpts.length = 0; },
     ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } else { fail++; console.log("  FAIL " + msg); } },
     section(t) { console.log("\n[" + t + "]"); },
     fieldData(ov) {

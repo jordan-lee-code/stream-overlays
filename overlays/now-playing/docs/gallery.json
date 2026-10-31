@@ -1,0 +1,32 @@
+{
+  "width": 420,
+  "height": 130,
+  "fields": {
+    "animate": false,
+    "source": "tuna",
+    "showAlbum": false
+  },
+  "setup": "window.fetch=function(){return Promise.resolve({ok:true,status:200,headers:{get:function(){return null}},json:function(){return Promise.resolve({status:'playing',title:'Golden Hour',artists:['Mina and the Lanterns'],album:'Soft Light',cover_url:'http://localhost:1608/cover.png',progress:84000,duration:214000})}})};var st=document.createElement('style');st.textContent='.np-art{content:url(data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%20100%20100%27%3E%3Cdefs%3E%3ClinearGradient%20id%3D%27g%27%20x1%3D%270%27%20y1%3D%270%27%20x2%3D%271%27%20y2%3D%271%27%3E%3Cstop%20offset%3D%270%27%20stop-color%3D%27%23ff9a8b%27%2F%3E%3Cstop%20offset%3D%271%27%20stop-color%3D%27%236a5acd%27%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%27100%27%20height%3D%27100%27%20fill%3D%27url%28%23g%29%27%2F%3E%3Ccircle%20cx%3D%2750%27%20cy%3D%2750%27%20r%3D%2726%27%20fill%3D%27%23fff%27%20fill-opacity%3D%27.85%27%2F%3E%3Ccircle%20cx%3D%2750%27%20cy%3D%2750%27%20r%3D%278%27%20fill%3D%27%236a5acd%27%2F%3E%3C%2Fsvg%3E)}';document.head.appendChild(st);",
+  "script": "",
+  "variants": [
+    {
+      "label": "album and round art",
+      "fields": {
+        "showAlbum": true,
+        "artShape": "round"
+      }
+    },
+    {
+      "label": "no art",
+      "fields": {
+        "showArt": false
+      }
+    },
+    {
+      "label": "no bar",
+      "fields": {
+        "showProgress": false
+      }
+    }
+  ]
+}

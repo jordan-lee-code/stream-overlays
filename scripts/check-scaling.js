@@ -58,7 +58,7 @@ function measure(chromium, tmp, target, w, h, index) {
   return new Promise((resolve, reject) => {
     const name = target.name, dir = path.join(ROOT, "overlays", name), cfg = JSON.parse(fs.readFileSync(path.join(dir, "docs", "gallery.json"), "utf8"));
     const file = path.join(tmp, "page-" + index + ".html");
-    fs.writeFileSync(file, page(dir, { key: "glass" }, Object.assign({}, cfg.fields || {}, target.fields, { themePreset: "glass" }), (cfg.script || "") + ";" + MEASURE, w, h));
+    fs.writeFileSync(file, page(dir, { key: "glass" }, Object.assign({}, cfg.fields || {}, target.fields, { themePreset: "glass" }), (cfg.script || "") + ";" + MEASURE, w, h, cfg.setup));
     execFile(chromium, ["--headless", "--no-sandbox", "--disable-gpu", "--virtual-time-budget=6000", "--user-data-dir=" + path.join(tmp, "profile-" + index), "--dump-dom", "file://" + file],
       { encoding: "utf8", maxBuffer: 64 * 1024 * 1024, timeout: 90000 }, (err, dom) => {
         const m = !err && /<title>([^<]*)<\/title>/.exec(dom || "");

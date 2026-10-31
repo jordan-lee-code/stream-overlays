@@ -1,0 +1,328 @@
+{
+  "source": {
+    "type": "dropdown",
+    "label": "Where to read what is playing from. Each needs its own setup, in the group with its name below",
+    "value": "lastfm",
+    "group": "Source",
+    "options": {
+      "lastfm": "Last.fm (Spotify, YouTube Music and most players, a few seconds late)",
+      "tuna": "Tuna, the OBS plugin (on this PC, instant)",
+      "spotify": "Spotify directly (a one-off sign-in)",
+      "pear": "Pear Desktop, for YouTube Music (on this PC, instant)"
+    }
+  },
+  "pollSeconds": {
+    "type": "number",
+    "label": "How often to ask, in seconds (3 to 60)",
+    "value": 5,
+    "group": "Source",
+    "min": 3,
+    "max": 60,
+    "step": 1
+  },
+  "lastfmUser": {
+    "type": "text",
+    "label": "Your Last.fm username",
+    "value": "",
+    "group": "Last.fm"
+  },
+  "lastfmKey": {
+    "type": "text",
+    "label": "Your Last.fm API key (a free one, from last.fm/api/account/create). Anyone who can see this overlay's address can see the key",
+    "value": "",
+    "group": "Last.fm"
+  },
+  "tunaPort": {
+    "type": "number",
+    "label": "The port Tuna's web server uses (its setting, 1608 unless you changed it)",
+    "value": 1608,
+    "group": "Tuna",
+    "min": 1,
+    "max": 65535,
+    "step": 1
+  },
+  "pearPort": {
+    "type": "number",
+    "label": "The port Pear Desktop's API Server uses (26538 unless you changed it)",
+    "value": 26538,
+    "group": "Pear Desktop",
+    "min": 1,
+    "max": 65535,
+    "step": 1
+  },
+  "pearToken": {
+    "type": "text",
+    "label": "Pear Desktop's access token, only if its API Server is not set to no authentication. Leave blank otherwise",
+    "value": "",
+    "group": "Pear Desktop"
+  },
+  "spotifyClientId": {
+    "type": "text",
+    "label": "Your Spotify app's client ID",
+    "value": "",
+    "group": "Spotify"
+  },
+  "spotifyRefreshToken": {
+    "type": "text",
+    "label": "Your Spotify refresh token, from the sign-in page described in this overlay's README. It lets anyone who sees this overlay's address read what you play, so do not share the address",
+    "value": "",
+    "group": "Spotify"
+  },
+  "command": {
+    "type": "text",
+    "label": "Command word. Moderators and you type it with off, on or refresh",
+    "value": "!nowplaying",
+    "group": "Commands"
+  },
+  "whoCanManage": {
+    "type": "dropdown",
+    "label": "Who can hide and show the card",
+    "value": "mods",
+    "group": "Commands",
+    "options": {
+      "broadcaster": "Broadcaster only",
+      "mods": "Broadcaster + moderators"
+    }
+  },
+  "showArt": {
+    "type": "checkbox",
+    "label": "Show the album art",
+    "value": true,
+    "group": "Card"
+  },
+  "artShape": {
+    "type": "dropdown",
+    "label": "The album art's shape",
+    "value": "square",
+    "group": "Card",
+    "options": {
+      "square": "Rounded square",
+      "round": "Round, like a record"
+    }
+  },
+  "showAlbum": {
+    "type": "checkbox",
+    "label": "Show the album's name",
+    "value": false,
+    "group": "Card"
+  },
+  "showProgress": {
+    "type": "checkbox",
+    "label": "Show how far through the track it is (only where the source says: not Last.fm)",
+    "value": true,
+    "group": "Card"
+  },
+  "labelPlaying": {
+    "type": "text",
+    "label": "The small line above the title while it plays (blank for none)",
+    "value": "Now playing",
+    "group": "Card"
+  },
+  "showPaused": {
+    "type": "checkbox",
+    "label": "Keep showing the track while it is paused",
+    "value": true,
+    "group": "Card"
+  },
+  "labelPaused": {
+    "type": "text",
+    "label": "The small line above the title while it is paused (blank for none)",
+    "value": "Paused",
+    "group": "Card"
+  },
+  "idleText": {
+    "type": "text",
+    "label": "What to say when nothing is playing. Blank hides the card instead",
+    "value": "",
+    "group": "Card"
+  },
+  "textSize": {
+    "type": "number",
+    "label": "Text size, as a percent of the box's width",
+    "value": 4.2,
+    "group": "Size",
+    "min": 2,
+    "step": 0.1
+  },
+  "titleScale": {
+    "type": "number",
+    "label": "How big the title is next to the artist (1 is the same)",
+    "value": 1.25,
+    "group": "Size",
+    "min": 0.5,
+    "max": 3,
+    "step": 0.05
+  },
+  "artSize": {
+    "type": "number",
+    "label": "How big the album art is, in lines of text",
+    "value": 4.4,
+    "group": "Size",
+    "min": 2,
+    "max": 10,
+    "step": 0.1
+  },
+  "themePreset": {
+    "type": "dropdown",
+    "label": "Style preset (the same twenty-two are in every overlay in this set)",
+    "value": "glass",
+    "options": {
+      "glass": "Soft black (default)",
+      "frost": "Soft white",
+      "midnight": "Midnight blue",
+      "sunset": "Sunset",
+      "forest": "Forest",
+      "ocean": "Ocean",
+      "rose": "Rose",
+      "neon": "Neon",
+      "cosycabin": "Cosy cabin",
+      "pastel": "Cosy summer pastel",
+      "celestial": "Celestial",
+      "pastelgoth": "Pastel goth",
+      "pastelpink": "Pastel pink",
+      "pastelsage": "Pastel sage",
+      "faegreen": "Fae green",
+      "pride": "Rainbow pride",
+      "trans": "Trans pride",
+      "bi": "Bi pride",
+      "pan": "Pan pride",
+      "enby": "Non-binary pride",
+      "lesbian": "Lesbian pride",
+      "ace": "Ace pride",
+      "custom": "Custom (use the colours below)"
+    },
+    "group": "Look"
+  },
+  "fontFamily": {
+    "type": "googleFont",
+    "label": "Font (used when the style preset is Custom)",
+    "value": "BioRhyme",
+    "group": "Look"
+  },
+  "weight": {
+    "type": "number",
+    "label": "Boldness (100 to 900)",
+    "value": 800,
+    "min": 100,
+    "max": 900,
+    "step": 100,
+    "group": "Look"
+  },
+  "radius": {
+    "type": "number",
+    "label": "Corner roundness, in pixels",
+    "value": 24,
+    "min": 0,
+    "max": 100,
+    "step": 1,
+    "group": "Look"
+  },
+  "pad": {
+    "type": "number",
+    "label": "Padding above and below",
+    "value": 0.5,
+    "min": 0,
+    "max": 3,
+    "step": 0.05,
+    "group": "Look"
+  },
+  "borderWidth": {
+    "type": "number",
+    "label": "Outline width, in pixels",
+    "value": 0,
+    "min": 0,
+    "max": 20,
+    "step": 1,
+    "group": "Look"
+  },
+  "borderColor": {
+    "type": "colorpicker",
+    "label": "Outline colour",
+    "value": "#FFFFFF",
+    "group": "Look"
+  },
+  "shadow": {
+    "type": "checkbox",
+    "label": "Shadow",
+    "value": false,
+    "group": "Look"
+  },
+  "animate": {
+    "type": "checkbox",
+    "label": "Animate",
+    "value": true,
+    "group": "Look"
+  },
+  "fit": {
+    "type": "checkbox",
+    "label": "Shrink the card to fit the box: when the box is too short for it, it gets smaller instead of running off the bottom",
+    "value": true,
+    "group": "Look"
+  },
+  "colorPanel": {
+    "type": "colorpicker",
+    "label": "Panel colour (used when the style preset is Custom)",
+    "value": "#000000",
+    "group": "Custom colours"
+  },
+  "panelOpacity": {
+    "type": "number",
+    "label": "Panel opacity, 0 to 1 (used when the style preset is Custom)",
+    "value": 0.55,
+    "min": 0,
+    "max": 1,
+    "step": 0.05,
+    "group": "Custom colours"
+  },
+  "cText": {
+    "type": "colorpicker",
+    "label": "Text (used when the style preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Custom colours"
+  },
+  "cAccent": {
+    "type": "colorpicker",
+    "label": "Accent: the rotating line and the pronoun tag text (used when the style preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Custom colours"
+  },
+  "cTrack": {
+    "type": "colorpicker",
+    "label": "The pronoun tag's background (used when the style preset is Custom)",
+    "value": "#444444",
+    "group": "Custom colours"
+  },
+  "cWarn": {
+    "type": "colorpicker",
+    "label": "Alert colour (used when the style preset is Custom)",
+    "value": "#D64545",
+    "group": "Custom colours"
+  },
+  "btnHide": {
+    "type": "button",
+    "label": "Hide the card (the same as the off command)",
+    "group": "Manual controls"
+  },
+  "btnShow": {
+    "type": "button",
+    "label": "Show the card (the same as the on command)",
+    "group": "Manual controls"
+  },
+  "btnRefresh": {
+    "type": "button",
+    "label": "Read what is playing now",
+    "group": "Manual controls"
+  },
+  "showProblems": {
+    "type": "checkbox",
+    "label": "Show a note on the card when the source cannot be read. Switch it on while you set up, and off for stream",
+    "value": false,
+    "group": "Troubleshooting"
+  },
+  "debug": {
+    "type": "checkbox",
+    "label": "Log every event to the browser-source console",
+    "value": false,
+    "group": "Troubleshooting"
+  }
+}

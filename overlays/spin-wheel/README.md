@@ -217,6 +217,7 @@ These overlays share the same default look and the same twenty-two style presets
 - [Chat Feed Overlay](../chat-feed): on-screen chat with profile pictures and pronouns.
 - [Over Camera Overlay](../over-camera): a cover for your camera that you and your moderators control from chat.
 - [Under Camera Overlay](../under-camera): a nameplate for under your camera, with your name, pronouns and rotating lines.
+- [Now Playing Overlay](../now-playing): what you are playing, from Last.fm, Tuna, Spotify or Pear Desktop, with album art and a progress bar.
 
 ## Support
 
