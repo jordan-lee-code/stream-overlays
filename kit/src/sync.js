@@ -108,6 +108,9 @@ function sync(dir, opts) {
   // The mock needs the clock, and a suite with its own page mock can use it too, by having the file.
   if (fs.existsSync(mockPath) || fs.existsSync(clockPath)) write("test/clock.js", read(path.join(__dirname, "..", "shared", "clock.js")), "the shared test clock");
 
+  // 5. the copy panel every dev page loads, so people can copy an overlay's files without downloading it
+  if (fs.existsSync(path.join(dir, "dev/index.html"))) write("dev/copy-panel.js", read(path.join(__dirname, "..", "shared", "copy-panel.js")), "the shared copy panel");
+
   return { info, changes };
 }
 
