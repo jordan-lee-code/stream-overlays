@@ -645,6 +645,18 @@
     "value": "$",
     "group": "Goals: Tips"
   },
+  "tipSymbolAfter": {
+    "type": "checkbox",
+    "label": "Put the symbol after the amount (5€ or 5 kr) instead of before it ($5)",
+    "value": false,
+    "group": "Goals: Tips"
+  },
+  "tipDecimalComma": {
+    "type": "checkbox",
+    "label": "Use a comma for the decimal (5,50) instead of a point (5.50)",
+    "value": false,
+    "group": "Goals: Tips"
+  },
   "maxVisible": {
     "type": "number",
     "label": "Most upcoming goals shown at once (the nearest ones win)",

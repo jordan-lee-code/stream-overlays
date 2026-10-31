@@ -234,6 +234,27 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   await wait(600);
   ok(elements["incentive-bits-status"].textContent === "\u00a33/\u00a35", "and fills towards the next sub (" + elements["incentive-bits-status"].textContent + ")");
 
+  console.log("\n[tip currency format]");
+  const gain = () => elements["incentive-bits-gain"].textContent;
+  load({ tipSymbol: "\u20ac", tipSymbolAfter: true }); await wait(5);
+  tip(3);
+  ok(gain() === "+3\u20ac", "a lone sign can follow the amount (" + gain() + ")");
+  load({ tipSymbol: "kr", tipSymbolAfter: true }); await wait(5);
+  tip(3);
+  ok(gain() === "+3 kr", "and a word follows it with a space (" + gain() + ")");
+  load({ tipSymbol: "\u20ac", tipDecimalComma: true }); await wait(5);
+  tip(2.5);
+  ok(gain() === "+\u20ac2,50", "the decimal can be a comma (" + gain() + ")");
+  load({ tipSymbol: "\u20ac", tipSymbolAfter: true, tipDecimalComma: true }); await wait(5);
+  tip(2.5);
+  ok(gain() === "+2,50\u20ac", "both together (" + gain() + ")");
+  load({ tipSymbol: "" }); await wait(5);
+  tip(3);
+  ok(gain() === "+3", "a blank symbol shows none (" + gain() + ")");
+  load(); await wait(5);
+  tip(3);
+  ok(gain() === "+$3", "and the default is unchanged (" + gain() + ")");
+
   console.log("\n[bits animation]");
   const B = id => elements["incentive-bits-" + id] || elements["incentive-bits"];
   const statusN = () => parseInt(B("status").textContent, 10);
