@@ -90,4 +90,17 @@ function gallery(dir, opts) {
   return { target, tiles: tiles.length };
 }
 
-module.exports = { gallery, page };
+/** One picture of the overlay in its default look, from the same scene, for its card on the website. */
+function card(dir, opts) {
+  opts = opts || {};
+  const cfgPath = path.join(dir, "docs", "gallery.json");
+  if (!fs.existsSync(cfgPath)) throw new Error("No docs/gallery.json in " + dir + ". It says what to draw: width, height, fields and script.");
+  const cfg = JSON.parse(fs.readFileSync(cfgPath, "utf8"));
+  const w = cfg.width, h = cfg.height, chromium = findChromium(opts.chromium);
+  const target = path.resolve(opts.out || path.join(dir, "docs", "card.png"));
+  shoot(chromium, page(dir, K.PRESETS[0], Object.assign({}, cfg.fields || {}, { themePreset: K.PRESETS[0].key }), cfg.script || "", w, h), target, w, h, cfg.budget || 6000);
+  try { fs.rmSync(target.replace(/\.png$/, ".html"), { force: true }); } catch (e) { /* best effort */ }
+  return { target };
+}
+
+module.exports = { gallery, card, page };

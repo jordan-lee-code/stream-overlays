@@ -4,3 +4,6 @@ dist/
 .DS_Store
 .vscode/
 .idea/
+
+# the website, built by scripts/build-site.js
+_site/

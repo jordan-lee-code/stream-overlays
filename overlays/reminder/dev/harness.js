@@ -100,6 +100,8 @@
     });
     return JSON.stringify(out, null, 2) + "\n";
   }
+  // The copy panel (copy-panel.js) reads the settings as they are configured here through this.
+  window.__exportFields = exportText;
   function syncLook() {
     var sel = document.getElementById("look-preset");
     if (sel && fieldData.themePreset !== undefined) sel.value = fieldData.themePreset;

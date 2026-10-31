@@ -22,6 +22,7 @@ cd overlays/counter && npm run dev   # an overlay's dev harness, at http://local
 4. When you add a setting, add it to `widget/fields.json` and read it in `widget/widget.js`.
 5. Add or update tests, and make sure `npm test` passes.
 6. If behaviour changes, update that overlay's README.
+7. A new overlay needs a picture for its card on the website: `node kit/bin/overlay-kit.js gallery overlays/<name> --card` (it needs Chromium). `npm test` checks that every overlay has one.
 
 ## Changing a style preset
 

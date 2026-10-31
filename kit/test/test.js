@@ -89,6 +89,63 @@ Object.keys(K.generators).forEach(kind => {
   });
 });
 
+asection("the website");
+{
+  const site = require("../../scripts/build-site");
+  const repoRoot = path.join(__dirname, "..", "..");
+  const names = fs.readdirSync(path.join(repoRoot, "overlays")).filter(n => fs.statSync(path.join(repoRoot, "overlays", n)).isDirectory()).sort();
+  const outDir = fs.mkdtempSync(path.join(os.tmpdir(), "site-"));
+  const built = site.build(outDir);
+  const index = fs.readFileSync(path.join(outDir, "index.html"), "utf8");
+  atest("every overlay is on the site, with a card that links to its page", () => {
+    assert.deepStrictEqual(built.overlays, names);
+    names.forEach(n => assert.ok(index.indexOf('href="' + n + '/dev/"') !== -1, n + " has no link"));
+  });
+  atest("each overlay has what a visitor needs: its dev page, its panel, and the four files to copy", () => {
+    names.forEach(n => ["dev/index.html", "dev/harness.js", "dev/copy-panel.js", "widget/widget.html", "widget/widget.css", "widget/widget.js", "widget/fields.json"].forEach(f =>
+      assert.ok(fs.existsSync(path.join(outDir, n, f)), n + " is missing " + f)));
+  });
+  atest("every overlay has a picture for its card, and it reaches the site", () => {
+    names.forEach(n => {
+      assert.ok(fs.existsSync(path.join(repoRoot, "overlays", n, "docs", "card.png")), n + " has no docs/card.png (node kit/bin/overlay-kit.js gallery overlays/" + n + " --card)");
+      assert.ok(fs.existsSync(path.join(outDir, n, "card.png")), n + " has no card on the site");
+      assert.ok(index.indexOf('src="' + n + '/card.png"') !== -1, n + " does not show its card");
+    });
+  });
+  atest("the tests, the docs and the tooling are left out", () => {
+    names.forEach(n => ["test", "docs", "package.json", "README.md"].forEach(f => assert.ok(!fs.existsSync(path.join(outDir, n, f)), n + " should not carry " + f)));
+    assert.ok(!fs.existsSync(path.join(outDir, "kit")) && !fs.existsSync(path.join(outDir, "scripts")));
+  });
+  atest("the files that are copied are the files in the repository, byte for byte", () => {
+    names.forEach(n => ["widget.html", "widget.css", "widget.js", "fields.json"].forEach(f =>
+      assert.strictEqual(fs.readFileSync(path.join(outDir, n, "widget", f), "utf8"), fs.readFileSync(path.join(repoRoot, "overlays", n, "widget", f), "utf8"), n + "/" + f)));
+  });
+  atest("the page serves its files as they are, with no Jekyll in the way", () => assert.ok(fs.existsSync(path.join(outDir, ".nojekyll"))));
+  atest("every dev page loads the copy panel, and makes its settings available to it", () => {
+    names.forEach(n => {
+      const dev = path.join(repoRoot, "overlays", n, "dev");
+      const html = fs.readFileSync(path.join(dev, "index.html"), "utf8");
+      assert.ok(html.indexOf('<script src="copy-panel.js"></script>') !== -1, n + " does not load the panel");
+      assert.ok(fs.readFileSync(path.join(dev, "harness.js"), "utf8").indexOf("window.__exportFields = exportText;") !== -1, n + " does not offer its settings to the panel");
+      assert.strictEqual(fs.readFileSync(path.join(dev, "copy-panel.js"), "utf8"), fs.readFileSync(path.join(__dirname, "../shared/copy-panel.js"), "utf8"), n + " has a different panel");
+    });
+  });
+  atest("text from an overlay's package or README is escaped, never run as markup", () => {
+    const fake = fs.mkdtempSync(path.join(os.tmpdir(), "site-root-"));
+    const dir = path.join(fake, "overlays", "evil");
+    ["widget", "dev"].forEach(d => fs.mkdirSync(path.join(dir, d), { recursive: true }));
+    fs.writeFileSync(path.join(dir, "widget", "widget.js"), "");
+    fs.writeFileSync(path.join(dir, "dev", "index.html"), "");
+    fs.writeFileSync(path.join(dir, "package.json"), JSON.stringify({ description: 'A StreamElements custom widget: <img src=x onerror=alert(1)> & "more"' }));
+    fs.writeFileSync(path.join(dir, "README.md"), "# <script>alert(1)</script> Overlay\n");
+    const out = fs.mkdtempSync(path.join(os.tmpdir(), "site-out-"));
+    site.build(out, fake);
+    const html = fs.readFileSync(path.join(out, "index.html"), "utf8");
+    assert.ok(html.indexOf("<img src=x") === -1 && html.indexOf("<script>alert") === -1, "markup got through");
+    assert.ok(html.indexOf("&lt;script&gt;alert(1)&lt;/script&gt;") !== -1 && html.indexOf("&amp; &quot;more&quot;") !== -1, "it was not shown as text");
+  });
+}
+
 asection("the pretend clock");
 {
   const createClock = require("../shared/clock");
