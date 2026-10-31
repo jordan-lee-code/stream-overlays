@@ -19,6 +19,7 @@ It is a single self-contained widget in plain JavaScript, with no dependencies a
 - Sounds: optional sounds when a gift adds squats and when the count is locked or unlocked.
 - Saved: the count and the lock survive a browser-source refresh.
 - Testable offline: a local dev harness and an automated test script, no live stream needed.
+- An outer frame in the accent colour, on by default in every preset, and switched off with one checkbox.
 
 ## Screenshots
 
@@ -118,12 +119,14 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | Commands | The command words and who may use them. |
 | Squat rule | Subs per block, squats per block, a starting count and an upper limit, whether leftover subs carry over, whether single gifts and new subs or resubs count, and a debug log. |
 | Look | A caption under the number, the floating `+N` (its prefix, suffix and how long it stays), the padlock, and the tail. |
-| Sticker | The size of the number, caption and floating text, corner roundness, padding, the gap between number and caption, tilt, an outline and shadows. |
+| Sticker | The size of the number, caption and floating text, corner roundness, padding, the gap between number and caption, tilt, an outer frame, an outline and shadows. |
 | Text | The boldness of the number, caption and floating text, and the caption's opacity and letter spacing. |
 | Look and Custom colours | One of the twenty-two shared style presets (Soft black by default) or Custom colours and font, with separate colours for the box, number, caption, outline, padlock and floating text, and an opacity for the box. |
 | Animation | One switch for all animation, how far the sticker swells when the count changes, and how long that takes. |
 | Sounds | A sound and volume for a gift adding squats, for locking and for unlocking, plus a master mute. |
 | Manual controls | Buttons to simulate a gift, adjust, lock and reset, and to test each sound. |
+
+The **outer frame** is a border round the sticker in the accent colour, on by default in every preset. Untick **An outer frame** under Sticker for none, or set the outline thickness to change how thick it is, since at 0 it has a default thickness that grows with the box. In Custom the frame takes the colour of the number, which is the sticker's accent. With the frame unticked, the outline is whatever you set, as before, in the outline colour.
 
 The full list, with defaults, is in [`widget/fields.json`](widget/fields.json). The colour and font pickers apply only when the style preset is **Custom**.
 

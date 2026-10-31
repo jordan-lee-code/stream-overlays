@@ -20,6 +20,7 @@ It is one self-contained widget in plain JavaScript, with no dependencies and no
 - Sounds: optional sounds for contributions, locks, a lock breaking, the bar filling, a save and a reset.
 - Customisable: around 160 settings cover wording, colours, fonts, sizes, spacing, sounds and every command word.
 - Testable offline: a local dev harness and an automated test script.
+- An outer frame in the accent colour, on by default in every preset, and switched off with one checkbox.
 
 ## Screenshots
 
@@ -224,12 +225,14 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | Lock | The lock reward, price per minute, minimum and maximum lengths, and how many subs break a lock. |
 | Nope | The save reward, the pot target, how many redeems save a run, whether money can help, and the reward's cost. |
 | Wording | Every word in the line under the bar, the readouts and the floating text. |
-| Card | Corner roundness, padding, spacing, tilt, an outline, shadows, the tail and the bar's thickness. |
+| Card | Corner roundness, padding, spacing, tilt, an outer frame, an outline, shadows, the tail and the bar's thickness. |
 | Text | The size and boldness of the heading, countdown, readout, line and floating text. |
 | Look and Custom colours | One of the twenty-two shared style presets (Soft black by default) or Custom colours and font, with a colour for every part. |
 | Animation | One switch for all animation, and how long the fill, swell, floating text, glow, save window pulse and shake take. |
 | Sounds | A sound and volume for a contribution, a lock, a lock breaking, the bar filling, a save and a reset, plus a master mute. |
 | Manual controls | Buttons to fill, lock, unlock, save, switch on and off, reset and test each sound. |
+
+The **outer frame** is a border round the widget in the preset's accent colour, on by default in every preset. Untick **An outer frame** under Card for none, or set the outline thickness to change how thick it is, since at 0 it has a default thickness that grows with the box. With the frame unticked, the outline is whatever you set, as before, in the outline colour.
 
 The full list, with defaults, is in [`widget/fields.json`](widget/fields.json). The colour and font pickers apply only when the style preset is **Custom**.
 

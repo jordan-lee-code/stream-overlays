@@ -20,6 +20,7 @@ It was built for rounds like Two Truths and a Lie, but it suits any quick vote. 
 - Customisable: more than 100 settings cover the shape, spacing, text, colours and fonts of every part of the card, the wording, sounds and animation.
 - Sounds: optional sounds when a poll opens, when a vote is counted, for each of the last seconds, and when the result is declared.
 - Testable offline: a local dev harness and two automated test scripts.
+- An outer frame in the accent colour, on by default in every preset, and switched off with one checkbox.
 
 ## Screenshots
 
@@ -124,12 +125,14 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | Commands | The command words and who may use them. |
 | Poll rules | The default duration, changing your vote, exact or loose matching, live or blind results, tie handling, the undo grace window, how long a result stays on screen and how many seconds from the end the timer pulses. |
 | Copy | The heading, the result and tie labels, the hint line, the words for vote and votes, and a troubleshooting overlay. |
-| Card | **Grow to fill the box**, **Size of everything** (used when growing is unticked), corner roundness, padding, spacing, an outline, shadows, the tail and tilt of the timer and result label, and the size of each option's bar. |
+| Card | **Grow to fill the box**, **Size of everything** (used when growing is unticked), corner roundness, padding, spacing, an outer frame, an outline, shadows, the tail and tilt of the timer and result label, and the size of each option's bar. |
 | Text | The size and boldness of the heading, countdown, result label, options, letter chips, counts and footer, an own font for the heading, and the opacity of counts, footer and options that did not win. |
 | Look and Custom colours | One of the twenty-two shared style presets (Soft black by default) or Custom colours and font, with a colour for every part and each of the eight options, and an opacity for the panel. |
 | Animation | One switch for all animation, and how long the bars, the card and the pulse take. |
 | Sounds | A sound and volume for a poll opening, a vote, each of the last seconds and the result, plus a master mute. |
 | Manual controls | Buttons to start a demo poll, add time, end, restart, cancel and undo, and to test each sound. |
+
+The **outer frame** is a border round the widget in the preset's accent colour, on by default in every preset. Untick **An outer frame** under Card for none, or set the outline thickness to change how thick it is, since at 0 it has a default thickness that grows with the box. With the frame unticked, the outline is whatever you set, as before, in the outline colour.
 
 The full list, with defaults, is in [`widget/fields.json`](widget/fields.json). The colour and font pickers apply only when the style preset is **Custom**.
 

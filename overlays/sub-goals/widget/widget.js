@@ -214,7 +214,7 @@
         radius: Math.max(0, num(f.radius, 24)),
         padV: Math.max(0, num(f.paddingV, 0.55)),
         padH: Math.max(0, num(f.paddingH, 0.7)),
-        borderW: Math.max(0, num(f.borderWidth, 0)),
+        borderW: Math.max(0, num(f.borderWidth, 0)), frame: bool(f.outerFrame, true),
         borderC: str(f.borderColor, "#FFFFFF"),
         shadow: bool(f.shadow, false),
         vAlign: str(f.vAlign, "top"),
@@ -354,8 +354,10 @@
     set("--radius", L.radius + "px");
     set("--pad-v", L.padV + "em");
     set("--pad-h", L.padH + "em");
-    set("--border-w", L.borderW + "px");
-    set("--border-c", T.borderC);
+    // The outer frame is a border in the accent colour; with it off, the outline is what the settings describe, if anything.
+    set("--frame-w", L.frame ? (L.borderW > 0 ? L.borderW + "px" : "max(2px, 0.6cqw)") : "0px");
+    set("--border-w", L.frame ? "0px" : L.borderW + "px");
+    set("--border-c", L.frame ? T.accent : T.borderC);
     set("--shadow", L.shadow ? "0 0.25em 0.9em rgba(0, 0, 0, 0.45)" : "none");
     set("align-items", ALIGN[L.vAlign] || ALIGN.top);
 

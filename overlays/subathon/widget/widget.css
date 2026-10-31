@@ -53,6 +53,10 @@
   background-image: var(--sa-bgimg, none);
   border: var(--sa-border);
   border-radius: var(--sa-radius);
+  /* The outer frame is an outline drawn inside the panel's edge and not a border, so it takes no room: the panel is fitted to its
+     box by measuring it, and a border would take space from what it holds. */
+  outline: var(--sa-frame, 0px) solid var(--sa-frame-c, transparent);
+  outline-offset: calc(var(--sa-frame, 0px) * -1);
   box-shadow: var(--sa-shadow);
   font-size: var(--sa-clock-size);
   line-height: 1.1;
@@ -137,6 +141,7 @@
   --pad-v: 0.55em;
   --pad-h: 0.7em;
   --border-w: 0px;
+  --frame-w: 0px;
   --border-c: #FFFFFF;
   --shadow: none;
   --text-shadow: none;
@@ -205,6 +210,10 @@
   background-image: var(--panel-img, none);
   border: var(--border-w) solid var(--border-c);
   border-radius: var(--radius);
+  /* The outer frame is an outline drawn inside the panel's edge and not a border, so it takes no room: the panel is fitted to its
+     box by measuring it, and a border would take space from what it holds. */
+  outline: var(--frame-w, 0px) solid var(--border-c);
+  outline-offset: calc(var(--frame-w, 0px) * -1);
   box-shadow: var(--shadow);
   text-shadow: var(--text-shadow);
   /* A share of the box's width, so the panel looks the same at any box size, and

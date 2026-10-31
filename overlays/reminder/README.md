@@ -19,6 +19,7 @@ It is a single self-contained widget in plain JavaScript, with no dependencies a
 - Customisable: around 40 settings cover the wording, sizes, shape, outline, colours, fonts, sounds and animation.
 - Saved: reminders, waiting and showing, survive a browser-source refresh.
 - Tests and a dev harness: a local harness with a time machine and an automated test script, so a reminder fifteen minutes away can be tried in a click.
+- An outer frame in the accent colour, on by default in every preset, and switched off with one checkbox.
 
 ## Screenshots
 
@@ -112,10 +113,12 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | Reminders | The text for a reminder with no words, the snooze time, how many show at once and can wait, the repeating sound, whether a reminder shows while it counts down, and the word for when it is due. |
 | Size | Text, title and waiting-reminder sizes, the space between reminders, and the pulsing border. |
 | Manual controls | Buttons to show a test reminder, clear, clear everything, and snooze. |
-| Look | Title, the style preset, font, boldness, corners, padding, outline, shadow, Animate and whether it shrinks to fit the box. |
+| Look | Title, the style preset, font, boldness, corners, padding, outer frame, outline, shadow, Animate and whether it shrinks to fit the box. |
 | Custom colours | Panel, text, accent, bar and alert colours, used when the style preset is Custom. |
 | Sounds | A sound and volume for a reminder arriving, with a Test button and a master mute. |
 | Troubleshooting | A debug log of every event to the browser-source console. |
+
+The **outer frame** is a border round the widget in the preset's accent colour, on by default in every preset. Untick **An outer frame** under Look for none, or set the outline thickness to change how thick it is, since at 0 it has a default thickness that grows with the box. With the frame unticked, the outline is whatever you set, as before, in the outline colour.
 
 The full list, with defaults, is in [`widget/fields.json`](widget/fields.json). The colour and font pickers apply only when the style preset is **Custom**.
 

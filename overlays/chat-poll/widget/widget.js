@@ -351,7 +351,7 @@
       },
       look: {
         gap: clamp(num(f.cardGap, 0.45), 0, 3), padV: clamp(num(f.paddingV, 0.75), 0, 4), padH: clamp(num(f.paddingH, 0.9), 0, 4),
-        borderW: clamp(num(f.borderWidth, 0.22), 0, 1.5), radius: clamp(num(f.radius, 1.1), 0, 4),
+        borderW: clamp(num(f.borderWidth, 0.22), 0, 1.5), frame: bool(f.outerFrame, true), radius: clamp(num(f.radius, 1.1), 0, 4),
         rowGap: clamp(num(f.rowGap, 0.28), 0, 2), shadow: bool(f.shadow, true), textShadow: bool(f.textShadow, false),
         tail: bool(f.showTail, true), pillTilt: clamp(num(f.timerTilt, -2), -20, 20), eyebrowTilt: clamp(num(f.eyebrowTilt, -1.5), -20, 20),
         pillRadius: clamp(num(f.timerRadius, 0.6), 0, 3), eyebrowUpper: bool(f.eyebrowUppercase, true),
@@ -431,7 +431,8 @@
     var custom = cfg.themePreset === "custom";
     var C = cfg.custom, L = cfg.look;
     var pick = function (own, fallback) { return custom ? own : fallback; };
-    root.style.setProperty("--c-border", pick(C.border, t.accent));
+    // The outer frame is a border in the accent colour. With it off, the outline is what the settings describe, if anything.
+    root.style.setProperty("--c-border", L.frame ? t.accent : pick(C.border, t.accent));
     root.style.setProperty("--c-title", pick(C.title, t.text));
     root.style.setProperty("--c-pill-bg", pick(C.pillBg, t.accent));
     root.style.setProperty("--c-pill", pick(C.pill, t.onAccent));
@@ -449,7 +450,9 @@
     root.style.setProperty("--gap", String(L.gap));
     root.style.setProperty("--pad-v", String(L.padV));
     root.style.setProperty("--pad-h", String(L.padH));
-    root.style.setProperty("--border-w", String(L.borderW));
+    // The frame is an inset ring, which takes no room. Unticked, an outline is a border, as it always was.
+    root.style.setProperty("--frame-w", String(L.frame ? (L.borderW > 0 ? L.borderW : 0.14) : 0));
+    root.style.setProperty("--border-w", String(L.frame ? 0 : L.borderW));
     root.style.setProperty("--radius", String(L.radius));
     root.style.setProperty("--row-gap", String(L.rowGap));
     root.style.setProperty("--shadow", L.shadow ? "0 0.5em 1.4em rgba(0, 0, 0, 0.28)" : "none");

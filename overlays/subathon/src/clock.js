@@ -579,7 +579,10 @@
     s.setProperty("--sa-title-scale", cfg.titleScale);
     s.setProperty("--sa-status-scale", cfg.statusScale);
     s.setProperty("--sa-weight", cfg.weight);
-    s.setProperty("--sa-border", cfg.borderWidth + "px solid " + cfg.borderColor);
+    // The outer frame is a border in the accent colour; with it off, the outline is what the settings describe, if anything.
+    s.setProperty("--sa-frame", cfg.outerFrame ? (cfg.borderWidth > 0 ? cfg.borderWidth + "px" : "max(2px, 0.6cqw)") : "0px");
+    s.setProperty("--sa-frame-c", theme.accent);
+    s.setProperty("--sa-border", (cfg.outerFrame ? "0" : cfg.borderWidth) + "px solid " + cfg.borderColor);
     s.setProperty("--sa-shadow", cfg.shadow ? "0 0.3em 1.2em rgba(0, 0, 0, 0.45)" : "none");
     var root = el.root.style;
     root.setProperty("--sa-gap", cfg.gap + "px");
@@ -710,6 +713,7 @@
       radius: Math.max(0, num(f.radius, 24)),
       borderWidth: Math.max(0, num(f.borderWidth, 0)),
       borderColor: str(f.borderColor, "#FFFFFF"),
+      outerFrame: bool(f.outerFrame, true),
       shadow: bool(f.shadow, false),
       fontFamily: str(f.fontFamily, "BioRhyme"),
       cText: str(f.tmText, "#FFFFFF"),

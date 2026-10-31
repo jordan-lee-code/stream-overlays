@@ -18,6 +18,7 @@ const STANDARD = {
   pad: { type: "number" },
   borderWidth: { type: "number" },
   borderColor: { type: "colorpicker" },
+  outerFrame: { type: "checkbox", value: true },
   shadow: { type: "checkbox" },
   animate: { type: "checkbox", value: true },
   fit: { type: "checkbox", value: true },

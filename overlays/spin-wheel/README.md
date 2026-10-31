@@ -22,6 +22,7 @@ It started as a raffle and grew into a wheel that also runs forfeit spins, weigh
 - Customisable: around 180 settings cover the wording of every label, the shape and colours of every part, the text, sounds and animation.
 - Saved: entrants, mode, recent winners, lifelines and a running countdown are saved, so a refresh mid-giveaway loses nothing.
 - Testable offline: a local dev harness and an automated test script.
+- An outer frame: the wheel's rim, in the accent colour, on by default, and switched off with one checkbox.
 
 ## Screenshots
 
@@ -139,12 +140,14 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | Goal auto-spin | The trigger type, count or threshold, and an optional goal bar. |
 | Wording | The text of every badge, noun, toast, winner label, lifeline line, idle message and goal label, with the words in curly brackets filled in for you. |
 | Wheel | The shape, idle drift, chat-colour slices, the rim and divider thickness, the size and boldness of the names, the hub ring and a shadow. |
-| Pills and cards | The roundness, padding and tilt of pills, the toast and the winner card, the goal bar's thickness, an outline, tails and shadows. |
+| Pills and cards | The roundness, padding and tilt of pills, the toast and the winner card, the goal bar's thickness, an outer frame, an outline, tails and shadows. |
 | Text | The size and boldness of the empty-wheel message, toast, pills, goal label, winner label, winner name, line under the winner and lifelines. |
 | Look and Custom colours | One of the twenty-two shared style presets (Soft black by default) or Custom colours and font, with a colour for every part. |
 | Animation | One switch for all animation, the spin and winner display times, and how long the toast, card, goal bar and countdown pulse take. |
 | Sounds | A sound and volume for someone joining, each tick and the winner, plus a master mute. |
 | Manual controls | Buttons for spin, open, close, clear, switch mode, reroll, re-show and the Truth or... controls, and to test each sound. |
+
+The **outer frame** is the wheel's rim, drawn in the accent colour and on by default. Untick **An outer frame** under Wheel for no rim, or change its thickness with the rim setting. The pills and the winner card are filled with the accent colour in the presets, so they have no frame of their own, and a winner card outline is a separate setting under Pills and cards.
 
 The full list, with defaults, is in [`widget/fields.json`](widget/fields.json).
 

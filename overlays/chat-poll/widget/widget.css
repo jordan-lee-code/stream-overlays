@@ -18,6 +18,7 @@
   --pad-v: 0.75;
   --pad-h: 0.9;
   --border-w: 0;
+  --frame-w: 0;
   --radius: 0.8;
   --row-gap: 0.28;
   --shadow: none;
@@ -127,6 +128,10 @@
   background-image: var(--bg-img, none);
   border: calc(var(--border-w) * 1em) solid var(--c-border);
   border-radius: calc(var(--radius) * 1em);
+  /* The outer frame is an outline drawn inside the card's edge and not a border, so it takes no room: the card's width is worked
+     out from its measured size, and a border's thickness, rounded to whole pixels at each scale, would put that out by a pixel or two. */
+  outline: calc(var(--frame-w, 0) * 1em) solid var(--c-border);
+  outline-offset: calc(var(--frame-w, 0) * -1em);
   box-shadow: var(--shadow);
   text-shadow: var(--text-shadow);
   animation: vote-in var(--in-s) cubic-bezier(0.18, 1.4, 0.4, 1) both;

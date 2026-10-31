@@ -22,6 +22,7 @@ It is one widget with no dependencies and nothing to install. The sub goals are 
 - Customisable: over 170 settings cover values, commands, sizes, colours, fonts, sounds and animation.
 - Saved: the clock, the cap, banked time, power-ups and lock all survive a browser-source refresh, and a refresh while running keeps counting through the gap.
 - Tests and a dev harness: a local harness with a time machine and an automated test script, so a 200 hour subathon can be tried in a minute.
+- An outer frame in the accent colour, on by default in every preset, and switched off with one checkbox.
 
 ## Screenshots
 
@@ -172,6 +173,8 @@ Every setting has a plain label in StreamElements. The clock's settings sit unde
 | Clock: Sounds | Sounds and volumes for time added, reaching zero and a power-up starting, with Test buttons and a master mute. |
 | Clock: Troubleshooting | A debug log of every event to the browser-source console. |
 | Goals: Panel and the rest | The style preset, the panel, text, bars, sounds, the thank-you message and everything else from the goals module. |
+
+The **outer frame** is a border round both the clock and the goals panel in the preset's accent colour, on by default in every preset. Untick **An outer frame** under Goals: Look for none, or set the outline thickness to change how thick it is, since at 0 it has a default thickness that grows with the box. With the frame unticked, the outline is whatever you set, as before, in the outline colour.
 
 The full list, with defaults, is in [`widget/fields.json`](widget/fields.json). The colour pickers apply only when the style preset is **Custom**.
 

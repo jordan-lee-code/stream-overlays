@@ -1750,7 +1750,7 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   ok(R["--bg"] === "rgba(0, 0, 0, 0.55)" && R["--text"] === "#FFFFFF" && R["--accent"] === "#FFFFFF", "a soft see-through black card with white text (" + R["--bg"] + ")");
   ok(R["--font"].indexOf("BioRhyme") !== -1 && /family=BioRhyme:wght@200\.\.800/.test(elements["rage-font-link"].href || ""), "in BioRhyme, with its whole weight range requested");
   ok(R["--fill-from"] === "#D9D9D9" && R["--fill-to"] === "#FFFFFF" && R["--alarm"] === "#D64545", "a light fill and a clear red alarm");
-  ok(R["--tilt"] === "0deg" && R["--shadow"] === "none" && R["--tail-display"] === "none" && R["--border-w"] === "0px", "flat: no tilt, shadow, tail or outline");
+  ok(R["--tilt"] === "0deg" && R["--shadow"] === "none" && R["--tail-display"] === "none" && R["--border-w"] === "max(2px, 0.6cqw)" && R["--c-border"] === R["--accent"], "flat: no tilt, shadow or tail, but an outer frame in the accent colour (" + R["--border-w"] + ")");
   ok(R["--title-w"] === "800" && R["--c-track"] === "rgba(255, 255, 255, 0.2)" && R["--c-alert"] === "#FFFFFF", "an extra bold heading and a white-tinted track");
   await load({ themePreset: "cosycabin" });
   ok(R["--accent"] === "#7C6142" && R["--c-float"] === "#57442E" && R["--c-float-bg"] === "#F5ECD6" && R["--c-track"] === "rgba(0, 0, 0, 0.11)", "a coloured preset colours each part from its own tones");
@@ -1818,7 +1818,7 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   ok(R["--note-scale"] === "0.9" && R["--note-w"] === "400" && R["--note-opacity"] === "0.4" && R["--float-scale"] === "2" && R["--float-w"] === "800", "note and floating text");
   await load({ lockedOpacity: 0.3, offOpacity: 0.2, popScale: 1.3 });
   ok(R["--locked-opacity"] === "0.3" && R["--off-opacity"] === "0.2" && R["--pop-scale"] === "1.3", "locked and off looks, and the swell");
-  await load({ themePreset: "custom", colorPanel: "#102030", panelOpacity: 0.8, cText: "#EEEEEE", cAccent: "#FF00AA", colorFillFrom: "#010101", colorFillTo: "#020202", colorAlarm: "#030303",
+  await load({ themePreset: "custom", outerFrame: false, borderWidth: 2, colorPanel: "#102030", panelOpacity: 0.8, cText: "#EEEEEE", cAccent: "#FF00AA", colorFillFrom: "#010101", colorFillTo: "#020202", colorAlarm: "#030303",
     colorTitle: "#040404", colorTimer: "#050505", colorReadout: "#060606", colorNote: "#070707", colorBorder: "#080808", cTrack: "#FFFFFF", trackOpacity: 0.4,
     colorLock: "#090909", colorLockHole: "#0A0A0A", colorFloat: "#0B0B0B", colorFloatBg: "#000000", colorAlert: "#0C0C0C", colorAlertFill: "#0D0D0D" });
   ok(R["--bg"] === "rgba(16, 32, 48, 0.8)" && R["--text"] === "#EEEEEE" && R["--accent"] === "#FF00AA", "Custom card, text and accent (" + R["--bg"] + ")");
@@ -1910,6 +1910,13 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   await load({ themePreset: "glass" }); 
   ok(elements["rage-app"].style["--bg-img"] === "none", "and every other preset leaves the card plain");
   ok(elements["rage-app"].style["--flag-fill"] === "" && elements["rage-app"].style["--flag-edge"] === "none", "and keeps its two colour fill, with no outline");
+  console.log("\n[the outer frame]");
+  await load({}); ok(R["--border-w"] === "max(2px, 0.6cqw)" && R["--c-border"] === R["--accent"], "by default the card has a frame in the accent colour, as thick as a default that grows with the box (" + R["--border-w"] + ")");
+  await load({ themePreset: "midnight" }); ok(R["--c-border"] === "#89AFFF" && R["--c-border"] === R["--accent"], "which is each preset's own accent (" + R["--c-border"] + ")");
+  await load({ outerFrame: false }); ok(R["--border-w"] === "0px", "it can be switched off, which leaves no outline");
+  await load({ borderWidth: 6 }); ok(R["--border-w"] === "6px", "a thickness sets the frame's thickness (" + R["--border-w"] + ")");
+  await load({ themePreset: "custom", cAccent: "#FF00AA", colorBorder: "#010101", borderWidth: 3 }); ok(R["--c-border"] === "#FF00AA", "and in Custom the frame is the accent colour you picked, not the outline colour (" + R["--c-border"] + ")");
+  await load({ themePreset: "custom", cAccent: "#FF00AA", colorBorder: "#010101", borderWidth: 3, outerFrame: false }); ok(R["--c-border"] === "#010101" && R["--border-w"] === "3px", "with the frame unticked a Custom outline is the colour and thickness you set (" + R["--c-border"] + ")");
   console.log("\n=== " + pass + " passed, " + fail + " failed ===");
   process.exit(fail ? 1 : 0);
 })();

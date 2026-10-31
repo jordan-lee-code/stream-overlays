@@ -162,6 +162,28 @@ module.exports = function createEnv(root) {
       await env.load({ themePreset: "nonsense" });
       env.ok(env.vars(appId)["--w-bg"] !== undefined, "an unknown preset name does not break the widget");
     },
+    // The outer frame: a border round the widget in the accent colour, on by default, in every preset. `appId` is the element
+    // that carries the --w-* variables, as for checkPresets.
+    async checkFrame(appId) {
+      const border = () => String(env.vars(appId)["--w-border"]);
+      const DEFAULT = "max(2px, 0.6cqw)";
+      let all = true, flags = 0;
+      for (const key of Object.keys(expectedPresets)) {
+        await env.load({ themePreset: key });
+        if (border() !== DEFAULT + " solid " + expectedPresets[key].accent) { all = false; console.log("    frame differs for " + key + ": " + border()); }
+        if (expectedPresets[key].flag) flags++;
+      }
+      env.ok(all, "by default there is an outer frame in the accent colour in every one of the " + Object.keys(expectedPresets).length + " presets, " + flags + " of them pride flags, as thick as a default that grows with the box");
+      await env.load({ outerFrame: false });
+      env.ok(border() === "0px solid #FFFFFF", "it can be switched off, which leaves no outline (" + border() + ")");
+      await env.load({ borderWidth: 6 });
+      env.ok(border() === "6px solid " + expectedPresets.glass.accent, "a thickness sets the frame's thickness (" + border() + ")");
+      await env.load({ themePreset: "custom", cAccent: "#FF00AA", borderColor: "#010101", borderWidth: 3 });
+      env.ok(border() === "3px solid #FF00AA", "and in Custom the frame is the accent colour you picked, not the outline colour (" + border() + ")");
+      await env.load({ themePreset: "custom", cAccent: "#FF00AA", borderColor: "#010101", borderWidth: 3, outerFrame: false });
+      env.ok(border() === "3px solid #010101", "with the frame unticked a Custom outline is the colour and thickness you set (" + border() + ")");
+      await env.load({});
+    },
     // Every setting must be read by the widget, and every button handled.
     checkWired(prefixRe) {
       const noRead = Object.keys(fields).filter(k => fields[k].type !== "button" && src.indexOf("f." + k) === -1);

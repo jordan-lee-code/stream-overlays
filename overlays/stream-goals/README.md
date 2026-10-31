@@ -20,6 +20,7 @@ It is a single self-contained widget in plain JavaScript, with no dependencies a
 - Customisable: around 55 settings cover the goals, wording, sizes, shape, outline, colours, fonts, sounds and animation.
 - Saved: the counts survive a browser-source refresh.
 - Tests and a dev harness: a local harness with a time machine and an automated test script, so a new stream can be simulated in a click.
+- An outer frame in the accent colour, on by default in every preset, and switched off with one checkbox.
 
 ## Screenshots
 
@@ -120,10 +121,12 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | Counting | Sub points, how a count reads, the currency symbol and where it goes, the decimal and whether cents show, the reached text and how long it shows before a raise. |
 | Sizes | Text, title and bar sizes, and the space between goals. |
 | Manual controls | Buttons to start again, pause and resume. |
-| Look | Title, the style preset, font, boldness, corners, padding, outline, shadow, Animate and whether it shrinks to fit the box. |
+| Look | Title, the style preset, font, boldness, corners, padding, outer frame, outline, shadow, Animate and whether it shrinks to fit the box. |
 | Custom colours | Panel, text, accent, bar and alert colours, used when the style preset is Custom. |
 | Sounds | A sound and volume for progress and for a goal being reached, with Test buttons and a master mute. |
 | Troubleshooting | A debug log of every event to the browser-source console. |
+
+The **outer frame** is a border round the widget in the preset's accent colour, on by default in every preset. Untick **An outer frame** under Look for none, or set the outline thickness to change how thick it is, since at 0 it has a default thickness that grows with the box. With the frame unticked, the outline is whatever you set, as before, in the outline colour.
 
 The full list, with defaults, is in [`widget/fields.json`](widget/fields.json). The colour and font pickers apply only when the style preset is **Custom**.
 

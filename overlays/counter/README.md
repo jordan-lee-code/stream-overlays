@@ -19,6 +19,7 @@ It is a single self-contained widget in plain JavaScript, with no dependencies a
 - Customisable: around 60 settings cover the wording, number, layout, shape, outline, colours, fonts, sounds and animation.
 - Saved: the number, the lock and the undo history survive a browser-source refresh.
 - Tests and a dev harness: a local harness and an automated test script, so nothing needs a live stream.
+- An outer frame in the accent colour, on by default in every preset, and switched off with one checkbox.
 
 ## Screenshots
 
@@ -106,10 +107,12 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | Counter | The starting value, the step, limits, a goal with its bar and text, milestones, and the locked text. |
 | Number | Text before and after the number, zero padding, layout, sizes, and the +1 chip. |
 | Manual controls | Buttons for add, subtract, undo, reset, lock and unlock. |
-| Look | Title, the style preset, font, boldness, corners, padding, outline, shadow, Animate and whether it shrinks to fit the box. |
+| Look | Title, the style preset, font, boldness, corners, padding, outer frame, outline, shadow, Animate and whether it shrinks to fit the box. |
 | Custom colours | Panel, text, accent, bar and alert colours, used when the style preset is Custom. |
 | Sounds | A sound and volume for up, down, a milestone and the goal, with Test buttons and a master mute. |
 | Troubleshooting | A debug log of every event to the browser-source console. |
+
+The **outer frame** is a border round the widget in the preset's accent colour, on by default in every preset. Untick **An outer frame** under Look for none, or set the outline thickness to change how thick it is, since at 0 it has a default thickness that grows with the box. With the frame unticked, the outline is whatever you set, as before, in the outline colour.
 
 The full list, with defaults, is in [`widget/fields.json`](widget/fields.json). The colour and font pickers apply only when the style preset is **Custom**.
 

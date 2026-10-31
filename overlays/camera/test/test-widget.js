@@ -185,6 +185,7 @@ const app = () => E("cam-app");
   await load({ offText: "" }); boss("!camera off"); ok(covered() && text() === "", "even a blank message still covers the camera");
   await load({ brbIcon: "", awayIcon: "" }); boss("!camera brb"); ok(icon() === "", "icons can be left off");
   await env.checkPresets("cam-root");
+  await env.checkFrame("cam-root");
 
   section("the frame round the window");
   const fill = () => env.vars("cam-root")["--cam-frame-fill"], ring = () => E("cam-root").classList.contains("no-frame");
@@ -285,7 +286,7 @@ const app = () => E("cam-app");
   await load({ platePosition: "sideways" }); ok(!E("cam-root").classList.contains("plate-above"), "anything else is below");
   await load({ platePosition: "above", aspect: "16:9" }); ok(E("cam-root").classList.contains("plate-above") && E("cam-root").classList.contains("locked"), "it works with a window that keeps its shape");
   await load(); ok(env.vars("cam-root")["--w-bg"] === "rgba(0, 0, 0, 0.55)", "Soft black is the default");
-  await load({ themePreset: "custom", radius: 10, borderWidth: 2, borderColor: "#FF0000", weight: 600, pad: 1, shadow: true });
+  await load({ themePreset: "custom", radius: 10, outerFrame: false, borderWidth: 2, borderColor: "#FF0000", weight: 600, pad: 1, shadow: true });
   const w = env.vars("cam-root");
   ok(w["--w-radius"] === "10px" && w["--w-border"] === "2px solid #FF0000" && w["--w-weight"] === 600 && w["--w-pad"] === 1 && w["--w-shadow"] !== "none", "the corner, outline, boldness, padding and shadow follow the settings");
 

@@ -204,7 +204,7 @@
         padH: clamp(num(f.paddingH, 12), 0, 40),
         gap: clamp(num(f.gap, 1), 0, 20),
         tilt: clamp(num(f.tilt, 0), -20, 20),
-        borderW: Math.max(0, num(f.borderWidth, 0)),
+        borderW: Math.max(0, num(f.borderWidth, 0)), frame: bool(f.outerFrame, true),
         shadow: bool(f.shadow, false),
         textShadow: bool(f.textShadow, false),
         tail: bool(f.showTail, false),
@@ -251,7 +251,7 @@
     if (cfg.themePreset === "custom") {
       return {
         bg: cfg.colors.bg, text: cfg.colors.text, accent: rgba(cfg.colors.accent, cfg.panelOpacity), font: cfg.fontFamily,
-        count: cfg.colors.count, label: cfg.colors.label, border: cfg.colors.border,
+        count: cfg.colors.count, label: cfg.colors.label, border: cfg.colors.border, frame: cfg.colors.count,
         lock: cfg.colors.lock, float: cfg.colors.float, floatBg: rgba(cfg.colors.floatBg, cfg.panelOpacity)
       };
     }
@@ -261,7 +261,7 @@
     var p = PRESETS[cfg.themePreset] || BASE;
     return {
       bg: p.text, text: p.text, accent: p.panel, font: p.font,
-      count: p.accent, label: p.text, border: p.accent, lock: p.accent, float: p.accent, floatBg: p.strong,
+      count: p.accent, label: p.text, border: p.accent, frame: p.accent, lock: p.accent, float: p.accent, floatBg: p.strong,
       bgimg: p.bgimg || ""
     };
   }
@@ -276,7 +276,9 @@
     root.style.setProperty("--font", '"' + t.font + '", "Baloo 2", "Segoe UI", sans-serif');
     root.style.setProperty("--c-count", t.count);
     root.style.setProperty("--c-label", t.label);
-    root.style.setProperty("--c-border", t.border);
+    // The outer frame is a border in the accent colour; with it off, the outline is what the settings describe, if anything.
+    // (The sticker is the other way round: its panel is the preset's text colour, and `t.accent` is its panel tone, so the accent is `frame`: a preset's accent, or in Custom the number's colour.)
+    root.style.setProperty("--c-border", cfg.look.frame ? t.frame : t.border);
     root.style.setProperty("--c-lock", t.lock);
     root.style.setProperty("--c-float", t.float);
     root.style.setProperty("--c-float-bg", t.floatBg);
@@ -287,7 +289,7 @@
     root.style.setProperty("--pad-h", String(L.padH));
     root.style.setProperty("--gap", String(L.gap));
     root.style.setProperty("--tilt", L.tilt + "deg");
-    root.style.setProperty("--border-w", L.borderW + "px");
+    root.style.setProperty("--border-w", (L.borderW > 0 ? L.borderW + "px" : (L.frame ? "max(2px, 0.6cqw)" : "0px")));
     root.style.setProperty("--shadow", L.shadow ? "0 8px 20px rgba(0, 0, 0, 0.28)" : "none");
     root.style.setProperty("--text-shadow", L.textShadow ? "0 0.06em 0.18em rgba(0, 0, 0, 0.55)" : "none");
     root.style.setProperty("--tail-display", L.tail ? "block" : "none");

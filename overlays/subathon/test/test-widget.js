@@ -494,10 +494,20 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   ok(vars()["--sa-text"] === expectedPresets.celestial.text, "a preset ignores the colour pickers");
   await load({ themePreset: "nonsense" });
   ok(vars()["--sa-bg"] === "rgba(16, 32, 48, 0.55)" || vars()["--sa-bg"] !== undefined, "an unknown preset name does not break the clock");
-  await load({ themePreset: "glass", radius: 40, borderWidth: 3, borderColor: "#FF0000", shadow: true, tmClockSize: 12, tmGap: 20, tmWeight: 600, tmAnimate: false });
+  await load({ themePreset: "glass", radius: 40, outerFrame: false, borderWidth: 3, borderColor: "#FF0000", shadow: true, tmClockSize: 12, tmGap: 20, tmWeight: 600, tmAnimate: false });
   ok(vars()["--sa-radius"] === "40px" && vars()["--sa-border"] === "3px solid #FF0000" && vars()["--sa-clock-size"] === "12cqw" && vars()["--sa-weight"] === 600, "radius, outline, size and weight settings apply");
   ok(E("subathon-root").style["--sa-gap"] === "20px" && E("subathon-root").classList.contains("no-motion"), "the gap applies, and Animate off stops motion");
   ok(vars()["--sa-shadow"] !== "none", "the shadow switch applies");
+
+  console.log("\n[the outer frame]");
+  await load({ themePreset: "glass" });
+  ok(vars()["--sa-frame"] === "max(2px, 0.6cqw)" && vars()["--sa-frame-c"] === "#FFFFFF" && vars()["--sa-border"] === "0px solid #FFFFFF", "by default the clock card has a frame in the accent colour, as thick as a default that grows with the box, and it takes no room (" + vars()["--sa-frame"] + ")");
+  await load({ themePreset: "midnight" }); ok(vars()["--sa-frame-c"] === "#89AFFF", "which is each preset's own accent (" + vars()["--sa-frame-c"] + ")");
+  await load({ outerFrame: false }); ok(vars()["--sa-frame"] === "0px" && vars()["--sa-border"] === "0px solid #FFFFFF", "it can be switched off, which leaves no outline");
+  await load({ borderWidth: 6 }); ok(vars()["--sa-frame"] === "6px", "a thickness sets the frame's thickness (" + vars()["--sa-frame"] + ")");
+  await load({ themePreset: "custom", tmAccent: "#FF00AA", borderColor: "#010101", borderWidth: 3 });
+  ok(vars()["--sa-frame-c"] === "#FF00AA" && vars()["--sa-frame"] === "3px", "and in Custom the frame is the accent colour, not the outline colour (" + vars()["--sa-frame-c"] + ")");
+  await load({ themePreset: "custom", borderColor: "#010101", borderWidth: 3, outerFrame: false }); ok(vars()["--sa-border"] === "3px solid #010101", "with the frame unticked a Custom outline is the colour and thickness you set (" + vars()["--sa-border"] + ")");
 
   console.log("\n[look settings]");
   await load({ tmTitle: "Big Subathon", tmShowTitle: true });

@@ -475,7 +475,7 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   ok(V["--bg"] === "rgba(0, 0, 0, 0.55)" && V["--text"] === "#FFFFFF" && V["--accent"] === "#FFFFFF", "a soft see-through black panel with white text (" + V["--bg"] + ")");
   ok(V["--font"].indexOf("BioRhyme") !== -1, "in BioRhyme (" + V["--font"] + ")");
   ok(/family=BioRhyme:wght@200\.\.800/.test(elements["vote-font-link"].href || ""), "with its whole weight range requested");
-  ok(V["--border-w"] === "0" && V["--shadow"] === "none" && V["--tail-display"] === "none" && V["--pill-tilt"] === "0deg", "flat: no outline, shadow, tail or tilt");
+  ok(V["--frame-w"] === "0.14" && V["--border-w"] === "0" && V["--c-border"] === "#FFFFFF" && V["--shadow"] === "none" && V["--tail-display"] === "none" && V["--pill-tilt"] === "0deg", "flat: no shadow, tail or tilt, but an outer frame in the accent colour (" + V["--frame-w"] + ")");
   ok(V["--title-w"] === "800", "and an extra bold heading");
 
   // ---- wording
@@ -498,7 +498,7 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   load({ radius: 2, paddingV: 1, paddingH: 1.5, cardGap: 1, rowGap: 0.5, borderWidth: 0.3, shadow: true, textShadow: true, showTail: true,
     timerRadius: 1, timerTilt: 5, eyebrowTilt: -4, barWidth: 6, barHeight: 0.8, eyebrowUppercase: false }); await wait(5);
   ok(V["--radius"] === "2" && V["--pad-v"] === "1" && V["--pad-h"] === "1.5" && V["--gap"] === "1" && V["--row-gap"] === "0.5", "shape and spacing");
-  ok(V["--border-w"] === "0.3" && V["--shadow"] !== "none" && V["--text-shadow"] !== "none" && V["--tail-display"] === "block", "outline, shadows and tail");
+  ok(V["--frame-w"] === "0.3" && V["--shadow"] !== "none" && V["--text-shadow"] !== "none" && V["--tail-display"] === "block", "frame thickness, shadows and tail");
   ok(V["--pill-radius"] === "1" && V["--pill-tilt"] === "5deg" && V["--eyebrow-tilt"] === "-4deg" && V["--eyebrow-case"] === "none", "timer and result label");
   ok(V["--bar-w"] === "6em" && V["--bar-h"] === "0.8em", "bar size");
   load({ titleScale: 2, titleWeight: "400", timerScale: 1.5, timerWeight: "600", eyebrowScale: 1, eyebrowWeight: "800", eyebrowSpacing: 0.3,
@@ -509,7 +509,7 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   ok(V["--label-scale"] === "1.2" && V["--label-weight"] === "500" && V["--key-scale"] === "1.1" && V["--key-w"] === "400", "option text and chips");
   ok(V["--count-scale"] === "1" && V["--count-weight"] === "800" && V["--count-opacity"] === "0.5", "count text");
   ok(V["--foot-scale"] === "0.9" && V["--foot-w"] === "400" && V["--foot-opacity"] === "0.4" && V["--lost-opacity"] === "0.2", "footer and lost options");
-  load({ themePreset: "custom", colorPanel: "#102030", panelOpacity: 0.8, cText: "#EEEEEE", cAccent: "#FF00AA", colorOnAccent: "#001122",
+  load({ themePreset: "custom", outerFrame: false, borderWidth: 0.2, colorPanel: "#102030", panelOpacity: 0.8, cText: "#EEEEEE", cAccent: "#FF00AA", colorOnAccent: "#001122",
     colorBorder: "#010101", colorTitle: "#020202", colorPillBg: "#030303", colorPill: "#040404", colorEyebrowBg: "#050505", colorEyebrow: "#060606",
     colorRow: "#000000", rowOpacity: 0.3, colorKey: "#070707", colorLabel: "#080808", cTrack: "#FFFFFF", trackOpacity: 0.4, colorCount: "#090909",
     colorWinBg: "#0A0A0A", colorWin: "#0B0B0B", colorFoot: "#0C0C0C", colorSegA: "#AA0000", colorSegB: "#00AA00" }); await wait(5);
@@ -630,6 +630,19 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   tight(); load({ grow: true }); await wait(5); tight(); chat("!vote Pizza, Tacos, Sushi", { broadcaster: true }); await wait(5);
   ok(parseFloat(elements["vote-card"].style["--fit"]) < 1, "and a box that is too small still shrinks the card, either way (" + elements["vote-card"].style["--fit"] + ")");
   load({}); await wait(5);
+  console.log("\n[the outer frame]");
+  load({}); await wait(5);
+  ok(V["--frame-w"] === "0.14" && V["--c-border"] === V["--accent"], "by default the card has a frame in the accent colour, a default thickness (" + V["--frame-w"] + ", " + V["--c-border"] + ")");
+  load({ themePreset: "midnight" }); await wait(5);
+  ok(V["--c-border"] === "#89AFFF" && V["--c-border"] === V["--accent"], "which is each preset's own accent (" + V["--c-border"] + ")");
+  load({ outerFrame: false }); await wait(5);
+  ok(V["--frame-w"] === "0" && V["--border-w"] === "0", "it can be switched off, which leaves no outline");
+  load({ borderWidth: 0.4 }); await wait(5);
+  ok(V["--frame-w"] === "0.4", "a thickness sets the frame's thickness (" + V["--frame-w"] + ")");
+  load({ themePreset: "custom", cAccent: "#FF00AA", colorBorder: "#010101", borderWidth: 0.3 }); await wait(5);
+  ok(V["--c-border"] === "#FF00AA", "and in Custom the frame is the accent colour you picked, not the outline colour (" + V["--c-border"] + ")");
+  load({ themePreset: "custom", cAccent: "#FF00AA", colorBorder: "#010101", borderWidth: 0.3, outerFrame: false }); await wait(5);
+  ok(V["--c-border"] === "#010101" && V["--border-w"] === "0.3", "with the frame unticked a Custom outline is the colour and thickness you set (" + V["--c-border"] + ", " + V["--border-w"] + ")");
   console.log("\n=== " + pass + " passed, " + fail + " failed ===");
   process.exit(fail ? 1 : 0);
 })();

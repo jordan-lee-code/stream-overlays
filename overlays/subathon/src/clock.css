@@ -53,6 +53,10 @@
   background-image: var(--sa-bgimg, none);
   border: var(--sa-border);
   border-radius: var(--sa-radius);
+  /* The outer frame is an outline drawn inside the panel's edge and not a border, so it takes no room: the panel is fitted to its
+     box by measuring it, and a border would take space from what it holds. */
+  outline: var(--sa-frame, 0px) solid var(--sa-frame-c, transparent);
+  outline-offset: calc(var(--sa-frame, 0px) * -1);
   box-shadow: var(--sa-shadow);
   font-size: var(--sa-clock-size);
   line-height: 1.1;
