@@ -137,6 +137,17 @@ const stored = () => (storeData.reminder_v1 ? storeData.reminder_v1.items : []);
   await L({ title: "Heads up" }); boss("!reminder 1m a"); await skip(61000); ok(E("rm-title").textContent === "Heads up", "and it can be renamed");
   await env.checkPresets("rm-app");
 
+  section("disappearing when there is nothing to show");
+  const css = require("fs").readFileSync(require("path").join(__dirname, "../widget/widget.css"), "utf8");
+  ok(/#rm-root\[hidden\]\s*\{\s*display:\s*none\s*!important/.test(css), "the stylesheet hides the whole widget when it is marked hidden, since the root's own display would otherwise beat the browser's hiding and leave an empty card on screen");
+  await L({}); ok(!shown(), "with no reminder set nothing is shown");
+  boss("!reminder 15m clean room"); await skip(1000); ok(!shown(), "a reminder that is waiting shows nothing while pending reminders are not shown");
+  await skip(15 * MIN); ok(shown(), "it appears when the reminder is due");
+  boss("!reminder clear"); await skip(1000); ok(!shown(), "and goes again once it is cleared");
+  await load({ showPending: true }); boss("!reminder 15m clean room"); await skip(1000); ok(shown(), "with pending reminders shown the card is there while one is waiting");
+  boss("!reminder cancel 1"); await skip(1000); ok(!shown(), "and goes when the last is cancelled");
+  await L({}); boss("!reminder 1m a"); await skip(2 * MIN); ok(shown(), "(a due reminder shows)"); boss("!reminder snooze"); await skip(1000); ok(!shown(), "a snoozed reminder takes the card away until it is back");
+
   section("every setting is wired up");
   env.checkWired();
   env.checkNotice();

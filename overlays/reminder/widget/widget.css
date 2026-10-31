@@ -18,6 +18,9 @@
 }
 #rm-root * { box-sizing: border-box; }
 #rm-root [hidden] { display: none !important; }
+/* With nothing to show the whole widget goes. The rule above only reaches what is inside the root, and the root's own
+   display would otherwise beat the browser's hiding, leaving an empty card on screen. */
+#rm-root[hidden] { display: none !important; }
 
 /* The Animate field: when it is off, nothing moves or eases. */
 #rm-root.no-motion,

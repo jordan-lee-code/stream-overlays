@@ -9,6 +9,7 @@ It is a single self-contained widget in plain JavaScript, with no dependencies a
 ## Features
 
 - Set from chat: `!reminder 15m clean room`, with times like `90s`, `1h30m`, `1:30:00` or a bare number of minutes.
+- Gone when idle: with nothing to show, the whole widget disappears and leaves its box empty, and it comes back when a reminder is due, or is waiting if you show those.
 - A countdown on every reminder: the words on the left and a timer on the right, which counts down while it waits and turns to "due" when it runs out.
 - Stays until cleared: a reminder that is due is never timed out. It survives a refresh, and one that came due while the overlay was closed shows as soon as it loads.
 - Several at once: reminders stack in the order they came due, with a count of any more.
