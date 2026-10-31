@@ -17,7 +17,7 @@ It is a single self-contained widget in plain JavaScript, with no dependencies a
 - Scrolls like chat: a new message arrives at the bottom, the older ones glide up and fade out through the top edge, and how many show depends on how tall you make the box in StreamElements. With the newest at the top it scrolls the other way.
 - Tidy by default: chat commands, and the usual bots, are left out, and you can add names of your own.
 - Moderation: `!chatfeed hide name` takes someone off the screen, and a message StreamElements deletes disappears from it too.
-- Fading: messages can fade away after a number of seconds, or stay until newer ones push them off.
+- Fading: messages stay until newer ones push them off, or you can have them fade away after a number of seconds.
 - Customisable: around 45 settings cover how many messages show, the layout, pictures, pronouns, sizes, shape, outline, colours, fonts, sounds and animation.
 - Tests and a dev harness: a local harness where you can type a real Twitch login and see their real picture and pronouns, and an automated test script, so nothing needs a live stream.
 
@@ -127,7 +127,7 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | Group | What it covers |
 | --- | --- |
 | Commands | The command word and who may use it. |
-| Feed | How many messages show, how long they stay, which end the newest goes, commands and names to leave out. |
+| Feed | How many messages show, whether they fade away after a time (they do not by default, and stay until newer messages push them off), which end the newest goes, commands and names to leave out. |
 | Messages | One panel or a card for each message, where the name goes, the name colour, badges and emotes. |
 | Avatars | Whether pictures show, their shape and their size. |
 | Pronouns | Whether they show, how they are written, and pronouns set by hand. |

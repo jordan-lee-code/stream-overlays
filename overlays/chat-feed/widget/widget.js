@@ -206,7 +206,7 @@
     var c = readCommon(f, { command: "!chatfeed", title: "Chat" });
     c.showTitle = bool(f.showTitle, false);
     c.max = clamp(Math.floor(num(f.maxMessages, 30)), 1, 30);
-    c.fadeMs = Math.max(0, num(f.fadeAfter, 45)) * 1000;
+    c.fadeMs = Math.max(0, num(f.fadeAfter, 0)) * 1000;
     c.newestTop = str(f.order, "bottom") === "top";
     c.hideCommands = bool(f.hideCommands, true);
     c.ignore = csv(str(f.ignoreNames, "nightbot, streamelements, streamlabs, moobot, fossabot, wizebot"));

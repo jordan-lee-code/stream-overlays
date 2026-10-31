@@ -122,6 +122,8 @@ const until = async (test, ms) => { for (let i = 0; i < (ms || 2000) / 25 && !te
   say("soft", { nick: "alice" }); env.fake += 11000;
   ok(await until(() => rowEls().length === 1 && rowEls()[0].classList.contains("fading")), "with motion on it fades first (" + rowEls().length + ")");
   ok(await until(() => rowEls().length === 0), "and is then removed");
+  await load(); say("by default", { nick: "alice" }); await skip(3600000);
+  ok(rowEls().length === 1 && env.fieldData().fadeAfter === 0, "by default a message never fades, and stays until newer ones push it off (" + rowEls().length + ")");
   await load({ fadeAfter: 0 }); say("stays", { nick: "alice" }); await skip(3600000);
   ok(rowEls().length === 1, "0 keeps a message until it is pushed off");
 

@@ -26,8 +26,8 @@
   },
   "fadeAfter": {
     "type": "number",
-    "label": "Seconds before a message fades away (0 keeps it until it is pushed off)",
-    "value": 45,
+    "label": "Seconds before a message fades away (0, the default, keeps it until newer messages push it off)",
+    "value": 0,
     "group": "Feed",
     "min": 0,
     "max": 600,
