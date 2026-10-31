@@ -22,6 +22,13 @@
     var badges = role === "broadcaster" ? [{ type: "broadcaster" }] : role === "mod" ? [{ type: "moderator" }] : [];
     se("message", { data: { text: text, nick: "tester", displayName: "Tester", badges: badges, tags: { mod: role === "mod" ? "1" : "0" } } });
   }
+  // A chat message with the extras a real one carries: colour, badges and emotes.
+  var sent = 0;
+  function message(o) {
+    var nick = String(o.nick || "tester");
+    se("message", { data: { text: o.text, nick: nick.toLowerCase(), displayName: o.name || nick, userId: "u-" + nick.toLowerCase(), msgId: "m" + (++sent),
+      badges: o.badges || [], emotes: o.emotes || [], displayColor: o.color || "", tags: { color: o.color || "", mod: "0" }, isAction: !!o.action } });
+  }
   var names = ["Alice", "Bea", "Cass", "Dev", "Eli", "Fern", "Gus", "Hana"];
   var n = 0; function who() { return names[n++ % names.length]; }
   function fill(obj, name) { return JSON.parse(JSON.stringify(obj).split("{who}").join(name)); }
@@ -144,6 +151,7 @@
       sec.buttons.forEach(function (b) {
         c.appendChild(btn(b.label, function () {
           if (b.kind === "chat") chat(b.text, b.role || "broadcaster");
+          else if (b.kind === "message") message(JSON.parse(JSON.stringify(b.message).split("{who}").join(who())));
           else if (b.kind === "bomb") {
             var gifter = who();
             se("subscriber-latest", { gifted: true, bulkGifted: true, amount: b.n, tier: "1000", sender: gifter, name: gifter });
@@ -152,6 +160,15 @@
         }));
       });
     });
+
+    if (CFG.chatter) {
+      c.appendChild(el("h2", { text: "Say something as a chatter" }));
+      c.appendChild(el("p", { "class": "hint", text: CFG.chatter.hint }));
+      var login = el("input", { type: "text", id: "chatter-login", value: CFG.chatter.login });
+      var line = el("input", { type: "text", id: "chatter-text", value: CFG.chatter.text });
+      c.appendChild(login); c.appendChild(line);
+      c.appendChild(btn("Send", function () { message({ nick: login.value.replace(/^\s+|\s+$/g, ""), text: line.value }); }));
+    }
 
     c.appendChild(el("h2", { text: "Chat" }));
     var box = el("input", { type: "text", id: "chat-text", value: CFG.chatDefault });

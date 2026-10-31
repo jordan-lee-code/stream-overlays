@@ -58,10 +58,22 @@ module.exports = function createEnv(root) {
     constructor(s) { this.src = s; this.volume = 1; audioLog.push(this); }
     play() { this.played = true; return Promise.resolve(); }
   }
+  // A pretend network. A test sets what each address answers with: `env.net(url => ({ text: "..." }))`
+  // or `({ json: [...] })`, `({ ok: false })`, or throws to be offline. Every request is logged.
+  const fetchLog = [];
+  let netHandler = () => { throw new Error("offline"); };
+  const fetch = url => {
+    fetchLog.push(String(url));
+    return Promise.resolve().then(() => netHandler(String(url))).then(r => ({
+      ok: r.ok !== false, status: r.ok === false ? 404 : 200,
+      text: () => Promise.resolve(r.text === undefined ? JSON.stringify(r.json) : r.text),
+      json: () => Promise.resolve(r.json)
+    }));
+  };
   const env = { fake: 1700000000000 };
   class FakeDate extends Date { static now() { return env.fake; } }
   const sandbox = {
-    window, document, CustomEvent, SE_API, Audio, Date: FakeDate,
+    window, document, CustomEvent, SE_API, Audio, Date: FakeDate, fetch,
     setTimeout, clearTimeout, setInterval, clearInterval, console, Math, Promise, JSON,
     parseFloat, parseInt, isNaN, String, Array, Object, encodeURIComponent, RegExp
   };
@@ -71,7 +83,8 @@ module.exports = function createEnv(root) {
   const wait = ms => new Promise(r => setTimeout(r, ms));
   let lastFD = {};
   Object.assign(env, {
-    src, fields, expectedPresets, E, storeData, audioLog, wait,
+    src, fields, expectedPresets, E, storeData, audioLog, wait, fetchLog,
+    net(fn) { netHandler = fn; fetchLog.length = 0; },
     ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } else { fail++; console.log("  FAIL " + msg); } },
     section(t) { console.log("\n[" + t + "]"); },
     fieldData(ov) {

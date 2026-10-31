@@ -1,0 +1,351 @@
+{
+  "command": {
+    "type": "text",
+    "label": "Command word",
+    "value": "!chatfeed",
+    "group": "Commands"
+  },
+  "whoCanManage": {
+    "type": "dropdown",
+    "label": "Who can use it",
+    "value": "mods",
+    "options": {
+      "broadcaster": "Broadcaster only",
+      "mods": "Broadcaster + moderators"
+    },
+    "group": "Commands"
+  },
+  "maxMessages": {
+    "type": "number",
+    "label": "Messages on screen at once",
+    "value": 8,
+    "group": "Feed",
+    "min": 1,
+    "max": 30,
+    "step": 1
+  },
+  "fadeAfter": {
+    "type": "number",
+    "label": "Seconds before a message fades away (0 keeps it until it is pushed off)",
+    "value": 45,
+    "group": "Feed",
+    "min": 0,
+    "max": 600,
+    "step": 5
+  },
+  "order": {
+    "type": "dropdown",
+    "label": "Where the newest message goes",
+    "value": "bottom",
+    "group": "Feed",
+    "options": {
+      "bottom": "At the bottom (older ones move up)",
+      "top": "At the top (older ones move down)"
+    }
+  },
+  "hideCommands": {
+    "type": "checkbox",
+    "label": "Leave out messages that start with ! (chat commands)",
+    "value": true,
+    "group": "Feed"
+  },
+  "ignoreNames": {
+    "type": "text",
+    "label": "Never show these chatters (their logins, separated by commas)",
+    "value": "nightbot, streamelements, streamlabs, moobot, fossabot, wizebot",
+    "group": "Feed"
+  },
+  "cardStyle": {
+    "type": "dropdown",
+    "label": "How messages are laid out",
+    "value": "panel",
+    "group": "Messages",
+    "options": {
+      "panel": "One panel behind all of them",
+      "bubbles": "Each message on its own card"
+    }
+  },
+  "nameLine": {
+    "type": "dropdown",
+    "label": "Where the name goes",
+    "value": "above",
+    "group": "Messages",
+    "options": {
+      "above": "On its own line above the message",
+      "inline": "On the same line as the message"
+    }
+  },
+  "nameColor": {
+    "type": "dropdown",
+    "label": "Name colour",
+    "value": "chat",
+    "group": "Messages",
+    "options": {
+      "chat": "Their chat colour (the accent when it would be hard to read)",
+      "accent": "The accent colour",
+      "text": "The text colour"
+    }
+  },
+  "showBadges": {
+    "type": "checkbox",
+    "label": "Show their badges (subscriber, moderator and so on)",
+    "value": true,
+    "group": "Messages"
+  },
+  "showEmotes": {
+    "type": "checkbox",
+    "label": "Show emotes as pictures",
+    "value": true,
+    "group": "Messages"
+  },
+  "showAvatars": {
+    "type": "checkbox",
+    "label": "Show profile pictures (looks each chatter up on decapi.me)",
+    "value": true,
+    "group": "Avatars"
+  },
+  "avatarShape": {
+    "type": "dropdown",
+    "label": "Picture shape",
+    "value": "circle",
+    "group": "Avatars",
+    "options": {
+      "circle": "Circle",
+      "rounded": "Rounded square",
+      "square": "Square"
+    }
+  },
+  "avatarSize": {
+    "type": "number",
+    "label": "Picture size, as a multiple of the text size",
+    "value": 2.2,
+    "group": "Avatars",
+    "min": 1,
+    "max": 5,
+    "step": 0.1
+  },
+  "showPronouns": {
+    "type": "checkbox",
+    "label": "Show pronouns (looks each chatter up on pronouns.alejo.io)",
+    "value": true,
+    "group": "Pronouns"
+  },
+  "pronounStyle": {
+    "type": "dropdown",
+    "label": "How pronouns are written",
+    "value": "tag",
+    "group": "Pronouns",
+    "options": {
+      "tag": "A small tag (She/Her)",
+      "brackets": "In brackets, (She/Her)",
+      "plain": "Plain text"
+    }
+  },
+  "pronounOverrides": {
+    "type": "text",
+    "label": "Set pronouns by hand, for anyone or if the service is down. Write login=Pronouns, separated by commas (alice=She/Her, bram=He/Him)",
+    "value": "",
+    "group": "Pronouns"
+  },
+  "textSize": {
+    "type": "number",
+    "label": "Text size (percent of the box width)",
+    "value": 4.2,
+    "group": "Size",
+    "min": 2,
+    "max": 20,
+    "step": 0.25
+  },
+  "rowGap": {
+    "type": "number",
+    "label": "Space between messages, in text heights",
+    "value": 0.45,
+    "group": "Size",
+    "min": 0,
+    "max": 3,
+    "step": 0.05
+  },
+  "title": {
+    "type": "text",
+    "label": "Title",
+    "value": "Chat",
+    "group": "Look"
+  },
+  "showTitle": {
+    "type": "checkbox",
+    "label": "Show the title above the chat",
+    "value": false,
+    "group": "Look"
+  },
+  "themePreset": {
+    "type": "dropdown",
+    "label": "Style preset (the same twenty-one are in every overlay in this set)",
+    "value": "glass",
+    "options": {
+      "glass": "Soft black (default)",
+      "frost": "Soft white",
+      "midnight": "Midnight blue",
+      "sunset": "Sunset",
+      "forest": "Forest",
+      "ocean": "Ocean",
+      "rose": "Rose",
+      "neon": "Neon",
+      "cosycabin": "Cosy cabin",
+      "pastel": "Cosy summer pastel",
+      "celestial": "Celestial",
+      "pastelgoth": "Pastel goth",
+      "pastelpink": "Pastel pink",
+      "faegreen": "Fae green",
+      "pride": "Rainbow pride",
+      "trans": "Trans pride",
+      "bi": "Bi pride",
+      "pan": "Pan pride",
+      "enby": "Non-binary pride",
+      "lesbian": "Lesbian pride",
+      "ace": "Ace pride",
+      "custom": "Custom (use the colours below)"
+    },
+    "group": "Look"
+  },
+  "fontFamily": {
+    "type": "googleFont",
+    "label": "Font (used when the style preset is Custom)",
+    "value": "BioRhyme",
+    "group": "Look"
+  },
+  "weight": {
+    "type": "number",
+    "label": "Boldness (100 to 900)",
+    "value": 800,
+    "min": 100,
+    "max": 900,
+    "step": 100,
+    "group": "Look"
+  },
+  "radius": {
+    "type": "number",
+    "label": "Corner roundness, in pixels",
+    "value": 24,
+    "min": 0,
+    "max": 100,
+    "step": 1,
+    "group": "Look"
+  },
+  "pad": {
+    "type": "number",
+    "label": "Padding above and below",
+    "value": 0.5,
+    "min": 0,
+    "max": 3,
+    "step": 0.05,
+    "group": "Look"
+  },
+  "borderWidth": {
+    "type": "number",
+    "label": "Outline width, in pixels",
+    "value": 0,
+    "min": 0,
+    "max": 20,
+    "step": 1,
+    "group": "Look"
+  },
+  "borderColor": {
+    "type": "colorpicker",
+    "label": "Outline colour",
+    "value": "#FFFFFF",
+    "group": "Look"
+  },
+  "shadow": {
+    "type": "checkbox",
+    "label": "Shadow",
+    "value": false,
+    "group": "Look"
+  },
+  "animate": {
+    "type": "checkbox",
+    "label": "Animate",
+    "value": true,
+    "group": "Look"
+  },
+  "colorPanel": {
+    "type": "colorpicker",
+    "label": "Panel colour (used when the style preset is Custom)",
+    "value": "#000000",
+    "group": "Custom colours"
+  },
+  "panelOpacity": {
+    "type": "number",
+    "label": "Panel opacity, 0 to 1 (used when the style preset is Custom)",
+    "value": 0.55,
+    "min": 0,
+    "max": 1,
+    "step": 0.05,
+    "group": "Custom colours"
+  },
+  "cText": {
+    "type": "colorpicker",
+    "label": "Text (used when the style preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Custom colours"
+  },
+  "cAccent": {
+    "type": "colorpicker",
+    "label": "Accent (used when the style preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Custom colours"
+  },
+  "cTrack": {
+    "type": "colorpicker",
+    "label": "Bars and chips (used when the style preset is Custom)",
+    "value": "#444444",
+    "group": "Custom colours"
+  },
+  "cWarn": {
+    "type": "colorpicker",
+    "label": "Alert colour (used when the style preset is Custom)",
+    "value": "#D64545",
+    "group": "Custom colours"
+  },
+  "btnClear": {
+    "type": "button",
+    "label": "Clear the chat",
+    "group": "Manual controls"
+  },
+  "btnDemo": {
+    "type": "button",
+    "label": "Show example messages",
+    "group": "Manual controls"
+  },
+  "mute": {
+    "type": "checkbox",
+    "label": "Mute every sound",
+    "value": false,
+    "group": "Sounds"
+  },
+  "soundMessage": {
+    "type": "sound-input",
+    "label": "A message arrives",
+    "value": "",
+    "group": "Sounds"
+  },
+  "soundMessageVol": {
+    "type": "number",
+    "label": "Volume for that sound (0 to 100)",
+    "value": 50,
+    "group": "Sounds",
+    "min": 0,
+    "max": 100,
+    "step": 5
+  },
+  "test_soundMessage": {
+    "type": "button",
+    "label": "Test it",
+    "group": "Sounds"
+  },
+  "debug": {
+    "type": "checkbox",
+    "label": "Log every event to the browser-source console",
+    "value": false,
+    "group": "Troubleshooting"
+  }
+}
