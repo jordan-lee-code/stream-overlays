@@ -166,9 +166,11 @@ npm run dev
 # then open http://localhost:8000/dev/
 ```
 
-The harness stands in for StreamElements. It opens polls, can simulate a rush of voters (each with a distinct name, so the total can be checked exactly), and has a **Stage** control for the widget box that starts at half the real 1920 by 1080 size, so what wraps in the preview wraps on stream. Its **Every setting** section is generated from `widget/fields.json`, so it offers exactly what StreamElements will, and each sound setting has a **Use a test beep** button. The local dev page also shows a Ko-fi support button in the corner. That button belongs to the harness only and is not part of the widget, so it never appears on stream.
+The harness stands in for StreamElements. It opens polls, can simulate a rush of voters (each with a distinct name, so the total can be checked exactly), and shows the widget box at half the real 1920 by 1080 size to start with, so what wraps in the preview wraps on stream. Its **Every setting** section is generated from `widget/fields.json`, so it offers exactly what StreamElements will, and each sound setting has a **Use a test beep** button. The local dev page also shows a Ko-fi support button in the corner. That button belongs to the harness only and is not part of the widget, so it never appears on stream.
 
 At the top of the harness, **Look and export** switches the style preset on the live widget, and can download or copy a `fields.json` with your current settings as its defaults. Paste that into the Fields tab of a new custom widget in StreamElements and it starts out looking the way it does here.
+
+The **box-size bar** at the bottom of the stage sets the size of the widget's box in pixels, from two number boxes or a list of common sizes, and remembers it for next time. A StreamElements widget fills whatever box you draw for it, so drawing it in different boxes is the quickest way to see how it behaves. It is the same bar on every overlay's dev page.
 
 The harness must be served over http rather than opened as a file, and fonts come from Google Fonts.
 

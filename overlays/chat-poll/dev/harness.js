@@ -103,7 +103,7 @@
     host.innerHTML =
       (def ? '<div class="row"><label for="look-preset">Style preset</label> <select id="look-preset"></select></div>' +
         '<p class="hint">The same twenty-two presets are in every overlay in this set. Custom uses the colour settings below.</p>' : '') +
-      '<div class="row"><button id="export-download" class="go">Download fields.json</button>' +
+      '<div class="row"><button id="export-download">Download fields.json</button>' +
       '<button id="export-copy" class="alt">Copy fields.json</button></div>' +
       '<p class="hint">Your current settings as a fields.json for StreamElements. Paste it into the Fields tab of a new custom widget and it starts out as you see it here.</p>' +
       '<p id="export-msg" class="hint"></p>' +
@@ -335,6 +335,10 @@
   function buildControls() {
     var c = document.getElementById("controls");
     c.innerHTML =
+      '<h1>Chat Poll Overlay</h1>' +
+      '<p class="hint">Start a poll from chat, vote as viewers and try the settings below. The box-size bar under the stage sets how big the widget box is.</p>' +
+      '<h2>Look and export</h2>' +
+      '<div id="look-panel"></div>' +
       '<h2>Start a poll</h2>' +
       '<div class="row">' +
         '<input id="poll-text" class="wide" type="text" value="!vote Truth A, Truth B, The lie">' +
@@ -398,16 +402,6 @@
       '</div>' +
       '<p class="hint">A viewer should be ignored. A mod should work, unless you set the widget ' +
       'to broadcaster-only below.</p>' +
-
-      '<h2>Stage</h2>' +
-      '<div class="row"><label>Widget box width <input id="s-stage" type="number" min="200" max="1920" step="20" value="960" style="width:90px"></label></div>' +
-      '<p class="hint">The StreamElements widget box, kept at 16:9. It starts at 960, exactly half the real ' +
-      '1920x1080 box, so what you see here lands on stream at double the size. Shrink it to watch long ' +
-      'options start wrapping sooner. The card sizes itself to this box.</p>' +
-
-      '<h2>Look and export</h2>' +
-      '<div id="look-panel"></div>' +
-
       '<h2>Every setting (re-applies on change)</h2>' +
       '<p class="hint">Generated from <code>fields.json</code>, so it is exactly what StreamElements will offer. Buttons here are the Manual controls.</p>' +
       '<div id="all-settings"></div>' +
@@ -459,12 +453,6 @@
 
     buildSettings(document.getElementById("all-settings"));
     buildLook(document.getElementById("look-panel"));
-    document.getElementById("s-stage").onchange = function () {
-      var w = Math.max(200, parseInt(this.value, 10) || 960);
-      var stage = document.getElementById("stage");
-      stage.style.width = w + "px";
-      stage.style.height = Math.round(w * 9 / 16) + "px";
-    };
 
     document.getElementById("reset-store").onclick = function () {
       try { localStorage.removeItem("se_chat_poll_v1"); } catch (e) {}

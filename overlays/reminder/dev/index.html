@@ -6,37 +6,9 @@
   <title>Reminder Overlay, local dev harness</title>
   <link rel="stylesheet" href="../widget/widget.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap">
+  <link rel="stylesheet" href="dev.css">
   <style>
-    html, body { margin: 0; height: 100%; font-family: "Quicksand", "Segoe UI", sans-serif; }
-    body { background: #e9edf2; color: #2b2f36; }
-    #layout { display: flex; height: 100vh; align-items: stretch; }
-    #stage-wrap {
-      flex: 1; display: flex; align-items: center; justify-content: center; padding: 20px; overflow: auto;
-      background-color: #cfd6dd;
-      background-image:
-        linear-gradient(45deg, #c2cad2 25%, transparent 25%, transparent 75%, #c2cad2 75%),
-        linear-gradient(45deg, #c2cad2 25%, transparent 25%, transparent 75%, #c2cad2 75%);
-      background-size: 28px 28px; background-position: 0 0, 14px 14px;
-    }
-    /* A fixed box for the widget to fill, as a StreamElements widget box does. */
-    #stage { width: 420px; height: 260px; max-width: 92vw; outline: 2px dashed rgba(0, 0, 0, 0.25); outline-offset: 4px; }
-    #controls {
-      width: 380px; flex: 0 0 380px; background: #fff; border-left: 1px solid #d4dae1;
-      padding: 18px; overflow-y: auto; box-shadow: -4px 0 18px rgba(0,0,0,0.06);
-    }
-    h1 { font-size: 18px; margin: 0 0 4px; }
-    h2 { font-size: 13px; text-transform: uppercase; letter-spacing: 0.06em; margin: 18px 0 8px; color: #5b6573; }
-    p.hint { font-size: 12px; color: #667; margin: 0 0 8px; }
-    button { font: inherit; font-size: 13px; padding: 5px 10px; margin: 0 4px 6px 0; border-radius: 8px; border: 1px solid #c3cad3; background: #f4f6f9; cursor: pointer; }
-    button:hover { background: #e8ecf1; }
-    input[type=text], input[type=number], select { font: inherit; font-size: 13px; padding: 4px 6px; border: 1px solid #c3cad3; border-radius: 6px; }
-    #chat-text { width: 100%; box-sizing: border-box; margin-bottom: 6px; }
-    pre { background: #f4f6f9; padding: 8px; border-radius: 8px; font-size: 11px; overflow: auto; max-height: 150px; }
-    details { border-top: 1px solid #e3e7ec; padding: 6px 0; }
-    summary { cursor: pointer; font-size: 13px; font-weight: 700; }
-    .row { display: flex; gap: 6px; align-items: center; margin: 5px 0; font-size: 12px; }
-    .row label { flex: 1; }
-    .row input[type=text], .row input[type=number], .row select { width: 150px; }
+    #stage { width: 420px; height: 260px; }
   </style>
 </head>
 <body>
@@ -53,6 +25,7 @@
     }
   </script>
   <script src="copy-panel.js"></script>
+  <script src="box-size.js"></script>
   <script src="harness.js"></script>
 </body>
 </html>
