@@ -1,0 +1,8 @@
+{
+  "width": 420,
+  "height": 215,
+  "fields": {
+    "animate": false
+  },
+  "script": "tip(25,'Mina');tip(37.5,'Rowan');"
+}

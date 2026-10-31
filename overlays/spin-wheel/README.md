@@ -215,6 +215,7 @@ These overlays share the same default look and the same twenty-two style presets
 - [Stream Goals Overlay](../stream-goals): sub and bits goals that start again for each stream.
 - [Reminder Overlay](../reminder): reminders you set from chat, which stay on screen until cleared.
 - [Chat Feed Overlay](../chat-feed): on-screen chat with profile pictures and pronouns.
+- [Donation Goal Overlay](../donation-goal): a goal in money that fills as tips arrive.
 
 ## Support
 
