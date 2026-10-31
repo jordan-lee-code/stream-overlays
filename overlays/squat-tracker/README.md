@@ -19,7 +19,7 @@ It is a single self-contained widget in plain JavaScript, with no dependencies a
 - Sounds: optional sounds when a gift adds squats and when the count is locked or unlocked.
 - Saved: the count and the lock survive a browser-source refresh.
 - Testable offline: a local dev harness and an automated test script, no live stream needed.
-- An outer frame in the accent colour, on by default in every preset, and switched off with one checkbox.
+- An outer frame in the accent colour, on by default in every preset, and switched off with one checkbox (the flag's stripes in the pride presets).
 
 ## Screenshots
 
@@ -126,7 +126,7 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | Sounds | A sound and volume for a gift adding squats, for locking and for unlocking, plus a master mute. |
 | Manual controls | Buttons to simulate a gift, adjust, lock and reset, and to test each sound. |
 
-The **outer frame** is a border round the sticker in the accent colour, on by default in every preset. Untick **An outer frame** under Sticker for none, or set the outline thickness to change how thick it is, since at 0 it has a default thickness that grows with the box. In Custom the frame takes the colour of the number, which is the sticker's accent. With the frame unticked, the outline is whatever you set, as before, in the outline colour.
+The **outer frame** is a border round the sticker in the accent colour, on by default in every preset. Untick **An outer frame** under Sticker for none, or set the outline thickness to change how thick it is, since at 0 it has a default thickness that grows with the box. In Custom the frame takes the colour of the number, which is the sticker's accent. With the frame unticked, the outline is whatever you set, as before, in the outline colour. In a pride preset the frame is the flag's stripes, as a ring that follows the panel's corners.
 
 The full list, with defaults, is in [`widget/fields.json`](widget/fields.json). The colour and font pickers apply only when the style preset is **Custom**.
 

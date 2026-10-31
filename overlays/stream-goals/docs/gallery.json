@@ -10,5 +10,50 @@
     "currency": "$",
     "textSize": 4.7
   },
-  "script": "chat('!goals set subs 37');cheer(3200);chat('!goals set tips 1250');"
+  "script": "chat('!goals set subs 37');cheer(3200);chat('!goals set tips 1250');",
+  "pictures": [
+    {
+      "file": "default.png",
+      "width": 380,
+      "height": 205,
+      "fields": {
+        "animate": false,
+        "raiseDelay": 120
+      },
+      "script": "chat('!goals set subs 37');cheer(3200);"
+    },
+    {
+      "file": "reached.png",
+      "width": 380,
+      "height": 185,
+      "fields": {
+        "animate": false,
+        "raiseDelay": 120
+      },
+      "script": "chat('!goals set subs 49');sub({amount:1});cheer(3200);"
+    },
+    {
+      "file": "custom.png",
+      "width": 380,
+      "height": 235,
+      "fields": {
+        "animate": false,
+        "raiseDelay": 120,
+        "themePreset": "custom",
+        "colorPanel": "#3a1030",
+        "panelOpacity": 0.85,
+        "cText": "#FFE3F1",
+        "cAccent": "#FF8FC7",
+        "cTrack": "#7a2a5a",
+        "fontFamily": "Lobster",
+        "radius": 36,
+        "borderWidth": 3,
+        "borderColor": "#FF8FC7",
+        "title": "Tonight",
+        "showTips": true,
+        "targetTips": 100
+      },
+      "script": "chat('!goals set subs 37');cheer(3200);tip(40);"
+    }
+  ]
 }

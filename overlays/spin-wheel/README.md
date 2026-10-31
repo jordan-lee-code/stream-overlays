@@ -147,7 +147,7 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | Sounds | A sound and volume for someone joining, each tick and the winner, plus a master mute. |
 | Manual controls | Buttons for spin, open, close, clear, switch mode, reroll, re-show and the Truth or... controls, and to test each sound. |
 
-The **outer frame** is the wheel's rim, drawn in the accent colour and on by default. Untick **An outer frame** under Wheel for no rim, or change its thickness with the rim setting. The pills and the winner card are filled with the accent colour in the presets, so they have no frame of their own, and a winner card outline is a separate setting under Pills and cards.
+The **outer frame** is the wheel's rim, drawn in the accent colour and on by default. Untick **An outer frame** under Wheel for no rim, or change its thickness with the rim setting. The pills and the winner card are filled with the accent colour in the presets, so they have no frame of their own, and a winner card outline is a separate setting under Pills and cards. In a pride preset the rim stays the accent colour, since it turns with the wheel.
 
 The full list, with defaults, is in [`widget/fields.json`](widget/fields.json).
 

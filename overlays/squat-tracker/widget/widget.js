@@ -266,6 +266,14 @@
     };
   }
 
+  // A pride preset's frame is its flag's stripes, top to bottom, in a ring over the panel's edge.
+  function stripeGradient(stripes) {
+    var n = stripes.length, parts = [];
+    for (var i = 0; i < n; i++) parts.push(stripes[i] + " " + (i * 100 / n) + "% " + ((i + 1) * 100 / n) + "%");
+    return "linear-gradient(180deg, " + parts.join(", ") + ")";
+  }
+  function stripesOf(bgimg) { return String(bgimg || "").match(/#[0-9A-Fa-f]{6}/g) || []; }
+
   function applyTheme() {
     var t = resolvedTheme();
     var root = el.app;
@@ -278,7 +286,9 @@
     root.style.setProperty("--c-label", t.label);
     // The outer frame is a border in the accent colour; with it off, the outline is what the settings describe, if anything.
     // (The sticker is the other way round: its panel is the preset's text colour, and `t.accent` is its panel tone, so the accent is `frame`: a preset's accent, or in Custom the number's colour.)
-    root.style.setProperty("--c-border", cfg.look.frame ? t.frame : t.border);
+    var stripes = cfg.look.frame && cfg.themePreset !== "custom" ? stripesOf(t.bgimg) : [];
+    root.style.setProperty("--frame-img", stripes.length ? stripeGradient(stripes) : "none");
+    root.style.setProperty("--c-border", cfg.look.frame ? (stripes.length ? "transparent" : t.frame) : t.border);
     root.style.setProperty("--c-lock", t.lock);
     root.style.setProperty("--c-float", t.float);
     root.style.setProperty("--c-float-bg", t.floatBg);

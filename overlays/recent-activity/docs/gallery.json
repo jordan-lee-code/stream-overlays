@@ -6,5 +6,52 @@
     "rows": 5,
     "textSize": 4.3
   },
-  "script": "sub({amount:1,tier:'1000',name:'Alice'});sub({gifted:true,bulkGifted:true,amount:10,sender:'Bea',tier:'1000'});cheer(1500,'Cass');tip(12.5,'Dev');se('follower-latest',{name:'Eli'});se('raid-latest',{name:'Fern',amount:42});sub({amount:6,tier:'1000',name:'Gus'});"
+  "script": "sub({amount:1,tier:'1000',name:'Alice'});sub({gifted:true,bulkGifted:true,amount:10,sender:'Bea',tier:'1000'});cheer(1500,'Cass');tip(12.5,'Dev');se('follower-latest',{name:'Eli'});se('raid-latest',{name:'Fern',amount:42});sub({amount:6,tier:'1000',name:'Gus'});",
+  "pictures": [
+    {
+      "file": "default.png",
+      "width": 380,
+      "height": 250,
+      "fields": {
+        "animate": false,
+        "rows": 5,
+        "soundEvent": ""
+      },
+      "script": "sub({amount:1,tier:'1000',name:'Alice'});sub({gifted:true,bulkGifted:true,amount:10,sender:'Bea',tier:'1000'});cheer(1500,'Cass');tip(12.5,'Dev');se('follower-latest',{name:'Eli'});se('raid-latest',{name:'Fern',amount:42});sub({amount:6,tier:'1000',name:'Gus'});"
+    },
+    {
+      "file": "latest.png",
+      "width": 380,
+      "height": 190,
+      "fields": {
+        "animate": false,
+        "rows": 5,
+        "soundEvent": "",
+        "layout": "latest"
+      },
+      "script": "sub({amount:1,tier:'1000',name:'Alice'});sub({gifted:true,bulkGifted:true,amount:10,sender:'Bea',tier:'1000'});cheer(1500,'Cass');tip(12.5,'Dev');se('follower-latest',{name:'Eli'});se('raid-latest',{name:'Fern',amount:42});sub({amount:6,tier:'1000',name:'Gus'});"
+    },
+    {
+      "file": "custom.png",
+      "width": 380,
+      "height": 250,
+      "fields": {
+        "animate": false,
+        "rows": 5,
+        "soundEvent": "",
+        "themePreset": "custom",
+        "colorPanel": "#3a1030",
+        "panelOpacity": 0.85,
+        "cText": "#FFE3F1",
+        "cAccent": "#FF8FC7",
+        "cTrack": "#7a2a5a",
+        "fontFamily": "Lobster",
+        "radius": 36,
+        "borderWidth": 3,
+        "borderColor": "#FF8FC7",
+        "title": "Latest"
+      },
+      "script": "sub({amount:1,tier:'1000',name:'Alice'});sub({gifted:true,bulkGifted:true,amount:10,sender:'Bea',tier:'1000'});cheer(1500,'Cass');tip(12.5,'Dev');se('follower-latest',{name:'Eli'});se('raid-latest',{name:'Fern',amount:42});sub({amount:6,tier:'1000',name:'Gus'});"
+    }
+  ]
 }

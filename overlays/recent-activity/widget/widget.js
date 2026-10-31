@@ -201,7 +201,12 @@
     // The outer frame: a border round the widget in the accent colour, as thick as the Outline setting says, or, left at 0,
     // a default that grows with the box. With the frame off it is the plain outline the settings describe, if there is one.
     var bw = c.borderWidth > 0 ? c.borderWidth + "px" : (c.outerFrame ? "max(2px, 0.6cqw)" : "0px");
-    s.setProperty("--w-border", bw + " solid " + (c.outerFrame ? t.accent : c.borderColor));
+    // A pride preset draws the frame in its flag's stripes, as a ring on the panel (see the stylesheet), and the border is then
+    // only the room it takes.
+    var stripes = c.outerFrame && t.flag;
+    s.setProperty("--w-border", bw + " solid " + (c.outerFrame ? (stripes ? "transparent" : t.accent) : c.borderColor));
+    s.setProperty("--w-frame-w", bw);
+    s.setProperty("--w-frame-img", stripes ? flagGradient(t.flag) : "none");
     s.setProperty("--w-shadow", c.shadow ? "0 0.3em 1.2em rgba(0, 0, 0, 0.45)" : "none");
     root.classList.toggle("no-motion", !c.animate);
     watchFit(root, app, c.fit);

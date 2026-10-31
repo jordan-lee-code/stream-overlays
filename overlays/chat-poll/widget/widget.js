@@ -414,6 +414,14 @@
     };
   }
 
+  // A pride preset's frame is its flag's stripes, top to bottom, in a ring over the panel's edge.
+  function stripeGradient(stripes) {
+    var n = stripes.length, parts = [];
+    for (var i = 0; i < n; i++) parts.push(stripes[i] + " " + (i * 100 / n) + "% " + ((i + 1) * 100 / n) + "%");
+    return "linear-gradient(180deg, " + parts.join(", ") + ")";
+  }
+  function stripesOf(bgimg) { return String(bgimg || "").match(/#[0-9A-Fa-f]{6}/g) || []; }
+
   function applyTheme() {
     var t = resolvedTheme();
     var root = el.app;
@@ -432,7 +440,9 @@
     var C = cfg.custom, L = cfg.look;
     var pick = function (own, fallback) { return custom ? own : fallback; };
     // The outer frame is a border in the accent colour. With it off, the outline is what the settings describe, if anything.
-    root.style.setProperty("--c-border", L.frame ? t.accent : pick(C.border, t.accent));
+    var stripes = L.frame && !custom ? stripesOf(t.bgimg) : [];
+    root.style.setProperty("--frame-img", stripes.length ? stripeGradient(stripes) : "none");
+    root.style.setProperty("--c-border", L.frame ? (stripes.length ? "transparent" : t.accent) : pick(C.border, t.accent));
     root.style.setProperty("--c-title", pick(C.title, t.text));
     root.style.setProperty("--c-pill-bg", pick(C.pillBg, t.accent));
     root.style.setProperty("--c-pill", pick(C.pill, t.onAccent));

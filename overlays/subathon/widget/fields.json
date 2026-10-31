@@ -897,7 +897,7 @@
   },
   "outerFrame": {
     "type": "checkbox",
-    "label": "An outer frame round the widget in the accent colour. Untick it for none",
+    "label": "An outer frame round the widget in the accent colour, or the flag's stripes in a pride preset. Untick it for none",
     "value": true,
     "group": "Goals: Look"
   },

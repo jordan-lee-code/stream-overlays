@@ -120,6 +120,23 @@
   min-height: 0;
 }
 
+#subathon-app { position: relative; }
+
+/* The outer frame in a pride preset: the flag's stripes, as a ring over the panel's edge that follows its corners. A preset with no flag has no ring, and its frame is the outline. */
+#subathon-app::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: var(--sa-frame, 0px);
+  border-radius: inherit;
+  pointer-events: none;
+  background: var(--sa-frame-img, none);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+}
+
 /* ---- Sub Incentives module (sub-goals-overlay), unchanged ---- */
 /* Copyright (c) 2026 Jordan Lee (https://ko-fi.com/journeyingjordan). Released under the MIT licence: this notice must be kept in copies and substantial portions of the code. See LICENSE. */
 /* Sub Incentives. StreamElements widget styles.
@@ -440,4 +457,21 @@
   .incentive-count.bump, .incentive-bits-gain.bump, .incentive-bits-status.bump,
   .incentive-bits.enter { animation: none; }
   .incentive-fill, .incentive-bits-fill { transition-duration: 0.01s; }
+}
+
+.incentive-panel { position: relative; }
+
+/* The outer frame in a pride preset: the flag's stripes, as a ring over the panel's edge that follows its corners. A preset with no flag has no ring, and its frame is the outline. */
+.incentive-panel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: var(--frame-w, 0px);
+  border-radius: inherit;
+  pointer-events: none;
+  background: var(--frame-img, none);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
 }

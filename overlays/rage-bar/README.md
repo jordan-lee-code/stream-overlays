@@ -20,7 +20,7 @@ It is one self-contained widget in plain JavaScript, with no dependencies and no
 - Sounds: optional sounds for contributions, locks, a lock breaking, the bar filling, a save and a reset.
 - Customisable: around 160 settings cover wording, colours, fonts, sizes, spacing, sounds and every command word.
 - Testable offline: a local dev harness and an automated test script.
-- An outer frame in the accent colour, on by default in every preset, and switched off with one checkbox.
+- An outer frame in the accent colour, on by default in every preset, and switched off with one checkbox (the flag's stripes in the pride presets).
 
 ## Screenshots
 
@@ -30,7 +30,7 @@ It is one self-contained widget in plain JavaScript, with no dependencies and no
 
 **The save window.** When the bar fills the card turns red and a separate save bar starts from empty. Chat can buy the run back before the countdown ends.
 
-<p><img src="docs/save-window.png" alt="The card in red reading Save the run, with a 86 second countdown and a save bar" width="500"></p>
+<p><img src="docs/save-window.png" alt="The card in red reading Save the run, with an 85 second countdown and a save bar" width="500"></p>
 
 **Your own look.** Colours, fonts, shape, wording and animation are all settings. This one uses a pink theme with an outline, a tilt and a tail.
 
@@ -232,7 +232,7 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | Sounds | A sound and volume for a contribution, a lock, a lock breaking, the bar filling, a save and a reset, plus a master mute. |
 | Manual controls | Buttons to fill, lock, unlock, save, switch on and off, reset and test each sound. |
 
-The **outer frame** is a border round the widget in the preset's accent colour, on by default in every preset. Untick **An outer frame** under Card for none, or set the outline thickness to change how thick it is, since at 0 it has a default thickness that grows with the box. With the frame unticked, the outline is whatever you set, as before, in the outline colour.
+The **outer frame** is a border round the widget in the preset's accent colour, on by default in every preset. Untick **An outer frame** under Card for none, or set the outline thickness to change how thick it is, since at 0 it has a default thickness that grows with the box. With the frame unticked, the outline is whatever you set, as before, in the outline colour. In a pride preset the frame is the flag's stripes, as a ring that follows the panel's corners.
 
 The full list, with defaults, is in [`widget/fields.json`](widget/fields.json). The colour and font pickers apply only when the style preset is **Custom**.
 

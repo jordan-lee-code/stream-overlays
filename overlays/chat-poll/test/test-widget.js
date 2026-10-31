@@ -630,6 +630,9 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   tight(); load({ grow: true }); await wait(5); tight(); chat("!vote Pizza, Tacos, Sushi", { broadcaster: true }); await wait(5);
   ok(parseFloat(elements["vote-card"].style["--fit"]) < 1, "and a box that is too small still shrinks the card, either way (" + elements["vote-card"].style["--fit"] + ")");
   load({}); await wait(5);
+  console.log("\n[the winning row]");
+  const cssText = fs.readFileSync(ROOT + "/widget/widget.css", "utf8");
+  ok(/\.vote-option\.win \.vote-label,\s*\.vote-option\.win \.vote-count\s*\{\s*color:\s*var\(--c-win\)/.test(cssText), "the winning row's name and count take the winning colour, since their own colours would leave them white on the white highlight");
   console.log("\n[the outer frame]");
   load({}); await wait(5);
   ok(V["--frame-w"] === "0.14" && V["--c-border"] === V["--accent"], "by default the card has a frame in the accent colour, a default thickness (" + V["--frame-w"] + ", " + V["--c-border"] + ")");
@@ -643,6 +646,15 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   ok(V["--c-border"] === "#FF00AA", "and in Custom the frame is the accent colour you picked, not the outline colour (" + V["--c-border"] + ")");
   load({ themePreset: "custom", cAccent: "#FF00AA", colorBorder: "#010101", borderWidth: 0.3, outerFrame: false }); await wait(5);
   ok(V["--c-border"] === "#010101" && V["--border-w"] === "0.3", "with the frame unticked a Custom outline is the colour and thickness you set (" + V["--c-border"] + ", " + V["--border-w"] + ")");
+  console.log("\n[the outer frame in a pride preset]");
+  load({ themePreset: "trans" }); await wait(5);
+  ok(String(V["--frame-img"]).indexOf("linear-gradient(180deg, #5BCEFA") === 0 && V["--c-border"] === "transparent", "a pride preset's frame is its flag's stripes, as a ring, and the border is only the room it takes (" + String(V["--frame-img"]).slice(0, 38) + ")");
+  load({ themePreset: "pride" }); await wait(5);
+  ok(String(V["--frame-img"]).split(", ").length === 7, "in the rainbow, six stripes (" + String(V["--frame-img"]).split(", ").length + " parts)");
+  load({ themePreset: "glass" }); await wait(5);
+  ok(V["--frame-img"] === "none", "and a preset with no flag has no ring");
+  load({ themePreset: "trans", outerFrame: false }); await wait(5);
+  ok(V["--frame-img"] === "none", "and unticking the frame takes the stripes away too");
   console.log("\n=== " + pass + " passed, " + fail + " failed ===");
   process.exit(fail ? 1 : 0);
 })();

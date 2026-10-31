@@ -507,6 +507,9 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   await load({ borderWidth: 6 }); ok(vars()["--sa-frame"] === "6px", "a thickness sets the frame's thickness (" + vars()["--sa-frame"] + ")");
   await load({ themePreset: "custom", tmAccent: "#FF00AA", borderColor: "#010101", borderWidth: 3 });
   ok(vars()["--sa-frame-c"] === "#FF00AA" && vars()["--sa-frame"] === "3px", "and in Custom the frame is the accent colour, not the outline colour (" + vars()["--sa-frame-c"] + ")");
+  await load({ themePreset: "trans" }); ok(String(vars()["--sa-frame-img"]).indexOf("linear-gradient(180deg, #5BCEFA") === 0 && vars()["--sa-frame-c"] === "transparent", "a pride preset's frame is its flag's stripes, as a ring (" + String(vars()["--sa-frame-img"]).slice(0, 38) + ")");
+  await load({ themePreset: "glass" }); ok(vars()["--sa-frame-img"] === "none", "and a preset with no flag has no ring");
+  await load({ themePreset: "trans", outerFrame: false }); ok(vars()["--sa-frame-img"] === "none", "and unticking the frame takes the stripes away too");
   await load({ themePreset: "custom", borderColor: "#010101", borderWidth: 3, outerFrame: false }); ok(vars()["--sa-border"] === "3px solid #010101", "with the frame unticked a Custom outline is the colour and thickness you set (" + vars()["--sa-border"] + ")");
 
   console.log("\n[look settings]");

@@ -119,3 +119,20 @@
   flex: 1 1 0;
   min-height: 0;
 }
+
+#subathon-app { position: relative; }
+
+/* The outer frame in a pride preset: the flag's stripes, as a ring over the panel's edge that follows its corners. A preset with no flag has no ring, and its frame is the outline. */
+#subathon-app::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: var(--sa-frame, 0px);
+  border-radius: inherit;
+  pointer-events: none;
+  background: var(--sa-frame-img, none);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+}

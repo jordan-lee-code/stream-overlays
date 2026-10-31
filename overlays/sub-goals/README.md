@@ -17,7 +17,7 @@ Goals are added live from chat with `!incentive add 15 chat confessions`. The wi
 - Scales to its box: text scales with the space the widget is given in StreamElements, and long goal names shrink to fit rather than wrapping or being cut off.
 - Customisable: more than 80 settings cover wording, colours, fonts, sizes, spacing, sounds and the chat command words.
 - Testable offline: a local dev harness and an automated test script, no live stream needed.
-- An outer frame in the accent colour, on by default in every preset, and switched off with one checkbox.
+- An outer frame in the accent colour, on by default in every preset, and switched off with one checkbox (the flag's stripes in the pride presets).
 
 ## Screenshots
 
@@ -25,7 +25,7 @@ The overlay sits over your scene with a see-through panel. These are all taken f
 
 **Bits turning into a sub.** A cheer shows a chip and a bar that fills over a few seconds while the number counts up. When the bar fills it flashes the subs it made, then drops back to show the bits left over.
 
-<p><img src="docs/bits.png" alt="The bits strip at the bottom of the panel showing +350 bits and = +1 sub with a glowing bar" width="440"></p>
+<p><img src="docs/bits.png" alt="The bits strip at the bottom of the panel showing +350 bits counting up towards the next sub, with a full bar" width="440"></p>
 
 **Tracking paused.** `!incentive stop` ignores new subs and bits, so goals can be set up before going live. A note appears beside the count.
 
@@ -142,7 +142,7 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | Sounds | A sound and volume for subs, bits and goals, plus a master mute. |
 | Troubleshooting | Logs every event to the browser console. |
 
-The **outer frame** is a border round the widget in the preset's accent colour, on by default in every preset. Untick **An outer frame** under Look for none, or set the outline thickness to change how thick it is, since at 0 it has a default thickness that grows with the box. With the frame unticked, the outline is whatever you set, as before, in the outline colour.
+The **outer frame** is a border round the widget in the preset's accent colour, on by default in every preset. Untick **An outer frame** under Look for none, or set the outline thickness to change how thick it is, since at 0 it has a default thickness that grows with the box. With the frame unticked, the outline is whatever you set, as before, in the outline colour. In a pride preset the frame is the flag's stripes, as a ring that follows the panel's corners.
 
 The full list, with defaults, is in [`widget/fields.json`](widget/fields.json).
 

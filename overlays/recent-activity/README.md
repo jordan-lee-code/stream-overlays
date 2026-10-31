@@ -20,7 +20,7 @@ It is a single self-contained widget in plain JavaScript, with no dependencies a
 - Customisable: around 70 settings cover what shows, the wording, tags, totals, sizes, shape, outline, colours, fonts, sounds and animation.
 - Saved: the last 50 events and the totals survive a browser-source refresh.
 - Tests and a dev harness: a local harness with a time machine and an automated test script, so nothing needs a live stream.
-- An outer frame in the accent colour, on by default in every preset, and switched off with one checkbox.
+- An outer frame in the accent colour, on by default in every preset, and switched off with one checkbox (the flag's stripes in the pride presets).
 
 ## Screenshots
 
@@ -124,7 +124,7 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | Sounds | A sound and volume for an event arriving, with a Test button and a master mute. |
 | Troubleshooting | A debug log of every event to the browser-source console. |
 
-The **outer frame** is a border round the widget in the preset's accent colour, on by default in every preset. Untick **An outer frame** under Look for none, or set the outline thickness to change how thick it is, since at 0 it has a default thickness that grows with the box. With the frame unticked, the outline is whatever you set, as before, in the outline colour.
+The **outer frame** is a border round the widget in the preset's accent colour, on by default in every preset. Untick **An outer frame** under Look for none, or set the outline thickness to change how thick it is, since at 0 it has a default thickness that grows with the box. With the frame unticked, the outline is whatever you set, as before, in the outline colour. In a pride preset the frame is the flag's stripes, as a ring that follows the panel's corners.
 
 The full list, with defaults, is in [`widget/fields.json`](widget/fields.json). The colour and font pickers apply only when the style preset is **Custom**.
 

@@ -1917,6 +1917,15 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   await load({ borderWidth: 6 }); ok(R["--border-w"] === "6px", "a thickness sets the frame's thickness (" + R["--border-w"] + ")");
   await load({ themePreset: "custom", cAccent: "#FF00AA", colorBorder: "#010101", borderWidth: 3 }); ok(R["--c-border"] === "#FF00AA", "and in Custom the frame is the accent colour you picked, not the outline colour (" + R["--c-border"] + ")");
   await load({ themePreset: "custom", cAccent: "#FF00AA", colorBorder: "#010101", borderWidth: 3, outerFrame: false }); ok(R["--c-border"] === "#010101" && R["--border-w"] === "3px", "with the frame unticked a Custom outline is the colour and thickness you set (" + R["--c-border"] + ")");
+  console.log("\n[the outer frame in a pride preset]");
+  await load({ themePreset: "trans" }); 
+  ok(String(R["--frame-img"]).indexOf("linear-gradient(180deg, #5BCEFA") === 0 && R["--c-border"] === "transparent", "a pride preset's frame is its flag's stripes, as a ring, and the border is only the room it takes (" + String(R["--frame-img"]).slice(0, 38) + ")");
+  await load({ themePreset: "pride" }); 
+  ok(String(R["--frame-img"]).split(", ").length === 7, "in the rainbow, six stripes (" + String(R["--frame-img"]).split(", ").length + " parts)");
+  await load({ themePreset: "glass" }); 
+  ok(R["--frame-img"] === "none", "and a preset with no flag has no ring");
+  await load({ themePreset: "trans", outerFrame: false }); 
+  ok(R["--frame-img"] === "none", "and unticking the frame takes the stripes away too");
   console.log("\n=== " + pass + " passed, " + fail + " failed ===");
   process.exit(fail ? 1 : 0);
 })();

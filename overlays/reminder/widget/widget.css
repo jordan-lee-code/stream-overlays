@@ -101,3 +101,21 @@
   0%, 100% { box-shadow: 0 0 0 0 transparent; }
   50% { box-shadow: 0 0 0.9em 0.15em var(--w-accent); }
 }
+
+#rm-app { position: relative; }
+
+/* The outer frame in a pride preset: the flag's stripes, as a ring over the panel's edge that follows its corners. It is the
+   panel's padding box with the inside masked out. A preset with no flag has no ring, and its frame is the border. */
+#rm-app::after {
+  content: "";
+  position: absolute;
+  inset: calc(var(--w-frame-w, 0px) * -1);
+  padding: var(--w-frame-w, 0px);
+  border-radius: inherit;
+  pointer-events: none;
+  background: var(--w-frame-img, none);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+}

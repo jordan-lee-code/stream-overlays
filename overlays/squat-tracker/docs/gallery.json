@@ -4,5 +4,46 @@
   "fields": {
     "label": "squats"
   },
-  "script": "gift(16);"
+  "script": "gift(16);",
+  "pictures": [
+    {
+      "file": "default.png",
+      "width": 340,
+      "height": 200,
+      "fields": {
+        "label": "squats"
+      },
+      "script": "gift(15);"
+    },
+    {
+      "file": "locked.png",
+      "width": 340,
+      "height": 200,
+      "fields": {
+        "label": "squats"
+      },
+      "script": "gift(15);chat(\"!squats lock\");"
+    },
+    {
+      "file": "custom.png",
+      "width": 340,
+      "height": 200,
+      "fields": {
+        "label": "squats today",
+        "themePreset": "custom",
+        "colorPanel": "#FF8FC7",
+        "panelOpacity": 1,
+        "colorCount": "#3a1030",
+        "colorLabel": "#3a1030",
+        "colorBorder": "#FFE3F1",
+        "outerFrame": false,
+        "borderWidth": 3,
+        "tilt": -4,
+        "radius": 24,
+        "showTail": true,
+        "fontFamily": "Lobster"
+      },
+      "script": "gift(15);"
+    }
+  ]
 }

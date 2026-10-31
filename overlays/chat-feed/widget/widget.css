@@ -54,7 +54,9 @@
   border-radius: var(--w-radius);
   box-shadow: var(--w-shadow);
   line-height: 1.2;
-  overflow: hidden;
+  /* Clips like overflow: hidden, but out to the border's edge, so the frame's ring, which lies over the border, is not cut off. */
+  overflow: clip;
+  overflow-clip-margin: border-box;
 }
 
 @keyframes cf-pop {
@@ -173,4 +175,22 @@
   background: var(--w-bg);
   background-image: var(--w-bgimg, none);
   border-radius: var(--w-radius);
+}
+
+#cf-app { position: relative; }
+
+/* The outer frame in a pride preset: the flag's stripes, as a ring over the panel's edge that follows its corners. It is the
+   panel's padding box with the inside masked out. A preset with no flag has no ring, and its frame is the border. */
+#cf-app::after {
+  content: "";
+  position: absolute;
+  inset: calc(var(--w-frame-w, 0px) * -1);
+  padding: var(--w-frame-w, 0px);
+  border-radius: inherit;
+  pointer-events: none;
+  background: var(--w-frame-img, none);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
 }

@@ -545,6 +545,12 @@
     return s;
   }
 
+  // A pride preset's frame is its flag's stripes, top to bottom, in a ring over the panel's edge.
+  function stripeGradient(stripes) {
+    var n = stripes.length, parts = [];
+    for (var i = 0; i < n; i++) parts.push(stripes[i] + " " + (i * 100 / n) + "% " + ((i + 1) * 100 / n) + "%");
+    return "linear-gradient(180deg, " + parts.join(", ") + ")";
+  }
   function themeColours() {
     var p = cfg.themePreset !== "custom" ? PRESETS[cfg.themePreset] : null;
     if (p) return p;
@@ -581,7 +587,9 @@
     s.setProperty("--sa-weight", cfg.weight);
     // The outer frame is a border in the accent colour; with it off, the outline is what the settings describe, if anything.
     s.setProperty("--sa-frame", cfg.outerFrame ? (cfg.borderWidth > 0 ? cfg.borderWidth + "px" : "max(2px, 0.6cqw)") : "0px");
-    s.setProperty("--sa-frame-c", theme.accent);
+    var flagged = cfg.outerFrame && theme.flag;
+    s.setProperty("--sa-frame-img", flagged ? stripeGradient(theme.flag) : "none");
+    s.setProperty("--sa-frame-c", flagged ? "transparent" : theme.accent);
     s.setProperty("--sa-border", (cfg.outerFrame ? "0" : cfg.borderWidth) + "px solid " + cfg.borderColor);
     s.setProperty("--sa-shadow", cfg.shadow ? "0 0.3em 1.2em rgba(0, 0, 0, 0.45)" : "none");
     var root = el.root.style;

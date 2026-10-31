@@ -532,7 +532,9 @@
     var set = function (k, v) { root.style.setProperty(k, v); };
     set("--c-title", P.title); set("--c-timer", P.timer); set("--c-readout", P.readout); set("--c-note", P.note);
     // The outer frame is a border in the accent colour; with it off, the outline is what the settings describe, if anything.
-    set("--c-border", L.frame ? t.accent : P.border); set("--c-track", P.track); set("--c-lock", P.lock); set("--c-lock-hole", P.lockHole);
+    var flagged = L.frame && t.flag;
+    set("--frame-img", flagged ? flagGradient(t.flag) : "none");
+    set("--c-border", L.frame ? (flagged ? "transparent" : t.accent) : P.border); set("--c-track", P.track); set("--c-lock", P.lock); set("--c-lock-hole", P.lockHole);
     set("--c-float", P.float); set("--c-float-bg", P.floatBg);
     set("--c-alert", P.alert); set("--c-alert-fill", P.alertFill); set("--c-alert-track", P.alertTrack);
     set("--radius-pct", String(L.radius)); set("--pad-v", String(L.padV)); set("--pad-h", String(L.padH));

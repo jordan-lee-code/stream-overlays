@@ -186,6 +186,16 @@ asection("the website");
       assert.strictEqual(fs.readFileSync(path.join(dev, "copy-panel.js"), "utf8"), fs.readFileSync(path.join(__dirname, "../shared/copy-panel.js"), "utf8"), n + " has a different panel");
     });
   });
+  atest("every picture in an overlay's docs folder has a scene that can make it again", () => {
+    names.forEach(n => {
+      const docs = path.join(repoRoot, "overlays", n, "docs");
+      const cfg = JSON.parse(fs.readFileSync(path.join(docs, "gallery.json"), "utf8"));
+      const scenes = (cfg.pictures || []).map(x => x.file);
+      fs.readdirSync(docs).filter(f => /\.png$/.test(f) && f !== "presets.png" && f !== "card.png").forEach(f =>
+        assert.ok(scenes.indexOf(f) !== -1, n + "/docs/" + f + " has no scene in gallery.json"));
+      (cfg.pictures || []).forEach(x => assert.ok(x.file && x.width > 0 && x.height > 0, n + ": a picture needs a file, a width and a height"));
+    });
+  });
   atest("every dev page looks the same: it loads the shared stylesheet and box-size bar, and adds only the size of its own stage", () => {
     names.forEach(n => {
       const dev = path.join(repoRoot, "overlays", n, "dev");

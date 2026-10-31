@@ -6,5 +6,53 @@
     "goal": 25,
     "flashSeconds": 60
   },
-  "script": "chat('!count +12');"
+  "script": "chat('!count +12');",
+  "pictures": [
+    {
+      "file": "default.png",
+      "width": 340,
+      "height": 210,
+      "fields": {
+        "animate": false,
+        "title": "Deaths",
+        "flashSeconds": 60
+      },
+      "script": "for(var i=0;i<12;i++)chat('!count +1');"
+    },
+    {
+      "file": "goal.png",
+      "width": 340,
+      "height": 260,
+      "fields": {
+        "animate": false,
+        "title": "Deaths",
+        "goal": 25,
+        "flashSeconds": 60
+      },
+      "script": "chat('!count +12');"
+    },
+    {
+      "file": "custom.png",
+      "width": 440,
+      "height": 250,
+      "fields": {
+        "themePreset": "custom",
+        "colorPanel": "#3a1030",
+        "panelOpacity": 0.85,
+        "cText": "#FFE3F1",
+        "cAccent": "#FF8FC7",
+        "cTrack": "#7a2a5a",
+        "fontFamily": "Lobster",
+        "radius": 40,
+        "borderWidth": 3,
+        "borderColor": "#FF8FC7",
+        "animate": false,
+        "title": "Wins",
+        "layout": "inline",
+        "goal": 10,
+        "flashSeconds": 60
+      },
+      "script": "chat('!count +4');"
+    }
+  ]
 }

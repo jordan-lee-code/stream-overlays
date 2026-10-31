@@ -168,14 +168,21 @@ module.exports = function createEnv(root) {
       const border = () => String(env.vars(appId)["--w-border"]);
       const DEFAULT = "max(2px, 0.6cqw)";
       let all = true, flags = 0;
+      const ring = () => String(env.vars(appId)["--w-frame-img"]);
       for (const key of Object.keys(expectedPresets)) {
         await env.load({ themePreset: key });
-        if (border() !== DEFAULT + " solid " + expectedPresets[key].accent) { all = false; console.log("    frame differs for " + key + ": " + border()); }
-        if (expectedPresets[key].flag) flags++;
+        const x = expectedPresets[key];
+        // A plain preset's frame is its accent. A pride preset's is its flag's stripes, as a ring, so the border is only the room it takes.
+        const want = x.flag ? DEFAULT + " solid transparent" : DEFAULT + " solid " + x.accent;
+        const stripesOk = x.flag ? ring().indexOf("linear-gradient(180deg, " + x.flag[0]) === 0 && ring().split(", ").length === x.flag.length + 1 : ring() === "none";
+        if (border() !== want || !stripesOk) { all = false; console.log("    frame differs for " + key + ": " + border() + " / " + ring().slice(0, 60)); }
+        if (x.flag) flags++;
       }
-      env.ok(all, "by default there is an outer frame in the accent colour in every one of the " + Object.keys(expectedPresets).length + " presets, " + flags + " of them pride flags, as thick as a default that grows with the box");
+      env.ok(all, "by default there is an outer frame in every one of the " + Object.keys(expectedPresets).length + " presets: the accent colour, and for the " + flags + " pride flags their stripes, as thick as a default that grows with the box");
       await env.load({ outerFrame: false });
       env.ok(border() === "0px solid #FFFFFF", "it can be switched off, which leaves no outline (" + border() + ")");
+      await env.load({ outerFrame: false, themePreset: "trans" });
+      env.ok(ring() === "none" && border() === "0px solid #FFFFFF", "and that takes a pride preset's stripes away too (" + ring().slice(0, 30) + ")");
       await env.load({ borderWidth: 6 });
       env.ok(border() === "6px solid " + expectedPresets.glass.accent, "a thickness sets the frame's thickness (" + border() + ")");
       await env.load({ themePreset: "custom", cAccent: "#FF00AA", borderColor: "#010101", borderWidth: 3 });

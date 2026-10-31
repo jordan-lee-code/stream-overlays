@@ -6,7 +6,7 @@ const path = require("path");
 const { sync } = require("../src/sync");
 const K = require("../src/presets");
 const { checkContrast } = require("../src/contrast");
-const { gallery, card } = require("../src/gallery");
+const { gallery, card, pictures } = require("../src/gallery");
 const { checkSettings } = require("../src/settings");
 
 const args = process.argv.slice(2);
@@ -22,6 +22,7 @@ function usage() {
     "overlay-kit check-contrast             check every preset against the contrast standards",
     "overlay-kit gallery <dir>             render the overlay in every preset into docs/presets.png (needs Chromium)",
     "overlay-kit gallery <dir> --card      render just its default look into docs/card.png, for its card on the website",
+    "overlay-kit pictures <dir>            render every picture its README shows, from the scenes in docs/gallery.json (--only a.png,b.png)",
     "overlay-kit list                       list the presets",
     "",
     "options: --kind <goals|wheel|poll|squat|rage|clock>   --file <widget file>"
@@ -57,6 +58,12 @@ if (cmd === "sync-presets" || cmd === "check-presets") {
     if (process.argv.indexOf("--card") !== -1) { console.log("Wrote " + card(path.resolve(args[0] || "."), { out, chromium }).target); process.exit(0); }
     const r = gallery(path.resolve(args[0] || "."), { out, only: only ? only.split(",") : null, chromium, log: l => console.log(l) });
     console.log("Wrote " + r.target + " (" + r.tiles + " presets)");
+  } catch (e) { console.error(e.message); process.exit(2); }
+} else if (cmd === "pictures") {
+  const only = flag("--only"), chromium = flag("--chromium"), out = flag("--out");
+  try {
+    const r = pictures(path.resolve(args[0] || "."), { only: only ? only.split(",") : null, chromium, out, log: l => console.log(l) });
+    console.log("Wrote " + r.written.length + " pictures");
   } catch (e) { console.error(e.message); process.exit(2); }
 } else if (cmd === "list") {
   K.PRESETS.forEach(x => console.log(x.key.padEnd(11) + x.label + "  (" + x.font + ")" + (x.flag ? "  [flag]" : "")));

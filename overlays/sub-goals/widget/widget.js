@@ -357,7 +357,8 @@
     // The outer frame is a border in the accent colour; with it off, the outline is what the settings describe, if anything.
     set("--frame-w", L.frame ? (L.borderW > 0 ? L.borderW + "px" : "max(2px, 0.6cqw)") : "0px");
     set("--border-w", L.frame ? "0px" : L.borderW + "px");
-    set("--border-c", L.frame ? T.accent : T.borderC);
+    set("--frame-img", L.frame && T.flag ? T.flag : "none");
+    set("--border-c", L.frame ? (T.flag ? "transparent" : T.accent) : T.borderC);
     set("--shadow", L.shadow ? "0 0.25em 0.9em rgba(0, 0, 0, 0.45)" : "none");
     set("align-items", ALIGN[L.vAlign] || ALIGN.top);
 

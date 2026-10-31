@@ -89,3 +89,21 @@
 .lb-row.first .lb-rank { opacity: 1; }
 .lb-row.bump { animation: lb-pop 0.45s ease; }
 @keyframes lb-swap { 0% { opacity: 0; transform: translateY(0.3em); } 100% { opacity: 1; transform: none; } }
+
+#lb-app { position: relative; }
+
+/* The outer frame in a pride preset: the flag's stripes, as a ring over the panel's edge that follows its corners. It is the
+   panel's padding box with the inside masked out. A preset with no flag has no ring, and its frame is the border. */
+#lb-app::after {
+  content: "";
+  position: absolute;
+  inset: calc(var(--w-frame-w, 0px) * -1);
+  padding: var(--w-frame-w, 0px);
+  border-radius: inherit;
+  pointer-events: none;
+  background: var(--w-frame-img, none);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+}

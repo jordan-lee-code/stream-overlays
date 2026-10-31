@@ -20,7 +20,7 @@ It was built for rounds like Two Truths and a Lie, but it suits any quick vote. 
 - Customisable: more than 100 settings cover the shape, spacing, text, colours and fonts of every part of the card, the wording, sounds and animation.
 - Sounds: optional sounds when a poll opens, when a vote is counted, for each of the last seconds, and when the result is declared.
 - Testable offline: a local dev harness and two automated test scripts.
-- An outer frame in the accent colour, on by default in every preset, and switched off with one checkbox.
+- An outer frame in the accent colour, on by default in every preset, and switched off with one checkbox (the flag's stripes in the pride presets).
 
 ## Screenshots
 
@@ -132,7 +132,7 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | Sounds | A sound and volume for a poll opening, a vote, each of the last seconds and the result, plus a master mute. |
 | Manual controls | Buttons to start a demo poll, add time, end, restart, cancel and undo, and to test each sound. |
 
-The **outer frame** is a border round the widget in the preset's accent colour, on by default in every preset. Untick **An outer frame** under Card for none, or set the outline thickness to change how thick it is, since at 0 it has a default thickness that grows with the box. With the frame unticked, the outline is whatever you set, as before, in the outline colour.
+The **outer frame** is a border round the widget in the preset's accent colour, on by default in every preset. Untick **An outer frame** under Card for none, or set the outline thickness to change how thick it is, since at 0 it has a default thickness that grows with the box. With the frame unticked, the outline is whatever you set, as before, in the outline colour. In a pride preset the frame is the flag's stripes, as a ring that follows the panel's corners.
 
 The full list, with defaults, is in [`widget/fields.json`](widget/fields.json). The colour and font pickers apply only when the style preset is **Custom**.
 

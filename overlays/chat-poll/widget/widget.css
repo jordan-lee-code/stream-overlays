@@ -380,7 +380,11 @@
   color: var(--c-win-bg);
   text-shadow: none;
 }
-.vote-option.win .vote-bar { background: rgba(255, 255, 255, 0.3); }
+/* The name and the count have colours of their own, which would win over the row's and leave them, in a light preset, white on
+   the white highlight. The track is a shade of the winning text colour, so it shows on any highlight. */
+.vote-option.win .vote-label,
+.vote-option.win .vote-count { color: var(--c-win); }
+.vote-option.win .vote-bar { background: color-mix(in srgb, var(--c-win) 22%, transparent); }
 .vote-option.win .vote-fill { background: var(--c-win); }
 
 @keyframes vote-win {
@@ -443,4 +447,21 @@
 #vote-app.no-motion *::after {
   animation: none !important;
   transition: none !important;
+}
+
+.vote-card { position: relative; }
+
+/* The outer frame in a pride preset: the flag's stripes, as a ring over the panel's edge that follows its corners. A preset with no flag has no ring, and its frame is the outline. */
+.vote-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: calc(var(--frame-w, 0) * 1em);
+  border-radius: inherit;
+  pointer-events: none;
+  background: var(--frame-img, none);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
 }
