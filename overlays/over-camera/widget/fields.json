@@ -1,0 +1,291 @@
+{
+  "command": {
+    "type": "text",
+    "label": "Command word. Moderators and you type it with off, on, brb [time], away [time] or cover <message>",
+    "value": "!camera",
+    "group": "Commands"
+  },
+  "whoCanManage": {
+    "type": "dropdown",
+    "label": "Who can cover and uncover the camera",
+    "value": "mods",
+    "options": {
+      "broadcaster": "Broadcaster only",
+      "mods": "Broadcaster + moderators"
+    },
+    "group": "Commands"
+  },
+  "startMode": {
+    "type": "dropdown",
+    "label": "Where it starts the very first time (after that it remembers where it was)",
+    "value": "live",
+    "group": "Safety",
+    "options": {
+      "live": "Camera showing",
+      "off": "Camera covered"
+    }
+  },
+  "holdWhileLoading": {
+    "type": "checkbox",
+    "label": "Stay covered until the saved state has loaded, so a refresh of the browser source can never show the camera for a moment (recommended)",
+    "value": true,
+    "group": "Safety"
+  },
+  "autoReveal": {
+    "type": "checkbox",
+    "label": "When a brb or away countdown reaches zero, lift the cover by itself. Leave this off to keep the cover up until you say on, which is the safer choice",
+    "value": false,
+    "group": "Safety"
+  },
+  "offText": {
+    "type": "text",
+    "label": "Camera off: the message",
+    "value": "Camera off",
+    "group": "Wording"
+  },
+  "offSub": {
+    "type": "text",
+    "label": "Camera off: the smaller line under it",
+    "value": "Back soon",
+    "group": "Wording"
+  },
+  "brbText": {
+    "type": "text",
+    "label": "Be right back: the message",
+    "value": "Be right back",
+    "group": "Wording"
+  },
+  "awayText": {
+    "type": "text",
+    "label": "Away: the message",
+    "value": "Away for a moment",
+    "group": "Wording"
+  },
+  "timerText": {
+    "type": "text",
+    "label": "The countdown line. Use {time}",
+    "value": "Back in {time}",
+    "group": "Wording"
+  },
+  "overText": {
+    "type": "text",
+    "label": "What it says when a countdown reaches zero",
+    "value": "Back any moment now",
+    "group": "Wording"
+  },
+  "offIcon": {
+    "type": "text",
+    "label": "Camera off: an emoji or symbol above the message (blank for none)",
+    "value": "🔒",
+    "group": "Icons"
+  },
+  "brbIcon": {
+    "type": "text",
+    "label": "Be right back: the emoji or symbol",
+    "value": "☕",
+    "group": "Icons"
+  },
+  "awayIcon": {
+    "type": "text",
+    "label": "Away: the emoji or symbol",
+    "value": "💤",
+    "group": "Icons"
+  },
+  "coverIcon": {
+    "type": "text",
+    "label": "A message you set with cover: the emoji or symbol",
+    "value": "",
+    "group": "Icons"
+  },
+  "textSize": {
+    "type": "number",
+    "label": "Text size, as a percent of the smaller side of the box",
+    "value": 9,
+    "group": "Size",
+    "min": 2,
+    "max": 30,
+    "step": 0.5
+  },
+  "themePreset": {
+    "type": "dropdown",
+    "label": "Style preset (the same twenty-two are in every overlay in this set)",
+    "value": "glass",
+    "options": {
+      "glass": "Soft black (default)",
+      "frost": "Soft white",
+      "midnight": "Midnight blue",
+      "sunset": "Sunset",
+      "forest": "Forest",
+      "ocean": "Ocean",
+      "rose": "Rose",
+      "neon": "Neon",
+      "cosycabin": "Cosy cabin",
+      "pastel": "Cosy summer pastel",
+      "celestial": "Celestial",
+      "pastelgoth": "Pastel goth",
+      "pastelpink": "Pastel pink",
+      "pastelsage": "Pastel sage",
+      "faegreen": "Fae green",
+      "pride": "Rainbow pride",
+      "trans": "Trans pride",
+      "bi": "Bi pride",
+      "pan": "Pan pride",
+      "enby": "Non-binary pride",
+      "lesbian": "Lesbian pride",
+      "ace": "Ace pride",
+      "custom": "Custom (use the colours below)"
+    },
+    "group": "Look"
+  },
+  "fontFamily": {
+    "type": "googleFont",
+    "label": "Font (used when the style preset is Custom)",
+    "value": "BioRhyme",
+    "group": "Look"
+  },
+  "weight": {
+    "type": "number",
+    "label": "Boldness (100 to 900)",
+    "value": 800,
+    "min": 100,
+    "max": 900,
+    "step": 100,
+    "group": "Look"
+  },
+  "radius": {
+    "type": "number",
+    "label": "Corner roundness, in pixels",
+    "value": 24,
+    "min": 0,
+    "max": 100,
+    "step": 1,
+    "group": "Look"
+  },
+  "borderWidth": {
+    "type": "number",
+    "label": "Outline width, in pixels",
+    "value": 0,
+    "min": 0,
+    "max": 20,
+    "step": 1,
+    "group": "Look"
+  },
+  "borderColor": {
+    "type": "colorpicker",
+    "label": "Outline colour",
+    "value": "#FFFFFF",
+    "group": "Look"
+  },
+  "shadow": {
+    "type": "checkbox",
+    "label": "Shadow",
+    "value": false,
+    "group": "Look"
+  },
+  "animate": {
+    "type": "checkbox",
+    "label": "Animate",
+    "value": true,
+    "group": "Look"
+  },
+  "shape": {
+    "type": "dropdown",
+    "label": "Shape of the cover",
+    "value": "rounded",
+    "group": "Look",
+    "options": {
+      "rounded": "Rounded rectangle (the corner setting sets how round)",
+      "circle": "Circle or oval, for a round camera"
+    }
+  },
+  "colorPanel": {
+    "type": "colorpicker",
+    "label": "Cover colour (used when the style preset is Custom). It is always solid, whatever the preset, so the camera never shows through",
+    "value": "#000000",
+    "group": "Custom colours"
+  },
+  "cText": {
+    "type": "colorpicker",
+    "label": "Text (used when the style preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Custom colours"
+  },
+  "cAccent": {
+    "type": "colorpicker",
+    "label": "The countdown and the smaller line (used when the style preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Custom colours"
+  },
+  "btnOff": {
+    "type": "button",
+    "label": "Cover the camera (off)",
+    "group": "Manual controls"
+  },
+  "btnBrb": {
+    "type": "button",
+    "label": "Cover it: be right back",
+    "group": "Manual controls"
+  },
+  "btnAway": {
+    "type": "button",
+    "label": "Cover it: away",
+    "group": "Manual controls"
+  },
+  "btnOn": {
+    "type": "button",
+    "label": "Uncover the camera",
+    "group": "Manual controls"
+  },
+  "mute": {
+    "type": "checkbox",
+    "label": "Mute every sound",
+    "value": false,
+    "group": "Sounds"
+  },
+  "soundCover": {
+    "type": "sound-input",
+    "label": "The camera is covered",
+    "value": "",
+    "group": "Sounds"
+  },
+  "soundCoverVol": {
+    "type": "number",
+    "label": "Volume for that sound (0 to 100)",
+    "value": 60,
+    "group": "Sounds",
+    "min": 0,
+    "max": 100,
+    "step": 5
+  },
+  "test_soundCover": {
+    "type": "button",
+    "label": "Test it",
+    "group": "Sounds"
+  },
+  "soundReveal": {
+    "type": "sound-input",
+    "label": "The camera is uncovered",
+    "value": "",
+    "group": "Sounds"
+  },
+  "soundRevealVol": {
+    "type": "number",
+    "label": "Volume for that sound (0 to 100)",
+    "value": 60,
+    "group": "Sounds",
+    "min": 0,
+    "max": 100,
+    "step": 5
+  },
+  "test_soundReveal": {
+    "type": "button",
+    "label": "Test it",
+    "group": "Sounds"
+  },
+  "debug": {
+    "type": "checkbox",
+    "label": "Log every event to the browser-source console",
+    "value": false,
+    "group": "Troubleshooting"
+  }
+}
