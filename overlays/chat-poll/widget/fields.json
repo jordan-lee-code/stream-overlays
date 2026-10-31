@@ -173,9 +173,15 @@
     "value": false,
     "group": "Copy"
   },
+  "grow": {
+    "type": "checkbox",
+    "label": "Grow to fill the box: the card is as large as the box allows, so a bigger box gives a bigger card. Untick to use the Size setting below as it is",
+    "value": true,
+    "group": "Card"
+  },
   "scale": {
     "type": "number",
-    "label": "Size of everything (percent). A ceiling: the card shrinks to fit its box when a poll needs more room.",
+    "label": "Size of everything (percent), used when Grow to fill the box is unticked. A ceiling: the card still shrinks to fit its box when a poll needs more room.",
     "value": 100,
     "min": 25,
     "max": 400,

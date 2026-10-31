@@ -276,6 +276,7 @@
   var LETTERS = ["A", "B", "C", "D", "E", "F", "G", "H"];
   var MAX_OPTIONS = 8;
   var MIN_OPTIONS = 2;
+  var MAX_GROW = 12;                 // how many times larger than its natural size the card may grow to fill a box
   var UNDO_DEPTH = 6;
 
   // ---- runtime state ----
@@ -317,6 +318,7 @@
       showHint: bool(f.showHint, true),
       debug: bool(f.debug, false),
       scale: clamp(Math.round(num(f.scale, 100)), 25, 400) / 100,
+      grow: bool(f.grow, true),
       themePreset: str(f.themePreset, "glass"),
       panelOpacity: clamp(num(f.panelOpacity, 0.55), 0, 1),
       fontFamily: str(f.fontFamily, BASE.font),
@@ -909,7 +911,7 @@
        count gains a digit and not on every single vote. Three or four times in a
        busy poll rather than two thousand. */
     var fitKey = poll.options.map(function (o) { return o.label; }).join("|") +
-      "|" + poll.status + "|" + cfg.scale + "|" + (poll.title || "") +
+      "|" + poll.status + "|" + cfg.scale + "|" + cfg.grow + "|" + (poll.title || "") +
       "|" + widestCountLength(total, best, blind);
     if (fitKey !== lastFitKey) {
       lastFitKey = fitKey;
@@ -1162,7 +1164,9 @@
 
     // A couple of percent of breathing room, so the card never lands exactly on
     // the boundary where a rounding error costs you the bottom row.
-    var fit = Math.min(1, (hasW / wantsW) * 0.98, (hasH / wantsH) * 0.98);
+    // With Grow on, the card is as large as the box allows, and a box twice the size gives a card twice the size. With it
+    // off, the card never goes past the size the Size setting asks for, and only shrinks to fit.
+    var fit = Math.min(cfg.grow ? MAX_GROW : 1, (hasW / wantsW) * 0.98, (hasH / wantsH) * 0.98);
 
     /* A floor, because past a point shrinking stops being a kindness and just
        produces a poll nobody can read from the sofa. It is measured against the
