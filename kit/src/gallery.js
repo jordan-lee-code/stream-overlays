@@ -106,4 +106,30 @@ function card(dir, opts) {
   return { target };
 }
 
-module.exports = { gallery, card, page };
+/** Every picture a README shows, from the scenes listed under "pictures" in docs/gallery.json. A scene has a file name, a size,
+ *  the settings and the script that put the widget in that state, and may start from the overlay's default scene with
+ *  `"base": "fields"` (its settings) or `"base": "scene"` (its settings and script), so a change of look can be shown again with
+ *  one command, and no picture depends on a script that was never kept. */
+function pictures(dir, opts) {
+  opts = opts || {};
+  const cfgPath = path.join(dir, "docs", "gallery.json");
+  if (!fs.existsSync(cfgPath)) throw new Error("No docs/gallery.json in " + dir + ".");
+  const cfg = JSON.parse(fs.readFileSync(cfgPath, "utf8"));
+  const list = (cfg.pictures || []).filter(x => !opts.only || opts.only.indexOf(x.file) !== -1);
+  if (!list.length) throw new Error("docs/gallery.json in " + dir + " lists no pictures" + (opts.only ? " called " + opts.only.join(", ") : "") + ".");
+  const chromium = findChromium(opts.chromium), done = [];
+  list.forEach(x => {
+    const base = x.base === "scene" || x.base === "fields", withScript = x.base === "scene";
+    const fields = Object.assign({}, base ? cfg.fields || {} : {}, x.fields || {});
+    const script = (withScript ? cfg.script || "" : "") + (x.script || "");
+    const preset = K.PRESETS.filter(q => q.key === fields.themePreset)[0] || K.PRESETS[0];
+    const target = path.resolve(opts.out ? path.join(opts.out, x.file) : path.join(dir, "docs", x.file));
+    shoot(chromium, page(dir, preset, fields, script, x.width, x.height, x.setup !== undefined ? x.setup : cfg.setup), target, x.width, x.height, x.budget || cfg.budget || 6000);
+    try { fs.rmSync(target.replace(/\.png$/, ".html"), { force: true }); } catch (e) { /* best effort */ }
+    if (opts.log) opts.log("  " + x.file);
+    done.push(target);
+  });
+  return { written: done };
+}
+
+module.exports = { gallery, card, pictures, page };

@@ -28,5 +28,40 @@
         "showProgress": false
       }
     }
+  ],
+  "pictures": [
+    {
+      "file": "default.png",
+      "width": 420,
+      "height": 130,
+      "fields": {
+        "animate": false,
+        "source": "tuna",
+        "showAlbum": false
+      }
+    },
+    {
+      "file": "pride.png",
+      "width": 420,
+      "height": 130,
+      "fields": {
+        "animate": false,
+        "source": "tuna",
+        "showAlbum": false,
+        "themePreset": "trans"
+      }
+    },
+    {
+      "file": "sage.png",
+      "width": 420,
+      "height": 130,
+      "fields": {
+        "animate": false,
+        "source": "tuna",
+        "showAlbum": true,
+        "themePreset": "pastelsage",
+        "artShape": "round"
+      }
+    }
   ]
 }

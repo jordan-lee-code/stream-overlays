@@ -127,7 +127,7 @@ const stored = () => (storeData.reminder_v1 ? storeData.reminder_v1.items : []);
   await L({ soundRemind: "data:audio/wav;base64,AA", mute: true }); boss("!reminder 1m a"); audioLog.length = 0; await skip(61000); ok(audioLog.length === 0, "mute silences everything");
 
   section("look");
-  await L({ textSize: 9, titleScale: 0.8, pendingScale: 0.7, itemGap: 0.6, radius: 10, borderWidth: 2, borderColor: "#FF0000", shadow: true, weight: 600, pad: 1, animate: false });
+  await L({ textSize: 9, titleScale: 0.8, pendingScale: 0.7, itemGap: 0.6, radius: 10, outerFrame: false, borderWidth: 2, borderColor: "#FF0000", shadow: true, weight: 600, pad: 1, animate: false });
   const v = env.vars("rm-app");
   ok(v["--rm-size"] === "9cqw" && v["--rm-title"] === 0.8 && v["--rm-wait"] === 0.7 && v["--rm-gap"] === "0.6em", "the size and spacing settings apply");
   ok(v["--w-radius"] === "10px" && v["--w-border"] === "2px solid #FF0000" && v["--w-weight"] === 600 && v["--w-pad"] === 1 && v["--w-shadow"] !== "none", "the corner, outline, weight, padding and shadow settings apply");
@@ -136,6 +136,7 @@ const stored = () => (storeData.reminder_v1 ? storeData.reminder_v1.items : []);
   await L({ showTitle: false }); boss("!reminder 1m a"); await skip(61000); ok(E("rm-title").hidden, "so does turning it off");
   await L({ title: "Heads up" }); boss("!reminder 1m a"); await skip(61000); ok(E("rm-title").textContent === "Heads up", "and it can be renamed");
   await env.checkPresets("rm-app");
+  await env.checkFrame("rm-app");
 
   section("disappearing when there is nothing to show");
   const css = require("fs").readFileSync(require("path").join(__dirname, "../widget/widget.css"), "utf8");

@@ -2,5 +2,41 @@
   "width": 300,
   "height": 200,
   "fields": {},
-  "script": "chat(\"!vote Pizza, Tacos, Sushi\");function vote(n,k,t){for(var i=0;i<n;i++)chat(t,{nick:k+i});} vote(5,\"a\",\"1\");vote(8,\"b\",\"2\");vote(3,\"c\",\"3\");"
+  "script": "chat(\"!vote Pizza, Tacos, Sushi\");function vote(n,k,t){for(var i=0;i<n;i++)chat(t,{nick:k+i});} vote(5,\"a\",\"1\");vote(8,\"b\",\"2\");vote(3,\"c\",\"3\");",
+  "pictures": [
+    {
+      "file": "poll-open.png",
+      "width": 300,
+      "height": 210,
+      "base": "scene"
+    },
+    {
+      "file": "result.png",
+      "width": 300,
+      "height": 210,
+      "base": "scene",
+      "script": "chat(\"!vote end\");"
+    },
+    {
+      "file": "custom.png",
+      "width": 300,
+      "height": 210,
+      "base": "scene",
+      "fields": {
+        "themePreset": "custom",
+        "colorPanel": "#3a1030",
+        "panelOpacity": 0.85,
+        "cText": "#FFE3F1",
+        "cAccent": "#FF8FC7",
+        "colorTitle": "#FFE3F1",
+        "colorPillBg": "#FF8FC7",
+        "colorPill": "#3a1030",
+        "colorKey": "#3a1030",
+        "colorOnAccent": "#3a1030",
+        "fontFamily": "Lobster",
+        "borderWidth": 0.2,
+        "colorBorder": "#FF8FC7"
+      }
+    }
+  ]
 }

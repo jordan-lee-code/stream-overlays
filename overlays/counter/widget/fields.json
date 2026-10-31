@@ -279,9 +279,15 @@
     "step": 0.05,
     "group": "Look"
   },
+  "outerFrame": {
+    "type": "checkbox",
+    "label": "An outer frame round the widget in the accent colour, or the flag's stripes in a pride preset. Untick it for none",
+    "value": true,
+    "group": "Look"
+  },
   "borderWidth": {
     "type": "number",
-    "label": "Outline width, in pixels",
+    "label": "Frame and outline thickness in pixels. At 0 the frame has a default thickness that grows with the box, and with the frame unticked there is no outline",
     "value": 0,
     "min": 0,
     "max": 20,
@@ -290,7 +296,7 @@
   },
   "borderColor": {
     "type": "colorpicker",
-    "label": "Outline colour",
+    "label": "Outline colour, used when the outer frame is unticked and the thickness is above 0 (the frame itself is always the accent colour)",
     "value": "#FFFFFF",
     "group": "Look"
   },

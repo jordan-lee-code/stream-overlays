@@ -429,6 +429,12 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   load({ rimWidth: 0, dividerWidth: 0 }); await wait(5); ctxLog.length = 0;
   chat("!spin", { nick: "Alice" }); chat("!spin", { nick: "Bob" });
   ok(widths().length === 0, "and can be switched off (" + widths() + ")");
+  load({ outerFrame: false, dividerWidth: 5 }); await wait(5); ctxLog.length = 0;
+  chat("!spin", { nick: "Alice" }); chat("!spin", { nick: "Bob" });
+  ok(widths().indexOf(8) === -1 && widths().indexOf(5) !== -1, "the outer frame is the rim: unticking it takes the rim away and leaves the dividers (" + widths().slice(-4) + ")");
+  load({ outerFrame: true, rimWidth: 11 }); await wait(5); ctxLog.length = 0;
+  chat("!spin", { nick: "Alice" }); chat("!spin", { nick: "Bob" });
+  ok(widths().indexOf(11) !== -1, "and with it ticked the rim is the thickness you set (" + widths().slice(-4) + ")");
   load({ labelWeight: "400" }); await wait(5); ctxLog.length = 0;
   chat("!spin", { nick: "Alice" }); chat("!spin", { nick: "Bob" });
   ok(fonts().some(f => /^400 /.test(f)) && !fonts().some(f => /^700 /.test(f)), "name boldness is configurable (" + fonts().slice(-1) + ")");

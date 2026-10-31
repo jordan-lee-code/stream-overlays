@@ -2,5 +2,51 @@
   "width": 440,
   "height": 170,
   "fields": {},
-  "script": "chat(\"!bar set 42\",{mod:true});"
+  "script": "chat(\"!bar set 42\",{mod:true});",
+  "pictures": [
+    {
+      "file": "filling.png",
+      "width": 460,
+      "height": 190,
+      "base": "scene"
+    },
+    {
+      "file": "locked.png",
+      "width": 460,
+      "height": 190,
+      "base": "scene",
+      "script": "chat(\"!bar lock 90\",{mod:true});"
+    },
+    {
+      "file": "save-window.png",
+      "width": 460,
+      "height": 190,
+      "fields": {
+        "themePreset": "glass"
+      },
+      "script": "chat(\"!bar fill\",{mod:true});"
+    },
+    {
+      "file": "custom.png",
+      "width": 460,
+      "height": 190,
+      "base": "scene",
+      "fields": {
+        "themePreset": "custom",
+        "colorPanel": "#3a1030",
+        "panelOpacity": 0.85,
+        "cText": "#FFE3F1",
+        "cAccent": "#FF8FC7",
+        "cTrack": "#7a2a5a",
+        "colorTitle": "#FFE3F1",
+        "colorFillFrom": "#FF8FC7",
+        "colorFillTo": "#FFD0E6",
+        "fontFamily": "Lobster",
+        "borderWidth": 3,
+        "colorBorder": "#FF8FC7",
+        "tilt": -2,
+        "showTail": true
+      }
+    }
+  ]
 }

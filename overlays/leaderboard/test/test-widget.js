@@ -116,7 +116,7 @@ const names = () => E("lb-list").children.filter(li => li.className.indexOf("lb-
   bomb(3, "Cara"); ok(names() === "Alice,Bob,Cara" || names() === "Alice,Cara,Bob", "and order among ties is remembered too (" + names() + ")");
 
   section("look");
-  await load({ mode: "bits", rowSize: 8, titleScale: 1.5, rowGap: 0.5, radius: 10, borderWidth: 2, borderColor: "#FF0000", shadow: true, weight: 600, pad: 1, animate: false });
+  await load({ mode: "bits", rowSize: 8, titleScale: 1.5, rowGap: 0.5, radius: 10, outerFrame: false, borderWidth: 2, borderColor: "#FF0000", shadow: true, weight: 600, pad: 1, animate: false });
   const v = env.vars("lb-app");
   ok(v["--lb-size"] === "8cqw" && v["--lb-title"] === 1.5 && v["--lb-gap"] === "0.5em", "the size and spacing settings apply");
   ok(v["--w-radius"] === "10px" && v["--w-border"] === "2px solid #FF0000" && v["--w-weight"] === 600 && v["--w-pad"] === 1 && v["--w-shadow"] !== "none", "the corner, outline, weight, padding and shadow settings apply");
@@ -124,6 +124,7 @@ const names = () => E("lb-list").children.filter(li => li.className.indexOf("lb-
   await load({ titleGifts: "Gift heroes", mode: "gifts", emptyText: "Be the first" });
   ok(heading() === "Gift heroes" && E("lb-list").children[0].textContent === "Be the first", "titles and the empty text are settings");
   await env.checkPresets("lb-app");
+  await env.checkFrame("lb-app");
 
   section("sounds");
   await load({ mode: "bits", soundUpdate: "data:audio/wav;base64,AA", soundUpdateVol: 40, soundLead: "data:audio/wav;base64,BB" });

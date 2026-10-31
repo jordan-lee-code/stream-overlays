@@ -58,5 +58,82 @@
         "showFrame": false
       }
     }
+  ],
+  "pictures": [
+    {
+      "file": "live.png",
+      "width": 420,
+      "height": 300,
+      "fields": {
+        "animate": false,
+        "title": "Mina",
+        "pronouns": "she/her",
+        "tagline": "Cosy games and good company",
+        "lines": "Thanks for being here | Drink some water | Be kind in chat",
+        "aspect": "16:9"
+      }
+    },
+    {
+      "file": "brb.png",
+      "width": 420,
+      "height": 300,
+      "fields": {
+        "animate": false,
+        "title": "Mina",
+        "pronouns": "she/her",
+        "tagline": "Cosy games and good company",
+        "lines": "Thanks for being here | Drink some water | Be kind in chat",
+        "aspect": "16:9",
+        "themePreset": "pastelsage"
+      },
+      "script": "chat('!camera brb 12m');"
+    },
+    {
+      "file": "off.png",
+      "width": 420,
+      "height": 300,
+      "fields": {
+        "animate": false,
+        "title": "Mina",
+        "pronouns": "she/her",
+        "tagline": "Cosy games and good company",
+        "lines": "Thanks for being here | Drink some water | Be kind in chat",
+        "aspect": "16:9"
+      },
+      "script": "chat('!camera off');"
+    },
+    {
+      "file": "circle.png",
+      "width": 360,
+      "height": 420,
+      "fields": {
+        "animate": false,
+        "title": "Mina",
+        "pronouns": "she/her",
+        "tagline": "Cosy games and good company",
+        "lines": "Thanks for being here | Drink some water | Be kind in chat",
+        "aspect": "1:1",
+        "themePreset": "midnight",
+        "shape": "circle",
+        "platePosition": "above"
+      },
+      "script": "chat('!camera cover Doorbell!');"
+    },
+    {
+      "file": "pride.png",
+      "width": 420,
+      "height": 300,
+      "fields": {
+        "animate": false,
+        "title": "Mina",
+        "pronouns": "she/her",
+        "tagline": "Cosy games and good company",
+        "lines": "Thanks for being here | Drink some water | Be kind in chat",
+        "aspect": "16:9",
+        "themePreset": "trans",
+        "frameWidth": 2.5
+      },
+      "script": "chat('!camera away 5m');"
+    }
   ]
 }

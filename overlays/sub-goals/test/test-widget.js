@@ -509,7 +509,7 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   ok(elements["incentive-bits"].hidden === true, "then leaves the chosen 0.5s after the bar finishes");
 
   console.log("\n[customising the look]");
-  load({ themePreset: "custom", paddingV: 1, paddingH: 1.5, borderWidth: 3, borderColor: "#FF0000", shadow: true, vAlign: "bottom",
+  load({ themePreset: "custom", paddingV: 1, paddingH: 1.5, outerFrame: false, borderWidth: 3, borderColor: "#FF0000", shadow: true, vAlign: "bottom",
     lineSpacing: 1.5, nameWeight: "800", waitingWeight: "500", waitingScale: 70, colorWaiting: "#CCCCCC", colorDone: "#999999",
     strikeDone: false, textShadow: true, headingScale: 1.6, titleWeight: "600", colorTitle: "#FFEEAA", totalWeight: "400", colorTotal: "#AAEEFF",
     cTrack: "#000000", trackOpacity: 0.5, colorGlow: "#00FF00", barHeight: 1.1, rowGap: 0.4, fillSeconds: 2
@@ -1005,6 +1005,29 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   ok(heard.length === 0, "manual corrections are not announced");
   heard.length = 0; load({ countGifts: false }); await wait(5); bomb(5); sub({ amount: 1 });
   ok(heard.length === 1 && heard[0].count === 1, "what the goal settings do not count is not announced (" + heard.length + ")");
+  console.log("\n[the outer frame]");
+  const F = elements["incentive-app"].style;
+  load({}); await wait(5);
+  ok(F["--frame-w"] === "max(2px, 0.6cqw)" && F["--border-w"] === "0px" && F["--border-c"] === "#FFFFFF", "by default the panel has a frame in the accent colour, as thick as a default that grows with the box, and it takes no room (" + F["--frame-w"] + ", " + F["--border-c"] + ")");
+  load({ themePreset: "midnight" }); await wait(5);
+  ok(F["--border-c"] === "#89AFFF", "which is each preset's own accent (" + F["--border-c"] + ")");
+  load({ outerFrame: false }); await wait(5);
+  ok(F["--frame-w"] === "0px" && F["--border-w"] === "0px", "it can be switched off, which leaves no outline");
+  load({ borderWidth: 6 }); await wait(5);
+  ok(F["--frame-w"] === "6px", "a thickness sets the frame's thickness (" + F["--frame-w"] + ")");
+  load({ themePreset: "custom", cAccent: "#FF00AA", borderColor: "#010101", borderWidth: 3 }); await wait(5);
+  ok(F["--border-c"] === "#FF00AA", "and in Custom the frame is the accent colour you picked, not the outline colour (" + F["--border-c"] + ")");
+  load({ themePreset: "custom", cAccent: "#FF00AA", borderColor: "#010101", borderWidth: 3, outerFrame: false }); await wait(5);
+  ok(F["--border-c"] === "#010101" && F["--border-w"] === "3px", "with the frame unticked a Custom outline is the colour and thickness you set (" + F["--border-c"] + ")");
+  console.log("\n[the outer frame in a pride preset]");
+  load({ themePreset: "trans" }); await wait(5);
+  ok(String(F["--frame-img"]).indexOf("linear-gradient(180deg, #5BCEFA") === 0 && F["--border-c"] === "transparent", "a pride preset's frame is its flag's stripes, as a ring, and the border is only the room it takes (" + String(F["--frame-img"]).slice(0, 38) + ")");
+  load({ themePreset: "pride" }); await wait(5);
+  ok(String(F["--frame-img"]).split(", ").length === 7, "in the rainbow, six stripes (" + String(F["--frame-img"]).split(", ").length + " parts)");
+  load({ themePreset: "glass" }); await wait(5);
+  ok(F["--frame-img"] === "none", "and a preset with no flag has no ring");
+  load({ themePreset: "trans", outerFrame: false }); await wait(5);
+  ok(F["--frame-img"] === "none", "and unticking the frame takes the stripes away too");
   console.log("\n=== " + pass + " passed, " + fail + " failed ===");
   process.exit(fail ? 1 : 0);
 })();

@@ -5,5 +5,65 @@
     "unlockSeconds": 1,
     "animate": false
   },
-  "script": "chat(\"!incentive add 5 Karaoke stream\");chat(\"!incentive add 10 Play a game\");chat(\"!incentive add 15 Q and A\");chat(\"!incentive add 25 Art stream\");sub({bulkGifted:true,gifted:true,amount:12});"
+  "script": "chat(\"!incentive add 5 Karaoke stream\");chat(\"!incentive add 10 Play a game\");chat(\"!incentive add 15 Q and A\");chat(\"!incentive add 25 Art stream\");sub({bulkGifted:true,gifted:true,amount:12});",
+  "pictures": [
+    {
+      "file": "screenshot.png",
+      "width": 620,
+      "height": 360,
+      "base": "scene"
+    },
+    {
+      "file": "bits.png",
+      "width": 620,
+      "height": 600,
+      "script": "chat(\"!incentive add 5 Karaoke stream\");chat(\"!incentive add 10 Play a game\");chat(\"!incentive add 15 Q and A\");sub({bulkGifted:true,gifted:true,amount:6});cheer(150,\"Dev\");cheer(350,\"Alice\");",
+      "fields": {
+        "unlockSeconds": 1,
+        "animate": false
+      },
+      "budget": 2800
+    },
+    {
+      "file": "paused.png",
+      "width": 620,
+      "height": 360,
+      "fields": {
+        "unlockSeconds": 1,
+        "animate": false
+      },
+      "script": "chat(\"!incentive add 5 Karaoke stream\");chat(\"!incentive add 10 Play a game\");chat(\"!incentive add 15 Q and A\");chat(\"!incentive add 25 Art stream\");chat(\"!incentive stop\");"
+    },
+    {
+      "file": "thank-you.png",
+      "width": 620,
+      "height": 330,
+      "fields": {
+        "unlockSeconds": 1,
+        "animate": false
+      },
+      "script": "chat(\"!incentive add 5 Karaoke stream\");chat(\"!incentive add 10 Play a game\");chat(\"!incentive add 15 Q and A\");sub({bulkGifted:true,gifted:true,amount:15});"
+    },
+    {
+      "file": "custom-theme.png",
+      "width": 620,
+      "height": 380,
+      "fields": {
+        "themePreset": "custom",
+        "colorPanel": "#3a1030",
+        "panelOpacity": 0.85,
+        "cText": "#FFE3F1",
+        "cAccent": "#FF8FC7",
+        "cTrack": "#7a2a5a",
+        "fontFamily": "Lobster",
+        "radius": 36,
+        "borderWidth": 3,
+        "borderColor": "#FF8FC7",
+        "unlockSeconds": 1,
+        "animate": false,
+        "title": "Stream goals"
+      },
+      "script": "chat(\"!incentive add 5 Karaoke stream\");chat(\"!incentive add 10 Play a game\");chat(\"!incentive add 15 Q and A\");chat(\"!incentive add 25 Art stream\");sub({bulkGifted:true,gifted:true,amount:8});"
+    }
+  ]
 }

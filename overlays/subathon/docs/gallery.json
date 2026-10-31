@@ -7,5 +7,76 @@
     "tmStart": "48:00:00",
     "tmFeedSeconds": 60
   },
-  "script": "chat('!subathon resume');chat('!incentive add 5 karaoke');chat('!incentive add 15 chat confessions');for(var i=0;i<3;i++)sub({amount:1,name:'Alice'});"
+  "script": "chat('!subathon resume');chat('!incentive add 5 karaoke');chat('!incentive add 15 chat confessions');for(var i=0;i<3;i++)sub({amount:1,name:'Alice'});",
+  "pictures": [
+    {
+      "file": "default.png",
+      "width": 620,
+      "height": 640,
+      "fields": {
+        "tmAnimate": false,
+        "animate": false,
+        "tmStart": "48:00:00",
+        "tmCapEnabled": true,
+        "tmCap": "200:00:00"
+      },
+      "script": "chat('!subathon resume');chat('!incentive add 5 karaoke');chat('!incentive add 10 play a game');chat('!incentive add 15 chat confessions');for(var i=0;i<7;i++)sub({amount:1,tier:'1000',name:'Alice'});sub({gifted:true,bulkGifted:true,amount:5,sender:'Bea'});",
+      "budget": 9000
+    },
+    {
+      "file": "cap.png",
+      "width": 620,
+      "height": 250,
+      "fields": {
+        "tmAnimate": false,
+        "animate": false,
+        "tmStart": "48:00:00",
+        "tmCapEnabled": true,
+        "tmCap": "49:00:00",
+        "tmShowGoals": false
+      },
+      "script": "chat('!subathon resume');chat('!subathon powerup 2 30m');sub({gifted:true,bulkGifted:true,amount:20,sender:'Bea'});",
+      "budget": 8000
+    },
+    {
+      "file": "custom.png",
+      "width": 620,
+      "height": 640,
+      "fields": {
+        "tmAnimate": false,
+        "animate": false,
+        "tmStart": "72:00:00",
+        "themePreset": "custom",
+        "colorPanel": "#3a1030",
+        "panelOpacity": 0.85,
+        "tmText": "#FFE3F1",
+        "tmAccent": "#FF8FC7",
+        "tmTrack": "#7a2a5a",
+        "tmWarnColour": "#FFB3D1",
+        "fontFamily": "Lobster",
+        "radius": 40,
+        "borderWidth": 3,
+        "borderColor": "#FF8FC7",
+        "tmTitle": "Pink Subathon"
+      },
+      "script": "chat('!subathon resume');chat('!incentive add 5 karaoke');chat('!incentive add 10 play a game');chat('!incentive add 15 chat confessions');for(var i=0;i<4;i++)sub({amount:1,name:'Cara'});",
+      "budget": 9000
+    },
+    {
+      "file": "elapsed.png",
+      "width": 380,
+      "height": 190,
+      "fields": {
+        "animate": false,
+        "animations": false,
+        "tmStart": "160:00:00",
+        "tmShowOther": true,
+        "tmShowDay": true,
+        "tmShowGoals": false,
+        "tmFeedSeconds": 1
+      },
+      "script": "chat('!subathon resume');chat('!subathon day 2');__off=(53*3600+27*60+14)*1000;",
+      "setup": "var __off=0;(function(){var n=Date.now;Date.now=function(){return n.call(Date)+__off;};})();"
+    }
+  ]
 }
