@@ -18,3 +18,14 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - name: Run every check
         run: npm test
+
+  # Every overlay has to fit the box it is given, whatever its shape. It needs a browser, so it is its own job.
+  scaling:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Check every overlay fits its box
+        run: node scripts/check-scaling.js

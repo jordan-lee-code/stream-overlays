@@ -87,19 +87,31 @@ function sync(dir, opts) {
     });
   }
 
-  // 3b. the shared primitives block, kept identical in every overlay that carries it
+  // 3b. the shared blocks, kept identical in every overlay that carries them: the small helpers every widget
+  // uses, and, in the widgets that read the common settings, those settings and the theme code with them
   const jsRel = info.file;
   const jsPath = path.join(dir, jsRel);
   if (fs.existsSync(jsPath)) {
-    const w = read(jsPath), START = "  // ---- shared by every overlay in this set ----", END = "  // ---- end of the shared primitives ----\n";
+    const original = read(jsPath);
+    let w = original;
     const common = read(path.join(__dirname, "..", "shared", "common.js"));
-    const block = common.slice(common.indexOf(START), common.indexOf(END) + END.length);
-    const at = w.indexOf(START);
-    if (at !== -1) {
-      const endAt = w.indexOf(END, at);
-      const stop = endAt !== -1 ? endAt + END.length : w.indexOf("  // The settings every overlay in this set shares", at);
-      if (stop !== -1) write(jsRel, w.slice(0, at) + block + w.slice(stop), "the shared primitives");
-    }
+    const A = { start: "  // ---- shared by every overlay in this set ----", end: "  // ---- end of the shared primitives ----\n" };
+    const B = { start: "  // The settings every overlay in this set shares.", end: "  // ---- end of the shared settings and theme ----\n" };
+    // A copy that has no end marker yet is replaced up to where the old section ended.
+    const swap = (blk, fallbackStop) => {
+      const at = w.indexOf(blk.start);
+      if (at === -1) return;
+      const endAt = w.indexOf(blk.end, at);
+      const stop = endAt !== -1 ? endAt + blk.end.length : fallbackStop(at);
+      if (stop === -1) return;
+      w = w.slice(0, at) + common.slice(common.indexOf(blk.start), common.indexOf(blk.end) + blk.end.length) + w.slice(stop);
+    };
+    swap(A, at => w.indexOf(B.start, at));
+    swap(B, at => {
+      const d = w.indexOf("  function debugLog(", at), close = d === -1 ? -1 : w.indexOf("\n  }\n", d);
+      return close === -1 ? -1 : close + "\n  }\n".length;
+    });
+    if (w !== original) write(jsRel, w, "the shared primitives and theme");
   }
 
   // 4. the shared test mock

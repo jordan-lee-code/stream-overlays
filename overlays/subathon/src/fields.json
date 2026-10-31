@@ -349,6 +349,12 @@
     "value": true,
     "group": "Clock: Look"
   },
+  "tmFit": {
+    "type": "checkbox",
+    "label": "Shrink the clock to fit the box: when the box is too short, the clock gets smaller instead of running off the bottom, and leaves room for the goals",
+    "value": true,
+    "group": "Clock: Look"
+  },
   "tmText": {
     "type": "colorpicker",
     "label": "Text and digits (used when the style preset is Custom)",

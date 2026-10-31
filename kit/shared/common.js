@@ -39,6 +39,63 @@
     }
     return r;
   }
+  // Shrinks a card until it fits the box it has been given, and never enlarges it. The text already scales with
+  // the box's width, so this is for a box that is short for its width, where the card would run off the bottom.
+  // CSS zoom keeps the card full width and scales its text, padding and corners together. The height does not
+  // shrink in step with the zoom, because the text wraps differently as it gets smaller, so the zoom is searched
+  // for and not calculated.
+  // `share` is how much of the box the card may use: a number, or a function for a card that shares the box
+  // with something that comes and goes.
+  function fitToBox(root, app, share) {
+    if (!root || !app || !app.style || typeof app.getBoundingClientRect !== "function") return;
+    app.style.zoom = "";
+    var room = root.clientHeight * (typeof share === "function" ? share() : (share || 1));
+    if (!(room > 0) || app.getBoundingClientRect().height <= room + 0.5) return;
+    var lo = 0.1, hi = 1;
+    for (var i = 0; i < 9; i++) {
+      var mid = (lo + hi) / 2;
+      app.style.zoom = String(mid);
+      if (app.getBoundingClientRect().height <= room + 0.5) lo = mid; else hi = mid;
+    }
+    app.style.zoom = String(Math.round(lo * 1000) / 1000);
+  }
+  // Keeps a card fitted as the box is resized, as its content changes, and once its font has loaded. A change of
+  // class is left out on purpose: that is how a card pops when something happens, and measuring in the middle of
+  // the pop would shrink it for good.
+  // `opts.share` is passed on to fitToBox, `opts.also` is another element whose appearing or disappearing should
+  // refit the card, and `opts.after` is called whenever the zoom actually changes, for something else that depends on
+  // how much room is left.
+  function watchFit(root, app, on, opts) {
+    if (!root || !app) return;
+    opts = opts || {};
+    app.__fitShare = opts.share;
+    app.__fitAfter = opts.after;
+    app.__fitOn = !!on;
+    if (!app.__fitWatching) {
+      app.__fitWatching = true;
+      var queued = false;
+      app.__fitSoon = function () {
+        if (queued) return;
+        queued = true;
+        // A timer and not an animation frame: measuring layout needs no frame, and a page that is hidden or has
+        // nothing animating may not produce one.
+        setTimeout(function () {
+          queued = false;
+          var was = app.__fitZoom || "";
+          if (app.__fitOn) fitToBox(root, app, app.__fitShare); else if (app.style) app.style.zoom = "";
+          app.__fitZoom = (app.style && app.style.zoom) || "";
+          if (app.__fitZoom !== was && app.__fitAfter) app.__fitAfter();
+        }, 30);
+      };
+      if (typeof ResizeObserver === "function") new ResizeObserver(app.__fitSoon).observe(root);
+      if (typeof MutationObserver === "function") {
+        new MutationObserver(app.__fitSoon).observe(app, { childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: ["hidden"] });
+        if (opts.also) new MutationObserver(app.__fitSoon).observe(opts.also, { childList: true, subtree: true, attributes: true, attributeFilter: ["hidden"] });
+      }
+      if (typeof document !== "undefined" && document.fonts && document.fonts.ready) document.fonts.ready.then(app.__fitSoon);
+    }
+    app.__fitSoon();
+  }
   // ---- end of the shared primitives ----
   // The settings every overlay in this set shares. Each widget adds its own on top.
   function readCommon(f, d) {
@@ -63,6 +120,7 @@
       pad: Math.max(0, num(f.pad, 0.5)),
       weight: clamp(num(f.weight, 800), 100, 900),
       animate: bool(f.animate, true),
+      fit: bool(f.fit, true),
       mute: bool(f.mute, false),
       debug: bool(f.debug, false)
     };
@@ -105,6 +163,7 @@
     s.setProperty("--w-border", c.borderWidth + "px solid " + c.borderColor);
     s.setProperty("--w-shadow", c.shadow ? "0 0.3em 1.2em rgba(0, 0, 0, 0.45)" : "none");
     root.classList.toggle("no-motion", !c.animate);
+    watchFit(root, app, c.fit);
     loadFont(fontLinkId, t.font);
     return t;
   }
@@ -138,3 +197,4 @@
     if (!c.debug || typeof console === "undefined" || !console.log) return;
     try { console.log("[" + tag + "]", listener, JSON.stringify(event)); } catch (e) { /* unprintable payloads are skipped */ }
   }
+  // ---- end of the shared settings and theme ----

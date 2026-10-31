@@ -71,7 +71,7 @@ Choose **Custom** to use the colour pickers and font instead. They are ignored w
 1. In StreamElements, edit your overlay and add **+ Add Widget, Static/Custom, Custom Widget**.
 2. Select the widget, open **Settings, Open Editor**, and paste each file from `widget/` into the matching tab: `widget.html` into HTML, `widget.css` into CSS, `widget.js` into JS, and `fields.json` into Fields.
 3. Click **Done**. The settings are grouped into Commands, Feed, Wording, Tags and totals, Size, Manual controls, Look, Custom colours, Sounds and Troubleshooting.
-4. Size and position the widget. The text scales with the box, and the card grows downwards as events arrive.
+4. Size and position the widget. The text scales with the box, and the card grows downwards as events arrive. If the box is too short for everything, the card shrinks to fit instead of running off the bottom (untick **Shrink to fit the box** under Look to turn that off).
 
 The widget reads Twitch chat and events through StreamElements, so it works as soon as it is on an active overlay.
 
@@ -118,7 +118,7 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | Tags and totals | The small tag for each kind, and which running totals show and how they are labelled. |
 | Size | Text, title and latest-event sizes, and the space between events. |
 | Manual controls | Buttons to clear the feed, or the feed and the totals. |
-| Look | Title, the style preset, font, boldness, corners, padding, outline, shadow and Animate. |
+| Look | Title, the style preset, font, boldness, corners, padding, outline, shadow, Animate and whether it shrinks to fit the box. |
 | Custom colours | Panel, text, accent, tag and alert colours, used when the style preset is Custom. |
 | Sounds | A sound and volume for an event arriving, with a Test button and a master mute. |
 | Troubleshooting | A debug log of every event to the browser-source console. |

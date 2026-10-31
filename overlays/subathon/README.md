@@ -74,7 +74,7 @@ Choose **Custom** to use the colour pickers and font instead. They are ignored w
 2. Select the widget, open **Settings, Open Editor**, and paste each file from `widget/` into the matching tab: `widget.html` into HTML, `widget.css` into CSS, `widget.js` into JS, and `fields.json` into Fields.
 3. Click **Done**. The settings are grouped into Clock: Commands, Time, Cap, Time per event, Power-ups and sleep, Look, Custom colours, Manual controls, Sounds and Troubleshooting, followed by Goals: Commands, Counting, Bits, Goals, Wording, Look, Custom colours and the rest of the goals settings.
 4. Under **Clock: Time**, set the start time and click **Apply start time**. The clock starts paused, so nothing drains until you click **Resume the clock** (or type `!subathon resume`).
-5. Size and position the widget. The clock and the goals scale with the box, and the goals take whatever height is left under the clock.
+5. Size and position the widget. The clock and the goals scale with the box, and the goals take whatever height is left under the clock. If the box is too short for the clock, it shrinks to fit and leaves room for the goals (untick **Shrink the clock to fit the box** under Clock: Look to turn that off). A box much shorter than about 120 pixels cannot hold a clock and a list of goals together.
 
 The widget reads Twitch chat and events through StreamElements, so it works as soon as it is on an active overlay.
 
@@ -166,7 +166,7 @@ Every setting has a plain label in StreamElements. The clock's settings sit unde
 | Clock: Cap | The cap, whether to show the room left, and the buttons to count the cap afresh and release banked time. |
 | Clock: Time per event | Minutes for each sub tier, gifted sub, 100 bits, unit of tip, follow and raid. |
 | Clock: Power-ups and sleep | The power-up multiplier, length and event count with Start and End buttons, and the sleep multiplier with its buttons. |
-| Clock: Look | Title, which parts are shown, order, whether the big clock counts down or up, the elapsed line and its labels, the day number and how it counts, clock size, boldness, spacing, the gap to the goals, how long the time-added line stays, and Animate. |
+| Clock: Look | Title, which parts are shown, order, whether the big clock counts down or up, the elapsed line and its labels, the day number and how it counts, clock size, boldness, spacing, the gap to the goals, how long the time-added line stays, Animate, and whether the clock shrinks to fit the box. |
 | Clock: Custom colours | Colours for the digits, status line, time-added chip and warning, used when the style preset is Custom. |
 | Clock: Manual controls | Buttons to resume, pause, add, subtract, lock, unlock, and move the day number. |
 | Clock: Sounds | Sounds and volumes for time added, reaching zero and a power-up starting, with Test buttons and a master mute. |
