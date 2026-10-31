@@ -382,7 +382,7 @@
         '<button class="alt" data-cmd="!incentive subs +1">subs +1</button>' +
         '<button class="alt" data-cmd="!incentive subs -1">subs -1</button>' +
         '<button class="alt" data-cmd="!incentive subs set 4">subs set 4</button>' +
-        '<button class="alt" data-cmd="!incentive bits +300">bits +300</button> +
+        '<button class="alt" data-cmd="!incentive bits +300">bits +300</button>' +
         '<button class="alt" data-cmd="!incentive tip 5">tip 5</button>' +
         '<button class="alt" data-cmd="!incentive reset">reset</button>' +
       '</div>' +
