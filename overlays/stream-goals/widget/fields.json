@@ -47,6 +47,12 @@
     "value": "Sub goal",
     "group": "Subs goal"
   },
+  "nameSubs": {
+    "type": "text",
+    "label": "What it is for, shown after the label (for example: new pc)",
+    "value": "",
+    "group": "Subs goal"
+  },
   "targetSubs": {
     "type": "number",
     "label": "Goal",
@@ -73,6 +79,12 @@
     "type": "text",
     "label": "Label",
     "value": "Bits goal",
+    "group": "Bits goal"
+  },
+  "nameBits": {
+    "type": "text",
+    "label": "What it is for, shown after the label (for example: new pc)",
+    "value": "",
     "group": "Bits goal"
   },
   "targetBits": {
@@ -103,6 +115,12 @@
     "value": "Tip goal",
     "group": "Tips goal"
   },
+  "nameTips": {
+    "type": "text",
+    "label": "What it is for, shown after the label (for example: new pc)",
+    "value": "",
+    "group": "Tips goal"
+  },
   "targetTips": {
     "type": "number",
     "label": "Goal",
@@ -129,6 +147,12 @@
     "type": "text",
     "label": "Label",
     "value": "Follow goal",
+    "group": "Follows goal"
+  },
+  "nameFollows": {
+    "type": "text",
+    "label": "What it is for, shown after the label (for example: new pc)",
+    "value": "",
     "group": "Follows goal"
   },
   "targetFollows": {

@@ -2,7 +2,7 @@
 
 A StreamElements custom widget that shows this stream's goals, such as 50 new subs and 5,000 bits, with a bar for each. It starts again by itself for every new stream, so you never have to remember to reset it, and when a goal is reached it can raise itself to a stretch goal.
 
-<p align="center"><img src="docs/default.png" alt="A soft black rounded card titled Stream goals with a sub goal at 37 of 50 and a bits goal at 3,200 of 5,000, each with a bar" width="380"></p>
+<p align="center"><img src="docs/default.png" alt="A soft black rounded card titled Stream goals with a sub goal at 37 of 50, a bits goal at 3,200 of 5,000 and a tip goal named new pc at $1,250 of $5,000, each with a bar" width="380"></p>
 
 It is a single self-contained widget in plain JavaScript, with no dependencies and nothing to install. For named goals that unlock rewards, such as "15 subs unlocks chat confessions", see the [Sub Goals Overlay](../sub-goals).
 
@@ -10,12 +10,12 @@ It is a single self-contained widget in plain JavaScript, with no dependencies a
 
 - Starts again for each stream: it notices a quiet gap between streams and begins afresh, or it can reset only when you ask, or on every load (see [Starting again](#starting-again)).
 - Subs and bits: with optional tip and follow goals, each with its own label, goal and bar, and each switched on or off as you need, so only the goals you want take up room on screen.
-- A donation goal: switch on the tip goal and it counts money, written your way: the symbol before or after the amount, a comma or a point for the decimal, and cents shown or not. Switch off the others if the donation goal is all you want.
+- A donation goal: switch on the tip goal and name it for what it is for, such as "Tip goal: new pc". It counts money written your way: the symbol before or after the amount, a comma or a point for the decimal, and cents shown or not. Switch off the others if the donation goal is all you want.
 - Gift bombs counted once: a gift of 10 counts 10, not once per recipient (see [How counting works](#how-counting-works)).
 - Stretch goals: when a goal is reached it celebrates, then raises itself by an amount you choose, and carries on.
 - Sub points: optionally count tier 2 as 2 and tier 3 as 6, as Twitch does.
 - Chat control: set or adjust a count, reset, pause and resume from chat.
-- Wording: the labels, how a count reads and the reached text are settings.
+- Wording: the labels, how a count reads and the reached text are settings, and each goal can be named for what it is for, so it reads "Tip goal: new pc".
 - Sounds: optional sounds for progress and for a goal being reached.
 - Customisable: around 55 settings cover the goals, wording, sizes, shape, outline, colours, fonts, sounds and animation.
 - Saved: the counts survive a browser-source refresh.
@@ -29,7 +29,7 @@ It is a single self-contained widget in plain JavaScript, with no dependencies a
 
 **Your own look.** Choose Custom for the style preset and every colour, the font, the outline and the wording are settings.
 
-<p><img src="docs/custom.png" alt="A pink stream goals card in a script font" width="380"></p>
+<p><img src="docs/custom.png" alt="A pink stream goals card in a script font, with a tip goal named new pc" width="380"></p>
 
 ## Style presets
 
@@ -116,7 +116,7 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | --- | --- |
 | Commands | The command word and who may use it. |
 | Resetting | When the goals start again, and how many quiet hours mean a new stream. |
-| Subs goal, Bits goal, Tips goal, Follows goal | Whether to show it, its label, its goal and its raise amount. |
+| Subs goal, Bits goal, Tips goal, Follows goal | Whether to show it, its label, what it is for (shown after the label), its goal and its raise amount. |
 | Counting | Sub points, how a count reads, the currency symbol and where it goes, the decimal and whether cents show, the reached text and how long it shows before a raise. |
 | Sizes | Text, title and bar sizes, and the space between goals. |
 | Manual controls | Buttons to start again, pause and resume. |

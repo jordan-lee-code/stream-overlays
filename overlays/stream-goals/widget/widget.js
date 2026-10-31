@@ -193,6 +193,7 @@
     c.gapMs = Math.max(1, num(f.gapHours, 6)) * 3600000;
     c.show = { subs: bool(f.showSubs, true), bits: bool(f.showBits, true), tips: bool(f.showTips, false), follows: bool(f.showFollows, false) };
     c.label = { subs: txt(f.labelSubs, "Sub goal"), bits: txt(f.labelBits, "Bits goal"), tips: txt(f.labelTips, "Tip goal"), follows: txt(f.labelFollows, "Follow goal") };
+    c.name = { subs: txt(f.nameSubs, ""), bits: txt(f.nameBits, ""), tips: txt(f.nameTips, ""), follows: txt(f.nameFollows, "") };
     c.base = { subs: Math.max(1, num(f.targetSubs, 50)), bits: Math.max(1, num(f.targetBits, 5000)), tips: Math.max(1, num(f.targetTips, 50)), follows: Math.max(1, num(f.targetFollows, 100)) };
     c.raise = { subs: Math.max(0, num(f.raiseSubs, 25)), bits: Math.max(0, num(f.raiseBits, 2500)), tips: Math.max(0, num(f.raiseTips, 0)), follows: Math.max(0, num(f.raiseFollows, 50)) };
     c.subPoints = bool(f.subPoints, false);
@@ -341,6 +342,13 @@
     }
     return s;
   }
+  // A goal can be named for what it is for, which is written after its label: "Tip goal: new pc". With no
+  // label, the name stands alone, and a name of only spaces is no name.
+  function labelOf(kind) {
+    var label = cfg.label[kind], name = cfg.name[kind].replace(/^\s+|\s+$/g, "");
+    if (!name) return label;
+    return label ? label + ": " + name : name;
+  }
   function withCommas(n) { return String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
   // A tip is money. The symbol goes before the amount (£5) or after it (5 kr, 5\u20ac): a lone sign sits
   // tight against the number and a word gets a space that does not break the line. The decimal can
@@ -374,7 +382,7 @@
     for (var i = 0; i < KINDS.length; i++) {
       var k = KINDS[i], row = el.rows[k], target = targetOf(k), n = state.counts[k];
       row.hidden = !cfg.show[k];
-      el.labels[k].textContent = cfg.label[k];
+      el.labels[k].textContent = labelOf(k);
       var done = state.reached[k];
       el.counts[k].textContent = done && cfg.reachedText ? cfg.reachedText : cfg.format.split("{n}").join(shown(k, n)).split("{target}").join(shown(k, target));
       el.fills[k].style.width = clamp(n / target * 100, 0, 100) + "%";
