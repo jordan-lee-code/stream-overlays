@@ -240,6 +240,7 @@
   var MODES = ["live", "off", "brb", "away", "cover"];
   var MAX_MS = 12 * 3600000;        // a countdown longer than this is not one
   var MAX_TEXT = 120;
+  var ASPECTS = { "16:9": 16 / 9, "4:3": 4 / 3, "3:2": 3 / 2, "1:1": 1, "9:16": 9 / 16 };
   var HOLD_MS = 3000;               // how long the cover waits for the saved state before it stops waiting
   var el = {};
   var cfg = {};
@@ -280,6 +281,7 @@
     c.hold = bool(f.holdWhileLoading, true);
     c.autoReveal = bool(f.autoReveal, false);
     c.circle = str(f.shape, "rounded") === "circle";
+    c.ratio = ASPECTS[str(f.aspect, "free")] || 0;       // 0 is free: the cover fills the whole box
     c.showFrame = bool(f.showFrame, false);
     c.frameWidth = clamp(num(f.frameWidth, 1.5), 0.2, 10);
     c.frameStyle = str(f.frameStyle, "preset");
@@ -315,6 +317,9 @@
     var holdingNow = !loaded && cfg.hold;
     var covered = holdingNow || state.mode !== "live";
     el.cover.classList.toggle("live", !covered);
+    // While the saved state is still loading the cover is the whole box, whatever the shape, so that a shape set a little
+    // too small can never let a corner of the camera show during a refresh.
+    el.root.classList.toggle("locked", cfg.ratio > 0 && !holdingNow);
     var v = !holdingNow && state.mode !== "live" ? view() : { icon: "", text: "", sub: "" };
     var key = v.icon + "|" + v.text + "|" + v.sub;
     if (key === shown) return;
@@ -391,6 +396,7 @@
     s.setProperty("--oc-solid", solid(t.panel));
     s.setProperty("--oc-size", cfg.textSize);
     st.setProperty("--oc-radius", cfg.circle ? "50%" : cfg.radius + "px");
+    st.setProperty("--oc-ar", cfg.ratio ? String(Math.round(cfg.ratio * 10000) / 10000) : "");
     st.setProperty("--oc-frame", cfg.frameWidth);
     st.setProperty("--oc-frame-fill", cfg.frameStyle === "custom" ? cfg.colorFrame : cfg.frameStyle === "panel" ? solid(t.panel) : "var(--w-flag)");
     el.root.classList.toggle("no-frame", !cfg.showFrame);

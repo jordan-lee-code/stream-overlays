@@ -18,6 +18,19 @@
         "shape": "circle",
         "showFrame": true
       }
+    },
+    {
+      "label": "16:9",
+      "fields": {
+        "aspect": "16:9",
+        "showFrame": true
+      }
+    },
+    {
+      "label": "9:16",
+      "fields": {
+        "aspect": "9:16"
+      }
     }
   ]
 }

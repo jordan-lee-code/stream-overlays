@@ -15,7 +15,7 @@ It is a single self-contained widget in plain JavaScript, with no dependencies a
 - Countdowns that do not lift themselves: `!camera brb 5m` counts down, and at zero it says it is back any moment and stays covered until someone lifts it, unless you choose otherwise.
 - Remembers: the cover, its message and its countdown survive a refresh.
 - Your wording and icons: every message, line and emoji is a setting.
-- A circle for a round camera, or a rounded rectangle.
+- A circle for a round camera, or a rounded rectangle, and the same shapes as the [Under Camera Overlay](../under-camera): free, 16 by 9, 4 by 3, 3 by 2, square or portrait.
 - An optional frame along the camera's edge, in any preset: the preset's accent colour, its flag in stripes for a pride preset, the panel's colour, or any colour you pick. It stays when the camera is covered. It is off by default, and the [Under Camera Overlay](../under-camera) can draw the same frame round the outside.
 - Sounds: an optional sound when the camera is covered and another when it is uncovered.
 - Tests and a dev harness: a local harness with a time machine, and an automated test script, so nothing needs a live stream.
@@ -72,6 +72,12 @@ Choose **Custom** to use the colour pickers and font instead. They are ignored w
 3. Click **Done**. The settings are grouped into Commands, Safety, Wording, Icons, Size, Frame, Look, Custom colours, Manual controls, Sounds and Troubleshooting.
 4. Size and position the widget **exactly over your camera**, with the same size and shape, and make sure it is above the camera in the layer order. The text scales with the box.
 5. Try it. Type `!camera off`, then `!camera on`, and check that the camera is fully hidden and fully shown.
+
+## The cover's shape
+
+By default the cover is **free**: it fills the whole box, so you size the box to your camera. If you would rather the widget keep a shape, choose one under Look (16 by 9, 4 by 3, 3 by 2, square or portrait) and the cover, the frame and the text keep it, as large as will fit and centred in the box. Give the Under Camera the same shape and the two line up.
+
+Because this overlay protects your camera, I would like you to be careful with it. A shape smaller than your camera in either direction leaves a strip of the camera uncovered, so make the box big enough for the cover to be at least as large as the camera, and check it with `!camera off` before you go live. While the saved state is still loading, the cover is the whole box whatever shape is set, so a refresh cannot show a corner.
 
 ## The frame
 
