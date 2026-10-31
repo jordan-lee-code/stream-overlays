@@ -25,7 +25,8 @@
 
 /* The cover is solid on purpose: a see-through panel would show the camera through it. Covering is
    instant, because a fade in would show the camera while it ran, and only revealing eases away. */
-#oc-cover {
+/* The theme lives on the stage, which holds the cover and the frame, so the frame still has it while the cover is faded away. */
+.oc-stage {
   --w-bg: #000000;
   --w-text: #FFFFFF;
   --w-accent: #FFFFFF;
@@ -38,6 +39,10 @@
   --w-border: 0 solid #FFFFFF;
   --w-shadow: none;
 
+  position: absolute;
+  inset: 0;
+}
+#oc-cover {
   position: absolute;
   inset: 0;
   display: flex;
@@ -79,3 +84,20 @@
   font-variant-numeric: tabular-nums;
   overflow-wrap: anywhere;
 }
+
+/* The frame: a ring along the edge, in the preset's colour, or its flag, or the panel's, or one you pick. It is the
+   border box of a layer with the padding box cut out of it, so it follows the corners. */
+.oc-ring {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border: calc(var(--oc-frame, 1.5) * 1cqw) solid transparent;
+  border-radius: var(--oc-radius, var(--w-radius));
+  background: var(--oc-frame-fill, transparent);
+  background-origin: border-box;
+  -webkit-mask: linear-gradient(#000 0 0) padding-box, linear-gradient(#000 0 0) border-box;
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) padding-box, linear-gradient(#000 0 0) border-box;
+  mask-composite: exclude;
+}
+#oc-root.no-frame .oc-ring { display: none; }

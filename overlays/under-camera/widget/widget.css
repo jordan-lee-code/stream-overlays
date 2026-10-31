@@ -1,6 +1,10 @@
 /* Copyright (c) 2026 Jordan Lee (https://ko-fi.com/journeyingjordan). Released under the MIT licence: this notice must be kept in copies and substantial portions of the code. See LICENSE. */
 /* Every value below is a custom property that widget.js sets from the editor fields, so
-   the defaults can be restyled from the settings panel without touching this file. */
+   the defaults can be restyled from the settings panel without touching this file.
+
+   The widget sits behind the webcam. It is laid out as a column: the camera window and its frame on
+   top, taking whatever room the nameplate leaves, and the nameplate joined underneath. Resize the box
+   and the window, the frame and the plate follow it. */
 
 #uc-root {
   position: relative;
@@ -10,14 +14,15 @@
   min-height: 100%;
   margin: 0;
   display: flex;
-  flex-direction: column;
-  /* The width reference for the cqw sizes below. A container's own cqw units resolve
-     against its parent, so the card cannot be the container itself. */
-  container-type: inline-size;
+  align-items: center;
+  justify-content: center;
+  /* The box is the reference for the column's width when the window keeps an aspect. */
+  container-type: size;
   -webkit-font-smoothing: antialiased;
 }
 #uc-root * { box-sizing: border-box; }
 #uc-root [hidden] { display: none !important; }
+#uc-root.no-window { align-items: flex-start; }
 
 /* The Animate field: when it is off, nothing moves or eases. */
 #uc-root.no-motion,
@@ -26,7 +31,7 @@
   transition: none !important;
 }
 
-#uc-app {
+.uc-col {
   --w-bg: rgba(0, 0, 0, 0.55);
   --w-text: #FFFFFF;
   --w-accent: #FFFFFF;
@@ -39,6 +44,45 @@
   --w-border: 0 solid #FFFFFF;
   --w-shadow: none;
 
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  /* The width reference for the plate's text, so it scales with the camera window and not the whole box. */
+  container-type: inline-size;
+}
+/* With an aspect set, the column is as wide as lets the window keep it, in the room the plate leaves. The plate's
+   text scales with the column's width, so its height is a fixed share of that width (--uc-plate-k), and the width
+   that fits is worked out in one step: width = height * ratio / (1 + k * ratio). No measuring chases its own tail. */
+#uc-root.locked .uc-col {
+  height: auto;
+  width: min(100cqw, calc(100cqh * var(--uc-ar, 1.7778) / (1 + var(--uc-plate-k, 0.3) * var(--uc-ar, 1.7778))));
+}
+#uc-root.no-window .uc-col { height: auto; }
+
+.uc-win { position: relative; flex: 1 1 0; min-height: 0; }
+#uc-root.locked .uc-win { flex: none; width: 100%; aspect-ratio: var(--uc-ar, 1.7778); }
+#uc-root.no-window .uc-win { display: none; }
+
+/* The frame: a ring around the window, in the preset's colour, or its flag, or the panel's, or one you pick.
+   It is the border box of the window with the padding box cut out of it, so it follows the corners. */
+.uc-ring {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border: calc(var(--uc-frame, 1.5) * 1cqw) solid transparent;
+  border-radius: var(--w-radius);
+  background: var(--uc-frame-fill, transparent);
+  background-origin: border-box;
+  -webkit-mask: linear-gradient(#000 0 0) padding-box, linear-gradient(#000 0 0) border-box;
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) padding-box, linear-gradient(#000 0 0) border-box;
+  mask-composite: exclude;
+}
+#uc-root.no-frame .uc-ring { display: none; }
+
+.uc-app {
   flex: 0 0 auto;
   width: 100%;
   padding: calc(var(--w-pad) * 1em) 3cqw;
@@ -53,8 +97,8 @@
   box-shadow: var(--w-shadow);
   line-height: 1.2;
 }
-#uc-app.align-left { text-align: left; }
-#uc-app.align-right { text-align: right; }
+.uc-app.align-left { text-align: left; }
+.uc-app.align-right { text-align: right; }
 
 .uc-head {
   display: flex;
@@ -63,8 +107,8 @@
   justify-content: center;
   gap: 0.1em 0.5em;
 }
-#uc-app.align-left .uc-head { justify-content: flex-start; }
-#uc-app.align-right .uc-head { justify-content: flex-end; }
+.uc-app.align-left .uc-head { justify-content: flex-start; }
+.uc-app.align-right .uc-head { justify-content: flex-end; }
 .uc-name {
   font-size: calc(1em * var(--uc-title, 1.5));
   font-weight: var(--w-weight);

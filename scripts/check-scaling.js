@@ -5,6 +5,9 @@
  *
  *   node scripts/check-scaling.js [overlay ...]
  *
+ * A scene can list `variants` in its docs/gallery.json, each with a `label` and some `fields`, for modes the default
+ * scene does not show (the Under Camera's window shapes, for one), and each is checked on top of it.
+ *
  * It needs Chromium or Chrome and skips, with a note, where there is none. A box of 400 by 90 is left out on
  * purpose: it cannot hold a clock and a list of goals together, whatever the widget does.
  * CHROMIUM names the browser to use, and SCALING_JOBS how many windows are open at once (4 by default). */
@@ -51,15 +54,15 @@ const MEASURE = `setTimeout(function () {
   document.title = JSON.stringify({ y: Math.round(bottom - sr.bottom), x: Math.round(right - sr.right) });
 }, 1800);`;
 
-function measure(chromium, tmp, name, w, h, index) {
+function measure(chromium, tmp, target, w, h, index) {
   return new Promise((resolve, reject) => {
-    const dir = path.join(ROOT, "overlays", name), cfg = JSON.parse(fs.readFileSync(path.join(dir, "docs", "gallery.json"), "utf8"));
+    const name = target.name, dir = path.join(ROOT, "overlays", name), cfg = JSON.parse(fs.readFileSync(path.join(dir, "docs", "gallery.json"), "utf8"));
     const file = path.join(tmp, "page-" + index + ".html");
-    fs.writeFileSync(file, page(dir, { key: "glass" }, Object.assign({}, cfg.fields || {}, { themePreset: "glass" }), (cfg.script || "") + ";" + MEASURE, w, h));
+    fs.writeFileSync(file, page(dir, { key: "glass" }, Object.assign({}, cfg.fields || {}, target.fields, { themePreset: "glass" }), (cfg.script || "") + ";" + MEASURE, w, h));
     execFile(chromium, ["--headless", "--no-sandbox", "--disable-gpu", "--virtual-time-budget=6000", "--user-data-dir=" + path.join(tmp, "profile-" + index), "--dump-dom", "file://" + file],
       { encoding: "utf8", maxBuffer: 64 * 1024 * 1024, timeout: 90000 }, (err, dom) => {
         const m = !err && /<title>([^<]*)<\/title>/.exec(dom || "");
-        if (!m) { reject(new Error(name + " at " + w + " by " + h + ": the page did not report its size")); return; }
+        if (!m) { reject(new Error(target.label + " at " + w + " by " + h + ": the page did not report its size")); return; }
         try { resolve(JSON.parse(m[1].replace(/&quot;/g, '"'))); } catch (e) { reject(e); }
       });
   });
@@ -73,21 +76,29 @@ function measure(chromium, tmp, name, w, h, index) {
   const unknown = names.filter(n => all.indexOf(n) === -1);
   if (unknown.length) { console.error("No such overlay, or it has no docs/gallery.json: " + unknown.join(", ")); process.exit(2); }
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "scaling-"));
+  // Every overlay is checked as its scene draws it, and again for each variant the scene lists.
+  const targets = [];
+  names.forEach(n => {
+    const cfg = JSON.parse(fs.readFileSync(path.join(ROOT, "overlays", n, "docs", "gallery.json"), "utf8"));
+    targets.push({ name: n, label: n, fields: {} });
+    (cfg.variants || []).forEach(v => targets.push({ name: n, label: n + " [" + v.label + "]", fields: v.fields || {} }));
+  });
   const jobs = [];
-  names.forEach(n => SIZES.forEach(([w, h]) => jobs.push({ name: n, w, h, index: jobs.length })));
+  targets.forEach(t => SIZES.forEach(([w, h]) => jobs.push({ target: t, label: t.label, w, h, index: jobs.length })));
   const results = new Array(jobs.length);
   let next = 0, failed = 0;
   try {
     await Promise.all(Array.from({ length: Math.min(JOBS, jobs.length) }, async () => {
-      while (next < jobs.length) { const j = jobs[next++]; results[j.index] = await measure(chromium, tmp, j.name, j.w, j.h, j.index).catch(e => ({ error: e.message })); }
+      while (next < jobs.length) { const j = jobs[next++]; results[j.index] = await measure(chromium, tmp, j.target, j.w, j.h, j.index).catch(e => ({ error: e.message })); }
     }));
   } finally { fs.rmSync(tmp, { recursive: true, force: true }); }
 
-  const w = Math.max.apply(null, names.map(n => n.length));
+  const labels = targets.map(t => t.label);
+  const w = Math.max.apply(null, labels.map(n => n.length));
   console.log("Overlay".padEnd(w) + "  " + SIZES.map(s => (s[0] + "x" + s[1]).padEnd(12)).join(""));
-  names.forEach(n => {
+  labels.forEach(n => {
     const cells = SIZES.map(([sw, sh]) => {
-      const r = results[jobs.findIndex(j => j.name === n && j.w === sw && j.h === sh)];
+      const r = results[jobs.findIndex(j => j.label === n && j.w === sw && j.h === sh)];
       if (r.error) { failed++; return "ERROR".padEnd(12); }
       if (r.y > SLACK || r.x > SLACK) { failed++; return ("over " + (r.x > SLACK ? "x" + r.x : "") + (r.y > SLACK ? "y" + r.y : "")).padEnd(12); }
       return "fits".padEnd(12);

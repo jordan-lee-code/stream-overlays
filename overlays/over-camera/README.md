@@ -16,6 +16,7 @@ It is a single self-contained widget in plain JavaScript, with no dependencies a
 - Remembers: the cover, its message and its countdown survive a refresh.
 - Your wording and icons: every message, line and emoji is a setting.
 - A circle for a round camera, or a rounded rectangle.
+- An optional frame along the camera's edge, in any preset: the preset's accent colour, its flag in stripes for a pride preset, the panel's colour, or any colour you pick. It stays when the camera is covered. It is off by default, and the [Under Camera Overlay](../under-camera) can draw the same frame round the outside.
 - Sounds: an optional sound when the camera is covered and another when it is uncovered.
 - Tests and a dev harness: a local harness with a time machine, and an automated test script, so nothing needs a live stream.
 
@@ -68,9 +69,27 @@ Choose **Custom** to use the colour pickers and font instead. They are ignored w
 
 1. In StreamElements, edit your overlay and add **+ Add Widget, Static/Custom, Custom Widget**.
 2. Select the widget, open **Settings, Open Editor**, and paste each file from `widget/` into the matching tab: `widget.html` into HTML, `widget.css` into CSS, `widget.js` into JS, and `fields.json` into Fields.
-3. Click **Done**. The settings are grouped into Commands, Safety, Wording, Icons, Size, Look, Custom colours, Manual controls, Sounds and Troubleshooting.
+3. Click **Done**. The settings are grouped into Commands, Safety, Wording, Icons, Size, Frame, Look, Custom colours, Manual controls, Sounds and Troubleshooting.
 4. Size and position the widget **exactly over your camera**, with the same size and shape, and make sure it is above the camera in the layer order. The text scales with the box.
 5. Try it. Type `!camera off`, then `!camera on`, and check that the camera is fully hidden and fully shown.
+
+## The frame
+
+Tick **A frame along the camera's edge** under Frame and a ring is drawn round the edge of the widget, above the camera and above the cover, so it is there whether the camera is showing or covered. It works in every preset:
+
+- **The preset's colour** is its accent colour, and for a pride preset its flag, in stripes.
+- **The panel's colour** is the preset's panel colour, made solid.
+- **A colour you pick** is any colour at all, in any preset.
+
+Its thickness is a percent of the camera's width, so it scales with the camera. It follows the shape, so a round camera gets a round frame.
+
+<p><img src="docs/frame.png" alt="A rounded frame in the bi flag's magenta, purple and blue stripes round an empty camera area" width="420"></p>
+
+The [Under Camera Overlay](../under-camera) draws a frame round the *outside* of the camera, from behind it, and the two are meant to be used together, with one of them showing the frame, as described under [Using it with the Under Camera](#using-it-with-the-under-camera).
+
+## Using it with the Under Camera
+
+The Over Camera and the [Under Camera Overlay](../under-camera) sandwich your webcam: the Under Camera behind it, with a window and a frame and a nameplate, and this one in front of it, covering it when you ask. Put this one the same size and in the same place as the camera, give both the same style preset, and turn the frame on in whichever one you want to draw it. The Over Camera's frame is off by default.
 
 ## Commands
 
@@ -121,6 +140,7 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | Wording | The message for camera off, be right back and away, the line under camera off, the countdown line and what it says at zero. |
 | Icons | An emoji or symbol for each cover. |
 | Size | The text size, as a percent of the smaller side of the box. |
+| Frame | Whether there is a frame along the camera's edge, how thick it is, and its colour. |
 | Look | The style preset, font, boldness, corners, the shape (a rounded rectangle or a circle), outline, shadow and Animate. |
 | Custom colours | The cover colour, the text and the countdown line, used when the style preset is Custom. |
 | Manual controls | Buttons to cover the camera, cover it as be right back or away, and uncover it. |

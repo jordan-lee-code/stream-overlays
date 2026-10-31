@@ -4,5 +4,20 @@
   "fields": {
     "animate": false
   },
-  "script": "chat('!camera brb 5m');"
+  "script": "chat('!camera brb 5m');",
+  "variants": [
+    {
+      "label": "framed",
+      "fields": {
+        "showFrame": true
+      }
+    },
+    {
+      "label": "circle",
+      "fields": {
+        "shape": "circle",
+        "showFrame": true
+      }
+    }
+  ]
 }

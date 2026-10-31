@@ -1,27 +1,33 @@
 # Under Camera Overlay
 
-A StreamElements custom widget for under your camera: a nameplate with your name, your pronouns, a line about your stream, and a few lines underneath that take turns, such as where to find you or a gentle reminder. It uses the same style presets as the rest of the set, so it sits with your other overlays and matches them.
+A StreamElements custom widget that sits behind your camera and frames it: a window for the webcam, a frame around the window, and a nameplate joined underneath with your name, your pronouns, a line about your stream, and a few lines that take turns, such as where to find you or a gentle reminder. It uses the same style presets as the rest of the set, so it sits with your other overlays and matches them.
 
-<p align="center"><img src="docs/default.png" alt="A soft black rounded plate with the name Mina, a small she/her tag, the line Cosy games and good company and the line Thanks for being here underneath" width="420"></p>
+<p align="center"><img src="docs/default.png" alt="A white rounded frame around an empty window, with a soft black plate joined beneath it showing the name Mina, a small she/her tag, the line Cosy games and good company and the line Thanks for being here" width="420"></p>
 
-It is a single self-contained widget in plain JavaScript, with no dependencies and nothing to install. It has no commands and nothing to operate: you set it up once and it sits there. For a cover that protects your camera from chat, see the [Over Camera Overlay](../over-camera).
+It is a single self-contained widget in plain JavaScript, with no dependencies and nothing to install. It has no commands and nothing to operate: you set it up once and it sits there. It is one half of a pair with the [Over Camera Overlay](../over-camera), which goes in front of the camera and covers it from chat, and the two are described together under [Using it with the Over Camera](#using-it-with-the-over-camera).
 
 ## Features
 
+- A window for the camera, framed: the widget sits behind your webcam, and the window is where the camera shows. It takes whatever room the box leaves, or keeps a shape you choose (16 by 9, 4 by 3, 3 by 2, square or portrait), and resizing the box resizes the window, the frame and the plate together.
+- A frame in any preset: a ring around the window in the preset's accent colour, in its flag's stripes for a pride preset, in the panel's colour, or in any colour you pick, with a thickness you choose. It can be switched off in every preset.
 - Your name, and your pronouns beside it as a small tag, in brackets, or as plain text.
 - A line under your name, such as what you play or a welcome.
 - Rotating lines: any number of short lines, separated by `|`, that take turns at a pace you choose, fading from one to the next. A single line simply stays.
 - Aligned to the left, the middle or the right.
 - Every part can be switched off, so it can be a name alone or just the rotating lines.
-- Customisable: around 30 settings cover the plate, the lines, sizes, shape, outline, colours, fonts and animation.
-- Scales with the box: the text scales with the width of the box you draw, and if the box is too short for everything the plate shrinks to fit.
+- Customisable: around 35 settings cover the plate, the lines, the window and its frame, sizes, shape, outline, colours, fonts and animation.
+- Scales with the box: everything scales with the width of the window, and if the box is too short for the plate, the plate shrinks to fit.
 - Tests and a dev harness: a local harness and an automated test script, so nothing needs a live stream.
 
 ## Screenshots
 
-**In another preset,** here Pastel pink, aligned to the left, with the pronouns in brackets.
+**A flag for a frame.** In a pride preset the frame is the flag, in stripes, round the window.
 
-<p><img src="docs/pastel.png" alt="A pale pink plate with the name Mina plays, (she/her) beside it, the line Cosy games and good company, and the line !discord to join us" width="420"></p>
+<p><img src="docs/pride.png" alt="A window framed in the trans flag's blue, pink and white stripes, with a plate beneath it" width="420"></p>
+
+**In another preset,** here Pastel pink, with a 4 by 3 window, a frame in the panel's colour, the text on the left and the pronouns in brackets.
+
+<p><img src="docs/pastel.png" alt="A pale pink frame around a 4 by 3 window, with a pale pink plate beneath it showing the name Mina plays, (she/her), the line Cosy games and good company, and the line !discord to join us" width="420"></p>
 
 ## Style presets
 
@@ -62,9 +68,38 @@ Choose **Custom** to use the colour pickers and font instead. They are ignored w
 
 1. In StreamElements, edit your overlay and add **+ Add Widget, Static/Custom, Custom Widget**.
 2. Select the widget, open **Settings, Open Editor**, and paste each file from `widget/` into the matching tab: `widget.html` into HTML, `widget.css` into CSS, `widget.js` into JS, and `fields.json` into Fields.
-3. Click **Done**. The settings are grouped into Plate, Rotating lines, Size, Look, Custom colours and Troubleshooting.
+3. Click **Done**. The settings are grouped into Plate, Rotating lines, Camera window, Frame, Size, Look, Custom colours and Troubleshooting.
 4. Type your name and pronouns under Plate, and your lines under Rotating lines.
-5. Size and position the widget under your camera. The text scales with the box, and if the box is too short for everything, the plate shrinks to fit instead of running off the bottom (untick **Shrink to fit the box** under Look to turn that off).
+5. Put the widget **behind your camera** in the layer order, and size it so the camera fits in the window. Resize the box and the window follows, so drag it until the window is the size of your camera. If you want the window to keep the camera's shape, choose it under Camera window.
+6. If the box is too short for the plate, the plate shrinks to fit instead of running off the bottom (untick **Shrink the nameplate to fit the box** under Look to turn that off).
+
+## The camera window and the frame
+
+The widget is laid out as a column: the window and its frame on top, and the nameplate joined underneath, the same width as the window. The window takes whatever room the nameplate leaves, so **resizing the widget in StreamElements resizes everything with it**.
+
+- **Free** (the default) fills the room, so the box's shape is the window's shape.
+- **A shape** (16 by 9, 4 by 3, 3 by 2, square or portrait) keeps that shape and centres the window and plate in the box, as large as will fit.
+- **Leave a window for the camera** can be unticked for the nameplate alone, with no window and no frame.
+
+The window is empty on purpose, because this widget sits behind your camera, and the camera shows in it. The frame is a ring drawn round the window, so it is not covered by the camera.
+
+The frame has the same settings in every preset:
+
+| Setting | What it does |
+| --- | --- |
+| A frame around the window | On or off, in any preset. |
+| How thick the frame is | A percent of the window's width, so it scales with the window. |
+| The frame's colour | **The preset's**: its accent colour, or its flag in stripes for a pride preset. **The panel's colour**, made solid. Or **a colour you pick**. |
+
+## Using it with the Over Camera
+
+The Under Camera and the [Over Camera Overlay](../over-camera) are meant to sandwich your webcam: this one behind it, and the Over Camera in front.
+
+1. Put this widget **behind** your camera and size it so the camera fits in the window.
+2. Put the Over Camera **in front** of the camera, the same size and in the same place as the camera.
+3. Give both the same style preset, and the same frame settings if you want a frame on both. The Under Camera frames the outside of the camera and the Over Camera frames its edge, so you will usually want only one of them on. The Over Camera's frame is off by default.
+
+The Over Camera covers the camera in a sensitive moment and keeps the same look, and the Under Camera shows the plate below it whether or not the camera is covered.
 
 ## The rotating lines
 
@@ -89,8 +124,10 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | --- | --- |
 | Plate | Your name, your pronouns and how they are written, the line under your name, and where the text sits. |
 | Rotating lines | The lines, whether they show, and how long each stays. |
+| Camera window | Whether there is a window for the camera, and its shape. |
+| Frame | Whether there is a frame, how thick it is, and its colour. |
 | Size | Text size, the size of your name and the space between the lines. |
-| Look | The style preset, font, boldness, corners, padding, outline, shadow, Animate and whether it shrinks to fit the box. |
+| Look | The style preset, font, boldness, corners, padding, outline, shadow, Animate and whether the nameplate shrinks to fit the box. |
 | Custom colours | Panel, text, accent and tag colours, used when the style preset is Custom. |
 | Troubleshooting | A debug log of every event to the browser-source console. |
 
@@ -105,7 +142,7 @@ npm run dev
 # then open http://localhost:8000/dev/
 ```
 
-The harness stands in for StreamElements. This plate has no events to fire, so it is for changing the settings and watching it, and a **time machine** skips ahead so you do not have to wait for the lines to take their turns.
+The harness stands in for StreamElements. This widget has no events to fire, so it is for changing the settings and watching it: change the window's shape, the frame and the preset and watch the window, the ring and the plate move together. A **time machine** skips ahead so you do not have to wait for the lines to take their turns, and the stage is a fixed box, so use the settings to see it at different shapes.
 
 At the top of the harness, **Look and export** switches the style preset on the live widget, and can download or copy a `fields.json` with your current settings as its defaults. Paste that into the Fields tab of a new custom widget in StreamElements and it starts out as you have it.
 
@@ -117,7 +154,7 @@ The harness must be served over http rather than opened as a file, and fonts com
 npm test
 ```
 
-This runs the real `widget/widget.js` headlessly against a small mock of the page and StreamElements, with a clock the test controls, and exits non-zero on any failure. It covers the plate and what each blank hides, the pronoun styles, the rotating lines and their timing, the limits, the look, text that must never be treated as markup, the style presets and settings of the wrong type.
+This runs the real `widget/widget.js` headlessly against a small mock of the page and StreamElements, with a clock the test controls, and exits non-zero on any failure. It covers the plate and what each blank hides, the pronoun styles, the rotating lines and their timing, the camera window and its shapes, the frame in every preset including a flag's stripes for the pride ones, the look, text that must never be treated as markup, and settings of the wrong type. The layout itself is checked in a real browser, because it is geometry: the window plus the plate fill the box, the window keeps its shape, and the plate is the same width as the window.
 
 ## Project layout
 

@@ -1,11 +1,15 @@
 <!-- Copyright (c) 2026 Jordan Lee (https://ko-fi.com/journeyingjordan). Released under the MIT licence: this notice must be kept in copies and substantial portions of the code. See LICENSE. -->
 <div id="oc-root">
   <!-- Covered from the first moment, and until the saved state has loaded, so a refresh can never show the camera. -->
-  <div id="oc-cover" class="oc-cover holding">
-    <div class="oc-inner">
-      <div id="oc-icon" class="oc-icon" hidden></div>
-      <div id="oc-text" class="oc-text"></div>
-      <div id="oc-sub" class="oc-sub" hidden></div>
+  <div id="oc-stage" class="oc-stage">
+    <div id="oc-cover" class="oc-cover holding">
+      <div class="oc-inner">
+        <div id="oc-icon" class="oc-icon" hidden></div>
+        <div id="oc-text" class="oc-text"></div>
+        <div id="oc-sub" class="oc-sub" hidden></div>
+      </div>
     </div>
+    <!-- An optional frame along the camera's edge, above the cover and the camera. -->
+    <div id="oc-ring" class="oc-ring"></div>
   </div>
 </div>

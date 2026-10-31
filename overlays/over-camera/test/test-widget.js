@@ -152,14 +152,35 @@ const saved = () => storeData.overcamera_v1;
   await load({ textSize: 12 }); ok(env.vars("oc-cover")["--oc-size"] === 12, "the text size is a setting");
   await load({ textSize: 999 }); ok(env.vars("oc-cover")["--oc-size"] === 30, "within limits");
   await load({ textSize: 0 }); ok(env.vars("oc-cover")["--oc-size"] === 2, "both ways");
-  await load({ radius: 10 }); ok(env.vars("oc-cover")["--oc-radius"] === "10px", "the corner is a setting");
-  await load({ shape: "circle" }); ok(env.vars("oc-cover")["--oc-radius"] === "50%", "and it can be a circle, for a round camera");
+  await load({ radius: 10 }); ok(env.vars("oc-stage")["--oc-radius"] === "10px", "the corner is a setting");
+  await load({ shape: "circle" }); ok(env.vars("oc-stage")["--oc-radius"] === "50%", "and it can be a circle, for a round camera");
   await load({ animate: false }); ok(E("oc-root").classList.contains("no-motion"), "Animate off stops motion");
   await load({ offText: "Hidden", offSub: "", offIcon: "" }); boss("!camera off");
   ok(text() === "Hidden" && sub() === "" && icon() === "", "a blank line or icon is left out (" + text() + ")");
   await load({ offText: "" }); boss("!camera off"); ok(covered() && text() === "", "even a blank message still covers the camera");
   await load({ brbIcon: "", awayIcon: "" }); boss("!camera brb"); ok(icon() === "", "icons can be left off");
-  await env.checkPresets("oc-cover");
+  await env.checkPresets("oc-stage");
+
+  section("a frame along the camera's edge");
+  const fill = () => env.vars("oc-stage")["--oc-frame-fill"], ring = () => E("oc-root").classList.contains("no-frame");
+  await load(); ok(ring(), "there is no frame unless you ask for one");
+  await load({ showFrame: true }); ok(!ring() && fill() === "var(--w-flag)" && env.vars("oc-stage")["--oc-frame"] === 1.5, "a frame in the preset's colour, one and a half percent of the width (" + fill() + ")");
+  await load({ showFrame: true, themePreset: "midnight" }); ok(env.vars("oc-stage")["--w-flag"] === env.expectedPresets.midnight.accent, "which is the preset's accent");
+  let flagged = 0, plain = 0;
+  for (const key of Object.keys(env.expectedPresets)) {
+    await load({ showFrame: true, themePreset: key });
+    const flag = String(env.vars("oc-stage")["--w-flag"]);
+    if (env.expectedPresets[key].flag) { if (flag.indexOf("linear-gradient(180deg") === 0) flagged++; } else if (flag === env.expectedPresets[key].accent) plain++;
+  }
+  ok(flagged === 7 && plain === Object.keys(env.expectedPresets).length - 7, "a pride preset's frame is its flag and every other preset's is its accent (" + flagged + " flags, " + plain + " plain)");
+  await load({ showFrame: true, frameStyle: "panel" }); ok(fill() === "rgb(0, 0, 0)", "the panel's colour can be used, made solid (" + fill() + ")");
+  await load({ showFrame: true, frameStyle: "custom", colorFrame: "#FF8800" }); ok(fill() === "#FF8800", "or any colour you pick (" + fill() + ")");
+  await load({ showFrame: true, frameStyle: "nonsense" }); ok(fill() === "var(--w-flag)", "a style that is not one of the choices is the preset's");
+  await load({ showFrame: true, frameWidth: 99 }); ok(env.vars("oc-stage")["--oc-frame"] === 10, "the thickness is held within limits");
+  await load({ showFrame: true, frameWidth: 0 }); ok(env.vars("oc-stage")["--oc-frame"] === 0.2, "both ways");
+  await load({ showFrame: true, shape: "circle" }); ok(env.vars("oc-stage")["--oc-radius"] === "50%", "a round camera gets a round frame");
+  await load({ showFrame: true }); boss("!camera off"); ok(!ring() && covered(), "the frame stays while the camera is covered");
+  boss("!camera on"); ok(!ring() && !covered(), "and while it is showing, which is when it is wanted");
 
   section("the buttons");
   await load();

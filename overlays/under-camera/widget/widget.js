@@ -69,6 +69,13 @@
     }
     return r;
   }
+  // The colour of a panel with its transparency taken out, for something that has to be solid whatever the preset.
+  function solid(css) {
+    var m = /^rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/i.exec(String(css || "")) || /^#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i.exec(String(css || "").trim());
+    if (!m) return "rgb(0, 0, 0)";
+    var hex = m[0].charAt(0) === "#";
+    return "rgb(" + (hex ? parseInt(m[1], 16) : +m[1]) + ", " + (hex ? parseInt(m[2], 16) : +m[2]) + ", " + (hex ? parseInt(m[3], 16) : +m[3]) + ")";
+  }
   // Shrinks a card until it fits the box it has been given, and never enlarges it. The text already scales with
   // the box's width, so this is for a box that is short for its width, where the card would run off the bottom.
   // CSS zoom keeps the card full width and scales its text, padding and corners together. The height does not
@@ -232,11 +239,13 @@
   var SWAP_MS = 300;                 // how long a line takes to fade before the next replaces it
   var MAX_LINES = 20;
   var DEFAULT_LINES = "Thanks for being here | Drink some water | Be kind in chat";
+  var ASPECTS = { "16:9": 16 / 9, "4:3": 4 / 3, "3:2": 3 / 2, "1:1": 1, "9:16": 9 / 16 };
   var el = {};
   var cfg = {};
   var lines = [];
   var at = 0;
   var rotation = null;
+  var watching = false;
 
   // "one | two | three" becomes a list of lines, with blanks left out.
   function splitLines(s) {
@@ -246,6 +255,8 @@
   function readConfig(f) {
     f = f || {};
     var c = readCommon(f, { title: "Your name" });
+    c.userFit = c.fit;
+    c.fit = false;                       // the plate is fitted below, with room kept for the window, not by the shared theme code
     c.pronouns = txt(f.pronouns, "");
     c.showPronouns = bool(f.showPronouns, true);
     c.pronounStyle = str(f.pronounStyle, "tag");
@@ -256,6 +267,13 @@
     c.rotateMs = clamp(num(f.rotateSeconds, 8), 2, 600) * 1000;
     var a = str(f.align, "center");
     c.align = a === "left" || a === "right" ? a : "center";
+    c.showWindow = bool(f.showWindow, true);
+    var ratio = ASPECTS[str(f.aspect, "free")];
+    c.ratio = ratio || 0;                // 0 is free: the window takes whatever room there is
+    c.showFrame = bool(f.showFrame, true);
+    c.frameWidth = clamp(num(f.frameWidth, 1.5), 0.2, 10);
+    c.frameStyle = str(f.frameStyle, "preset");
+    c.colorFrame = str(f.colorFrame, "#FFFFFF");
     c.textSize = Math.max(2, num(f.textSize, 5));
     c.titleScale = clamp(num(f.titleScale, 1.5), 0.5, 4);
     c.rowGap = Math.max(0, num(f.rowGap, 0.3));
@@ -294,15 +312,36 @@
     if (cfg.showLines && lines.length > 1) rotation = setInterval(next, cfg.rotateMs);
   }
 
+  // How tall the plate is, as a share of the column's width, decides how much of a box that keeps an aspect is left
+  // for the window. The plate's text scales with that width, so the share stays the same at any size, and it is handed
+  // to the stylesheet whenever the plate changes (its text, or its wrapping).
+  function measurePlate() {
+    if (!el.app || !el.col || typeof el.app.getBoundingClientRect !== "function") return;
+    var w = el.col.getBoundingClientRect().width;
+    if (!(w > 0)) return;
+    var k = Math.round(el.app.getBoundingClientRect().height / w * 1000) / 1000;
+    if (el.col.__plateK !== k) { el.col.__plateK = k; el.col.style.setProperty("--uc-plate-k", String(k)); }
+  }
+
   function applyLook() {
-    applyCommonTheme(cfg, el.root, el.app, "uc-font-link");
-    var s = el.app.style;
+    var t = applyCommonTheme(cfg, el.root, el.col, "uc-font-link");
+    var s = el.col.style;
     s.setProperty("--uc-size", cfg.textSize + "cqw");
     s.setProperty("--uc-title", cfg.titleScale);
     s.setProperty("--uc-gap", cfg.rowGap + "em");
+    s.setProperty("--uc-frame", cfg.frameWidth);
+    s.setProperty("--uc-frame-fill", cfg.frameStyle === "custom" ? cfg.colorFrame : cfg.frameStyle === "panel" ? solid(t.panel) : "var(--w-flag)");
+    s.setProperty("--uc-ar", cfg.ratio ? String(Math.round(cfg.ratio * 10000) / 10000) : "");
+    el.root.classList.toggle("locked", cfg.showWindow && cfg.ratio > 0);
+    el.root.classList.toggle("no-window", !cfg.showWindow);
+    el.root.classList.toggle("no-frame", !cfg.showFrame || !cfg.showWindow);
+    // The plate shrinks to fit if it alone is too tall, and leaves some of the box for the window.
+    watchFit(el.root, el.app, cfg.userFit, { share: function () { return cfg.showWindow ? 0.6 : 1; }, after: measurePlate });
+    if (!watching && typeof ResizeObserver === "function") { watching = true; new ResizeObserver(measurePlate).observe(el.app); }
+    measurePlate();
   }
   function bind() {
-    var ids = { root: "uc-root", app: "uc-app", name: "uc-name", pron: "uc-pron", tagline: "uc-tagline", line: "uc-line" };
+    var ids = { root: "uc-root", col: "uc-col", win: "uc-win", app: "uc-app", name: "uc-name", pron: "uc-pron", tagline: "uc-tagline", line: "uc-line" };
     for (var k in ids) { if (ids.hasOwnProperty(k)) el[k] = byId(ids[k]); }
   }
 

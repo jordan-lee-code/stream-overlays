@@ -69,6 +69,13 @@
     }
     return r;
   }
+  // The colour of a panel with its transparency taken out, for something that has to be solid whatever the preset.
+  function solid(css) {
+    var m = /^rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/i.exec(String(css || "")) || /^#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i.exec(String(css || "").trim());
+    if (!m) return "rgb(0, 0, 0)";
+    var hex = m[0].charAt(0) === "#";
+    return "rgb(" + (hex ? parseInt(m[1], 16) : +m[1]) + ", " + (hex ? parseInt(m[2], 16) : +m[2]) + ", " + (hex ? parseInt(m[3], 16) : +m[3]) + ")";
+  }
   // Shrinks a card until it fits the box it has been given, and never enlarges it. The text already scales with
   // the box's width, so this is for a box that is short for its width, where the card would run off the bottom.
   // CSS zoom keeps the card full width and scales its text, padding and corners together. The height does not
@@ -265,15 +272,6 @@
     var h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60);
     return h > 0 ? h + ":" + pad2(m) + ":" + pad2(s % 60) : m + ":" + pad2(s % 60);
   }
-  // The cover has to be solid, and every style preset has a see-through panel, so the cover takes the
-  // colour of the panel with its transparency removed.
-  function solid(css) {
-    var m = /^rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/i.exec(String(css || "")) || /^#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i.exec(String(css || "").trim());
-    if (!m) return "rgb(0, 0, 0)";
-    var hex = m[0].charAt(0) === "#";
-    return "rgb(" + (hex ? parseInt(m[1], 16) : +m[1]) + ", " + (hex ? parseInt(m[2], 16) : +m[2]) + ", " + (hex ? parseInt(m[3], 16) : +m[3]) + ")";
-  }
-
   function readConfig(f) {
     f = f || {};
     var c = readCommon(f, { command: "!camera" });
@@ -282,6 +280,10 @@
     c.hold = bool(f.holdWhileLoading, true);
     c.autoReveal = bool(f.autoReveal, false);
     c.circle = str(f.shape, "rounded") === "circle";
+    c.showFrame = bool(f.showFrame, false);
+    c.frameWidth = clamp(num(f.frameWidth, 1.5), 0.2, 10);
+    c.frameStyle = str(f.frameStyle, "preset");
+    c.colorFrame = str(f.colorFrame, "#FFFFFF");
     c.textSize = clamp(num(f.textSize, 9), 2, 30);
     c.text = { off: txt(f.offText, "Camera off"), brb: txt(f.brbText, "Be right back"), away: txt(f.awayText, "Away for a moment") };
     c.icon = { off: txt(f.offIcon, "\ud83d\udd12"), brb: txt(f.brbIcon, "\u2615"), away: txt(f.awayIcon, "\ud83d\udca4"), cover: txt(f.coverIcon, "") };
@@ -307,7 +309,7 @@
   }
 
   function render() {
-    if (!el.cover) return;
+    if (!el.cover || !el.stage) return;
     // While the saved state is still loading, and the hold is on, the cover is up and says nothing, because it
     // does not know what to say yet.
     var holdingNow = !loaded && cfg.hold;
@@ -384,14 +386,17 @@
   function firstState() { var s = blankState(); s.mode = cfg.start; return s; }
 
   function applyLook() {
-    var t = applyCommonTheme(cfg, el.root, el.cover, "oc-font-link");
-    var s = el.cover.style;
+    var t = applyCommonTheme(cfg, el.root, el.stage, "oc-font-link");
+    var s = el.cover.style, st = el.stage.style;
     s.setProperty("--oc-solid", solid(t.panel));
     s.setProperty("--oc-size", cfg.textSize);
-    s.setProperty("--oc-radius", cfg.circle ? "50%" : cfg.radius + "px");
+    st.setProperty("--oc-radius", cfg.circle ? "50%" : cfg.radius + "px");
+    st.setProperty("--oc-frame", cfg.frameWidth);
+    st.setProperty("--oc-frame-fill", cfg.frameStyle === "custom" ? cfg.colorFrame : cfg.frameStyle === "panel" ? solid(t.panel) : "var(--w-flag)");
+    el.root.classList.toggle("no-frame", !cfg.showFrame);
   }
   function bind() {
-    var ids = { root: "oc-root", cover: "oc-cover", icon: "oc-icon", text: "oc-text", sub: "oc-sub" };
+    var ids = { root: "oc-root", stage: "oc-stage", cover: "oc-cover", icon: "oc-icon", text: "oc-text", sub: "oc-sub" };
     for (var k in ids) { if (ids.hasOwnProperty(k)) el[k] = byId(ids[k]); }
   }
 
@@ -402,7 +407,7 @@
     if (waitTimer) clearTimeout(waitTimer);
     cfg = readConfig((obj && obj.detail && obj.detail.fieldData) || {});
     bind();
-    if (!el.cover) return;
+    if (!el.cover || !el.stage) return;
     applyLook();
     // The cover stays up until the saved state is known, so a refresh cannot flash the camera. If the state
     // never arrives it stops waiting, but stays covered: not knowing what the state was, it will not guess that
