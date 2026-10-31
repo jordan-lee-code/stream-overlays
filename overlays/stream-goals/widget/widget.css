@@ -71,7 +71,8 @@
 .sg-title.pop { animation: sg-pop 0.4s ease; }
 .sg-row { margin-top: var(--sg-gap, 0.7em); }
 .sg-top { display: flex; justify-content: space-between; align-items: baseline; gap: 0.6em; font-weight: 700; }
-.sg-label { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* A label, and the name after it, wraps onto another line when the amount leaves it little room, so none of it is ever hidden. */
+.sg-label { min-width: 0; overflow-wrap: anywhere; }
 .sg-count { font-variant-numeric: tabular-nums; white-space: nowrap; opacity: 0.9; }
 .sg-bar {
   height: var(--sg-bar, 0.55em);

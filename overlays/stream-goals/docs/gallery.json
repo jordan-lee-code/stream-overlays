@@ -1,9 +1,14 @@
 {
   "width": 380,
-  "height": 185,
+  "height": 205,
   "fields": {
     "animate": false,
-    "raiseDelay": 120
+    "raiseDelay": 120,
+    "showTips": true,
+    "nameTips": "new pc",
+    "targetTips": 5000,
+    "currency": "$",
+    "textSize": 4.7
   },
-  "script": "chat('!goals set subs 37');cheer(3200);"
+  "script": "chat('!goals set subs 37');cheer(3200);chat('!goals set tips 1250');"
 }
