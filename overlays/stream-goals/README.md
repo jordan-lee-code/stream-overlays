@@ -9,7 +9,8 @@ It is a single self-contained widget in plain JavaScript, with no dependencies a
 ## Features
 
 - Starts again for each stream: it notices a quiet gap between streams and begins afresh, or it can reset only when you ask, or on every load (see [Starting again](#starting-again)).
-- Subs and bits: with optional tip and follow goals, each with its own label, goal and bar.
+- Subs and bits: with optional tip and follow goals, each with its own label, goal and bar, and each switched on or off as you need, so only the goals you want take up room on screen.
+- A donation goal: switch on the tip goal and it counts money, written your way: the symbol before or after the amount, a comma or a point for the decimal, and cents shown or not. Switch off the others if the donation goal is all you want.
 - Gift bombs counted once: a gift of 10 counts 10, not once per recipient (see [How counting works](#how-counting-works)).
 - Stretch goals: when a goal is reached it celebrates, then raises itself by an amount you choose, and carries on.
 - Sub points: optionally count tier 2 as 2 and tier 3 as 6, as Twitch does.
@@ -79,7 +80,7 @@ The widget reads Twitch chat and events through StreamElements, so it works as s
 - **Subs.** A new sub, a resub and a gifted sub each count one. A resub counts once however many months it was for. Tick **Count Twitch sub points** if you would rather tier 2 counted 2 and tier 3 counted 6.
 - **Gift bombs.** StreamElements reports a gift bomb as one announcement where `amount` is the real number of subs, then one follow-up per recipient where `amount` is a streak or lifetime figure (for example 170). The widget counts only the announcement, so a gift of 10 counts 10.
 - **Bits.** Every cheer adds its bits.
-- **Tips and follows.** Tips add their amount, in the currency of your StreamElements account, and each follow adds one. Both are switched off until you show their goals.
+- **Tips and follows.** Tips add their amount, in the currency of your StreamElements account, and each follow adds one. Both are switched off until you show their goals. Tips are kept to the cent, so a run of small ones adds up to exactly what was given, and there is no conversion between currencies: a tip in another one counts at the amount StreamElements reports. Bits, subs, follows and raids never count towards the tip goal.
 
 Tick **debug** in Troubleshooting to log every event to the browser-source console.
 
@@ -101,8 +102,11 @@ The command word is a setting. Viewers can type the bare `!goals` to make the ti
 | --- | --- |
 | `!goals set subs 30` | Sets a count. Use `subs`, `bits`, `tips` or `follows`. |
 | `!goals add bits 500` | Adds to a count. A negative number takes some off. |
+| `!goals add tips 5.50` | Adds money to the tip goal. |
 | `!goals reset` | Starts every goal again. |
 | `!goals pause` and `!goals resume` | Stops and starts counting, for example before you go live. |
+
+An amount is a number: `500`, `5.50` or `5,50`. For tips it can also have a currency sign in front or behind, such as `$5`, or the symbol you set for tips, such as `5 kr`. Anything else is refused and changes nothing, and is never guessed at. That includes `1,250` (a comma could mean a thousands separator or a decimal, and a wrong guess would add the wrong number), `1e3` and `1k`.
 
 ## Configuration
 
@@ -113,7 +117,7 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | Commands | The command word and who may use it. |
 | Resetting | When the goals start again, and how many quiet hours mean a new stream. |
 | Subs goal, Bits goal, Tips goal, Follows goal | Whether to show it, its label, its goal and its raise amount. |
-| Counting | Sub points, how a count reads, the currency symbol, the reached text and how long it shows before a raise. |
+| Counting | Sub points, how a count reads, the currency symbol and where it goes, the decimal and whether cents show, the reached text and how long it shows before a raise. |
 | Sizes | Text, title and bar sizes, and the space between goals. |
 | Manual controls | Buttons to start again, pause and resume. |
 | Look | Title, the style preset, font, boldness, corners, padding, outline, shadow and Animate. |
@@ -183,7 +187,6 @@ These overlays share the same default look and the same twenty-two style presets
 - [Recent Activity Overlay](../recent-activity): the latest subs, gifts, bits, tips, follows and raids.
 - [Reminder Overlay](../reminder): reminders you set from chat, which stay on screen until cleared.
 - [Chat Feed Overlay](../chat-feed): on-screen chat with profile pictures and pronouns.
-- [Donation Goal Overlay](../donation-goal): a goal in money that fills as tips arrive.
 
 ## Support
 

@@ -17,7 +17,6 @@ A set of StreamElements custom widgets for Twitch streams. Each is plain JavaScr
 | [Stream Goals](overlays/stream-goals) | Sub and bits goals that start again for each stream. |
 | [Reminder](overlays/reminder) | Reminders you set from chat, which stay on screen until cleared. |
 | [Chat Feed](overlays/chat-feed) | On-screen chat with profile pictures and pronouns, in the same style presets. |
-| [Donation Goal](overlays/donation-goal) | A goal in money that fills as tips arrive, with the latest donor. |
 
 ## Using an overlay
 

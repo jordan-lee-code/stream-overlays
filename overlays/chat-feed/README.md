@@ -200,7 +200,6 @@ These overlays share the same default look and the same twenty-two style presets
 - [Stream Goals Overlay](../stream-goals): sub and bits goals that start again for each stream.
 - [Reminder Overlay](../reminder): reminders you set from chat, which stay on screen until cleared.
 - [Recent Activity Overlay](../recent-activity): the latest subs, gifts, bits, tips, follows and raids.
-- [Donation Goal Overlay](../donation-goal): a goal in money that fills as tips arrive.
 
 ## Support
 

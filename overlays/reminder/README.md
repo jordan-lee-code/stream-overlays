@@ -176,7 +176,6 @@ These overlays share the same default look and the same twenty-two style presets
 - [Recent Activity Overlay](../recent-activity): the latest subs, gifts, bits, tips, follows and raids.
 - [Stream Goals Overlay](../stream-goals): sub and bits goals that start again for each stream.
 - [Chat Feed Overlay](../chat-feed): on-screen chat with profile pictures and pronouns.
-- [Donation Goal Overlay](../donation-goal): a goal in money that fills as tips arrive.
 
 ## Support
 

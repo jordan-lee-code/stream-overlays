@@ -198,6 +198,9 @@
     c.subPoints = bool(f.subPoints, false);
     c.format = str(f.format, "{n} / {target}");
     c.currency = txt(f.currency, "£");
+    c.currencyAfter = bool(f.currencyAfter, false);
+    c.decimalComma = bool(f.decimalComma, false);
+    c.decimals = str(f.decimals, "auto");
     c.reachedText = txt(f.reachedText, "Goal reached!");
     c.raiseDelayMs = Math.max(1, num(f.raiseDelay, 6)) * 1000;
     c.textSize = Math.max(2, num(f.textSize, 5.5));
@@ -273,6 +276,22 @@
   // ---------------------------------------------------------------------------
   // Chat and buttons
   // ---------------------------------------------------------------------------
+  // An amount typed in chat is a number. For tips it can also have a currency sign in front or behind: a sign
+  // that is not a letter or digit ($, an euro or pound sign), or exactly the symbol set for tips (5 kr). So 5,
+  // 5.50, 5,50, $5, 5 kr, +3 and -3 are amounts. Anything else is refused and not guessed at, including 1,250 (a
+  // comma could mean a separator or a decimal), 1e3 and 1k, because a wrong guess adds the wrong number.
+  // Returns NaN for something that is not an amount.
+  function parseAmount(text, money) {
+    var sym = "";
+    if (money) {
+      var own = String(cfg.currency || "").replace(/^\s+|\s+$/g, "").replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      sym = "(?:[^\\w\\s+\\-.,]{1,3}" + (own ? "|" + own : "") + ")?";
+    }
+    var m = new RegExp("^\\s*([+-]?)\\s*" + sym + "\\s*(\\d+(?:[.,]\\d{1,2})?)\\s*" + sym + "\\s*$", "i").exec(String(text === undefined || text === null ? "" : text));
+    if (!m) return NaN;
+    var n = parseFloat(m[2].replace(",", "."));
+    return m[1] === "-" ? -n : n;
+  }
   function handleChat(data) {
     data = data || {};
     var text = String(data.text || "").replace(/^\s+|\s+$/g, "");
@@ -282,8 +301,9 @@
     var verb = (args.shift() || "").toLowerCase();
     if (!verb) { popTitle(); return; }                     // anyone can ask to see it
     if (!canManage(cfg, rolesOf(data))) return;
-    var kind = (args[0] || "").toLowerCase(), n = parseFloat(args[1]);
+    var kind = (args[0] || "").toLowerCase();
     if (KINDS.indexOf(kind) === -1) kind = "";
+    var n = parseAmount(args.slice(1).join(" "), kind === "tips");
     switch (verb) {
       case "reset": newStream(); save(); render(); break;
       case "set": if (kind && !isNaN(n)) setCount(kind, n); break;
@@ -322,9 +342,23 @@
     return s;
   }
   function withCommas(n) { return String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
+  // A tip is money. The symbol goes before the amount (£5) or after it (5 kr, 5\u20ac): a lone sign sits
+  // tight against the number and a word gets a space that does not break the line. The decimal can
+  // be a comma (5,50), and the thousands then use a point. Cents show when there are some, always,
+  // or never.
+  function money(n) {
+    var neg = n < 0, c = Math.round(Math.abs(n) * 100);
+    var whole = cfg.decimals === "none" ? Math.round(c / 100) : Math.floor(c / 100), frac = cfg.decimals === "none" ? 0 : c % 100;
+    var body = String(whole).replace(/\B(?=(\d{3})+(?!\d))/g, cfg.decimalComma ? "." : ",");
+    if (cfg.decimals === "always" || (cfg.decimals !== "none" && frac !== 0)) body += (cfg.decimalComma ? "," : ".") + (frac < 10 ? "0" : "") + frac;
+    if (neg) body = "-" + body;
+    var sym = cfg.currency;
+    if (!sym) return body;
+    if (!cfg.currencyAfter) return sym + body;
+    return body + (/^[A-Za-z\u00c0-\u024f]/.test(sym) ? "\u00a0" : "") + sym;
+  }
   function shown(kind, n) {
-    if (kind === "tips") return cfg.currency + (n % 1 !== 0 ? n.toFixed(2) : withCommas(n));
-    return withCommas(n);
+    return kind === "tips" ? money(n) : withCommas(n);
   }
   function bump(kind) {
     var row = el.rows[kind];

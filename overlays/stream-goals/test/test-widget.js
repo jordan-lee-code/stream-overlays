@@ -112,6 +112,46 @@ const HOUR = 3600000;
   await load({ showTips: true, currency: "" }); tip(5); ok(count("tips") === "5 / 50", "a blank currency symbol means none (" + count("tips") + ")");
   await load({ targetSubs: 2, raiseSubs: 0, reachedText: "" }); sub({ amount: 1 }); sub({ amount: 1 }); ok(count("subs") === "2 / 2", "a blank reached text keeps showing the count (" + count("subs") + ")");
 
+  section("how a tip goal writes money");
+  await load({ showTips: true, targetTips: 5000 });
+  tip(5); ok(count("tips") === "\u00a35 / \u00a35,000", "the default is as it always was: the pound sign, and cents only when there are some (" + count("tips") + ")");
+  tip(2.5); ok(count("tips") === "\u00a37.50 / \u00a35,000", "cents show when there are some (" + count("tips") + ")");
+  tip(1250); ok(count("tips") === "\u00a31,257.50 / \u00a35,000", "and thousands are separated even with cents (" + count("tips") + ")");
+  await load({ showTips: true, targetTips: 5000, currency: "\u20ac", currencyAfter: true }); tip(5);
+  ok(count("tips") === "5\u20ac / 5,000\u20ac", "a lone sign can follow the amount (" + count("tips") + ")");
+  await load({ showTips: true, targetTips: 5000, currency: "kr", currencyAfter: true }); tip(5);
+  ok(count("tips") === "5\u00a0kr / 5,000\u00a0kr", "a word follows it with a space that does not break the line (" + count("tips") + ")");
+  await load({ showTips: true, targetTips: 5000, decimalComma: true }); tip(1250.5);
+  ok(count("tips") === "\u00a31.250,50 / \u00a35.000", "a comma decimal makes the thousands use a point (" + count("tips") + ")");
+  await load({ showTips: true, decimals: "always" }); tip(5); ok(count("tips") === "\u00a35.00 / \u00a350.00", "cents can always show (" + count("tips") + ")");
+  await load({ showTips: true, decimals: "none" }); tip(5.4); ok(count("tips") === "\u00a35 / \u00a350", "or never (" + count("tips") + ")");
+  tip(0.1); ok(count("tips") === "\u00a36 / \u00a350", "rounded as a person would (" + count("tips") + ")");
+  await load({ showTips: true, currency: "" , decimalComma: true }); tip(5.5); ok(count("tips") === "5,50 / 50", "a blank symbol shows none (" + count("tips") + ")");
+  await load({ showTips: true }); tip(0.1); tip(0.2); ok(count("tips") === "\u00a30.30 / \u00a350", "small tips add up exactly (" + count("tips") + ")");
+  await load({ showTips: true, decimals: "nonsense" }); tip(5.5); ok(count("tips") === "\u00a35.50 / \u00a350", "a setting that is not one of the choices is read as the usual one (" + count("tips") + ")");
+  await load({ showTips: true, showSubs: true }); tip(7); ok(count("subs") === "0 / 50", "and money formatting is only ever for tips");
+  await load({ showTips: true, currencyAfter: true, currency: "\u20ac", format: "{n} of {target}" }); tip(5); ok(count("tips") === "5\u20ac of 50\u20ac", "wherever the count is written (" + count("tips") + ")");
+
+  section("amounts typed in chat");
+  await load({ showTips: true, showFollows: true });
+  boss("!goals set tips 20"); ok(count("tips") === "\u00a320 / \u00a350", "set puts a count right (" + count("tips") + ")");
+  // Each is added to the running count, which starts at 20.
+  for (const form of [["$5", "\u00a325"], ["5,50", "\u00a330.50"], ["+3", "\u00a333.50"], ["  7  ", "\u00a340.50"], ["\u00a31.5", "\u00a342"], ["-4", "\u00a338"], ["\u20ac2", "\u00a340"]]) {
+    boss("!goals add tips " + form[0]); ok(count("tips").indexOf(form[1] + " /") === 0, "a tip amount can be written as " + JSON.stringify(form[0]) + " (" + count("tips") + ")");
+  }
+  await load({ showTips: true, currency: "kr", currencyAfter: true }); boss("!goals set tips 5"); boss("!goals add tips 2 kr"); boss("!goals add tips 3KR");
+  ok(count("tips") === "10\u00a0kr / 50\u00a0kr", "the symbol set for tips can follow an amount, in any case (" + count("tips") + ")");
+  boss("!goals add tips 4 \u00a3"); ok(count("tips") === "14\u00a0kr / 50\u00a0kr", "and a sign that is not a letter always can (" + count("tips") + ")");
+  await load({ showTips: true }); boss("!goals set tips 10");
+  for (const bad of ["1,250", "1e3", "1k", "lots", "--5", "5x5", "1.234", "", "5 5", "12abc", "0x10", "5 kr", "5kr", "five"]) boss("!goals add tips " + bad);
+  ok(count("tips") === "\u00a310 / \u00a350", "anything that is not an amount changes nothing, and is never guessed at, so 1k is not 1000 and a word that is not the symbol is not a sign (" + count("tips") + ")");
+  await load({ showTips: true, showFollows: true });
+  boss("!goals set follows 12"); boss("!goals add follows 3"); ok(count("follows") === "15 / 100", "a count of people is still a number (" + count("follows") + ")");
+  for (const bad of ["1,250", "1e3", "$5", "3 kr", "lots", "12abc", "--5"]) boss("!goals add follows " + bad);
+  ok(count("follows") === "15 / 100", "and has no use for a currency sign or a guess (" + count("follows") + ")");
+  boss("!goals set subs 3,200"); ok(count("subs") === "0 / 50", "a count with a thousands separator is refused too, because a comma could mean either (" + count("subs") + ")");
+  boss("!goals set subs 12"); chat("!goals add subs 5", { nick: "viewer" }); ok(count("subs") === "12 / 50", "and a viewer still cannot change anything");
+
   section("every setting is wired up");
   env.checkWired();
   env.checkNotice();
