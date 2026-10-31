@@ -231,7 +231,9 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   load({ tipSymbol: "\u00a3", tipsPerSub: 5, bitsCalcSeconds: 0.3 }); await wait(5);
   tip(3);
   ok(elements["incentive-bits"].hidden === false && elements["incentive-bits-gain"].textContent === "+\u00a33", "a tip shows its amount in the strip (" + elements["incentive-bits-gain"].textContent + ")");
-  await wait(600);
+  // The counter climbs to the amount over the strip's calculation time, so wait for it to arrive
+  // and not for a fixed time, which a slow machine overruns.
+  for (let i = 0; i < 200 && elements["incentive-bits-status"].textContent !== "\u00a33/\u00a35"; i++) await wait(25);
   ok(elements["incentive-bits-status"].textContent === "\u00a33/\u00a35", "and fills towards the next sub (" + elements["incentive-bits-status"].textContent + ")");
 
   console.log("\n[tip currency format]");
