@@ -5,8 +5,9 @@
  *
  *   node scripts/check-scaling.js [overlay ...]
  *
- * A scene can list `variants` in its docs/gallery.json, each with a `label` and some `fields`, for modes the default
- * scene does not show (the Under Camera's window shapes, for one), and each is checked on top of it.
+ * A scene can list `variants` in its docs/gallery.json, each with a `label`, some `fields` and optionally a `script` of its
+ * own, for modes the default scene does not show (the camera's window shapes, and its live and covered states, for
+ * two), and each is checked on top of it.
  *
  * It needs Chromium or Chrome and skips, with a note, where there is none. A box of 400 by 90 is left out on
  * purpose: it cannot hold a clock and a list of goals together, whatever the widget does.
@@ -58,7 +59,7 @@ function measure(chromium, tmp, target, w, h, index) {
   return new Promise((resolve, reject) => {
     const name = target.name, dir = path.join(ROOT, "overlays", name), cfg = JSON.parse(fs.readFileSync(path.join(dir, "docs", "gallery.json"), "utf8"));
     const file = path.join(tmp, "page-" + index + ".html");
-    fs.writeFileSync(file, page(dir, { key: "glass" }, Object.assign({}, cfg.fields || {}, target.fields, { themePreset: "glass" }), (cfg.script || "") + ";" + MEASURE, w, h, cfg.setup));
+    fs.writeFileSync(file, page(dir, { key: "glass" }, Object.assign({}, cfg.fields || {}, target.fields, { themePreset: "glass" }), (target.script !== undefined ? target.script : (cfg.script || "")) + ";" + MEASURE, w, h, cfg.setup));
     execFile(chromium, ["--headless", "--no-sandbox", "--disable-gpu", "--virtual-time-budget=6000", "--user-data-dir=" + path.join(tmp, "profile-" + index), "--dump-dom", "file://" + file],
       { encoding: "utf8", maxBuffer: 64 * 1024 * 1024, timeout: 90000 }, (err, dom) => {
         const m = !err && /<title>([^<]*)<\/title>/.exec(dom || "");
@@ -81,7 +82,7 @@ function measure(chromium, tmp, target, w, h, index) {
   names.forEach(n => {
     const cfg = JSON.parse(fs.readFileSync(path.join(ROOT, "overlays", n, "docs", "gallery.json"), "utf8"));
     targets.push({ name: n, label: n, fields: {} });
-    (cfg.variants || []).forEach(v => targets.push({ name: n, label: n + " [" + v.label + "]", fields: v.fields || {} }));
+    (cfg.variants || []).forEach(v => targets.push({ name: n, label: n + " [" + v.label + "]", fields: v.fields || {}, script: v.script }));
   });
   const jobs = [];
   targets.forEach(t => SIZES.forEach(([w, h]) => jobs.push({ target: t, label: t.label, w, h, index: jobs.length })));

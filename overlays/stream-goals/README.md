@@ -189,8 +189,7 @@ These overlays share the same default look and the same twenty-two style presets
 - [Recent Activity Overlay](../recent-activity): the latest subs, gifts, bits, tips, follows and raids.
 - [Reminder Overlay](../reminder): reminders you set from chat, which stay on screen until cleared.
 - [Chat Feed Overlay](../chat-feed): on-screen chat with profile pictures and pronouns.
-- [Over Camera Overlay](../over-camera): a cover for your camera that you and your moderators control from chat.
-- [Under Camera Overlay](../under-camera): a nameplate for under your camera, with your name, pronouns and rotating lines.
+- [Camera Overlay](../camera): a framed window for your camera with a nameplate, and a cover that you and your moderators control from chat.
 - [Now Playing Overlay](../now-playing): what you are playing, from Last.fm, Tuna, Spotify or Pear Desktop, with album art and a progress bar.
 
 ## Support

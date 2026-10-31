@@ -101,7 +101,7 @@ module.exports = function createEnv(root) {
   const wait = ms => clock.advance(ms);
   let lastFD = {};
   Object.assign(env, {
-    src, fields, expectedPresets, E, storeData, audioLog, wait, fetchLog, fetchOpts,
+    src, fields, expectedPresets, E, storeData, audioLog, wait, fetchLog, fetchOpts, document,
     net(fn) { netHandler = fn; fetchLog.length = 0; fetchOpts.length = 0; },
     ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } else { fail++; console.log("  FAIL " + msg); } },
     section(t) { console.log("\n[" + t + "]"); },
