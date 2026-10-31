@@ -230,6 +230,20 @@
       "circle": "Circle or oval, for a round camera"
     }
   },
+  "aspect": {
+    "type": "dropdown",
+    "label": "The cover's shape. Free fills the whole box, so size the box to the camera. A shape keeps that shape, centred in the box, so make the box big enough that the cover is at least as large as the camera, and check it with !camera off before you go live",
+    "value": "free",
+    "group": "Look",
+    "options": {
+      "free": "Free: it fills the whole box",
+      "16:9": "Widescreen, 16 by 9",
+      "4:3": "Standard, 4 by 3",
+      "3:2": "Photo, 3 by 2",
+      "1:1": "Square",
+      "9:16": "Portrait, 9 by 16"
+    }
+  },
   "colorPanel": {
     "type": "colorpicker",
     "label": "Cover colour (used when the style preset is Custom). It is always solid, whatever the preset, so the camera never shows through",

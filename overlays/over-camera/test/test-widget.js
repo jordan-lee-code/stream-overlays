@@ -182,6 +182,24 @@ const saved = () => storeData.overcamera_v1;
   await load({ showFrame: true }); boss("!camera off"); ok(!ring() && covered(), "the frame stays while the camera is covered");
   boss("!camera on"); ok(!ring() && !covered(), "and while it is showing, which is when it is wanted");
 
+  section("the cover's shape");
+  const locked = () => E("oc-root").classList.contains("locked"), ar = () => env.vars("oc-stage")["--oc-ar"];
+  await load(); ok(!locked() && ar() === "", "by default the cover fills the whole box");
+  for (const [setting, ratio] of [["16:9", "1.7778"], ["4:3", "1.3333"], ["3:2", "1.5"], ["1:1", "1"], ["9:16", "0.5625"]]) {
+    await load({ aspect: setting }); ok(locked() && ar() === ratio, "a cover of " + setting + " keeps that shape (" + ar() + ")");
+  }
+  await load({ aspect: "free" }); ok(!locked() && ar() === "", "free keeps none");
+  await load({ aspect: "sideways" }); ok(!locked(), "and anything else is free");
+  await load({ aspect: "1:1", shape: "circle" }); ok(locked() && env.vars("oc-stage")["--oc-radius"] === "50%", "with a square shape and a circle, it is a true circle");
+  await load({ aspect: "4:3", showFrame: true }); boss("!camera off"); ok(locked() && covered() && !E("oc-root").classList.contains("no-frame"), "the frame keeps the shape too, and the shape holds while it is covered");
+  boss("!camera on"); ok(locked() && !covered(), "and while it is not");
+  env.storeLatency = 1000;
+  await load({ aspect: "16:9" }, false); ok(!locked() && covered() && cover().classList.contains("holding"), "while the saved state is loading the cover is the whole box, whatever the shape, so a shape set too small cannot show a corner of the camera");
+  await wait(1100); ok(locked(), "and takes its shape once it is known");
+  env.storeLatency = Infinity;
+  await load({ aspect: "16:9" }); await wait(3100); ok(locked() && covered(), "also if the saved state never comes, when it stays covered and takes its shape");
+  env.storeLatency = undefined;
+
   section("the buttons");
   await load();
   button("btnOff"); ok(covered() && text() === "Camera off", "the off button covers it");
