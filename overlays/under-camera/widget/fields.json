@@ -57,6 +57,16 @@
       "right": "On the right"
     }
   },
+  "platePosition": {
+    "type": "dropdown",
+    "label": "Where the nameplate goes, in relation to the camera window",
+    "value": "below",
+    "group": "Plate",
+    "options": {
+      "below": "Below the window",
+      "above": "Above the window"
+    }
+  },
   "lines": {
     "type": "text",
     "label": "Lines that take turns underneath, separated by | (a vertical bar), for example your socials or a reminder",
