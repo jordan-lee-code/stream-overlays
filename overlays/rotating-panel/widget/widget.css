@@ -1,0 +1,141 @@
+/* Copyright (c) 2026 Jordan Lee (https://ko-fi.com/journeyingjordan). Released under the MIT licence: this notice must be kept in copies and substantial portions of the code. See LICENSE. */
+/* Every value below is a custom property that widget.js sets from the editor fields, so
+   the defaults can be restyled from the settings panel without touching this file. */
+
+#rp-root {
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  /* The width reference for the cqw sizes below. A container's own cqw units resolve
+     against its parent, so the card cannot be the container itself. */
+  container-type: inline-size;
+  -webkit-font-smoothing: antialiased;
+}
+#rp-root * { box-sizing: border-box; }
+#rp-root [hidden] { display: none !important; }
+/* With nothing to show, or switched off from chat, the whole widget goes. */
+#rp-root[hidden] { display: none !important; }
+
+/* The Animate field: when it is off, nothing moves or eases. */
+#rp-root.no-motion,
+#rp-root.no-motion * {
+  animation: none !important;
+  transition: none !important;
+}
+
+#rp-app {
+  --w-bg: rgba(0, 0, 0, 0.55);
+  --w-text: #FFFFFF;
+  --w-accent: #FFFFFF;
+  --w-track: #444444;
+  --w-font: "BioRhyme", Georgia, serif;
+  --w-radius: 24px;
+  --w-pad: 0.5;
+  --w-weight: 800;
+  --w-border: 0 solid #FFFFFF;
+  --w-shadow: none;
+
+  position: relative;
+  flex: 0 0 auto;
+  width: 100%;
+  padding: calc(var(--w-pad) * 1em) 3cqw;
+  font-family: var(--w-font);
+  font-size: var(--rp-size, 4.5cqw);
+  color: var(--w-text);
+  text-align: var(--rp-align, center);
+  background: var(--w-bg);
+  background-image: var(--w-bgimg, none);
+  border: var(--w-border);
+  border-radius: var(--w-radius);
+  box-shadow: var(--w-shadow);
+  line-height: 1.2;
+}
+
+.rp-title {
+  font-size: calc(1em * var(--rp-title, 0.55));
+  font-weight: var(--w-weight);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--w-accent);
+  margin-bottom: 0.3em;
+}
+.rp-title.pop { animation: rp-pop 0.4s ease; }
+
+/* Every entry shares one cell, so the card is as tall as its tallest and never changes size as they take turns. */
+.rp-stage { display: grid; }
+.rp-entry {
+  grid-area: 1 / 1;
+  align-self: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s ease, transform 0.5s ease, visibility 0s linear 0.5s;
+}
+.rp-entry.on {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.5s ease, transform 0.5s ease, visibility 0s;
+}
+.fx-slide .rp-entry { transform: translateX(1.2em); }
+.fx-slide .rp-entry.on { transform: none; }
+.fx-none .rp-entry, .fx-none .rp-entry.on { transition: none; }
+
+.rp-head {
+  font-size: calc(1em * var(--rp-head, 1.8));
+  font-weight: var(--w-weight);
+  color: var(--w-accent);
+  line-height: 1.1;
+  overflow-wrap: anywhere;
+}
+.rp-text {
+  margin-top: var(--rp-gap, 0.3em);
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.rp-dots { display: flex; justify-content: center; gap: 0.5em; margin-top: 0.6em; }
+.rp-dot {
+  width: 0.5em; height: 0.5em;
+  border-radius: 50%;
+  background: var(--w-track);
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+.rp-dot.on { background: var(--w-accent); transform: scale(1.25); }
+
+.rp-bar {
+  height: 0.28em;
+  margin-top: 0.6em;
+  border-radius: 999px;
+  background: var(--w-track);
+  overflow: hidden;
+}
+.rp-fill { display: block; height: 100%; width: 0; border-radius: inherit; background: var(--w-flag, var(--w-accent)); box-shadow: var(--w-edge, none); }
+.rp-fill.run { animation: rp-run var(--rp-dur, 8s) linear forwards; }
+#rp-app.paused .rp-fill { animation-play-state: paused; }
+
+@keyframes rp-run { from { width: 0; } to { width: 100%; } }
+@keyframes rp-pop {
+  0% { transform: scale(0.88); }
+  55% { transform: scale(1.07); }
+  100% { transform: scale(1); }
+}
+
+/* The outer frame in a pride preset: the flag's stripes, as a ring over the panel's edge that follows its corners. It is the
+   panel's padding box with the inside masked out. A preset with no flag has no ring, and its frame is the border. */
+#rp-app::after {
+  content: "";
+  position: absolute;
+  inset: calc(var(--w-frame-w, 0px) * -1);
+  padding: var(--w-frame-w, 0px);
+  border-radius: inherit;
+  pointer-events: none;
+  background: var(--w-frame-img, none);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+}

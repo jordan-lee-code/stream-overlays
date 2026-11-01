@@ -1,0 +1,358 @@
+{
+  "command": {
+    "type": "text",
+    "label": "Command word",
+    "value": "!panel",
+    "group": "Commands"
+  },
+  "whoCanManage": {
+    "type": "dropdown",
+    "label": "Who can use it",
+    "value": "mods",
+    "options": {
+      "broadcaster": "Broadcaster only",
+      "mods": "Broadcaster + moderators"
+    },
+    "group": "Commands"
+  },
+  "entry1": {
+    "type": "text",
+    "label": "Entry 1: a heading, a vertical bar, then its words (for example Discord | discord.gg/yourinvite)",
+    "value": "Twitch | twitch.tv/yourname",
+    "group": "Entries"
+  },
+  "entry2": {
+    "type": "text",
+    "label": "Entry 2",
+    "value": "Discord | discord.gg/yourinvite",
+    "group": "Entries"
+  },
+  "entry3": {
+    "type": "text",
+    "label": "Entry 3",
+    "value": "!lurk | Settle in, we will save your seat",
+    "group": "Entries"
+  },
+  "entry4": {
+    "type": "text",
+    "label": "Entry 4",
+    "value": "!socials | Every link in one place",
+    "group": "Entries"
+  },
+  "entry5": {
+    "type": "text",
+    "label": "Entry 5",
+    "value": "",
+    "group": "Entries"
+  },
+  "entry6": {
+    "type": "text",
+    "label": "Entry 6",
+    "value": "",
+    "group": "Entries"
+  },
+  "entry7": {
+    "type": "text",
+    "label": "Entry 7",
+    "value": "",
+    "group": "Entries"
+  },
+  "entry8": {
+    "type": "text",
+    "label": "Entry 8",
+    "value": "",
+    "group": "Entries"
+  },
+  "entry9": {
+    "type": "text",
+    "label": "Entry 9",
+    "value": "",
+    "group": "Entries"
+  },
+  "entry10": {
+    "type": "text",
+    "label": "Entry 10",
+    "value": "",
+    "group": "Entries"
+  },
+  "entry11": {
+    "type": "text",
+    "label": "Entry 11",
+    "value": "",
+    "group": "Entries"
+  },
+  "entry12": {
+    "type": "text",
+    "label": "Entry 12",
+    "value": "",
+    "group": "Entries"
+  },
+  "seconds": {
+    "type": "number",
+    "label": "Seconds each entry stays",
+    "value": 8,
+    "min": 2,
+    "max": 600,
+    "step": 1,
+    "group": "Rotation"
+  },
+  "shuffle": {
+    "type": "checkbox",
+    "label": "Shuffle the order each time round (untick to keep the order written above)",
+    "value": false,
+    "group": "Rotation"
+  },
+  "transition": {
+    "type": "dropdown",
+    "label": "How an entry arrives",
+    "value": "fade",
+    "options": {
+      "fade": "Fade",
+      "slide": "Slide in",
+      "none": "Straight away"
+    },
+    "group": "Rotation"
+  },
+  "showDots": {
+    "type": "checkbox",
+    "label": "Show a dot for each entry, with the current one lit",
+    "value": true,
+    "group": "Rotation"
+  },
+  "showBar": {
+    "type": "checkbox",
+    "label": "Show a thin bar that fills while an entry stays",
+    "value": true,
+    "group": "Rotation"
+  },
+  "align": {
+    "type": "dropdown",
+    "label": "Where the words sit",
+    "value": "center",
+    "options": {
+      "center": "Centred",
+      "left": "Left"
+    },
+    "group": "Rotation"
+  },
+  "textSize": {
+    "type": "number",
+    "label": "Text size (percent of the box width)",
+    "value": 4.5,
+    "min": 1,
+    "max": 20,
+    "step": 0.25,
+    "group": "Size"
+  },
+  "headingScale": {
+    "type": "number",
+    "label": "Heading size (share of the text size)",
+    "value": 1.8,
+    "min": 0.3,
+    "max": 5,
+    "step": 0.1,
+    "group": "Size"
+  },
+  "titleScale": {
+    "type": "number",
+    "label": "Title size (share of the text size)",
+    "value": 0.55,
+    "min": 0.1,
+    "max": 2,
+    "step": 0.05,
+    "group": "Size"
+  },
+  "gap": {
+    "type": "number",
+    "label": "Space between a heading and its words",
+    "value": 0.3,
+    "min": 0,
+    "max": 2,
+    "step": 0.05,
+    "group": "Size"
+  },
+  "btnNext": {
+    "type": "button",
+    "label": "Next entry",
+    "group": "Manual controls"
+  },
+  "btnPrev": {
+    "type": "button",
+    "label": "Previous entry",
+    "group": "Manual controls"
+  },
+  "btnPause": {
+    "type": "button",
+    "label": "Pause on this entry",
+    "group": "Manual controls"
+  },
+  "btnResume": {
+    "type": "button",
+    "label": "Carry on rotating",
+    "group": "Manual controls"
+  },
+  "btnHide": {
+    "type": "button",
+    "label": "Hide the panel",
+    "group": "Manual controls"
+  },
+  "btnShow": {
+    "type": "button",
+    "label": "Show the panel",
+    "group": "Manual controls"
+  },
+  "title": {
+    "type": "text",
+    "label": "Title",
+    "value": "Find me online",
+    "group": "Look"
+  },
+  "showTitle": {
+    "type": "checkbox",
+    "label": "Show the title",
+    "value": true,
+    "group": "Look"
+  },
+  "themePreset": {
+    "type": "dropdown",
+    "label": "Style preset (the same twenty-two are in every overlay in this set)",
+    "value": "glass",
+    "options": {
+      "glass": "Soft black (default)",
+      "frost": "Soft white",
+      "midnight": "Midnight blue",
+      "sunset": "Sunset",
+      "forest": "Forest",
+      "ocean": "Ocean",
+      "rose": "Rose",
+      "neon": "Neon",
+      "cosycabin": "Cosy cabin",
+      "pastel": "Cosy summer pastel",
+      "celestial": "Celestial",
+      "pastelgoth": "Pastel goth",
+      "pastelpink": "Pastel pink",
+      "pastelsage": "Pastel sage",
+      "faegreen": "Fae green",
+      "pride": "Rainbow pride",
+      "trans": "Trans pride",
+      "bi": "Bi pride",
+      "pan": "Pan pride",
+      "enby": "Non-binary pride",
+      "lesbian": "Lesbian pride",
+      "ace": "Ace pride",
+      "custom": "Custom (use the colours below)"
+    },
+    "group": "Look"
+  },
+  "fontFamily": {
+    "type": "googleFont",
+    "label": "Font (used when the style preset is Custom)",
+    "value": "BioRhyme",
+    "group": "Look"
+  },
+  "weight": {
+    "type": "number",
+    "label": "Boldness (100 to 900)",
+    "value": 800,
+    "min": 100,
+    "max": 900,
+    "step": 100,
+    "group": "Look"
+  },
+  "radius": {
+    "type": "number",
+    "label": "Corner roundness, in pixels",
+    "value": 24,
+    "min": 0,
+    "max": 100,
+    "step": 1,
+    "group": "Look"
+  },
+  "pad": {
+    "type": "number",
+    "label": "Padding above and below",
+    "value": 0.5,
+    "min": 0,
+    "max": 3,
+    "step": 0.05,
+    "group": "Look"
+  },
+  "outerFrame": {
+    "type": "checkbox",
+    "label": "An outer frame round the widget in the accent colour, or the flag's stripes in a pride preset. Untick it for none",
+    "value": true,
+    "group": "Look"
+  },
+  "borderWidth": {
+    "type": "number",
+    "label": "Frame and outline thickness in pixels. At 0 the frame has a default thickness that grows with the box, and with the frame unticked there is no outline",
+    "value": 0,
+    "min": 0,
+    "max": 20,
+    "step": 1,
+    "group": "Look"
+  },
+  "borderColor": {
+    "type": "colorpicker",
+    "label": "Outline colour, used when the outer frame is unticked and the thickness is above 0 (the frame itself is always the accent colour)",
+    "value": "#FFFFFF",
+    "group": "Look"
+  },
+  "shadow": {
+    "type": "checkbox",
+    "label": "Shadow",
+    "value": false,
+    "group": "Look"
+  },
+  "animate": {
+    "type": "checkbox",
+    "label": "Animate",
+    "value": true,
+    "group": "Look"
+  },
+  "fit": {
+    "type": "checkbox",
+    "label": "Shrink to fit the box: when the box is too short for everything, the whole card gets smaller instead of running off the bottom",
+    "value": true,
+    "group": "Look"
+  },
+  "colorPanel": {
+    "type": "colorpicker",
+    "label": "Panel colour (used when the style preset is Custom)",
+    "value": "#000000",
+    "group": "Custom colours"
+  },
+  "panelOpacity": {
+    "type": "number",
+    "label": "Panel opacity, 0 to 1 (used when the style preset is Custom)",
+    "value": 0.55,
+    "min": 0,
+    "max": 1,
+    "step": 0.05,
+    "group": "Custom colours"
+  },
+  "cText": {
+    "type": "colorpicker",
+    "label": "Text (used when the style preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Custom colours"
+  },
+  "cAccent": {
+    "type": "colorpicker",
+    "label": "Accent (used when the style preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Custom colours"
+  },
+  "cTrack": {
+    "type": "colorpicker",
+    "label": "Dots and bar (used when the style preset is Custom)",
+    "value": "#444444",
+    "group": "Custom colours"
+  },
+  "debug": {
+    "type": "checkbox",
+    "label": "Log every event to the browser-source console",
+    "value": false,
+    "group": "Troubleshooting"
+  }
+}
