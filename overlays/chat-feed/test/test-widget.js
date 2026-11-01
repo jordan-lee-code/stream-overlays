@@ -328,6 +328,35 @@ const until = async (test, ms) => { for (let i = 0; i < (ms || 2000) / 25 && !te
   ok(!E("cf-app").classList.contains("inline") && !E("cf-app").classList.contains("bubbles"), "name above and one panel by default");
   await load({ nameLine: "inline", cardStyle: "bubbles" });
   ok(E("cf-app").classList.contains("inline") && E("cf-app").classList.contains("bubbles"), "the name can share the line, and each message can be its own card");
+  section("bubble mode");
+  const alts = () => rowEls().map(li => li.className.split(" ").indexOf("alt") !== -1 ? "b" : "a").join("");
+  await load(); ok(!E("cf-app").classList.contains("bubble-mode") && !E("cf-app").classList.contains("bubbles"), "off by default");
+  await load({ bubbleMode: true });
+  for (let i = 0; i < 5; i++) say("message " + i, { nick: "user" + i });
+  ok(E("cf-app").classList.contains("bubble-mode") && E("cf-app").classList.contains("bubbles"), "bubble mode puts each message on its own card, with no panel");
+  ok(/^(ab|ba)+a?b?$/.test(alts()) && alts().length === 5 && new Set(alts().split("")).size === 2, "and the bubbles take turns between the two colours (" + alts() + ")");
+  await load({ bubbleMode: true, maxMessages: 3 });
+  for (let i = 0; i < 6; i++) say("message " + i, { nick: "user" + i });
+  const before = alts(); say("message 6", { nick: "user6" });
+  ok(rowEls().length === 3 && before.length === 3 && alts() !== before && /^(ab|ba)+a?b?$/.test(alts()), "older ones leaving does not make two neighbours match (" + before + " then " + alts() + ")");
+  await load({ bubbleMode: true, cardStyle: "panel" }); ok(E("cf-app").classList.contains("bubbles"), "whatever the card style says");
+  await load({ cardStyle: "bubbles" }); say("hi"); ok(!E("cf-app").classList.contains("bubble-mode") && alts() === "a", "and the plain bubbles stay one colour");
+  const alt = async key => { await load({ bubbleMode: true, themePreset: key }); return String(env.vars("cf-app")["--cf-alt-text"]); };
+  ok(await alt("glass") === "rgb(0, 0, 0)", "words on an accent bubble are dark when the accent is light (" + await alt("glass") + ")");
+  ok(await alt("frost") === "rgb(255, 255, 255)", "and light when the accent is dark (" + await alt("frost") + ")");
+  const lum = h => { const n = parseInt(h.replace("#", ""), 16); return [(n >> 16) & 255, (n >> 8) & 255, n & 255].map(v => { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); }).reduce((a, v, i) => a + v * [0.2126, 0.7152, 0.0722][i], 0); };
+  const toHex = s => { const m = /(\d+), (\d+), (\d+)/.exec(s); return "#" + [1, 2, 3].map(i => (+m[i]).toString(16).padStart(2, "0")).join(""); };
+  let worst = 21, worstKey = "";
+  for (const key of Object.keys(env.expectedPresets)) {
+    const x = env.expectedPresets[key], wordsHex = (v => v[0] === "#" ? v : toHex(v))(await alt(key));
+    const a = lum(x.accent), b = lum(wordsHex), r = (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
+    if (r < worst) { worst = r; worstKey = key; }
+  }
+  ok(worst >= 3.5, "in every preset the words on an accent bubble can be read (the weakest, " + worstKey + ", is " + worst.toFixed(1) + " to 1)");
+  const css = require("fs").readFileSync(require("path").join(__dirname, "../widget/widget.css"), "utf8");
+  ok(/#cf-app\.bubble-mode \.cf-msg\s*\{[^}]*width:\s*fit-content[^}]*max-width:\s*100%/.test(css), "in bubble mode each bubble is as wide as its message, and no wider than the box");
+  ok(/#cf-app\.bubble-mode \.cf-msg\.alt\s*\{[^}]*background:\s*var\(--w-accent\)/.test(css) && /#cf-app\.bubbles::after\s*\{\s*display:\s*none/.test(css), "the stylesheet colours the other bubbles with the accent, and gives the frame to each bubble and not the whole widget");
+
   await load({ textSize: 6, rowGap: 1 });
   ok(env.vars("cf-app")["--cf-size"] === "6cqw" && env.vars("cf-app")["--cf-gap"] === "1em", "size and spacing are settings");
   await load({ title: "Chat", showTitle: true }); ok(!E("cf-title").hidden && E("cf-title").textContent === "Chat", "the title can be shown");
