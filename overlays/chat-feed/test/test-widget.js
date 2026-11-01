@@ -354,6 +354,7 @@ const until = async (test, ms) => { for (let i = 0; i < (ms || 2000) / 25 && !te
   }
   ok(worst >= 3.5, "in every preset the words on an accent bubble can be read (the weakest, " + worstKey + ", is " + worst.toFixed(1) + " to 1)");
   const css = require("fs").readFileSync(require("path").join(__dirname, "../widget/widget.css"), "utf8");
+  ok(/#cf-app\.bubble-mode \.cf-msg\s*\{[^}]*width:\s*fit-content[^}]*max-width:\s*100%/.test(css), "in bubble mode each bubble is as wide as its message, and no wider than the box");
   ok(/#cf-app\.bubble-mode \.cf-msg\.alt\s*\{[^}]*background:\s*var\(--w-accent\)/.test(css) && /#cf-app\.bubbles::after\s*\{\s*display:\s*none/.test(css), "the stylesheet colours the other bubbles with the accent, and gives the frame to each bubble and not the whole widget");
 
   await load({ textSize: 6, rowGap: 1 });

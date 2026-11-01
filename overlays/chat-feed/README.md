@@ -14,7 +14,7 @@ It is a single self-contained widget in plain JavaScript, with no dependencies a
 - Pronouns: shown beside the name as a small tag, in brackets, or as plain text, with a way to set them by hand.
 - Readable names: a chat colour that would be hard to read on your panel is swapped for the accent colour.
 - Two layouts: the name above the message or on the same line, and one panel behind everything or a card for each message.
-- Bubble mode: one checkbox takes the panel away and has the bubbles take turns between the preset's panel colour and its accent colour, with the words on the accent ones in whichever text colour reads better there.
+- Bubble mode: one checkbox takes the panel away, sizes each bubble to its message, and has the bubbles take turns between the preset's panel colour and its accent colour, with the words on the accent ones in whichever text colour reads better there.
 - Scrolls like chat: a new message arrives at the bottom, the older ones glide up and fade out through the top edge, and how many show depends on how tall you make the box in StreamElements. With the newest at the top it scrolls the other way.
 - Tidy by default: chat commands, and the usual bots, are left out, and you can add names of your own.
 - Moderation: `!chatfeed hide name` takes someone off the screen, and a message StreamElements deletes disappears from it too.
@@ -33,7 +33,7 @@ It is a single self-contained widget in plain JavaScript, with no dependencies a
 
 <p><img src="docs/bubbles.png" alt="Four chat messages, each on its own pale pink card" width="420"></p>
 
-**Bubble mode,** here in Midnight blue. The panel behind the chat goes, and the bubbles take turns between the preset's panel colour and its accent colour.
+**Bubble mode,** here in Midnight blue. The panel behind the chat goes, each bubble is as wide as its message, and the bubbles take turns between the preset's panel colour and its accent colour.
 
 <p><img src="docs/bubble-mode.png" alt="Four chat messages on rounded bubbles that alternate between deep navy and pale periwinkle blue" width="420"></p>
 

@@ -179,6 +179,8 @@
 
 /* Bubble mode: the same, with the bubbles taking turns between the panel colour and the accent colour. The accent ones have
    no flag behind them, and say their name, their pronouns and their initial in whichever text colour reads better on it. */
+/* Each bubble is as wide as its message, and no wider than the box, so a short message does not sit in a long empty bubble. */
+#cf-app.bubble-mode .cf-msg { align-self: flex-start; width: fit-content; max-width: 100%; }
 #cf-app.bubble-mode .cf-msg.alt {
   background: var(--w-accent);
   background-image: none;
