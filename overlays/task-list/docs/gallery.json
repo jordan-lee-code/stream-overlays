@@ -1,0 +1,62 @@
+{
+  "width": 380,
+  "height": 260,
+  "fields": {
+    "animate": false
+  },
+  "script": "chat('!task add say hello to chat');chat('!task add play the new game');chat('!task add draw something');chat('!task add post to socials');chat('!task add stretch');chat('!task done 1');chat('!task done 2');",
+  "pictures": [
+    {
+      "file": "default.png",
+      "width": 380,
+      "height": 260,
+      "fields": {
+        "animate": false
+      },
+      "script": "chat('!task add say hello to chat');chat('!task add play the new game');chat('!task add draw something');chat('!task add post to socials');chat('!task add stretch');chat('!task done 1');chat('!task done 2');"
+    },
+    {
+      "file": "finished.png",
+      "width": 380,
+      "height": 260,
+      "fields": {
+        "animate": false
+      },
+      "script": "chat('!task add say hello to chat');chat('!task add play the new game');chat('!task add draw something');chat('!task add post to socials');chat('!task add stretch');chat('!task done 1');chat('!task done 2');chat('!task done 3');chat('!task done 4');chat('!task done 5');"
+    },
+    {
+      "file": "schedule.png",
+      "width": 380,
+      "height": 260,
+      "fields": {
+        "animate": false,
+        "mode": "schedule",
+        "slot1": "Monday | 7pm | Chill games",
+        "slot2": "Wednesday | 7pm | Art stream",
+        "slot3": "Friday | 8pm | Variety night",
+        "slot4": "Sunday | 3pm | Cosy catch-up",
+        "note": "All times are GMT"
+      },
+      "script": "",
+      "setup": "var __t=new Date(2026,10,4,12,0,0).getTime();Date.now=function(){return __t;};"
+    },
+    {
+      "file": "custom.png",
+      "width": 380,
+      "height": 260,
+      "fields": {
+        "animate": false,
+        "themePreset": "custom",
+        "colorPanel": "#2a1a47",
+        "panelOpacity": 0.92,
+        "cText": "#F3ECFF",
+        "cAccent": "#E8C06B",
+        "fontFamily": "Cinzel",
+        "radius": 30,
+        "title": "Tonight",
+        "showNumbers": false
+      },
+      "script": "chat('!task add say hello to chat');chat('!task add play the new game');chat('!task add draw something');chat('!task add post to socials');chat('!task add stretch');chat('!task done 1');chat('!task done 2');"
+    }
+  ]
+}
