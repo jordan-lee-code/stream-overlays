@@ -348,6 +348,8 @@ const until = async (test, ms) => { for (let i = 0; i < (ms || 2000) / 25 && !te
   ok(rowEls().every(li => deco(li).length === 1 && li.firstChild === deco(li)[0]), "each bubble gets its own layer behind its words");
   ok(deco(rowEls()[0])[0].children.length === 6 && String(deco(rowEls()[0])[0].className).indexOf("outside") !== -1, "capped at six a bubble, on the border with half of each outside");
   ok(deco(E("cf-app")).length === 0 && E("cf-app").classList.contains("decor-bubbles"), "and none on the panel itself");
+  const xOf = li => String(deco(li)[0].children[0].style["--x"]);
+  ok(xOf(rowEls()[0]) !== xOf(rowEls()[1]), "and every other bubble is the mirror image (" + xOf(rowEls()[0]) + " then " + xOf(rowEls()[1]) + ")");
   await load({ bubbleMode: true, decoration: "hearts", decorationOnBubbles: true, decorationCount: 3 });
   say("one", { nick: "u1" }); ok(deco(rowEls()[0])[0].children.length === 3, "fewer when asked for fewer");
   await load({ bubbleMode: true, decoration: "none", decorationOnBubbles: true });

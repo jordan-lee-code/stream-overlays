@@ -44,7 +44,7 @@ The pictures in these screenshots are drawn examples, not real profiles.
 
 <p><img src="docs/decorations.png" alt="Chat feed with hearts in the Pastel pink preset" width="420"></p>
 
-With bubble mode or the bubbles card style, tick **Put the decorations round each chat bubble** and each bubble gets its own, hanging half outside its edge.
+With bubble mode or the bubbles card style, tick **Put the decorations round each chat bubble** and each bubble gets its own: a larger one on a lower corner and smaller ones at the ends, half outside its edge, mirrored on every other bubble.
 
 <p><img src="docs/decorations-bubbles.png" alt="Chat feed in bubble mode with hearts round each bubble" width="420"></p>
 

@@ -656,10 +656,20 @@
     body.appendChild(text);
     li.appendChild(body);
     if (cfg.decorBubbles && cfg.decor && cfg.decor.kind !== "none") {
-      // A few on the border of each bubble, half of each outside it; the count is per bubble.
+      // A few on the edge of each bubble, half of each outside it; the count is per bubble.
       var d = {}; for (var k in cfg.decor) { if (cfg.decor.hasOwnProperty(k)) d[k] = cfg.decor[k]; }
       d.place = "border"; d.count = Math.min(d.count, 6);
       applyDecor(d, li, theme.flag || [theme.accent], cfg.animate, theme.text);
+      // Then moved to where they look best on a bubble: a big one on a lower corner, small ones at the middle of each end, and so on.
+      // Every other bubble is the mirror image, so they do not all look stamped.
+      var spots = [[100, 100, 1.5], [0, 52, 0.9], [100, 38, 0.8], [88, 112, 0.7], [2, -4, 0.8], [0, 108, 1], [96, -6, 0.7], [-8, 78, 0.7]];
+      var layer = li.firstChild, flip = m.id % 2 === 1;
+      for (var q = 0; layer && layer.children && q < layer.children.length; q++) {
+        var sp = spots[q % spots.length], dot = layer.children[q];
+        dot.style.setProperty("--x", (flip ? 100 - sp[0] : sp[0]) + "%");
+        dot.style.setProperty("--y", sp[1] + "%");
+        dot.style.setProperty("--s", String(sp[2]));
+      }
     }
     return li;
   }
