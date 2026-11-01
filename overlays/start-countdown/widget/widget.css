@@ -1,0 +1,143 @@
+/* Copyright (c) 2026 Jordan Lee (https://ko-fi.com/journeyingjordan). Released under the MIT licence: this notice must be kept in copies and substantial portions of the code. See LICENSE. */
+/* Designed for a full 1920 by 1080 scene and stretched to any box. Every size is a number of "units", where one unit is
+   a hundredth of the box's width at 16 by 9, or the same size in a box that is short for its width, so nothing runs off
+   the bottom. Every value below is a custom property that widget.js sets from the editor fields. */
+
+#sc-root {
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  margin: 0;
+  overflow: hidden;
+  /* The reference for the cqw and cqh sizes below. A container's own units resolve against its parent, so the card
+     cannot be the container itself. */
+  container-type: size;
+  -webkit-font-smoothing: antialiased;
+}
+#sc-root * { box-sizing: border-box; }
+#sc-root [hidden] { display: none !important; }
+
+/* The Animate field: when it is off, nothing moves or eases. */
+#sc-root.no-motion,
+#sc-root.no-motion * {
+  animation: none !important;
+  transition: none !important;
+}
+
+#sc-app {
+  --w-bg: rgba(0, 0, 0, 0.55);
+  --w-text: #FFFFFF;
+  --w-accent: #FFFFFF;
+  --w-track: #444444;
+  --w-alarm: #D64545;
+  --w-font: "BioRhyme", Georgia, serif;
+  --w-radius: 0px;
+  --w-weight: 800;
+  --w-border: 0 solid #FFFFFF;
+  --w-shadow: none;
+  --u: min(1cqw, 1.7778cqh);
+
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: calc(var(--sc-gap, 1.6) * var(--u));
+  padding: calc(3 * var(--u));
+  font-family: var(--w-font);
+  font-weight: var(--w-weight);
+  color: var(--w-text);
+  text-align: center;
+  background: var(--w-bg);
+  background-image: var(--w-bgimg, none);
+  border: var(--w-border);
+  border-radius: var(--w-radius);
+  box-shadow: var(--w-shadow);
+  line-height: 1.1;
+}
+
+.sc-title {
+  max-width: 100%;
+  font-size: calc(var(--sc-title, 5.5) * var(--u));
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--w-accent);
+  overflow-wrap: anywhere;
+}
+.sc-title.pop { animation: sc-pop 0.45s ease; }
+/* When the stream starts the headline is the whole point, so it takes the clock's place. */
+#sc-app.live .sc-title { font-size: calc(var(--sc-clock, 17) * var(--u)); letter-spacing: 0.04em; animation: sc-pop 0.7s ease; }
+
+.sc-clock {
+  font-size: calc(var(--sc-clock, 17) * var(--u));
+  line-height: 1;
+  letter-spacing: 0.02em;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.sc-clock.hot { color: var(--w-alarm); animation: sc-beat 1s ease-in-out infinite; }
+
+.sc-bar {
+  width: calc(60 * var(--u));
+  max-width: 100%;
+  height: calc(var(--sc-bar, 1.2) * var(--u));
+  border-radius: 999px;
+  background: var(--w-track);
+  overflow: hidden;
+}
+.sc-fill {
+  height: 100%;
+  width: 0;
+  border-radius: inherit;
+  background: var(--w-flag, var(--w-accent));
+  box-shadow: var(--w-edge, none);
+  transition: width 0.5s linear;
+}
+
+.sc-at {
+  font-size: calc(var(--sc-at, 2.6) * var(--u));
+  letter-spacing: 0.08em;
+  opacity: 0.9;
+}
+.sc-msg {
+  max-width: calc(80 * var(--u));
+  font-size: calc(var(--sc-msg, 2.6) * var(--u));
+  font-weight: 700;
+  opacity: 0.92;
+  overflow-wrap: anywhere;
+}
+.sc-msg.swap { animation: sc-swap 0.7s ease; }
+
+@keyframes sc-pop {
+  0% { transform: scale(0.9); }
+  55% { transform: scale(1.06); }
+  100% { transform: scale(1); }
+}
+@keyframes sc-beat {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.04); }
+}
+@keyframes sc-swap {
+  0% { opacity: 0; transform: translateY(0.4em); }
+  100% { opacity: 0.92; transform: translateY(0); }
+}
+
+/* The outer frame in a pride preset: the flag's stripes, as a ring over the panel's edge that follows its corners. It is the
+   panel's padding box with the inside masked out. A preset with no flag has no ring, and its frame is the border. */
+#sc-app::after {
+  content: "";
+  position: absolute;
+  inset: calc(var(--w-frame-w, 0px) * -1);
+  padding: var(--w-frame-w, 0px);
+  border-radius: inherit;
+  pointer-events: none;
+  background: var(--w-frame-img, none);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+}

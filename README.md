@@ -19,6 +19,8 @@ A set of StreamElements custom widgets for Twitch streams. Each is plain JavaScr
 | [Chat Feed](overlays/chat-feed) | On-screen chat with profile pictures and pronouns, in the same style presets. |
 | [Camera](overlays/camera) | A framed window for your camera with a nameplate, and a cover that you and your moderators control from chat: off, brb, away, or a message of your own. |
 | [Now Playing](overlays/now-playing) | What you are playing, from Last.fm, Tuna, Spotify or Pear Desktop, with album art and a progress bar. |
+| [Stream Start Countdown](overlays/start-countdown) | A full-screen starting soon countdown you set from chat, with a clock, a bar and friendly lines that take turns. |
+| [Rotating Panel](overlays/rotating-panel) | One panel that takes turns showing your socials and chat commands. |
 
 ## Using an overlay
 
