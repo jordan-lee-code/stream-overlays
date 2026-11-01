@@ -104,12 +104,13 @@ const skip = async ms => { env.fake += ms; await wait(700); };
   follow("New"); ok(texts()[0] === "New followed", "new events carry on from where it left off");
 
   section("look");
-  await load({ textSize: 7, titleScale: 1.5, latestScale: 2, rowGap: 0.5, radius: 10, borderWidth: 2, borderColor: "#FF0000", shadow: true, weight: 600, pad: 1, animate: false });
+  await load({ textSize: 7, titleScale: 1.5, latestScale: 2, rowGap: 0.5, radius: 10, outerFrame: false, borderWidth: 2, borderColor: "#FF0000", shadow: true, weight: 600, pad: 1, animate: false });
   const v = env.vars("ac-app");
   ok(v["--ac-size"] === "7cqw" && v["--ac-title"] === 1.5 && v["--ac-latest"] === 2 && v["--ac-gap"] === "0.5em", "the size and spacing settings apply");
   ok(v["--w-radius"] === "10px" && v["--w-border"] === "2px solid #FF0000" && v["--w-weight"] === 600 && v["--w-pad"] === 1 && v["--w-shadow"] !== "none", "the corner, outline, weight, padding and shadow settings apply");
   ok(E("ac-root").classList.contains("no-motion"), "and Animate off stops motion");
   await env.checkPresets("ac-app");
+  await env.checkFrame("ac-app");
 
   section("sounds");
   await load({ soundEvent: "data:audio/wav;base64,AA", soundEventVol: 40 });

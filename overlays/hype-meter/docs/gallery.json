@@ -6,5 +6,51 @@
     "bannerSeconds": 1,
     "decayPerMinute": 0
   },
-  "script": "chat('!hype level 3');chat('!hype add 120');"
+  "script": "chat('!hype level 3');chat('!hype add 120');",
+  "pictures": [
+    {
+      "file": "default.png",
+      "width": 380,
+      "height": 205,
+      "fields": {
+        "animate": false,
+        "bannerSeconds": 1,
+        "decayPerMinute": 0
+      },
+      "script": "chat('!hype level 3');chat('!hype add 120');"
+    },
+    {
+      "file": "levelup.png",
+      "width": 380,
+      "height": 240,
+      "fields": {
+        "animate": false,
+        "bannerSeconds": 60,
+        "decayPerMinute": 0
+      },
+      "script": "chat('!hype level 2');chat('!hype add 60');chat('!hype add 150');"
+    },
+    {
+      "file": "custom.png",
+      "width": 380,
+      "height": 205,
+      "fields": {
+        "animate": false,
+        "bannerSeconds": 1,
+        "decayPerMinute": 0,
+        "themePreset": "custom",
+        "colorPanel": "#3a1030",
+        "panelOpacity": 0.85,
+        "cText": "#FFE3F1",
+        "cAccent": "#FF8FC7",
+        "cTrack": "#7a2a5a",
+        "fontFamily": "Lobster",
+        "radius": 36,
+        "borderWidth": 3,
+        "borderColor": "#FF8FC7",
+        "title": "Chat energy"
+      },
+      "script": "chat('!hype level 3');chat('!hype add 120');"
+    }
+  ]
 }

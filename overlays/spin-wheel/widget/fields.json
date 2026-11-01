@@ -400,9 +400,15 @@
     "value": false,
     "group": "Wheel"
   },
+  "outerFrame": {
+    "type": "checkbox",
+    "label": "An outer frame: the wheel's rim, in the accent colour. Untick it for no rim",
+    "value": true,
+    "group": "Wheel"
+  },
   "rimWidth": {
     "type": "number",
-    "label": "Outer rim thickness in pixels (0 for none)",
+    "label": "Rim thickness in pixels, when the outer frame is ticked",
     "value": 8,
     "min": 0,
     "max": 40,

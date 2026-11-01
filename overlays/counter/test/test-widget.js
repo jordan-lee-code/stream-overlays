@@ -98,12 +98,13 @@ const flash = () => E("ct-flash").hidden ? "" : E("ct-flash").textContent;
   await load({ layout: "inline" }); ok(E("ct-app").classList.contains("inline"), "the inline layout");
   await load({ showTitle: false }); ok(E("ct-title").hidden, "the title can be hidden");
   await load({ title: "Wins" }); ok(E("ct-title").textContent === "Wins", "and renamed");
-  await load({ numberSize: 30, titleScale: 0.4, goalScale: 0.3, radius: 10, borderWidth: 2, borderColor: "#FF0000", shadow: true, weight: 600, pad: 1, animate: false });
+  await load({ numberSize: 30, titleScale: 0.4, goalScale: 0.3, radius: 10, outerFrame: false, borderWidth: 2, borderColor: "#FF0000", shadow: true, weight: 600, pad: 1, animate: false });
   const v = env.vars("ct-app");
   ok(v["--ct-size"] === "30cqw" && v["--ct-title"] === 0.4 && v["--ct-goal"] === 0.3, "the size settings apply");
   ok(v["--w-radius"] === "10px" && v["--w-border"] === "2px solid #FF0000" && v["--w-weight"] === 600 && v["--w-pad"] === 1 && v["--w-shadow"] !== "none", "the corner, outline, weight, padding and shadow settings apply");
   ok(E("ct-root").classList.contains("no-motion"), "and Animate off stops motion");
   await env.checkPresets("ct-app");
+  await env.checkFrame("ct-app");
 
   section("saving");
   await load();

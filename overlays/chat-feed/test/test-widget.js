@@ -374,11 +374,12 @@ const until = async (test, ms) => { for (let i = 0; i < (ms || 2000) / 25 && !te
   await load();
   const v = env.vars("cf-app");
   ok(v["--w-bg"] === "rgba(0, 0, 0, 0.55)" && v["--w-text"] === "#FFFFFF", "Soft black is the default");
-  await load({ themePreset: "custom", radius: 10, borderWidth: 2, borderColor: "#FF0000", weight: 600, pad: 1, shadow: true, animate: false });
+  await load({ themePreset: "custom", radius: 10, outerFrame: false, borderWidth: 2, borderColor: "#FF0000", weight: 600, pad: 1, shadow: true, animate: false });
   const w = env.vars("cf-app");
   ok(w["--w-radius"] === "10px" && w["--w-border"] === "2px solid #FF0000" && w["--w-weight"] === 600 && w["--w-pad"] === 1 && w["--w-shadow"] !== "none", "the corner, outline, boldness, padding and shadow follow the settings");
   ok(E("cf-root").classList.contains("no-motion"), "and Animate off stops motion");
   await env.checkPresets("cf-app");
+  await env.checkFrame("cf-app");
 
   section("sounds");
   await load({ soundMessage: "data:audio/wav;base64,AA", soundMessageVol: 40 });

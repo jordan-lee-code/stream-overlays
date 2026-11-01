@@ -117,13 +117,14 @@ const pipsOn = () => E("hy-pips").children.filter(p => p.className.indexOf("on")
   await reload(); ok(level() === "Heating up" && pts() === "30 / 150" && status() === "paused", "and survives a refresh (" + level() + ", " + pts() + ")");
 
   section("look");
-  await load({ textSize: 9, titleScale: 1.4, barHeight: 1, radius: 10, borderWidth: 2, borderColor: "#FF0000", shadow: true, weight: 600, pad: 1, animate: false, title: "Chat energy" });
+  await load({ textSize: 9, titleScale: 1.4, barHeight: 1, radius: 10, outerFrame: false, borderWidth: 2, borderColor: "#FF0000", shadow: true, weight: 600, pad: 1, animate: false, title: "Chat energy" });
   const v = env.vars("hy-app");
   ok(v["--hy-size"] === "9cqw" && v["--hy-title"] === 1.4 && v["--hy-bar"] === "1em" && E("hy-title").textContent === "Chat energy", "the size settings and the title apply");
   ok(v["--w-radius"] === "10px" && v["--w-border"] === "2px solid #FF0000" && v["--w-weight"] === 600 && v["--w-pad"] === 1 && v["--w-shadow"] !== "none", "the corner, outline, weight, padding and shadow settings apply");
   ok(E("hy-root").classList.contains("no-motion"), "and Animate off stops motion");
   await load({ showTitle: false }); ok(E("hy-title").hidden, "the title can be hidden");
   await env.checkPresets("hy-app");
+  await env.checkFrame("hy-app");
 
   section("sounds");
   await load({ soundLevel: "data:audio/wav;base64,AA", soundLevelVol: 40, soundMax: "data:audio/wav;base64,BB", soundDrop: "data:audio/wav;base64,CC", levels: 2 });

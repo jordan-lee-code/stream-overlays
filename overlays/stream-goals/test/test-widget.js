@@ -90,7 +90,7 @@ const HOUR = 3600000;
   button("btnResume"); sub({ amount: 1 }); ok(count("subs") === "1 / 50", "Resume");
 
   section("look");
-  await load({ textSize: 7, titleScale: 1.5, barHeight: 1, rowGap: 1, radius: 10, borderWidth: 2, borderColor: "#FF0000", shadow: true, weight: 600, pad: 1, animate: false });
+  await load({ textSize: 7, titleScale: 1.5, barHeight: 1, rowGap: 1, radius: 10, outerFrame: false, borderWidth: 2, borderColor: "#FF0000", shadow: true, weight: 600, pad: 1, animate: false });
   const v = env.vars("sg-app");
   ok(v["--sg-size"] === "7cqw" && v["--sg-title"] === 1.5 && v["--sg-bar"] === "1em" && v["--sg-gap"] === "1em", "the size and spacing settings apply");
   ok(v["--w-radius"] === "10px" && v["--w-border"] === "2px solid #FF0000" && v["--w-weight"] === 600 && v["--w-pad"] === 1 && v["--w-shadow"] !== "none", "the corner, outline, weight, padding and shadow settings apply");
@@ -98,6 +98,7 @@ const HOUR = 3600000;
   await load({ showTitle: false }); ok(E("sg-title").hidden, "the title can be hidden");
   await load({ title: "Tonight" }); ok(E("sg-title").textContent === "Tonight", "and renamed");
   await env.checkPresets("sg-app");
+  await env.checkFrame("sg-app");
 
   section("sounds");
   await load({ targetSubs: 2, raiseSubs: 0, soundProgress: "data:audio/wav;base64,AA", soundProgressVol: 40, soundReached: "data:audio/wav;base64,BB" });

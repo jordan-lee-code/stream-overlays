@@ -4,5 +4,44 @@
   "fields": {
     "animate": false
   },
-  "script": "chat('!reminder 1s clean room');chat('!reminder 12m call mum');"
+  "script": "chat('!reminder 1s clean room');chat('!reminder 12m call mum');",
+  "pictures": [
+    {
+      "file": "default.png",
+      "width": 380,
+      "height": 140,
+      "fields": {
+        "animate": false
+      },
+      "script": "chat('!reminder 1s clean room');"
+    },
+    {
+      "file": "several.png",
+      "width": 380,
+      "height": 250,
+      "fields": {
+        "animate": false
+      },
+      "script": "chat('!reminder 1s clean room');chat('!reminder 1s drink some water');chat('!reminder 1s call mum');chat('!reminder 1s stretch');chat('!reminder 20m feed the cat');"
+    },
+    {
+      "file": "custom.png",
+      "width": 380,
+      "height": 140,
+      "fields": {
+        "animate": false,
+        "themePreset": "custom",
+        "colorPanel": "#3a1030",
+        "panelOpacity": 0.85,
+        "cText": "#FFE3F1",
+        "cAccent": "#FF8FC7",
+        "fontFamily": "Lobster",
+        "radius": 36,
+        "borderWidth": 3,
+        "borderColor": "#FF8FC7",
+        "title": "Heads up"
+      },
+      "script": "chat('!reminder 1s clean room');"
+    }
+  ]
 }

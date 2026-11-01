@@ -198,3 +198,18 @@
 @media (prefers-reduced-motion: reduce) {
   .squat-sticker.pop, .squat-float { animation: none; }
 }
+
+/* The outer frame in a pride preset: the flag's stripes, as a ring over the panel's edge that follows its corners. A preset with no flag has no ring, and its frame is the border. */
+.squat-sticker::before {
+  content: "";
+  position: absolute;
+  inset: calc(var(--border-w) * -1);
+  padding: var(--border-w);
+  border-radius: inherit;
+  pointer-events: none;
+  background: var(--frame-img, none);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+}

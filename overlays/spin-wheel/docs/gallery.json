@@ -2,5 +2,43 @@
   "width": 420,
   "height": 250,
   "fields": {},
-  "script": "chat(\"!spin open\");var N=[\"alex\",\"bea\",\"charlie\",\"dana\",\"eli\",\"fern\",\"gus\",\"hana\",\"ivo\"];N.forEach(function(n,i){setTimeout(function(){chat(\"!spin\",{nick:n});},120*i);});"
+  "script": "chat(\"!spin open\");var N=[\"alex\",\"bea\",\"charlie\",\"dana\",\"eli\",\"fern\",\"gus\",\"hana\",\"ivo\"];N.forEach(function(n,i){setTimeout(function(){chat(\"!spin\",{nick:n});},120*i);});",
+  "pictures": [
+    {
+      "file": "raffle.png",
+      "width": 520,
+      "height": 380,
+      "script": "chat(\"!spin open\");[\"alex\",\"bea\",\"charlie\",\"dana\",\"eli\",\"gus\",\"hana\",\"ivo\",\"fern\"].forEach(function(n){chat(\"!spin\",{nick:n});});"
+    },
+    {
+      "file": "forfeits.png",
+      "width": 480,
+      "height": 480,
+      "fields": {
+        "wheelShape": "full"
+      },
+      "script": "chat(\"!spin mode forfeits\");chat(\"!spin forfeit add Karaoke, Pyjama party, Sing a song, Dance, Tell a joke, Silly voice\");"
+    },
+    {
+      "file": "custom.png",
+      "width": 480,
+      "height": 480,
+      "fields": {
+        "wheelShape": "full",
+        "themePreset": "custom",
+        "colorPanel": "#3a1030",
+        "cText": "#3a1030",
+        "cAccent": "#FF8FC7",
+        "colorPointer": "#FF8FC7",
+        "colorSegA": "#FFD6E8",
+        "colorSegB": "#D6F0FF",
+        "colorSegC": "#E8D6FF",
+        "colorSegD": "#D6FFE8",
+        "colorSegE": "#FFF0D6",
+        "colorSegF": "#FFE0D6",
+        "fontFamily": "Fredoka"
+      },
+      "script": "chat(\"!spin mode forfeits\");chat(\"!spin forfeit add Karaoke, Pyjama party, Sing a song, Dance, Tell a joke, Silly voice\");"
+    }
+  ]
 }

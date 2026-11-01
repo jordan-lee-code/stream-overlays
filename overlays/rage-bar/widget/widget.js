@@ -421,7 +421,7 @@
       },
       look: {
         radius: clamp(num(f.radius, 6), 0, 50), padV: clamp(num(f.paddingV, 5), 0, 40), padH: clamp(num(f.paddingH, 6), 0, 40),
-        gap: clamp(num(f.gap, 2.5), 0, 20), tilt: clamp(num(f.tilt, 0), -20, 20), borderW: Math.max(0, num(f.borderWidth, 0)),
+        gap: clamp(num(f.gap, 2.5), 0, 20), tilt: clamp(num(f.tilt, 0), -20, 20), borderW: Math.max(0, num(f.borderWidth, 0)), frame: bool(f.outerFrame, true),
         shadow: bool(f.shadow, false), textShadow: bool(f.textShadow, false), tail: bool(f.showTail, false),
         trackHeight: clamp(num(f.trackHeight, 11), 3, 40), trackOpacity: clamp(num(f.trackOpacity, 0.2), 0, 1),
         titleScale: clamp(num(f.titleScale, 1), 0.4, 3), titleWeight: str(f.titleWeight, "800"),
@@ -531,11 +531,14 @@
     var P = t.parts, L = cfg.look;
     var set = function (k, v) { root.style.setProperty(k, v); };
     set("--c-title", P.title); set("--c-timer", P.timer); set("--c-readout", P.readout); set("--c-note", P.note);
-    set("--c-border", P.border); set("--c-track", P.track); set("--c-lock", P.lock); set("--c-lock-hole", P.lockHole);
+    // The outer frame is a border in the accent colour; with it off, the outline is what the settings describe, if anything.
+    var flagged = L.frame && t.flag;
+    set("--frame-img", flagged ? flagGradient(t.flag) : "none");
+    set("--c-border", L.frame ? (flagged ? "transparent" : t.accent) : P.border); set("--c-track", P.track); set("--c-lock", P.lock); set("--c-lock-hole", P.lockHole);
     set("--c-float", P.float); set("--c-float-bg", P.floatBg);
     set("--c-alert", P.alert); set("--c-alert-fill", P.alertFill); set("--c-alert-track", P.alertTrack);
     set("--radius-pct", String(L.radius)); set("--pad-v", String(L.padV)); set("--pad-h", String(L.padH));
-    set("--gap", String(L.gap)); set("--tilt", L.tilt + "deg"); set("--border-w", L.borderW + "px");
+    set("--gap", String(L.gap)); set("--tilt", L.tilt + "deg"); set("--border-w", (L.borderW > 0 ? L.borderW + "px" : (L.frame ? "max(2px, 0.6cqw)" : "0px")));
     set("--shadow", L.shadow ? "0 3cqmin 8cqmin rgba(0, 0, 0, 0.28)" : "none");
     set("--text-shadow", L.textShadow ? "0 0.06em 0.18em rgba(0, 0, 0, 0.55)" : "none");
     set("--tail-display", L.tail ? "block" : "none");

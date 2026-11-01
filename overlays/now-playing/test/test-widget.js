@@ -147,6 +147,7 @@ const lfTrack = (o) => Object.assign({ name: "Song", artist: { "#text": "Band" }
   await load(cfgLf({ titleScale: 99, artSize: 99 })); ok(env.vars("np-app")["--np-title"] === 3 && env.vars("np-app")["--np-art"] === 10, "within limits");
   await load(cfgLf({ themePreset: "pride" })); ok(String(env.vars("np-app")["--w-flag"]).indexOf("linear-gradient(180deg") === 0, "a pride preset's bar wears its flag");
   await env.checkPresets("np-app");
+  await env.checkFrame("np-app");
 
   section("hiding it from chat");
   net(() => ({ json: lastfmJson([lfTrack()]) })); await load(cfgLf());

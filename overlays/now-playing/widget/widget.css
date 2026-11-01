@@ -93,3 +93,21 @@
 /* A bar wears the preset's accent, or the stripes of its flag, like the bars in the rest of the set. */
 .np-fill { width: 0; height: 100%; background: var(--w-flag, var(--w-accent)); border-radius: 999px; transition: width 1s linear; }
 .np-note { margin-top: 0.4em; font-size: 0.55em; font-weight: 700; color: var(--w-alarm); }
+
+.np-card { position: relative; }
+
+/* The outer frame in a pride preset: the flag's stripes, as a ring over the panel's edge that follows its corners. It is the
+   panel's padding box with the inside masked out. A preset with no flag has no ring, and its frame is the border. */
+.np-card::after {
+  content: "";
+  position: absolute;
+  inset: calc(var(--w-frame-w, 0px) * -1);
+  padding: var(--w-frame-w, 0px);
+  border-radius: inherit;
+  pointer-events: none;
+  background: var(--w-frame-img, none);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+}

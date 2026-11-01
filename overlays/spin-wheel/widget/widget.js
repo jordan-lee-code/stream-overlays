@@ -390,7 +390,7 @@
         hubRing: clamp(num(f.hubRing, 6), 0, 30),
         tail: bool(f.showTail, false), pillShadow: bool(f.pillShadow, false), cardShadow: bool(f.cardShadow, false),
         wheelShadow: bool(f.wheelShadow, false), textShadow: bool(f.textShadow, false),
-        rimWidth: clamp(num(f.rimWidth, 8), 0, 40), dividerWidth: clamp(num(f.dividerWidth, 2), 0, 20),
+        rimWidth: bool(f.outerFrame, true) ? clamp(num(f.rimWidth, 8), 0, 40) : 0, dividerWidth: clamp(num(f.dividerWidth, 2), 0, 20),
         dividerOpacity: clamp(num(f.dividerOpacity, 0.22), 0, 1), goalTrackOpacity: clamp(num(f.goalTrackOpacity, 0.2), 0, 1),
         labelScale: clamp(num(f.labelScale, 1), 0.5, 2), labelWeight: str(f.labelWeight, "700"),
         idleScale: clamp(num(f.idleScale, 1), 0.4, 3), idleWeight: str(f.idleWeight, "700"),
