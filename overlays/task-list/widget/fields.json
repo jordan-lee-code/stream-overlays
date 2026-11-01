@@ -1,0 +1,361 @@
+{
+  "command": {
+    "type": "text",
+    "label": "Command word",
+    "value": "!task",
+    "group": "Commands"
+  },
+  "whoCanManage": {
+    "type": "dropdown",
+    "label": "Who can use it",
+    "value": "mods",
+    "options": {
+      "broadcaster": "Broadcaster only",
+      "mods": "Broadcaster + moderators"
+    },
+    "group": "Commands"
+  },
+  "mode": {
+    "type": "dropdown",
+    "label": "What to show",
+    "value": "tasks",
+    "options": {
+      "tasks": "A task list you change from chat",
+      "schedule": "A schedule written in the settings below"
+    },
+    "group": "Mode"
+  },
+  "maxShown": {
+    "type": "number",
+    "label": "Tasks shown at once, then +N more",
+    "value": 8,
+    "min": 1,
+    "max": 30,
+    "step": 1,
+    "group": "Tasks"
+  },
+  "maxTasks": {
+    "type": "number",
+    "label": "Most tasks that can be on the list",
+    "value": 30,
+    "min": 1,
+    "max": 100,
+    "step": 1,
+    "group": "Tasks"
+  },
+  "hideDone": {
+    "type": "checkbox",
+    "label": "Hide a task once it is ticked off (its number still counts)",
+    "value": false,
+    "group": "Tasks"
+  },
+  "showNumbers": {
+    "type": "checkbox",
+    "label": "Show each task's number, which is what !task done 2 uses",
+    "value": true,
+    "group": "Tasks"
+  },
+  "showCount": {
+    "type": "checkbox",
+    "label": "Show how many are done, as 2 / 5",
+    "value": true,
+    "group": "Tasks"
+  },
+  "showBar": {
+    "type": "checkbox",
+    "label": "Show a bar that fills as tasks are done",
+    "value": true,
+    "group": "Tasks"
+  },
+  "allDoneText": {
+    "type": "text",
+    "label": "What the title says when every task is done (blank keeps the title)",
+    "value": "All done, well done!",
+    "group": "Tasks"
+  },
+  "hideWhenEmpty": {
+    "type": "checkbox",
+    "label": "Hide the whole widget while the list is empty",
+    "value": true,
+    "group": "Tasks"
+  },
+  "scheduleTitle": {
+    "type": "text",
+    "label": "Title for the schedule",
+    "value": "This week",
+    "group": "Schedule"
+  },
+  "slot1": {
+    "type": "text",
+    "label": "Slot 1: a day, a time and what is on, with vertical bars between (for example Monday | 7pm | Chill games)",
+    "value": "Monday | 7pm | Chill games",
+    "group": "Schedule"
+  },
+  "slot2": {
+    "type": "text",
+    "label": "Slot 2",
+    "value": "Wednesday | 7pm | Art stream",
+    "group": "Schedule"
+  },
+  "slot3": {
+    "type": "text",
+    "label": "Slot 3",
+    "value": "Friday | 8pm | Variety night",
+    "group": "Schedule"
+  },
+  "slot4": {
+    "type": "text",
+    "label": "Slot 4",
+    "value": "Sunday | 3pm | Cosy catch-up",
+    "group": "Schedule"
+  },
+  "slot5": {
+    "type": "text",
+    "label": "Slot 5",
+    "value": "",
+    "group": "Schedule"
+  },
+  "slot6": {
+    "type": "text",
+    "label": "Slot 6",
+    "value": "",
+    "group": "Schedule"
+  },
+  "slot7": {
+    "type": "text",
+    "label": "Slot 7",
+    "value": "",
+    "group": "Schedule"
+  },
+  "slot8": {
+    "type": "text",
+    "label": "Slot 8",
+    "value": "",
+    "group": "Schedule"
+  },
+  "slot9": {
+    "type": "text",
+    "label": "Slot 9",
+    "value": "",
+    "group": "Schedule"
+  },
+  "slot10": {
+    "type": "text",
+    "label": "Slot 10",
+    "value": "",
+    "group": "Schedule"
+  },
+  "note": {
+    "type": "text",
+    "label": "A line under the schedule, such as the time zone",
+    "value": "",
+    "group": "Schedule"
+  },
+  "highlightToday": {
+    "type": "checkbox",
+    "label": "Highlight today's slots, using the day's first three letters",
+    "value": true,
+    "group": "Schedule"
+  },
+  "textSize": {
+    "type": "number",
+    "label": "Text size (percent of the box width)",
+    "value": 5,
+    "min": 2,
+    "max": 20,
+    "step": 0.25,
+    "group": "Size"
+  },
+  "titleScale": {
+    "type": "number",
+    "label": "Title size (share of the text size)",
+    "value": 0.6,
+    "min": 0.2,
+    "max": 2,
+    "step": 0.05,
+    "group": "Size"
+  },
+  "itemGap": {
+    "type": "number",
+    "label": "Space between rows",
+    "value": 0.4,
+    "min": 0,
+    "max": 2,
+    "step": 0.05,
+    "group": "Size"
+  },
+  "btnAdd": {
+    "type": "button",
+    "label": "Add a test task",
+    "group": "Manual controls"
+  },
+  "btnNext": {
+    "type": "button",
+    "label": "Tick off the next task",
+    "group": "Manual controls"
+  },
+  "btnClearDone": {
+    "type": "button",
+    "label": "Clear the ticked tasks",
+    "group": "Manual controls"
+  },
+  "btnClearAll": {
+    "type": "button",
+    "label": "Clear every task",
+    "group": "Manual controls"
+  },
+  "title": {
+    "type": "text",
+    "label": "Title for the task list",
+    "value": "Today's tasks",
+    "group": "Look"
+  },
+  "showTitle": {
+    "type": "checkbox",
+    "label": "Show the title",
+    "value": true,
+    "group": "Look"
+  },
+  "themePreset": {
+    "type": "dropdown",
+    "label": "Style preset (the same twenty-two are in every overlay in this set)",
+    "value": "glass",
+    "options": {
+      "glass": "Soft black (default)",
+      "frost": "Soft white",
+      "midnight": "Midnight blue",
+      "sunset": "Sunset",
+      "forest": "Forest",
+      "ocean": "Ocean",
+      "rose": "Rose",
+      "neon": "Neon",
+      "cosycabin": "Cosy cabin",
+      "pastel": "Cosy summer pastel",
+      "celestial": "Celestial",
+      "pastelgoth": "Pastel goth",
+      "pastelpink": "Pastel pink",
+      "pastelsage": "Pastel sage",
+      "faegreen": "Fae green",
+      "pride": "Rainbow pride",
+      "trans": "Trans pride",
+      "bi": "Bi pride",
+      "pan": "Pan pride",
+      "enby": "Non-binary pride",
+      "lesbian": "Lesbian pride",
+      "ace": "Ace pride",
+      "custom": "Custom (use the colours below)"
+    },
+    "group": "Look"
+  },
+  "fontFamily": {
+    "type": "googleFont",
+    "label": "Font (used when the style preset is Custom)",
+    "value": "BioRhyme",
+    "group": "Look"
+  },
+  "weight": {
+    "type": "number",
+    "label": "Boldness (100 to 900)",
+    "value": 800,
+    "min": 100,
+    "max": 900,
+    "step": 100,
+    "group": "Look"
+  },
+  "radius": {
+    "type": "number",
+    "label": "Corner roundness, in pixels",
+    "value": 24,
+    "min": 0,
+    "max": 100,
+    "step": 1,
+    "group": "Look"
+  },
+  "pad": {
+    "type": "number",
+    "label": "Padding above and below",
+    "value": 0.5,
+    "min": 0,
+    "max": 3,
+    "step": 0.05,
+    "group": "Look"
+  },
+  "outerFrame": {
+    "type": "checkbox",
+    "label": "An outer frame round the widget in the accent colour, or the flag's stripes in a pride preset. Untick it for none",
+    "value": true,
+    "group": "Look"
+  },
+  "borderWidth": {
+    "type": "number",
+    "label": "Frame and outline thickness in pixels. At 0 the frame has a default thickness that grows with the box, and with the frame unticked there is no outline",
+    "value": 0,
+    "min": 0,
+    "max": 20,
+    "step": 1,
+    "group": "Look"
+  },
+  "borderColor": {
+    "type": "colorpicker",
+    "label": "Outline colour, used when the outer frame is unticked and the thickness is above 0 (the frame itself is always the accent colour)",
+    "value": "#FFFFFF",
+    "group": "Look"
+  },
+  "shadow": {
+    "type": "checkbox",
+    "label": "Shadow",
+    "value": false,
+    "group": "Look"
+  },
+  "animate": {
+    "type": "checkbox",
+    "label": "Animate",
+    "value": true,
+    "group": "Look"
+  },
+  "fit": {
+    "type": "checkbox",
+    "label": "Shrink to fit the box: when the box is too short for everything, the whole card gets smaller instead of running off the bottom",
+    "value": true,
+    "group": "Look"
+  },
+  "colorPanel": {
+    "type": "colorpicker",
+    "label": "Panel colour (used when the style preset is Custom)",
+    "value": "#000000",
+    "group": "Custom colours"
+  },
+  "panelOpacity": {
+    "type": "number",
+    "label": "Panel opacity, 0 to 1 (used when the style preset is Custom)",
+    "value": 0.55,
+    "min": 0,
+    "max": 1,
+    "step": 0.05,
+    "group": "Custom colours"
+  },
+  "cText": {
+    "type": "colorpicker",
+    "label": "Text (used when the style preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Custom colours"
+  },
+  "cAccent": {
+    "type": "colorpicker",
+    "label": "Accent (used when the style preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Custom colours"
+  },
+  "cTrack": {
+    "type": "colorpicker",
+    "label": "Bar and today's highlight (used when the style preset is Custom)",
+    "value": "#444444",
+    "group": "Custom colours"
+  },
+  "debug": {
+    "type": "checkbox",
+    "label": "Log every event to the browser-source console",
+    "value": false,
+    "group": "Troubleshooting"
+  }
+}

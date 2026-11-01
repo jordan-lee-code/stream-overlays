@@ -1,0 +1,159 @@
+/* Copyright (c) 2026 Jordan Lee (https://ko-fi.com/journeyingjordan). Released under the MIT licence: this notice must be kept in copies and substantial portions of the code. See LICENSE. */
+/* Every value below is a custom property that widget.js sets from the editor fields, so
+   the defaults can be restyled from the settings panel without touching this file. */
+
+#tl-root {
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  /* The width reference for the cqw sizes below. A container's own cqw units resolve
+     against its parent, so the card cannot be the container itself. */
+  container-type: inline-size;
+  -webkit-font-smoothing: antialiased;
+}
+#tl-root * { box-sizing: border-box; }
+#tl-root [hidden] { display: none !important; }
+/* With nothing to show the whole widget goes. */
+#tl-root[hidden] { display: none !important; }
+
+/* The Animate field: when it is off, nothing moves or eases. */
+#tl-root.no-motion,
+#tl-root.no-motion * {
+  animation: none !important;
+  transition: none !important;
+}
+
+#tl-app {
+  --w-bg: rgba(0, 0, 0, 0.55);
+  --w-text: #FFFFFF;
+  --w-accent: #FFFFFF;
+  --w-track: #444444;
+  --w-font: "BioRhyme", Georgia, serif;
+  --w-radius: 24px;
+  --w-pad: 0.5;
+  --w-weight: 800;
+  --w-border: 0 solid #FFFFFF;
+  --w-shadow: none;
+
+  position: relative;
+  flex: 0 0 auto;
+  width: 100%;
+  padding: calc(var(--w-pad) * 1em) 3cqw;
+  font-family: var(--w-font);
+  font-size: var(--tl-size, 5cqw);
+  color: var(--w-text);
+  text-align: left;
+  background: var(--w-bg);
+  background-image: var(--w-bgimg, none);
+  border: var(--w-border);
+  border-radius: var(--w-radius);
+  box-shadow: var(--w-shadow);
+  line-height: 1.15;
+}
+
+.tl-headrow { display: flex; align-items: baseline; justify-content: space-between; gap: 0.6em; }
+.tl-title {
+  font-size: calc(1em * var(--tl-title, 0.6));
+  font-weight: var(--w-weight);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--w-accent);
+  overflow-wrap: anywhere;
+}
+.tl-title.pop { animation: tl-pop 0.45s ease; }
+.tl-count {
+  margin-left: auto;
+  font-size: calc(1em * var(--tl-title, 0.6));
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  opacity: 0.85;
+}
+
+.tl-bar {
+  height: 0.28em;
+  margin-top: 0.3em;
+  border-radius: 999px;
+  background: var(--w-track);
+  overflow: hidden;
+}
+.tl-fill {
+  display: block;
+  height: 100%;
+  width: 0;
+  border-radius: inherit;
+  background: var(--w-flag, var(--w-accent));
+  box-shadow: var(--w-edge, none);
+  transition: width 0.4s ease;
+}
+
+.tl-list { list-style: none; margin: 0; padding: 0; }
+.tl-row, .tl-slot {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5em;
+  margin-top: var(--tl-gap, 0.4em);
+  font-weight: 700;
+}
+.tl-num { flex: 0 0 auto; min-width: 1.4em; font-size: 0.7em; opacity: 0.7; font-variant-numeric: tabular-nums; }
+/* The tick box: an outline in the accent colour that fills, with a tick, when the task is done. */
+.tl-box {
+  position: relative;
+  flex: 0 0 auto;
+  align-self: center;
+  width: 0.85em;
+  height: 0.85em;
+  border: 0.12em solid var(--w-accent);
+  border-radius: 0.2em;
+  transition: background 0.25s ease;
+}
+.tl-row.done .tl-box { background: var(--w-accent); }
+.tl-row.done .tl-box::after {
+  content: "";
+  position: absolute;
+  left: 0.22em;
+  top: 0.02em;
+  width: 0.26em;
+  height: 0.5em;
+  border: solid var(--tl-tick, #000);
+  border-width: 0 0.1em 0.1em 0;
+  transform: rotate(45deg);
+}
+.tl-text { min-width: 0; overflow-wrap: anywhere; }
+.tl-row.done .tl-text { opacity: 0.6; text-decoration: line-through; }
+.tl-more { margin-top: 0.3em; font-size: 0.6em; font-weight: 700; opacity: 0.8; text-align: right; }
+
+.tl-slot { padding: 0.1em 0.4em; margin-left: -0.4em; margin-right: -0.4em; border-radius: 0.4em; }
+.tl-day { flex: 0 0 auto; min-width: 5.2em; color: var(--w-accent); text-transform: uppercase; font-size: 0.75em; letter-spacing: 0.08em; }
+.tl-when { flex: 0 0 auto; font-size: 0.8em; opacity: 0.9; white-space: nowrap; }
+.tl-what { min-width: 0; margin-left: auto; text-align: right; overflow-wrap: anywhere; }
+.tl-slot.today { background: var(--w-track); }
+.tl-slot.today .tl-what { color: var(--w-accent); }
+.tl-note { margin-top: 0.5em; font-size: 0.6em; font-weight: 700; opacity: 0.8; }
+
+@keyframes tl-pop {
+  0% { transform: scale(0.9); }
+  55% { transform: scale(1.07); }
+  100% { transform: scale(1); }
+}
+
+/* The outer frame in a pride preset: the flag's stripes, as a ring over the panel's edge that follows its corners. It is the
+   panel's padding box with the inside masked out. A preset with no flag has no ring, and its frame is the border. */
+#tl-app::after {
+  content: "";
+  position: absolute;
+  inset: calc(var(--w-frame-w, 0px) * -1);
+  padding: var(--w-frame-w, 0px);
+  border-radius: inherit;
+  pointer-events: none;
+  background: var(--w-frame-img, none);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+}
