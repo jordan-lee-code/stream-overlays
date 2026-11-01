@@ -1,0 +1,331 @@
+{
+  "command": {
+    "type": "text",
+    "label": "Command word",
+    "value": "!countdown",
+    "group": "Commands"
+  },
+  "whoCanManage": {
+    "type": "dropdown",
+    "label": "Who can use it",
+    "value": "mods",
+    "options": {
+      "broadcaster": "Broadcaster only",
+      "mods": "Broadcaster + moderators"
+    },
+    "group": "Commands"
+  },
+  "startMinutes": {
+    "type": "number",
+    "label": "Length of a countdown started with no time given (!countdown start), in minutes",
+    "value": 10,
+    "min": 1,
+    "max": 2880,
+    "step": 1,
+    "group": "Countdown"
+  },
+  "liveTitle": {
+    "type": "text",
+    "label": "What the headline says when the countdown reaches zero",
+    "value": "We're live!",
+    "group": "Countdown"
+  },
+  "showStartTime": {
+    "type": "checkbox",
+    "label": "Show the time the stream starts under the clock",
+    "value": true,
+    "group": "Countdown"
+  },
+  "atPrefix": {
+    "type": "text",
+    "label": "Words before the start time",
+    "value": "Starting at",
+    "group": "Countdown"
+  },
+  "clock24": {
+    "type": "checkbox",
+    "label": "Show the start time on a 24-hour clock (untick for am and pm)",
+    "value": true,
+    "group": "Countdown"
+  },
+  "showBar": {
+    "type": "checkbox",
+    "label": "Show a bar that fills as the countdown runs down",
+    "value": true,
+    "group": "Countdown"
+  },
+  "urgentSeconds": {
+    "type": "number",
+    "label": "Colour the clock with the alert colour and pulse it for this many final seconds (0 for never)",
+    "value": 10,
+    "min": 0,
+    "max": 600,
+    "step": 1,
+    "group": "Countdown"
+  },
+  "messages": {
+    "type": "text",
+    "label": "Lines that rotate under the clock, separated by a vertical bar (leave blank for none)",
+    "value": "Grab a drink and get comfy | Say hi in chat, we can see you | Be kind to each other",
+    "group": "Messages"
+  },
+  "messageSeconds": {
+    "type": "number",
+    "label": "Seconds each line stays",
+    "value": 8,
+    "min": 2,
+    "max": 120,
+    "step": 1,
+    "group": "Messages"
+  },
+  "clockSize": {
+    "type": "number",
+    "label": "Clock size, in units (a unit is a hundredth of the box width at 16 by 9)",
+    "value": 17,
+    "min": 2,
+    "max": 40,
+    "step": 0.5,
+    "group": "Size"
+  },
+  "titleSize": {
+    "type": "number",
+    "label": "Headline size, in units",
+    "value": 5.5,
+    "min": 1,
+    "max": 30,
+    "step": 0.25,
+    "group": "Size"
+  },
+  "messageSize": {
+    "type": "number",
+    "label": "Rotating line size, in units",
+    "value": 2.6,
+    "min": 1,
+    "max": 10,
+    "step": 0.1,
+    "group": "Size"
+  },
+  "atSize": {
+    "type": "number",
+    "label": "Start time size, in units",
+    "value": 2.6,
+    "min": 1,
+    "max": 10,
+    "step": 0.1,
+    "group": "Size"
+  },
+  "barSize": {
+    "type": "number",
+    "label": "Bar thickness, in units",
+    "value": 1.2,
+    "min": 0.2,
+    "max": 5,
+    "step": 0.1,
+    "group": "Size"
+  },
+  "gap": {
+    "type": "number",
+    "label": "Space between the parts, in units",
+    "value": 1.6,
+    "min": 0,
+    "max": 10,
+    "step": 0.1,
+    "group": "Size"
+  },
+  "btnStart": {
+    "type": "button",
+    "label": "Start a countdown of the default length",
+    "group": "Manual controls"
+  },
+  "btnAdd5": {
+    "type": "button",
+    "label": "Add five minutes",
+    "group": "Manual controls"
+  },
+  "btnLess1": {
+    "type": "button",
+    "label": "Take a minute off",
+    "group": "Manual controls"
+  },
+  "btnLive": {
+    "type": "button",
+    "label": "Go live now",
+    "group": "Manual controls"
+  },
+  "btnStop": {
+    "type": "button",
+    "label": "Clear the countdown",
+    "group": "Manual controls"
+  },
+  "title": {
+    "type": "text",
+    "label": "Headline",
+    "value": "Starting soon",
+    "group": "Look"
+  },
+  "showTitle": {
+    "type": "checkbox",
+    "label": "Show the title",
+    "value": true,
+    "group": "Look"
+  },
+  "themePreset": {
+    "type": "dropdown",
+    "label": "Style preset (the same twenty-two are in every overlay in this set)",
+    "value": "glass",
+    "options": {
+      "glass": "Soft black (default)",
+      "frost": "Soft white",
+      "midnight": "Midnight blue",
+      "sunset": "Sunset",
+      "forest": "Forest",
+      "ocean": "Ocean",
+      "rose": "Rose",
+      "neon": "Neon",
+      "cosycabin": "Cosy cabin",
+      "pastel": "Cosy summer pastel",
+      "celestial": "Celestial",
+      "pastelgoth": "Pastel goth",
+      "pastelpink": "Pastel pink",
+      "pastelsage": "Pastel sage",
+      "faegreen": "Fae green",
+      "pride": "Rainbow pride",
+      "trans": "Trans pride",
+      "bi": "Bi pride",
+      "pan": "Pan pride",
+      "enby": "Non-binary pride",
+      "lesbian": "Lesbian pride",
+      "ace": "Ace pride",
+      "custom": "Custom (use the colours below)"
+    },
+    "group": "Look"
+  },
+  "fontFamily": {
+    "type": "googleFont",
+    "label": "Font (used when the style preset is Custom)",
+    "value": "BioRhyme",
+    "group": "Look"
+  },
+  "weight": {
+    "type": "number",
+    "label": "Boldness (100 to 900)",
+    "value": 800,
+    "min": 100,
+    "max": 900,
+    "step": 100,
+    "group": "Look"
+  },
+  "radius": {
+    "type": "number",
+    "label": "Corner roundness, in pixels",
+    "value": 0,
+    "min": 0,
+    "max": 100,
+    "step": 1,
+    "group": "Look"
+  },
+  "outerFrame": {
+    "type": "checkbox",
+    "label": "An outer frame round the widget in the accent colour, or the flag's stripes in a pride preset. Untick it for none",
+    "value": true,
+    "group": "Look"
+  },
+  "borderWidth": {
+    "type": "number",
+    "label": "Frame and outline thickness in pixels. At 0 the frame has a default thickness that grows with the box, and with the frame unticked there is no outline",
+    "value": 0,
+    "min": 0,
+    "max": 20,
+    "step": 1,
+    "group": "Look"
+  },
+  "borderColor": {
+    "type": "colorpicker",
+    "label": "Outline colour, used when the outer frame is unticked and the thickness is above 0 (the frame itself is always the accent colour)",
+    "value": "#FFFFFF",
+    "group": "Look"
+  },
+  "shadow": {
+    "type": "checkbox",
+    "label": "Shadow",
+    "value": false,
+    "group": "Look"
+  },
+  "animate": {
+    "type": "checkbox",
+    "label": "Animate",
+    "value": true,
+    "group": "Look"
+  },
+  "colorPanel": {
+    "type": "colorpicker",
+    "label": "Panel colour (used when the style preset is Custom)",
+    "value": "#000000",
+    "group": "Custom colours"
+  },
+  "panelOpacity": {
+    "type": "number",
+    "label": "Panel opacity, 0 to 1 (used when the style preset is Custom)",
+    "value": 0.55,
+    "min": 0,
+    "max": 1,
+    "step": 0.05,
+    "group": "Custom colours"
+  },
+  "cText": {
+    "type": "colorpicker",
+    "label": "Text (used when the style preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Custom colours"
+  },
+  "cAccent": {
+    "type": "colorpicker",
+    "label": "Accent (used when the style preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Custom colours"
+  },
+  "cTrack": {
+    "type": "colorpicker",
+    "label": "Bar (used when the style preset is Custom)",
+    "value": "#444444",
+    "group": "Custom colours"
+  },
+  "cWarn": {
+    "type": "colorpicker",
+    "label": "Alert colour (used when the style preset is Custom)",
+    "value": "#D64545",
+    "group": "Custom colours"
+  },
+  "soundLive": {
+    "type": "sound-input",
+    "label": "The countdown reaches zero",
+    "value": "",
+    "group": "Sounds"
+  },
+  "soundLiveVol": {
+    "type": "number",
+    "label": "Volume for that sound (0 to 100)",
+    "value": 80,
+    "min": 0,
+    "max": 100,
+    "step": 5,
+    "group": "Sounds"
+  },
+  "test_soundLive": {
+    "type": "button",
+    "label": "Test it",
+    "group": "Sounds"
+  },
+  "mute": {
+    "type": "checkbox",
+    "label": "Mute every sound",
+    "value": false,
+    "group": "Sounds"
+  },
+  "debug": {
+    "type": "checkbox",
+    "label": "Log every event to the browser-source console",
+    "value": false,
+    "group": "Troubleshooting"
+  }
+}
