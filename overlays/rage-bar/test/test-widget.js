@@ -45,7 +45,16 @@ function makeEl(id) {
     classList: {
       _s: null, add(c) { this._s.add(c); }, remove(c) { this._s.delete(c); }, contains(c) { return this._s.has(c); }
     },
-    addEventListener() {}, appendChild() {}
+    addEventListener() {}, children: [], className: "", parentNode: null, setAttribute() {},
+    get firstChild() { return this.children[0] || null; },
+    appendChild(c) { return this.insertBefore(c, null); },
+    insertBefore(c, ref) {
+      if (c.parentNode) c.parentNode.removeChild(c);
+      const at = ref ? this.children.indexOf(ref) : -1;
+      if (at === -1) this.children.push(c); else this.children.splice(at, 0, c);
+      c.parentNode = this; return c;
+    },
+    removeChild(c) { const at = this.children.indexOf(c); if (at !== -1) this.children.splice(at, 1); c.parentNode = null; return c; }
   };
   e.classList._s = e._cls; return e;
 }
@@ -1926,6 +1935,32 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   ok(R["--frame-img"] === "none", "and a preset with no flag has no ring");
   await load({ themePreset: "trans", outerFrame: false }); 
   ok(R["--frame-img"] === "none", "and unticking the frame takes the stripes away too");
+  console.log("\n[decorations]");
+  {
+    const settle = async o => { await load(o); await flush(); };
+    {
+      const host = () => elements["rage-card"];
+      const layer = () => host().children.find(c => String(c.className).indexOf("w-deco") === 0);
+      const items = () => (layer() ? layer().children : []);
+      await settle({});
+      ok(!layer() && !host().style.isolation, "there are no decorations unless they are asked for (rage-card)");
+      await settle({ decoration: "hearts", decorationCount: 6 });
+      ok(items().length === 6 && items().every(i => i.className === "w-di hearts") && host().children[0] === layer() && host().style.isolation === "isolate", "choosing hearts draws six behind the words");
+      reload(); await flush();
+      ok(host().children.filter(c => String(c.className).indexOf("w-deco") === 0).length === 1, "and loading again does not pile them up");
+      await settle({ decoration: "mixed", decorationCount: 3 });
+      ok(items().map(i => i.className.split(" ")[1]).join() === "sparkles,hearts,stars", "mixed takes sparkles, hearts and stars in turn");
+      await settle({ decoration: "stars", decorationCount: 99 }); ok(items().length === 24, "no more than 24");
+      await settle({ decoration: "stars", decorationMotion: "drift" }); ok(layer().className === "w-deco drift", "they can drift");
+      await settle({ decoration: "stars", animate: false }); ok(layer().className.split(" ").indexOf("still") !== -1, "and with Animate off they stay still");
+      await settle({ decoration: "stars", decorationSize: 2 }); ok(layer().style["--w-deco-size"] === 2, "their size is a setting");
+      await settle({ decoration: "stars", decorationCount: 7, themePreset: "trans" });
+      ok(items().every((i, n) => i.style["--c"].toLowerCase() === ["#5bcefa", "#f5a9b8", "#ffffff", "#f5a9b8", "#5bcefa"][n % 5]), "in a pride preset they take the colours of the flag in turn (" + items().map(i => i.style["--c"]).join(" ") + ")");
+      await settle({ decoration: "stars" }); await settle({ decoration: "none" });
+      ok(!layer() && !host().style.isolation, "turning them off takes them away");
+      await settle({ decoration: "confetti" }); ok(!layer(), "and a shape that does not exist is none");
+    }
+  }
   console.log("\n=== " + pass + " passed, " + fail + " failed ===");
   process.exit(fail ? 1 : 0);
 })();

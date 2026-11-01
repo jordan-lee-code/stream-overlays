@@ -77,6 +77,18 @@
       },
       "script": "chat('!subathon resume');chat('!subathon day 2');__off=(53*3600+27*60+14)*1000;",
       "setup": "var __off=0;(function(){var n=Date.now;Date.now=function(){return n.call(Date)+__off;};})();"
+    },
+    {
+      "file": "decorations.png",
+      "width": 400,
+      "height": 360,
+      "base": "scene",
+      "fields": {
+        "decoration": "sparkles",
+        "decorationCount": 10,
+        "themePreset": "forest",
+        "animate": false
+      }
     }
   ]
 }

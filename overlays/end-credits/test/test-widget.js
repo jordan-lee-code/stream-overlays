@@ -118,6 +118,7 @@ const chatter = (n, o) => chat("hi", Object.assign({ nick: n }, o || {}));
   ok(v["--w-radius"] === "10px" && v["--w-border"] === "2px solid #FF0000" && v["--w-weight"] === 600 && v["--w-shadow"] !== "none", "the corner, outline, weight and shadow settings apply");
   await env.checkPresets("ec-app");
   await env.checkFrame("ec-app");
+  await env.checkDecor("ec-app");
   const css = require("fs").readFileSync(require("path").join(__dirname, "../widget/widget.css"), "utf8");
   ok(/container-type:\s*size/.test(css) && /--u:\s*min\(1cqw,\s*1\.7778cqh\)/.test(css) && /#ec-root\[hidden\]/.test(css), "sizes come from the same unit as the countdown, and the widget hides itself when it is not rolling");
 

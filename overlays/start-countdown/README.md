@@ -21,6 +21,7 @@ It is a single self-contained widget in plain JavaScript, with no dependencies a
 - Customisable: around 45 settings cover the wording, sizes, colours, fonts, sounds and animation.
 - Tests and a dev harness: a local harness with a time machine and an automated test script.
 - An outer frame in the accent colour, on by default in every preset, and switched off with one checkbox (the flag's stripes in the pride presets).
+- Decorations: sparkles, hearts, stars, flowers, moons, snowflakes or bubbles behind the words, in the accent colour or a pride flag's colours, twinkling, drifting or still. Off by default.
 
 ## Screenshots
 
@@ -77,6 +78,10 @@ A countdown that ran out while the overlay was closed shows as live as soon as i
 
 Under the clock, a line from your list takes its turn every few seconds, fading in as it arrives. Write them in the **Lines that rotate** setting, separated by a vertical bar: `Grab a drink and get comfy | Say hi in chat | Be kind to each other`. One line stays still, and a blank setting leaves the space out.
 
+**Decorations.** Moons behind the words, here in the Midnight blue preset.
+
+<p><img src="docs/decorations.png" alt="Start countdown with moons in the Midnight blue preset" width="640"></p>
+
 ## Style presets
 
 One setting picks the look. The same twenty-two presets, with the same colours, are in every overlay in this set, so overlays from this set match whichever you choose. This is how each one looks in this overlay. The presets are defined once, in the [kit](../../kit), and a test keeps this overlay in step with it.
@@ -125,6 +130,7 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | Manual controls | Buttons to start, add five minutes, take a minute off, go live and clear. |
 | Look | Headline, the style preset, font, boldness, corners, outer frame, outline, shadow and Animate. |
 | Custom colours | Panel, text, accent, bar and alert colours, used when the style preset is Custom. |
+| Decorations | The shape, how many, how big, and how they move. |
 | Sounds | A sound and volume for the moment you go live, with a Test button and a master mute. |
 | Troubleshooting | A debug log of every event to the browser-source console. |
 
@@ -133,6 +139,8 @@ Every setting has a plain label in StreamElements, grouped as follows.
 The overlay's panel is the whole box, with square corners by default, so it works as a full-screen scene. Put your own background picture or video underneath it in OBS and the translucent panel will sit over it.
 
 The **outer frame** is a border round the widget in the preset's accent colour, on by default in every preset. Untick **An outer frame** under Look for none, or set the outline thickness to change how thick it is, since at 0 it has a default thickness that grows with the box. In a pride preset the frame is the flag's stripes, as a ring that follows the panel's corners.
+
+The **decorations** are small shapes drawn behind the words: sparkles, hearts, stars, flowers, moons, snowflakes, bubbles, or a mix of sparkles, hearts and stars. They take the accent colour, or in a pride preset the colours of the flag in turn. Choose one under **Decorations**, then how many (up to 24), how big, and whether they twinkle in place, drift upwards or stay still. With Animate off they stay still. They are off by default. They are scattered over the whole screen, behind the clock.
 
 The full list, with defaults, is in [`widget/fields.json`](widget/fields.json). The colour and font pickers apply only when the style preset is **Custom**.
 

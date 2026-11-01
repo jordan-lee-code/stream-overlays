@@ -52,6 +52,18 @@
         "title": "Latest"
       },
       "script": "sub({amount:1,tier:'1000',name:'Alice'});sub({gifted:true,bulkGifted:true,amount:10,sender:'Bea',tier:'1000'});cheer(1500,'Cass');tip(12.5,'Dev');se('follower-latest',{name:'Eli'});se('raid-latest',{name:'Fern',amount:42});sub({amount:6,tier:'1000',name:'Gus'});"
+    },
+    {
+      "file": "decorations.png",
+      "width": 380,
+      "height": 250,
+      "base": "scene",
+      "fields": {
+        "decoration": "hearts",
+        "decorationCount": 10,
+        "themePreset": "rose",
+        "animate": false
+      }
     }
   ]
 }

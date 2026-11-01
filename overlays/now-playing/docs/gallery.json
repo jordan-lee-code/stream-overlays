@@ -62,6 +62,18 @@
         "themePreset": "pastelsage",
         "artShape": "round"
       }
+    },
+    {
+      "file": "decorations.png",
+      "width": 420,
+      "height": 130,
+      "base": "scene",
+      "fields": {
+        "decoration": "moons",
+        "decorationCount": 10,
+        "themePreset": "celestial",
+        "animate": false
+      }
     }
   ]
 }

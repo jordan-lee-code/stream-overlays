@@ -43,6 +43,18 @@
         "columns": 3
       },
       "script": "chat('!credits sample');(function(){var r=document.getElementById('ec-roll'),H=document.getElementById('ec-root').clientHeight,h=r.offsetHeight,d=parseFloat(r.style.animationDuration),y=H*0.28;r.style.animationPlayState='paused';r.style.animationDelay=(-(H-y)/(H+h)*d)+'s';})();"
+    },
+    {
+      "file": "decorations.png",
+      "width": 640,
+      "height": 360,
+      "base": "scene",
+      "fields": {
+        "decoration": "mixed",
+        "decorationCount": 10,
+        "themePreset": "celestial",
+        "decorationMotion": "still"
+      }
     }
   ]
 }

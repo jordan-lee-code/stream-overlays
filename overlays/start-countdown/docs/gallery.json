@@ -62,6 +62,18 @@
         "messages": "Settle in with a warm drink"
       },
       "script": "chat('!countdown at 20:00');"
+    },
+    {
+      "file": "decorations.png",
+      "width": 640,
+      "height": 360,
+      "base": "scene",
+      "fields": {
+        "decoration": "moons",
+        "decorationCount": 10,
+        "themePreset": "midnight",
+        "animate": false
+      }
     }
   ],
   "setup": "var __t=(function(){var d=new Date();d.setHours(19,55,28,0);return d.getTime();})();Date.now=function(){return __t;};"

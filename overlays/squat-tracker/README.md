@@ -20,6 +20,7 @@ It is a single self-contained widget in plain JavaScript, with no dependencies a
 - Saved: the count and the lock survive a browser-source refresh.
 - Testable offline: a local dev harness and an automated test script, no live stream needed.
 - An outer frame in the accent colour, on by default in every preset, and switched off with one checkbox (the flag's stripes in the pride presets).
+- Decorations: sparkles, hearts, stars, flowers, moons, snowflakes or bubbles behind the words, in the accent colour or a pride flag's colours, twinkling, drifting or still. Off by default.
 
 ## Screenshots
 
@@ -30,6 +31,10 @@ It is a single self-contained widget in plain JavaScript, with no dependencies a
 **Your own look.** Every part is a setting. This one uses custom colours, an outline, rounder corners, a tilt, a lighter caption and a tail. You can also pick any of the twenty-two [style presets](#style-presets) with one setting.
 
 <p><img src="docs/custom.png" alt="A pink sticker with a light outline, a tilt and the caption squats today" width="340"></p>
+
+**Decorations.** Flowers behind the words, here in the Pastel pink preset.
+
+<p><img src="docs/decorations.png" alt="Squat tracker with flowers in the Pastel pink preset" width="300"></p>
 
 ## Style presets
 
@@ -122,11 +127,14 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | Sticker | The size of the number, caption and floating text, corner roundness, padding, the gap between number and caption, tilt, an outer frame, an outline and shadows. |
 | Text | The boldness of the number, caption and floating text, and the caption's opacity and letter spacing. |
 | Look and Custom colours | One of the twenty-two shared style presets (Soft black by default) or Custom colours and font, with separate colours for the box, number, caption, outline, padlock and floating text, and an opacity for the box. |
+| Decorations | The shape, how many, how big, and how they move. |
 | Animation | One switch for all animation, how far the sticker swells when the count changes, and how long that takes. |
 | Sounds | A sound and volume for a gift adding squats, for locking and for unlocking, plus a master mute. |
 | Manual controls | Buttons to simulate a gift, adjust, lock and reset, and to test each sound. |
 
 The **outer frame** is a border round the sticker in the accent colour, on by default in every preset. Untick **An outer frame** under Sticker for none, or set the outline thickness to change how thick it is, since at 0 it has a default thickness that grows with the box. In Custom the frame takes the colour of the number, which is the sticker's accent. With the frame unticked, the outline is whatever you set, as before, in the outline colour. In a pride preset the frame is the flag's stripes, as a ring that follows the panel's corners.
+
+The **decorations** are small shapes drawn behind the words: sparkles, hearts, stars, flowers, moons, snowflakes, bubbles, or a mix of sparkles, hearts and stars. They take the accent colour, or in a pride preset the colours of the flag in turn. Choose one under **Decorations**, then how many (up to 24), how big, and whether they twinkle in place, drift upwards or stay still. With Animate off they stay still. They are off by default. They go on the sticker.
 
 The full list, with defaults, is in [`widget/fields.json`](widget/fields.json). The colour and font pickers apply only when the style preset is **Custom**.
 

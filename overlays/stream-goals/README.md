@@ -21,6 +21,7 @@ It is a single self-contained widget in plain JavaScript, with no dependencies a
 - Saved: the counts survive a browser-source refresh.
 - Tests and a dev harness: a local harness with a time machine and an automated test script, so a new stream can be simulated in a click.
 - An outer frame in the accent colour, on by default in every preset, and switched off with one checkbox (the flag's stripes in the pride presets).
+- Decorations: sparkles, hearts, stars, flowers, moons, snowflakes or bubbles behind the words, in the accent colour or a pride flag's colours, twinkling, drifting or still. Off by default.
 
 ## Screenshots
 
@@ -31,6 +32,10 @@ It is a single self-contained widget in plain JavaScript, with no dependencies a
 **Your own look.** Choose Custom for the style preset and every colour, the font, the outline and the wording are settings.
 
 <p><img src="docs/custom.png" alt="A pink stream goals card in a script font, with a tip goal named new pc" width="380"></p>
+
+**Decorations.** A mix of sparkles, hearts and stars behind the words, here in the Trans pride preset.
+
+<p><img src="docs/decorations.png" alt="Stream goals with a mix of sparkles, hearts and stars in the Trans pride preset" width="380"></p>
 
 ## Style presets
 
@@ -123,10 +128,13 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | Manual controls | Buttons to start again, pause and resume. |
 | Look | Title, the style preset, font, boldness, corners, padding, outer frame, outline, shadow, Animate and whether it shrinks to fit the box. |
 | Custom colours | Panel, text, accent, bar and alert colours, used when the style preset is Custom. |
+| Decorations | The shape, how many, how big, and how they move. |
 | Sounds | A sound and volume for progress and for a goal being reached, with Test buttons and a master mute. |
 | Troubleshooting | A debug log of every event to the browser-source console. |
 
 The **outer frame** is a border round the widget in the preset's accent colour, on by default in every preset. Untick **An outer frame** under Look for none, or set the outline thickness to change how thick it is, since at 0 it has a default thickness that grows with the box. With the frame unticked, the outline is whatever you set, as before, in the outline colour. In a pride preset the frame is the flag's stripes, as a ring that follows the panel's corners.
+
+The **decorations** are small shapes drawn behind the words: sparkles, hearts, stars, flowers, moons, snowflakes, bubbles, or a mix of sparkles, hearts and stars. They take the accent colour, or in a pride preset the colours of the flag in turn. Choose one under **Decorations**, then how many (up to 24), how big, and whether they twinkle in place, drift upwards or stay still. With Animate off they stay still. They are off by default.
 
 The full list, with defaults, is in [`widget/fields.json`](widget/fields.json). The colour and font pickers apply only when the style preset is **Custom**.
 

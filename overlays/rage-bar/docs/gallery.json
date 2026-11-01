@@ -47,6 +47,18 @@
         "tilt": -2,
         "showTail": true
       }
+    },
+    {
+      "file": "decorations.png",
+      "width": 440,
+      "height": 170,
+      "base": "scene",
+      "fields": {
+        "decoration": "sparkles",
+        "decorationCount": 10,
+        "themePreset": "rose",
+        "animate": false
+      }
     }
   ]
 }

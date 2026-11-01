@@ -409,6 +409,7 @@ const until = async (test, ms) => { for (let i = 0; i < (ms || 2000) / 25 && !te
   ok(E("cf-root").classList.contains("no-motion"), "and Animate off stops motion");
   await env.checkPresets("cf-app");
   await env.checkFrame("cf-app");
+  await env.checkDecor("cf-app");
 
   section("sounds");
   await load({ soundMessage: "data:audio/wav;base64,AA", soundMessageVol: 40 });

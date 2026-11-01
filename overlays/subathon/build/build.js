@@ -50,6 +50,8 @@ const goalFields = JSON.parse(read(path.join(MODULE, "fields.json")));
 const merged = {};
 Object.keys(clockFields).forEach(function (k) { merged[k] = clockFields[k]; });
 Object.keys(goalFields).forEach(function (k) {
+  // The decorations are one setting for the clock and the goals together, and the clock carries it.
+  if (/^decoration/.test(k) && merged[k]) return;
   if (merged[k]) { console.error("Field name clash with the module: " + k); process.exit(1); }
   const f = Object.assign({}, goalFields[k]);
   f.group = "Goals: " + f.group;

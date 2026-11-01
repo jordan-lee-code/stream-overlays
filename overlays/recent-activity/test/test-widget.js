@@ -111,6 +111,7 @@ const skip = async ms => { env.fake += ms; await wait(700); };
   ok(E("ac-root").classList.contains("no-motion"), "and Animate off stops motion");
   await env.checkPresets("ac-app");
   await env.checkFrame("ac-app");
+  await env.checkDecor("ac-app");
 
   section("sounds");
   await load({ soundEvent: "data:audio/wav;base64,AA", soundEventVol: 40 });

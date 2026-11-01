@@ -111,7 +111,34 @@ function sync(dir, opts) {
       const d = w.indexOf("  function debugLog(", at), close = d === -1 ? -1 : w.indexOf("\n  }\n", d);
       return close === -1 ? -1 : close + "\n  }\n".length;
     });
-    if (w !== original) write(jsRel, w, "the shared primitives and theme");
+    // The decorations: one more shared block, put in where there is none yet, after the theme code or else before the widget starts
+    // listening for events, and replaced where there is.
+    const decor = read(path.join(__dirname, "..", "shared", "decor.js"));
+    const D = { start: "  // ---- decorations, shared by every overlay in this set ----", end: "  // ---- end of the decorations ----\n" };
+    const dAt = w.indexOf(D.start);
+    if (dAt !== -1) {
+      const dEnd = w.indexOf(D.end, dAt);
+      if (dEnd !== -1) w = w.slice(0, dAt) + decor + w.slice(dEnd + D.end.length);
+    } else {
+      const themeEnd = w.indexOf(B.end);
+      const listen = w.indexOf('  window.addEventListener("onWidgetLoad"');
+      if (themeEnd !== -1) w = w.slice(0, themeEnd + B.end.length) + "\n" + decor + w.slice(themeEnd + B.end.length);
+      else if (listen !== -1) w = w.slice(0, listen) + decor + "\n" + w.slice(listen);
+    }
+    if (w !== original) write(jsRel, w, "the shared primitives, theme and decorations");
+  }
+
+  // 3c. the decorations' stylesheet, a block kept identical in every overlay
+  const cssRel = jsRel.replace(/widget\/widget\.js$/, "widget/widget.css").replace(/src\/clock\.js$/, "src/clock.css");
+  const cssPath = path.join(dir, cssRel);
+  if (cssRel !== jsRel && fs.existsSync(cssPath)) {
+    const css = read(cssPath), block = read(path.join(__dirname, "..", "shared", "decor.css"));
+    const CS = "/* ---- decorations, shared by every overlay in this set ---- */", CE = "/* ---- end of the decorations ---- */\n";
+    const cAt = css.indexOf(CS);
+    let next;
+    if (cAt !== -1) { const cEnd = css.indexOf(CE, cAt); next = cEnd === -1 ? css : css.slice(0, cAt) + block + css.slice(cEnd + CE.length); }
+    else next = css.replace(/\n*$/, "\n\n") + block;
+    if (next !== css) write(cssRel, next, "the shared decorations stylesheet");
   }
 
   // 4. the shared test mock

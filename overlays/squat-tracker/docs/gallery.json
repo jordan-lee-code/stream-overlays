@@ -44,6 +44,18 @@
         "fontFamily": "Lobster"
       },
       "script": "gift(15);"
+    },
+    {
+      "file": "decorations.png",
+      "width": 300,
+      "height": 170,
+      "base": "scene",
+      "fields": {
+        "decoration": "flowers",
+        "decorationCount": 10,
+        "themePreset": "pastelpink",
+        "animate": false
+      }
     }
   ]
 }

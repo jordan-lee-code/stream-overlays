@@ -28,6 +28,10 @@ const STANDARD = {
   cAccent: { type: "colorpicker" },
   cTrack: { type: "colorpicker" },
   cWarn: { type: "colorpicker" },
+  decoration: { type: "dropdown", value: "none" },
+  decorationCount: { type: "number" },
+  decorationSize: { type: "number" },
+  decorationMotion: { type: "dropdown" },
   mute: { type: "checkbox", value: false },
   debug: { type: "checkbox", value: false }
 };

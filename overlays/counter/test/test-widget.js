@@ -105,6 +105,7 @@ const flash = () => E("ct-flash").hidden ? "" : E("ct-flash").textContent;
   ok(E("ct-root").classList.contains("no-motion"), "and Animate off stops motion");
   await env.checkPresets("ct-app");
   await env.checkFrame("ct-app");
+  await env.checkDecor("ct-app");
 
   section("saving");
   await load();
