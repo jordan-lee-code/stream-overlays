@@ -18,7 +18,7 @@ It is a single self-contained widget in plain JavaScript, with no dependencies a
 - Scales with the box: the text scales with the width of the box you draw, and if the box is too short for the card it shrinks to fit.
 - Customisable: around forty settings cover the source, the card, sizes, shape, outline, colours, fonts and animation.
 - An outer frame in the accent colour, on by default in every preset, and switched off with one checkbox (the flag's stripes in the pride presets).
-- Decorations: sparkles, hearts, stars, flowers, moons, snowflakes or bubbles behind the words, in the accent colour or a pride flag's colours, twinkling, drifting or still. Off by default.
+- Decorations: sparkles, hearts, stars, flowers, moons, snowflakes, bubbles, butterflies, clouds, leaves, paw prints, music notes or bows behind the words, scattered, along the edges or in the corners, in the accent colour, a pride flag's colours or a colour of your own, twinkling, drifting or still. Off by default.
 
 ## Screenshots
 
@@ -30,9 +30,9 @@ It is a single self-contained widget in plain JavaScript, with no dependencies a
 
 <p><img src="docs/pride.png" alt="A card in the trans flag's blue, pink and white with a striped progress bar" width="420"></p>
 
-**Decorations.** Moons behind the words, here in the Celestial preset.
+**Decorations.** Music notes behind the words, along the edges, here in the Celestial preset.
 
-<p><img src="docs/decorations.png" alt="Now playing with moons in the Celestial preset" width="420"></p>
+<p><img src="docs/decorations.png" alt="Now playing with music notes, along the edges in the Celestial preset" width="420"></p>
 
 ## Style presets
 
@@ -154,13 +154,13 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | Size | Text size, the title's size and the art's size. |
 | Look | The style preset, font, boldness, corners, padding, outer frame, outline, shadow, Animate and whether the card shrinks to fit the box. |
 | Custom colours | Panel, text, accent, bar track and note colours, used when the style preset is Custom. |
-| Decorations | The shape, how many, how big, and how they move. |
+| Decorations | The shape, where they go, how many, how big, how solid, their colour, and how they move. |
 | Manual controls | Buttons to hide, show and read now. |
 | Troubleshooting | A note on the card when the source cannot be read, and a debug log of every event to the browser-source console. |
 
 The **outer frame** is a border round the widget in the preset's accent colour, on by default in every preset. Untick **An outer frame** under Look for none, or set the outline thickness to change how thick it is, since at 0 it has a default thickness that grows with the box. With the frame unticked, the outline is whatever you set, as before, in the outline colour. In a pride preset the frame is the flag's stripes, as a ring that follows the panel's corners.
 
-The **decorations** are small shapes drawn behind the words: sparkles, hearts, stars, flowers, moons, snowflakes, bubbles, or a mix of sparkles, hearts and stars. They take the accent colour, or in a pride preset the colours of the flag in turn. Choose one under **Decorations**, then how many (up to 24), how big, and whether they twinkle in place, drift upwards or stay still. With Animate off they stay still. They are off by default.
+The **decorations** are small shapes drawn behind the words: sparkles, hearts, stars, flowers, moons, snowflakes, bubbles, butterflies, clouds, leaves, paw prints, music notes, bows, or a mix of sparkles, hearts and stars. Choose one under **Decorations**, then where they go (scattered, along the edges or in the corners), how many (up to 24), how big, how solid, and whether they twinkle in place, drift upwards or stay still. They take the accent colour, or in a pride preset the colours of the flag in turn, or you can ask for the text colour, both in turn, or a colour of your own. With Animate off they stay still. They are off by default.
 
 The full list, with defaults, is in [`widget/fields.json`](widget/fields.json). The colour and font pickers apply only when the style preset is **Custom**.
 

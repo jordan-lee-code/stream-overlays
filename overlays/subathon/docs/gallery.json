@@ -84,10 +84,11 @@
       "height": 360,
       "base": "scene",
       "fields": {
-        "decoration": "sparkles",
-        "decorationCount": 10,
+        "decoration": "leaves",
+        "decorationCount": 8,
         "themePreset": "forest",
-        "animate": false
+        "animate": false,
+        "decorationPlacement": "corners"
       }
     }
   ]

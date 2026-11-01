@@ -54,10 +54,11 @@
       "height": 170,
       "base": "scene",
       "fields": {
-        "decoration": "sparkles",
+        "decoration": "bows",
         "decorationCount": 10,
         "themePreset": "rose",
-        "animate": false
+        "animate": false,
+        "decorationPlacement": "scatter"
       }
     }
   ]

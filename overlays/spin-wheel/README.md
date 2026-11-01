@@ -23,7 +23,7 @@ It started as a raffle and grew into a wheel that also runs forfeit spins, weigh
 - Saved: entrants, mode, recent winners, lifelines and a running countdown are saved, so a refresh mid-giveaway loses nothing.
 - Testable offline: a local dev harness and an automated test script.
 - An outer frame: the wheel's rim, in the accent colour, on by default, and switched off with one checkbox.
-- Decorations: sparkles, hearts, stars, flowers, moons, snowflakes or bubbles behind the words, in the accent colour or a pride flag's colours, twinkling, drifting or still. Off by default.
+- Decorations: sparkles, hearts, stars, flowers, moons, snowflakes, bubbles, butterflies, clouds, leaves, paw prints, music notes or bows behind the words, scattered, along the edges or in the corners, in the accent colour, a pride flag's colours or a colour of your own, twinkling, drifting or still. Off by default.
 
 ## Screenshots
 
@@ -148,14 +148,14 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | Pills and cards | The roundness, padding and tilt of pills, the toast and the winner card, the goal bar's thickness, an outer frame, an outline, tails and shadows. |
 | Text | The size and boldness of the empty-wheel message, toast, pills, goal label, winner label, winner name, line under the winner and lifelines. |
 | Look and Custom colours | One of the twenty-two shared style presets (Soft black by default) or Custom colours and font, with a colour for every part. |
-| Decorations | The shape, how many, how big, and how they move. |
+| Decorations | The shape, where they go, how many, how big, how solid, their colour, and how they move. |
 | Animation | One switch for all animation, the spin and winner display times, and how long the toast, card, goal bar and countdown pulse take. |
 | Sounds | A sound and volume for someone joining, each tick and the winner, plus a master mute. |
 | Manual controls | Buttons for spin, open, close, clear, switch mode, reroll, re-show and the Truth or... controls, and to test each sound. |
 
 The **outer frame** is the wheel's rim, drawn in the accent colour and on by default. Untick **An outer frame** under Wheel for no rim, or change its thickness with the rim setting. The pills and the winner card are filled with the accent colour in the presets, so they have no frame of their own, and a winner card outline is a separate setting under Pills and cards. In a pride preset the rim stays the accent colour, since it turns with the wheel.
 
-The **decorations** are small shapes drawn behind the words: sparkles, hearts, stars, flowers, moons, snowflakes, bubbles, or a mix of sparkles, hearts and stars. They take the accent colour, or in a pride preset the colours of the flag in turn. Choose one under **Decorations**, then how many (up to 24), how big, and whether they twinkle in place, drift upwards or stay still. With Animate off they stay still. They are off by default. They are scattered round the wheel.
+The **decorations** are small shapes drawn behind the words: sparkles, hearts, stars, flowers, moons, snowflakes, bubbles, butterflies, clouds, leaves, paw prints, music notes, bows, or a mix of sparkles, hearts and stars. Choose one under **Decorations**, then where they go (scattered, along the edges or in the corners), how many (up to 24), how big, how solid, and whether they twinkle in place, drift upwards or stay still. They take the accent colour, or in a pride preset the colours of the flag in turn, or you can ask for the text colour, both in turn, or a colour of your own. With Animate off they stay still. They are off by default. They are scattered round the wheel.
 
 The full list, with defaults, is in [`widget/fields.json`](widget/fields.json).
 

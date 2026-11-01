@@ -141,10 +141,11 @@
       "height": 300,
       "base": "scene",
       "fields": {
-        "decoration": "sparkles",
+        "decoration": "butterflies",
         "decorationCount": 10,
         "themePreset": "pastelgoth",
-        "animate": false
+        "animate": false,
+        "decorationPlacement": "edges"
       }
     }
   ]

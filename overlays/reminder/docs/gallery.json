@@ -49,10 +49,11 @@
       "height": 140,
       "base": "scene",
       "fields": {
-        "decoration": "bubbles",
+        "decoration": "clouds",
         "decorationCount": 10,
         "themePreset": "ocean",
-        "animate": false
+        "animate": false,
+        "decorationPlacement": "scatter"
       }
     }
   ]

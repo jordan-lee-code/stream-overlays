@@ -32,6 +32,10 @@ const STANDARD = {
   decorationCount: { type: "number" },
   decorationSize: { type: "number" },
   decorationMotion: { type: "dropdown" },
+  decorationPlacement: { type: "dropdown" },
+  decorationColor: { type: "dropdown" },
+  decorationTint: { type: "colorpicker" },
+  decorationOpacity: { type: "number" },
   mute: { type: "checkbox", value: false },
   debug: { type: "checkbox", value: false }
 };

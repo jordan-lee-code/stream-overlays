@@ -685,6 +685,14 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
       await settle({ decoration: "stars", decorationSize: 2 }); ok(layer().style["--w-deco-size"] === 2, "their size is a setting");
       await settle({ decoration: "stars", decorationCount: 7, themePreset: "trans" });
       ok(items().every((i, n) => i.style["--c"].toLowerCase() === ["#5bcefa", "#f5a9b8", "#ffffff", "#f5a9b8", "#5bcefa"][n % 5]), "in a pride preset they take the colours of the flag in turn (" + items().map(i => i.style["--c"]).join(" ") + ")");
+      await settle({ decoration: "butterflies", decorationCount: 8, decorationPlacement: "edges" });
+      ok(items().every(i => i.className === "w-di butterflies") && items().map(i => [parseFloat(i.style["--x"]), parseFloat(i.style["--y"])]).every(([x, y]) => x <= 6 || x >= 86 || y <= 6 || y >= 82), "the newer shapes work, and along the edges every one sits on the border");
+      await settle({ decoration: "stars", decorationCount: 4, decorationPlacement: "corners" });
+      ok(new Set(items().map(i => (parseFloat(i.style["--x"]) < 50 ? "l" : "r") + (parseFloat(i.style["--y"]) < 50 ? "t" : "b"))).size === 4, "in the corners, four shapes take one corner each");
+      await settle({ decoration: "stars", decorationCount: 3, decorationColor: "custom", decorationTint: "#ABCDEF" });
+      ok(items().every(i => i.style["--c"] === "#ABCDEF"), "a colour of your own");
+      await settle({ decoration: "stars", decorationColor: "text" }); ok(new Set(items().map(i => i.style["--c"])).size === 1, "or the text colour");
+      await settle({ decoration: "stars", decorationOpacity: 0.5 }); ok(layer().style["--w-deco-opacity"] === 0.5, "how solid they are is a setting");
       await settle({ decoration: "stars" }); await settle({ decoration: "none" });
       ok(!layer() && !host().style.isolation, "turning them off takes them away");
       await settle({ decoration: "confetti" }); ok(!layer(), "and a shape that does not exist is none");

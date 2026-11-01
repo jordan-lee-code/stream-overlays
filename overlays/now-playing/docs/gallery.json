@@ -69,10 +69,11 @@
       "height": 130,
       "base": "scene",
       "fields": {
-        "decoration": "moons",
+        "decoration": "notes",
         "decorationCount": 10,
         "themePreset": "celestial",
-        "animate": false
+        "animate": false,
+        "decorationPlacement": "edges"
       }
     }
   ]

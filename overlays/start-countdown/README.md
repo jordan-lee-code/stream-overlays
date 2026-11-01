@@ -21,7 +21,7 @@ It is a single self-contained widget in plain JavaScript, with no dependencies a
 - Customisable: around 45 settings cover the wording, sizes, colours, fonts, sounds and animation.
 - Tests and a dev harness: a local harness with a time machine and an automated test script.
 - An outer frame in the accent colour, on by default in every preset, and switched off with one checkbox (the flag's stripes in the pride presets).
-- Decorations: sparkles, hearts, stars, flowers, moons, snowflakes or bubbles behind the words, in the accent colour or a pride flag's colours, twinkling, drifting or still. Off by default.
+- Decorations: sparkles, hearts, stars, flowers, moons, snowflakes, bubbles, butterflies, clouds, leaves, paw prints, music notes or bows behind the words, scattered, along the edges or in the corners, in the accent colour, a pride flag's colours or a colour of your own, twinkling, drifting or still. Off by default.
 
 ## Screenshots
 
@@ -130,7 +130,7 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | Manual controls | Buttons to start, add five minutes, take a minute off, go live and clear. |
 | Look | Headline, the style preset, font, boldness, corners, outer frame, outline, shadow and Animate. |
 | Custom colours | Panel, text, accent, bar and alert colours, used when the style preset is Custom. |
-| Decorations | The shape, how many, how big, and how they move. |
+| Decorations | The shape, where they go, how many, how big, how solid, their colour, and how they move. |
 | Sounds | A sound and volume for the moment you go live, with a Test button and a master mute. |
 | Troubleshooting | A debug log of every event to the browser-source console. |
 
@@ -140,7 +140,7 @@ The overlay's panel is the whole box, with square corners by default, so it work
 
 The **outer frame** is a border round the widget in the preset's accent colour, on by default in every preset. Untick **An outer frame** under Look for none, or set the outline thickness to change how thick it is, since at 0 it has a default thickness that grows with the box. In a pride preset the frame is the flag's stripes, as a ring that follows the panel's corners.
 
-The **decorations** are small shapes drawn behind the words: sparkles, hearts, stars, flowers, moons, snowflakes, bubbles, or a mix of sparkles, hearts and stars. They take the accent colour, or in a pride preset the colours of the flag in turn. Choose one under **Decorations**, then how many (up to 24), how big, and whether they twinkle in place, drift upwards or stay still. With Animate off they stay still. They are off by default. They are scattered over the whole screen, behind the clock.
+The **decorations** are small shapes drawn behind the words: sparkles, hearts, stars, flowers, moons, snowflakes, bubbles, butterflies, clouds, leaves, paw prints, music notes, bows, or a mix of sparkles, hearts and stars. Choose one under **Decorations**, then where they go (scattered, along the edges or in the corners), how many (up to 24), how big, how solid, and whether they twinkle in place, drift upwards or stay still. They take the accent colour, or in a pride preset the colours of the flag in turn, or you can ask for the text colour, both in turn, or a colour of your own. With Animate off they stay still. They are off by default. They are scattered over the whole screen, behind the clock.
 
 The full list, with defaults, is in [`widget/fields.json`](widget/fields.json). The colour and font pickers apply only when the style preset is **Custom**.
 

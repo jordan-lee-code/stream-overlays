@@ -180,7 +180,7 @@
     s.setProperty("--w-frame-img", stripes ? flagGradient(t.flag) : "none");
     s.setProperty("--w-shadow", c.shadow ? "0 0.3em 1.2em rgba(0, 0, 0, 0.45)" : "none");
     root.classList.toggle("no-motion", !c.animate);
-    applyDecor(c.decor, app, t.flag || [t.accent], c.animate);
+    applyDecor(c.decor, app, t.flag || [t.accent], c.animate, t.text);
     watchFit(root, app, c.fit);
     loadFont(fontLinkId, t.font);
     return t;

@@ -60,10 +60,11 @@
       "height": 270,
       "base": "scene",
       "fields": {
-        "decoration": "flowers",
+        "decoration": "leaves",
         "decorationCount": 10,
         "themePreset": "pastelsage",
-        "animate": false
+        "animate": false,
+        "decorationPlacement": "edges"
       }
     }
   ]

@@ -45,9 +45,10 @@
       "base": "scene",
       "fields": {
         "decoration": "stars",
-        "decorationCount": 10,
+        "decorationCount": 8,
         "themePreset": "neon",
-        "animate": false
+        "animate": false,
+        "decorationPlacement": "corners"
       }
     }
   ]

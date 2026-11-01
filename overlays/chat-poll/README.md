@@ -21,7 +21,7 @@ It was built for rounds like Two Truths and a Lie, but it suits any quick vote. 
 - Sounds: optional sounds when a poll opens, when a vote is counted, for each of the last seconds, and when the result is declared.
 - Testable offline: a local dev harness and two automated test scripts.
 - An outer frame in the accent colour, on by default in every preset, and switched off with one checkbox (the flag's stripes in the pride presets).
-- Decorations: sparkles, hearts, stars, flowers, moons, snowflakes or bubbles behind the words, in the accent colour or a pride flag's colours, twinkling, drifting or still. Off by default.
+- Decorations: sparkles, hearts, stars, flowers, moons, snowflakes, bubbles, butterflies, clouds, leaves, paw prints, music notes or bows behind the words, scattered, along the edges or in the corners, in the accent colour, a pride flag's colours or a colour of your own, twinkling, drifting or still. Off by default.
 
 ## Screenshots
 
@@ -33,9 +33,9 @@ It was built for rounds like Two Truths and a Lie, but it suits any quick vote. 
 
 <p><img src="docs/custom.png" alt="A poll card in a customised pink theme with a script heading" width="340"></p>
 
-**Decorations.** Stars behind the words, here in the Neon preset.
+**Decorations.** Stars behind the words, in the corners, here in the Neon preset.
 
-<p><img src="docs/decorations.png" alt="Chat poll with stars in the Neon preset" width="300"></p>
+<p><img src="docs/decorations.png" alt="Chat poll with stars, in the corners in the Neon preset" width="300"></p>
 
 ## Style presets
 
@@ -133,14 +133,14 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | Card | **Grow to fill the box**, **Size of everything** (used when growing is unticked), corner roundness, padding, spacing, an outer frame, an outline, shadows, the tail and tilt of the timer and result label, and the size of each option's bar. |
 | Text | The size and boldness of the heading, countdown, result label, options, letter chips, counts and footer, an own font for the heading, and the opacity of counts, footer and options that did not win. |
 | Look and Custom colours | One of the twenty-two shared style presets (Soft black by default) or Custom colours and font, with a colour for every part and each of the eight options, and an opacity for the panel. |
-| Decorations | The shape, how many, how big, and how they move. |
+| Decorations | The shape, where they go, how many, how big, how solid, their colour, and how they move. |
 | Animation | One switch for all animation, and how long the bars, the card and the pulse take. |
 | Sounds | A sound and volume for a poll opening, a vote, each of the last seconds and the result, plus a master mute. |
 | Manual controls | Buttons to start a demo poll, add time, end, restart, cancel and undo, and to test each sound. |
 
 The **outer frame** is a border round the widget in the preset's accent colour, on by default in every preset. Untick **An outer frame** under Card for none, or set the outline thickness to change how thick it is, since at 0 it has a default thickness that grows with the box. With the frame unticked, the outline is whatever you set, as before, in the outline colour. In a pride preset the frame is the flag's stripes, as a ring that follows the panel's corners.
 
-The **decorations** are small shapes drawn behind the words: sparkles, hearts, stars, flowers, moons, snowflakes, bubbles, or a mix of sparkles, hearts and stars. They take the accent colour, or in a pride preset the colours of the flag in turn. Choose one under **Decorations**, then how many (up to 24), how big, and whether they twinkle in place, drift upwards or stay still. With Animate off they stay still. They are off by default.
+The **decorations** are small shapes drawn behind the words: sparkles, hearts, stars, flowers, moons, snowflakes, bubbles, butterflies, clouds, leaves, paw prints, music notes, bows, or a mix of sparkles, hearts and stars. Choose one under **Decorations**, then where they go (scattered, along the edges or in the corners), how many (up to 24), how big, how solid, and whether they twinkle in place, drift upwards or stay still. They take the accent colour, or in a pride preset the colours of the flag in turn, or you can ask for the text colour, both in turn, or a colour of your own. With Animate off they stay still. They are off by default.
 
 The full list, with defaults, is in [`widget/fields.json`](widget/fields.json). The colour and font pickers apply only when the style preset is **Custom**.
 

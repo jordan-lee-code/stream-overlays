@@ -18,7 +18,7 @@ Goals are added live from chat with `!incentive add 15 chat confessions`. The wi
 - Customisable: more than 80 settings cover wording, colours, fonts, sizes, spacing, sounds and the chat command words.
 - Testable offline: a local dev harness and an automated test script, no live stream needed.
 - An outer frame in the accent colour, on by default in every preset, and switched off with one checkbox (the flag's stripes in the pride presets).
-- Decorations: sparkles, hearts, stars, flowers, moons, snowflakes or bubbles behind the words, in the accent colour or a pride flag's colours, twinkling, drifting or still. Off by default.
+- Decorations: sparkles, hearts, stars, flowers, moons, snowflakes, bubbles, butterflies, clouds, leaves, paw prints, music notes or bows behind the words, scattered, along the edges or in the corners, in the accent colour, a pride flag's colours or a colour of your own, twinkling, drifting or still. Off by default.
 
 ## Screenshots
 
@@ -143,14 +143,14 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | Wording | The words for sub and subs, the celebrating text, the reached text and the paused note. |
 | Look | The style preset (one of twenty-two, or Custom), the font, the heading, panel shape and padding, bar thickness and spacing, the thank you message, and the switch for animation. |
 | Custom colours | A colour for each part, used when the preset is Custom. |
-| Decorations | The shape, how many, how big, and how they move. |
+| Decorations | The shape, where they go, how many, how big, how solid, their colour, and how they move. |
 | Manual controls | Buttons to add example goals, adjust the count, start or stop tracking, reset and clear. |
 | Sounds | A sound and volume for subs, bits and goals, plus a master mute. |
 | Troubleshooting | Logs every event to the browser console. |
 
 The **outer frame** is a border round the widget in the preset's accent colour, on by default in every preset. Untick **An outer frame** under Look for none, or set the outline thickness to change how thick it is, since at 0 it has a default thickness that grows with the box. With the frame unticked, the outline is whatever you set, as before, in the outline colour. In a pride preset the frame is the flag's stripes, as a ring that follows the panel's corners.
 
-The **decorations** are small shapes drawn behind the words: sparkles, hearts, stars, flowers, moons, snowflakes, bubbles, or a mix of sparkles, hearts and stars. They take the accent colour, or in a pride preset the colours of the flag in turn. Choose one under **Decorations**, then how many (up to 24), how big, and whether they twinkle in place, drift upwards or stay still. With Animate off they stay still. They are off by default.
+The **decorations** are small shapes drawn behind the words: sparkles, hearts, stars, flowers, moons, snowflakes, bubbles, butterflies, clouds, leaves, paw prints, music notes, bows, or a mix of sparkles, hearts and stars. Choose one under **Decorations**, then where they go (scattered, along the edges or in the corners), how many (up to 24), how big, how solid, and whether they twinkle in place, drift upwards or stay still. They take the accent colour, or in a pride preset the colours of the flag in turn, or you can ask for the text colour, both in turn, or a colour of your own. With Animate off they stay still. They are off by default.
 
 The full list, with defaults, is in [`widget/fields.json`](widget/fields.json).
 
