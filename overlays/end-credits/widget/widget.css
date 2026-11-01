@@ -1,0 +1,124 @@
+/* Copyright (c) 2026 Jordan Lee (https://ko-fi.com/journeyingjordan). Released under the MIT licence: this notice must be kept in copies and substantial portions of the code. See LICENSE. */
+/* Designed for a full 1920 by 1080 scene and stretched to any box. Every size is a number of "units", where one unit is
+   a hundredth of the box's width at 16 by 9, or the same size in a box that is short for its width. Every value below is a
+   custom property that widget.js sets from the editor fields. */
+
+#ec-root {
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  margin: 0;
+  overflow: hidden;
+  /* The reference for the cqw and cqh sizes below. A container's own units resolve against its parent, so the card
+     cannot be the container itself. */
+  container-type: size;
+  -webkit-font-smoothing: antialiased;
+}
+#ec-root * { box-sizing: border-box; }
+#ec-root [hidden] { display: none !important; }
+/* Until the credits roll the whole widget is gone. */
+#ec-root[hidden] { display: none !important; }
+
+/* The Animate field switches off the small motions. The roll itself always scrolls, since a roll that does not move is not one. */
+#ec-root.no-motion,
+#ec-root.no-motion * {
+  animation: none !important;
+  transition: none !important;
+}
+#ec-root.no-motion .ec-roll.go { animation: ec-scroll var(--ec-dur, 60s) linear forwards !important; }
+
+#ec-app {
+  --w-bg: rgba(0, 0, 0, 0.55);
+  --w-text: #FFFFFF;
+  --w-accent: #FFFFFF;
+  --w-track: #444444;
+  --w-font: "BioRhyme", Georgia, serif;
+  --w-radius: 0px;
+  --w-weight: 800;
+  --w-border: 0 solid #FFFFFF;
+  --w-shadow: none;
+  --u: min(1cqw, 1.7778cqh);
+
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-family: var(--w-font);
+  font-weight: var(--w-weight);
+  color: var(--w-text);
+  text-align: center;
+  background: var(--w-bg);
+  background-image: var(--w-bgimg, none);
+  border: var(--w-border);
+  border-radius: var(--w-radius);
+  box-shadow: var(--w-shadow);
+  line-height: 1.15;
+}
+
+/* The credits start below the box and end above it. A percentage in translateY is of the element's own height. */
+.ec-roll {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  padding: 0 calc(6 * var(--u));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(var(--ec-gap, 4) * var(--u));
+  transform: translateY(100cqh);
+}
+.ec-roll.go { animation: ec-scroll var(--ec-dur, 60s) linear forwards; }
+@keyframes ec-scroll {
+  from { transform: translateY(100cqh); }
+  to { transform: translateY(-100%); }
+}
+
+.ec-title {
+  font-size: calc(var(--ec-title, 6) * var(--u));
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--w-accent);
+  overflow-wrap: anywhere;
+}
+.ec-sec { width: 100%; display: flex; flex-direction: column; align-items: center; gap: calc(1.2 * var(--u)); }
+.ec-head {
+  font-size: calc(var(--ec-head, 2.4) * var(--u));
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--w-accent);
+}
+.ec-names {
+  display: grid;
+  grid-template-columns: repeat(var(--ec-cols, 2), auto);
+  justify-content: center;
+  column-gap: calc(5 * var(--u));
+  row-gap: calc(0.6 * var(--u));
+  font-size: calc(var(--ec-name, 3.2) * var(--u));
+  font-weight: 700;
+}
+.ec-name { overflow-wrap: anywhere; }
+.ec-more { grid-column: 1 / -1; font-size: 0.7em; opacity: 0.8; }
+.ec-end {
+  margin-top: calc(2 * var(--u));
+  font-size: calc(var(--ec-title, 6) * 0.7 * var(--u));
+  color: var(--w-accent);
+}
+
+/* The outer frame in a pride preset: the flag's stripes, as a ring over the panel's edge that follows its corners. It is the
+   panel's padding box with the inside masked out. A preset with no flag has no ring, and its frame is the border. */
+#ec-app::after {
+  content: "";
+  position: absolute;
+  inset: calc(var(--w-frame-w, 0px) * -1);
+  padding: var(--w-frame-w, 0px);
+  border-radius: inherit;
+  pointer-events: none;
+  background: var(--w-frame-img, none);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+}

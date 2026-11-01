@@ -1,0 +1,48 @@
+{
+  "width": 640,
+  "height": 360,
+  "fields": {},
+  "script": "chat('!credits sample');(function(){var r=document.getElementById('ec-roll'),H=document.getElementById('ec-root').clientHeight,h=r.offsetHeight,d=parseFloat(r.style.animationDuration),y=H*0.28;r.style.animationPlayState='paused';r.style.animationDelay=(-(H-y)/(H+h)*d)+'s';})();",
+  "pictures": [
+    {
+      "file": "default.png",
+      "width": 640,
+      "height": 360,
+      "fields": {},
+      "script": "chat('!credits sample');(function(){var r=document.getElementById('ec-roll'),H=document.getElementById('ec-root').clientHeight,h=r.offsetHeight,d=parseFloat(r.style.animationDuration),y=H*0.28;r.style.animationPlayState='paused';r.style.animationDelay=(-(H-y)/(H+h)*d)+'s';})();"
+    },
+    {
+      "file": "names.png",
+      "width": 640,
+      "height": 360,
+      "fields": {
+        "columns": 3
+      },
+      "script": "chat('!credits sample');(function(){var r=document.getElementById('ec-roll'),H=document.getElementById('ec-root').clientHeight,h=r.offsetHeight,d=parseFloat(r.style.animationDuration),y=-h*0.30;r.style.animationPlayState='paused';r.style.animationDelay=(-(H-y)/(H+h)*d)+'s';})();"
+    },
+    {
+      "file": "end.png",
+      "width": 640,
+      "height": 360,
+      "fields": {},
+      "script": "chat('!credits sample');(function(){var r=document.getElementById('ec-roll'),H=document.getElementById('ec-root').clientHeight,h=r.offsetHeight,d=parseFloat(r.style.animationDuration),y=H*0.52-h;r.style.animationPlayState='paused';r.style.animationDelay=(-(H-y)/(H+h)*d)+'s';})();"
+    },
+    {
+      "file": "custom.png",
+      "width": 640,
+      "height": 360,
+      "fields": {
+        "themePreset": "custom",
+        "colorPanel": "#0d2b2f",
+        "panelOpacity": 0.92,
+        "cText": "#E6F8FF",
+        "cAccent": "#4CD3E0",
+        "fontFamily": "Cinzel",
+        "title": "With thanks",
+        "endLine": "Until next time",
+        "columns": 3
+      },
+      "script": "chat('!credits sample');(function(){var r=document.getElementById('ec-roll'),H=document.getElementById('ec-root').clientHeight,h=r.offsetHeight,d=parseFloat(r.style.animationDuration),y=H*0.28;r.style.animationPlayState='paused';r.style.animationDelay=(-(H-y)/(H+h)*d)+'s';})();"
+    }
+  ]
+}

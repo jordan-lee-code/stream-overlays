@@ -1,0 +1,33 @@
+{
+  "name": "end-credits-overlay",
+  "version": "1.0.0",
+  "description": "A StreamElements custom widget: end credits that collect your subscribers, gifters, cheerers, tippers, raiders, followers and chatters through the stream and roll them as a thank-you.",
+  "private": true,
+  "license": "MIT",
+  "author": "Jordan Lee",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jordan-lee-code/stream-overlays.git",
+    "directory": "overlays/end-credits"
+  },
+  "bugs": {
+    "url": "https://github.com/jordan-lee-code/stream-overlays/issues"
+  },
+  "homepage": "https://github.com/jordan-lee-code/stream-overlays/tree/main/overlays/end-credits",
+  "keywords": [
+    "streamelements",
+    "twitch",
+    "overlay",
+    "widget",
+    "credits",
+    "thank-you"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "funding": "https://ko-fi.com/journeyingjordan",
+  "scripts": {
+    "test": "node test/test-widget.js",
+    "dev": "python3 -m http.server 8000"
+  }
+}

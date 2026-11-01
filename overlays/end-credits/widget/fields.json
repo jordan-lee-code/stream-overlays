@@ -1,0 +1,354 @@
+{
+  "command": {
+    "type": "text",
+    "label": "Command word",
+    "value": "!credits",
+    "group": "Commands"
+  },
+  "whoCanManage": {
+    "type": "dropdown",
+    "label": "Who can use it",
+    "value": "mods",
+    "options": {
+      "broadcaster": "Broadcaster only",
+      "mods": "Broadcaster + moderators"
+    },
+    "group": "Commands"
+  },
+  "special": {
+    "type": "text",
+    "label": "Special thanks: names to always include, separated by a vertical bar (for example Alder | Briar)",
+    "value": "",
+    "group": "Credits"
+  },
+  "headSpecial": {
+    "type": "text",
+    "label": "Heading for the special thanks",
+    "value": "Special thanks",
+    "group": "Credits"
+  },
+  "showSubs": {
+    "type": "checkbox",
+    "label": "Include the subscribers",
+    "value": true,
+    "group": "Credits"
+  },
+  "headSubs": {
+    "type": "text",
+    "label": "Heading for the subscribers",
+    "value": "Subscribers",
+    "group": "Credits"
+  },
+  "showGifts": {
+    "type": "checkbox",
+    "label": "Include the gifters",
+    "value": true,
+    "group": "Credits"
+  },
+  "headGifts": {
+    "type": "text",
+    "label": "Heading for the gifters",
+    "value": "Gifted subs",
+    "group": "Credits"
+  },
+  "showBits": {
+    "type": "checkbox",
+    "label": "Include the cheerers",
+    "value": true,
+    "group": "Credits"
+  },
+  "headBits": {
+    "type": "text",
+    "label": "Heading for the cheerers",
+    "value": "Cheers",
+    "group": "Credits"
+  },
+  "showTips": {
+    "type": "checkbox",
+    "label": "Include the tippers",
+    "value": true,
+    "group": "Credits"
+  },
+  "headTips": {
+    "type": "text",
+    "label": "Heading for the tippers",
+    "value": "Tips",
+    "group": "Credits"
+  },
+  "showRaids": {
+    "type": "checkbox",
+    "label": "Include the raiders",
+    "value": true,
+    "group": "Credits"
+  },
+  "headRaids": {
+    "type": "text",
+    "label": "Heading for the raiders",
+    "value": "Raiders",
+    "group": "Credits"
+  },
+  "showFollows": {
+    "type": "checkbox",
+    "label": "Include the new followers",
+    "value": true,
+    "group": "Credits"
+  },
+  "headFollows": {
+    "type": "text",
+    "label": "Heading for the new followers",
+    "value": "New followers",
+    "group": "Credits"
+  },
+  "showChatters": {
+    "type": "checkbox",
+    "label": "Include the chatters",
+    "value": true,
+    "group": "Credits"
+  },
+  "headChatters": {
+    "type": "text",
+    "label": "Heading for the chatters",
+    "value": "Chatters",
+    "group": "Credits"
+  },
+  "showCounts": {
+    "type": "checkbox",
+    "label": "Show how many each gifter gave, as in Hazel x12",
+    "value": true,
+    "group": "Credits"
+  },
+  "maxPerSection": {
+    "type": "number",
+    "label": "Most names in one list, then and N more",
+    "value": 100,
+    "min": 1,
+    "max": 1000,
+    "step": 1,
+    "group": "Credits"
+  },
+  "ignore": {
+    "type": "text",
+    "label": "Names to leave out, separated by commas (bots, for example)",
+    "value": "streamelements, nightbot, moobot, streamlabs, fossabot, wizebot",
+    "group": "Credits"
+  },
+  "endLine": {
+    "type": "text",
+    "label": "Last line",
+    "value": "See you next time",
+    "group": "Credits"
+  },
+  "speed": {
+    "type": "number",
+    "label": "Roll speed (percent of the box height per second)",
+    "value": 10,
+    "min": 1,
+    "max": 100,
+    "step": 1,
+    "group": "Roll"
+  },
+  "columns": {
+    "type": "number",
+    "label": "Columns of names",
+    "value": 2,
+    "min": 1,
+    "max": 4,
+    "step": 1,
+    "group": "Roll"
+  },
+  "clearAfter": {
+    "type": "checkbox",
+    "label": "Start the lists again once the credits have rolled all the way through (otherwise use !credits reset)",
+    "value": false,
+    "group": "Roll"
+  },
+  "titleSize": {
+    "type": "number",
+    "label": "Title size, in units (a unit is a hundredth of the box width at 16 by 9)",
+    "value": 6,
+    "min": 1,
+    "max": 30,
+    "step": 0.25,
+    "group": "Size"
+  },
+  "headingSize": {
+    "type": "number",
+    "label": "List heading size, in units",
+    "value": 2.4,
+    "min": 1,
+    "max": 15,
+    "step": 0.1,
+    "group": "Size"
+  },
+  "nameSize": {
+    "type": "number",
+    "label": "Name size, in units",
+    "value": 3.2,
+    "min": 1,
+    "max": 15,
+    "step": 0.1,
+    "group": "Size"
+  },
+  "gap": {
+    "type": "number",
+    "label": "Space between the lists, in units",
+    "value": 4,
+    "min": 0,
+    "max": 20,
+    "step": 0.5,
+    "group": "Size"
+  },
+  "btnRoll": {
+    "type": "button",
+    "label": "Roll the credits now",
+    "group": "Manual controls"
+  },
+  "btnSample": {
+    "type": "button",
+    "label": "Roll a sample with made-up names, keeping nothing",
+    "group": "Manual controls"
+  },
+  "btnStop": {
+    "type": "button",
+    "label": "Stop the credits",
+    "group": "Manual controls"
+  },
+  "btnReset": {
+    "type": "button",
+    "label": "Start the lists again (forget every name)",
+    "group": "Manual controls"
+  },
+  "title": {
+    "type": "text",
+    "label": "Title",
+    "value": "Thank you for watching",
+    "group": "Look"
+  },
+  "showTitle": {
+    "type": "checkbox",
+    "label": "Show the title",
+    "value": true,
+    "group": "Look"
+  },
+  "themePreset": {
+    "type": "dropdown",
+    "label": "Style preset (the same twenty-two are in every overlay in this set)",
+    "value": "glass",
+    "options": {
+      "glass": "Soft black (default)",
+      "frost": "Soft white",
+      "midnight": "Midnight blue",
+      "sunset": "Sunset",
+      "forest": "Forest",
+      "ocean": "Ocean",
+      "rose": "Rose",
+      "neon": "Neon",
+      "cosycabin": "Cosy cabin",
+      "pastel": "Cosy summer pastel",
+      "celestial": "Celestial",
+      "pastelgoth": "Pastel goth",
+      "pastelpink": "Pastel pink",
+      "pastelsage": "Pastel sage",
+      "faegreen": "Fae green",
+      "pride": "Rainbow pride",
+      "trans": "Trans pride",
+      "bi": "Bi pride",
+      "pan": "Pan pride",
+      "enby": "Non-binary pride",
+      "lesbian": "Lesbian pride",
+      "ace": "Ace pride",
+      "custom": "Custom (use the colours below)"
+    },
+    "group": "Look"
+  },
+  "fontFamily": {
+    "type": "googleFont",
+    "label": "Font (used when the style preset is Custom)",
+    "value": "BioRhyme",
+    "group": "Look"
+  },
+  "weight": {
+    "type": "number",
+    "label": "Boldness (100 to 900)",
+    "value": 800,
+    "min": 100,
+    "max": 900,
+    "step": 100,
+    "group": "Look"
+  },
+  "radius": {
+    "type": "number",
+    "label": "Corner roundness, in pixels",
+    "value": 0,
+    "min": 0,
+    "max": 100,
+    "step": 1,
+    "group": "Look"
+  },
+  "outerFrame": {
+    "type": "checkbox",
+    "label": "An outer frame round the widget in the accent colour, or the flag's stripes in a pride preset. Untick it for none",
+    "value": true,
+    "group": "Look"
+  },
+  "borderWidth": {
+    "type": "number",
+    "label": "Frame and outline thickness in pixels. At 0 the frame has a default thickness that grows with the box, and with the frame unticked there is no outline",
+    "value": 0,
+    "min": 0,
+    "max": 20,
+    "step": 1,
+    "group": "Look"
+  },
+  "borderColor": {
+    "type": "colorpicker",
+    "label": "Outline colour, used when the outer frame is unticked and the thickness is above 0 (the frame itself is always the accent colour)",
+    "value": "#FFFFFF",
+    "group": "Look"
+  },
+  "shadow": {
+    "type": "checkbox",
+    "label": "Shadow",
+    "value": false,
+    "group": "Look"
+  },
+  "animate": {
+    "type": "checkbox",
+    "label": "Animate",
+    "value": true,
+    "group": "Look"
+  },
+  "colorPanel": {
+    "type": "colorpicker",
+    "label": "Panel colour (used when the style preset is Custom)",
+    "value": "#000000",
+    "group": "Custom colours"
+  },
+  "panelOpacity": {
+    "type": "number",
+    "label": "Panel opacity, 0 to 1 (used when the style preset is Custom)",
+    "value": 0.55,
+    "min": 0,
+    "max": 1,
+    "step": 0.05,
+    "group": "Custom colours"
+  },
+  "cText": {
+    "type": "colorpicker",
+    "label": "Text (used when the style preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Custom colours"
+  },
+  "cAccent": {
+    "type": "colorpicker",
+    "label": "Accent (used when the style preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Custom colours"
+  },
+  "debug": {
+    "type": "checkbox",
+    "label": "Log every event to the browser-source console",
+    "value": false,
+    "group": "Troubleshooting"
+  }
+}

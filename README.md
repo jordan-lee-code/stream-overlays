@@ -21,6 +21,7 @@ A set of StreamElements custom widgets for Twitch streams. Each is plain JavaScr
 | [Now Playing](overlays/now-playing) | What you are playing, from Last.fm, Tuna, Spotify or Pear Desktop, with album art and a progress bar. |
 | [Stream Start Countdown](overlays/start-countdown) | A full-screen starting soon countdown you set from chat, with a clock, a bar and friendly lines that take turns. |
 | [Rotating Panel](overlays/rotating-panel) | One panel that takes turns showing your socials and chat commands. |
+| [End Credits](overlays/end-credits) | A thank-you that collects your followers, subscribers, gifters, cheerers, tippers, raiders and chatters through the stream and rolls them as credits. |
 
 ## Using an overlay
 
