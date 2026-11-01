@@ -54,6 +54,21 @@
         "themePreset": "pastelpink",
         "animate": false
       }
+    },
+    {
+      "file": "decorations-bubbles.png",
+      "width": 420,
+      "height": 330,
+      "base": "scene",
+      "fields": {
+        "bubbleMode": true,
+        "decorationOnBubbles": true,
+        "decoration": "hearts",
+        "decorationCount": 4,
+        "decorationSize": 1.2,
+        "themePreset": "pastelpink",
+        "animate": false
+      }
     }
   ]
 }

@@ -398,6 +398,12 @@
     },
     "group": "Decorations"
   },
+  "decorationOnBubbles": {
+    "type": "checkbox",
+    "label": "Put the decorations round each chat bubble, half outside it, instead of on the whole panel (needs bubble mode or the bubbles card style; the count is per bubble, up to 6)",
+    "value": false,
+    "group": "Decorations"
+  },
   "decorationColor": {
     "type": "dropdown",
     "label": "Decoration colour",

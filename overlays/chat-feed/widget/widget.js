@@ -369,6 +369,8 @@
     c.inline = str(f.nameLine, "above") === "inline";
     c.bubbles = str(f.cardStyle, "panel") === "bubbles";
     c.bubbleMode = bool(f.bubbleMode, false);
+    // Round each bubble instead of the whole panel; only when there are bubbles to go round.
+    c.decorBubbles = bool(f.decorationOnBubbles, false) && (c.bubbles || c.bubbleMode);
     c.showAvatars = bool(f.showAvatars, true);
     c.avatarShape = str(f.avatarShape, "circle");
     c.avatarSize = clamp(num(f.avatarSize, 2.2), 1, 5);
@@ -653,6 +655,12 @@
     });
     body.appendChild(text);
     li.appendChild(body);
+    if (cfg.decorBubbles && cfg.decor && cfg.decor.kind !== "none") {
+      // A few on the border of each bubble, half of each outside it; the count is per bubble.
+      var d = {}; for (var k in cfg.decor) { if (cfg.decor.hasOwnProperty(k)) d[k] = cfg.decor[k]; }
+      d.place = "border"; d.count = Math.min(d.count, 6);
+      applyDecor(d, li, theme.flag || [theme.accent], cfg.animate, theme.text);
+    }
     return li;
   }
   function setAvatar(m, url) {
@@ -806,7 +814,12 @@
   // Look and load
   // ---------------------------------------------------------------------------
   function applyLook() {
+    // With the decorations round the bubbles, the panel itself gets none.
+    var panelDecor = cfg.decor;
+    if (cfg.decorBubbles) cfg.decor = readDecor({});
     theme = applyCommonTheme(cfg, el.root, el.app, "cf-font-link");
+    cfg.decor = panelDecor;
+    el.app.classList.toggle("decor-bubbles", cfg.decorBubbles);
     var s = el.app.style;
     s.setProperty("--cf-size", cfg.textSize + "cqw");
     s.setProperty("--cf-gap", cfg.rowGap + "em");

@@ -194,6 +194,9 @@
 
 #cf-app { position: relative; }
 
+/* Decorations round each bubble hang half outside it, so the list leaves them a margin to show in. */
+#cf-app.decor-bubbles .cf-list { padding: 0.7em 1em; }
+
 /* In bubbles the frame belongs to each bubble and not to the whole widget, so a pride preset's ring is drawn round each one. */
 #cf-app.bubbles::after { display: none; }
 #cf-app.bubbles .cf-msg { position: relative; }

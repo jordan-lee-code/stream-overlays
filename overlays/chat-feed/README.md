@@ -44,6 +44,10 @@ The pictures in these screenshots are drawn examples, not real profiles.
 
 <p><img src="docs/decorations.png" alt="Chat feed with hearts in the Pastel pink preset" width="420"></p>
 
+With bubble mode or the bubbles card style, tick **Put the decorations round each chat bubble** and each bubble gets its own, hanging half outside its edge.
+
+<p><img src="docs/decorations-bubbles.png" alt="Chat feed in bubble mode with hearts round each bubble" width="420"></p>
+
 ## Style presets
 
 One setting picks the look. The same twenty-two presets, with the same colours, are in every overlay in this set, so overlays from this set match whichever you choose. This is how each one looks in this overlay. The presets are defined once, in the [kit](../../kit), and a test keeps this overlay in step with it.
@@ -152,7 +156,7 @@ Every setting has a plain label in StreamElements, grouped as follows.
 
 The **outer frame** is a border round the widget in the preset's accent colour, on by default in every preset. Untick **An outer frame** under Look for none, or set the outline thickness to change how thick it is, since at 0 it has a default thickness that grows with the box. With the frame unticked, the outline is whatever you set, as before, in the outline colour. In a pride preset the frame is the flag's stripes, as a ring that follows the panel's corners.
 
-The **decorations** are small shapes drawn behind the words: sparkles, hearts, stars, flowers, moons, snowflakes, bubbles, butterflies, clouds, leaves, paw prints, music notes, bows, or a mix of sparkles, hearts and stars. Choose one under **Decorations**, then where they go (scattered, along the inside of the edges, in the corners, or on the border with half of each outside it), how many (up to 24), how big, how solid, and whether they twinkle in place, drift upwards or stay still. They take the accent colour, or in a pride preset the colours of the flag in turn, or you can ask for the text colour, both in turn, or a colour of your own. On the border they need a little room round the widget in its box, since StreamElements shows only what is inside the box, and a panel that fills its box has none. With Animate off they stay still. They are off by default.
+The **decorations** are small shapes drawn behind the words: sparkles, hearts, stars, flowers, moons, snowflakes, bubbles, butterflies, clouds, leaves, paw prints, music notes, bows, or a mix of sparkles, hearts and stars. Choose one under **Decorations**, then where they go (scattered, along the inside of the edges, in the corners, or on the border with half of each outside it), how many (up to 24), how big, how solid, and whether they twinkle in place, drift upwards or stay still. They take the accent colour, or in a pride preset the colours of the flag in turn, or you can ask for the text colour, both in turn, or a colour of your own. On the border they need a little room round the widget in its box, since StreamElements shows only what is inside the box, and a panel that fills its box has none. With Animate off they stay still. They are off by default. Under bubble mode or the bubbles card style you can put them round each chat bubble instead of the whole panel, up to six a bubble, and the list leaves a little margin for them to show in.
 
 The full list, with defaults, is in [`widget/fields.json`](widget/fields.json). The colour and font pickers apply only when the style preset is **Custom**.
 
