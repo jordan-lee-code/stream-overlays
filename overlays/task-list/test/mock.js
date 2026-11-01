@@ -232,6 +232,9 @@ module.exports = function createEnv(root) {
       await env.load({ decoration: "stars", decorationCount: 8 }); const scattered = JSON.stringify(pts());
       await env.load({ decoration: "stars", decorationCount: 8, decorationPlacement: "edges" });
       env.ok(pts().every(([x, y]) => x <= 6 || x >= 86 || y <= 6 || y >= 82) && JSON.stringify(pts()) !== scattered, "along the edges every shape sits on the border");
+      await env.load({ decoration: "stars", decorationCount: 8, decorationPlacement: "border" });
+      env.ok(layer().className.split(" ").indexOf("outside") !== -1 && pts().every(([x, y]) => x < 0.1 || x > 99.9 || y < 0.1 || y > 99.9), "on the border every shape sits on the edge itself, and the layer is let out to show the half that is outside");
+      await env.load({ decoration: "stars", decorationCount: 8, decorationPlacement: "edges" }); env.ok(layer().className.split(" ").indexOf("outside") === -1, "while along the edges stays inside");
       await env.load({ decoration: "stars", decorationCount: 4, decorationPlacement: "corners" });
       env.ok(new Set(pts().map(([x, y]) => (x < 50 ? "l" : "r") + (y < 50 ? "t" : "b"))).size === 4, "in the corners, four shapes take one corner each");
       await env.load({ decoration: "stars", decorationCount: 8, decorationPlacement: "nowhere" }); env.ok(JSON.stringify(pts()) === scattered, "an unknown place is scattered");

@@ -511,7 +511,8 @@
   left: var(--x, 50%);
   top: var(--y, 50%);
   /* A share of the panel's width, but never more than a share of the box's, so a small sticker and a wide card both get shapes that suit them. */
-  width: min(calc(var(--w-deco-size, 1) * var(--s, 1) * 18%), calc(var(--w-deco-size, 1) * var(--s, 1) * 4.6cqw));
+  --wd: min(calc(var(--w-deco-size, 1) * var(--s, 1) * 18%), calc(var(--w-deco-size, 1) * var(--s, 1) * 4.6cqw));
+  width: var(--wd);
   aspect-ratio: 1;
   background: var(--c, currentColor);
   opacity: var(--w-deco-opacity, 0.8);
@@ -524,6 +525,10 @@
   -webkit-mask-size: contain;
   mask-size: contain;
 }
+/* On the border: nothing is clipped, and each shape is centred on its point, so half of it is outside the panel. There has to be
+   room round the widget in its box for that half to show. */
+.w-deco.outside { overflow: visible; }
+.w-deco.outside .w-di { margin: calc(var(--wd) * -0.5) 0 0 calc(var(--wd) * -0.5); }
 .w-di.sparkles { --m: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 0C13 8 16 11 24 12C16 13 13 16 12 24C11 16 8 13 0 12C8 11 11 8 12 0Z'/%3E%3C/svg%3E"); }
 .w-di.hearts { --m: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 21C5 15 1 11.5 1 7.5C1 4.5 3.3 2.5 6 2.5C8.5 2.5 10.7 4 12 6C13.3 4 15.5 2.5 18 2.5C20.7 2.5 23 4.5 23 7.5C23 11.5 19 15 12 21Z'/%3E%3C/svg%3E"); }
 .w-di.stars { --m: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 1.5L14.9 8.6L22.5 9.2L16.7 14.2L18.5 21.6L12 17.6L5.5 21.6L7.3 14.2L1.5 9.2L9.1 8.6Z'/%3E%3C/svg%3E"); }

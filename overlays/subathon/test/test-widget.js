@@ -560,6 +560,8 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
       ok(items().every((i, n) => i.style["--c"].toLowerCase() === ["#5bcefa", "#f5a9b8", "#ffffff", "#f5a9b8", "#5bcefa"][n % 5]), "in a pride preset they take the colours of the flag in turn (" + items().map(i => i.style["--c"]).join(" ") + ")");
       await settle({ decoration: "butterflies", decorationCount: 8, decorationPlacement: "edges" });
       ok(items().every(i => i.className === "w-di butterflies") && items().map(i => [parseFloat(i.style["--x"]), parseFloat(i.style["--y"])]).every(([x, y]) => x <= 6 || x >= 86 || y <= 6 || y >= 82), "the newer shapes work, and along the edges every one sits on the border");
+      await settle({ decoration: "stars", decorationCount: 8, decorationPlacement: "border" });
+      ok(layer().className.split(" ").indexOf("outside") !== -1 && items().map(i => [parseFloat(i.style["--x"]), parseFloat(i.style["--y"])]).every(([x, y]) => x < 0.1 || x > 99.9 || y < 0.1 || y > 99.9), "on the border every shape sits on the edge itself, and the layer is let out");
       await settle({ decoration: "stars", decorationCount: 4, decorationPlacement: "corners" });
       ok(new Set(items().map(i => (parseFloat(i.style["--x"]) < 50 ? "l" : "r") + (parseFloat(i.style["--y"]) < 50 ? "t" : "b"))).size === 4, "in the corners, four shapes take one corner each");
       await settle({ decoration: "stars", decorationCount: 3, decorationColor: "custom", decorationTint: "#ABCDEF" });
@@ -590,6 +592,8 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
       ok(items().every((i, n) => i.style["--c"].toLowerCase() === ["#5bcefa", "#f5a9b8", "#ffffff", "#f5a9b8", "#5bcefa"][n % 5]), "in a pride preset they take the colours of the flag in turn (" + items().map(i => i.style["--c"]).join(" ") + ")");
       await settle({ decoration: "butterflies", decorationCount: 8, decorationPlacement: "edges" });
       ok(items().every(i => i.className === "w-di butterflies") && items().map(i => [parseFloat(i.style["--x"]), parseFloat(i.style["--y"])]).every(([x, y]) => x <= 6 || x >= 86 || y <= 6 || y >= 82), "the newer shapes work, and along the edges every one sits on the border");
+      await settle({ decoration: "stars", decorationCount: 8, decorationPlacement: "border" });
+      ok(layer().className.split(" ").indexOf("outside") !== -1 && items().map(i => [parseFloat(i.style["--x"]), parseFloat(i.style["--y"])]).every(([x, y]) => x < 0.1 || x > 99.9 || y < 0.1 || y > 99.9), "on the border every shape sits on the edge itself, and the layer is let out");
       await settle({ decoration: "stars", decorationCount: 4, decorationPlacement: "corners" });
       ok(new Set(items().map(i => (parseFloat(i.style["--x"]) < 50 ? "l" : "r") + (parseFloat(i.style["--y"]) < 50 ? "t" : "b"))).size === 4, "in the corners, four shapes take one corner each");
       await settle({ decoration: "stars", decorationCount: 3, decorationColor: "custom", decorationTint: "#ABCDEF" });

@@ -51,11 +51,12 @@
       "height": 170,
       "base": "scene",
       "fields": {
-        "decoration": "paws",
+        "decoration": "hearts",
         "decorationCount": 10,
         "themePreset": "pastelpink",
         "animate": false,
-        "decorationPlacement": "scatter"
+        "decorationPlacement": "border",
+        "decorationSize": 1.8
       }
     }
   ]

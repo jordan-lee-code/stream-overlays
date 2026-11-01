@@ -404,8 +404,9 @@
     "value": "scatter",
     "options": {
       "scatter": "Scattered over the panel",
-      "edges": "Along the edges",
-      "corners": "In the corners"
+      "edges": "Along the inside of the edges",
+      "corners": "In the corners",
+      "border": "On the border, half outside it (leave a little room round the widget)"
     },
     "group": "Decorations"
   },

@@ -1623,7 +1623,7 @@
   // flag colours. They are placed by a fixed recipe and not at random, so they sit in the same places every time the widget loads.
   var DECOR_KINDS = { sparkles: 1, hearts: 1, stars: 1, flowers: 1, moons: 1, snowflakes: 1, bubbles: 1, butterflies: 1, clouds: 1, leaves: 1, paws: 1, notes: 1, bows: 1, mixed: 1 };
   var DECOR_MOTION = { twinkle: 1, drift: 1, still: 1 };
-  var DECOR_PLACE = { scatter: 1, edges: 1, corners: 1 };
+  var DECOR_PLACE = { scatter: 1, edges: 1, corners: 1, border: 1 };
   var DECOR_COLOR = { accent: 1, text: 1, mixed: 1, custom: 1 };
   function readDecor(f) {
     f = f || {};
@@ -1650,7 +1650,7 @@
     // Behind the words but above the panel's own background: the panel becomes its own stacking context.
     if (host.style) host.style.isolation = "isolate";
     var layer = document.createElement("div");
-    layer.className = "w-deco " + d.motion + (animate ? "" : " still");
+    layer.className = "w-deco " + d.motion + (animate ? "" : " still") + (d.place === "border" ? " outside" : "");
     layer.setAttribute("aria-hidden", "true");
     if (layer.style) { layer.style.setProperty("--w-deco-size", d.size); layer.style.setProperty("--w-deco-opacity", d.opacity); }
     var mix = ["sparkles", "hearts", "stars"], pal = colors && colors.length ? colors : ["currentColor"];
@@ -1668,6 +1668,11 @@
         // Round the border of the panel, by the same kind of recipe: a point a fraction of the way round, on one of its four sides.
         var around = frac(0.07 + n * 0.618034) * 4, along = frac(around) * 88;
         if (around < 1) { x = along + 2; y = 3; } else if (around < 2) { x = 90; y = along + 4; } else if (around < 3) { x = 90 - along; y = 86; } else { x = 3; y = 86 - along; }
+        s = 0.8 + frac(n * 0.37 + 0.2) * 0.4;
+      } else if (d.place === "border") {
+        // On the border itself, so that half of each shape is outside the panel. The stylesheet centres a shape on its point.
+        var rim = frac(0.07 + n * 0.618034) * 4, run = frac(rim) * 100;
+        if (rim < 1) { x = run; y = 0; } else if (rim < 2) { x = 100; y = run; } else if (rim < 3) { x = 100 - run; y = 100; } else { x = 0; y = 100 - run; }
         s = 0.8 + frac(n * 0.37 + 0.2) * 0.4;
       } else if (d.place === "corners") {
         // The four corners in turn, and a second ring a little further in once there are more than four.
