@@ -65,6 +65,12 @@
       "bubbles": "Each message on its own card"
     }
   },
+  "bubbleMode": {
+    "type": "checkbox",
+    "label": "Bubble mode: no panel behind the chat, and the bubbles take turns between the panel colour and the accent colour (this also puts each message on its own card)",
+    "value": false,
+    "group": "Messages"
+  },
   "nameLine": {
     "type": "dropdown",
     "label": "Where the name goes",

@@ -14,11 +14,12 @@ It is a single self-contained widget in plain JavaScript, with no dependencies a
 - Pronouns: shown beside the name as a small tag, in brackets, or as plain text, with a way to set them by hand.
 - Readable names: a chat colour that would be hard to read on your panel is swapped for the accent colour.
 - Two layouts: the name above the message or on the same line, and one panel behind everything or a card for each message.
+- Bubble mode: one checkbox takes the panel away and has the bubbles take turns between the preset's panel colour and its accent colour, with the words on the accent ones in whichever text colour reads better there.
 - Scrolls like chat: a new message arrives at the bottom, the older ones glide up and fade out through the top edge, and how many show depends on how tall you make the box in StreamElements. With the newest at the top it scrolls the other way.
 - Tidy by default: chat commands, and the usual bots, are left out, and you can add names of your own.
 - Moderation: `!chatfeed hide name` takes someone off the screen, and a message StreamElements deletes disappears from it too.
 - Fading: messages stay until newer ones push them off, or you can have them fade away after a number of seconds.
-- Customisable: around 45 settings cover how many messages show, the layout, pictures, pronouns, sizes, shape, outline, colours, fonts, sounds and animation.
+- Customisable: around 46 settings cover how many messages show, the layout, pictures, pronouns, sizes, shape, outline, colours, fonts, sounds and animation.
 - Tests and a dev harness: a local harness where you can type a real Twitch login and see their real picture and pronouns, and an automated test script, so nothing needs a live stream.
 - An outer frame in the accent colour, on by default in every preset, and switched off with one checkbox (the flag's stripes in the pride presets).
 
@@ -31,6 +32,10 @@ It is a single self-contained widget in plain JavaScript, with no dependencies a
 **A card for each message,** here in the Pastel pink preset with rounded pictures.
 
 <p><img src="docs/bubbles.png" alt="Four chat messages, each on its own pale pink card" width="420"></p>
+
+**Bubble mode,** here in Midnight blue. The panel behind the chat goes, and the bubbles take turns between the preset's panel colour and its accent colour.
+
+<p><img src="docs/bubble-mode.png" alt="Four chat messages on rounded bubbles that alternate between deep navy and pale periwinkle blue" width="420"></p>
 
 The pictures in these screenshots are drawn examples, not real profiles.
 
@@ -129,7 +134,7 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | --- | --- |
 | Commands | The command word and who may use it. |
 | Feed | How many messages show, whether they fade away after a time (they do not by default, and stay until newer messages push them off), which end the newest goes, commands and names to leave out. |
-| Messages | One panel or a card for each message, where the name goes, the name colour, badges and emotes. |
+| Messages | One panel, a card for each message, or bubble mode, where the name goes, the name colour, badges and emotes. |
 | Avatars | Whether pictures show, their shape and their size. |
 | Pronouns | Whether they show, how they are written, and pronouns set by hand. |
 | Size | Text size and the space between messages. |

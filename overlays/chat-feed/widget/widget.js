@@ -293,6 +293,7 @@
     c.nameColor = str(f.nameColor, "chat");
     c.inline = str(f.nameLine, "above") === "inline";
     c.bubbles = str(f.cardStyle, "panel") === "bubbles";
+    c.bubbleMode = bool(f.bubbleMode, false);
     c.showAvatars = bool(f.showAvatars, true);
     c.avatarShape = str(f.avatarShape, "circle");
     c.avatarSize = clamp(num(f.avatarSize, 2.2), 1, 5);
@@ -447,6 +448,12 @@
     });
     return worst >= 3;
   }
+  // Whichever of two colours reads better on a background, for the words on an accent-coloured bubble.
+  function readableOn(bg, first, second) {
+    var b = panelRgb(bg), x = panelRgb(first), y = panelRgb(second);
+    if (!b || !x || !y) return first;
+    return ratio(b, y) > ratio(b, x) ? second : first;
+  }
   function nameColorFor(m) {
     if (cfg.nameColor === "text") return theme.text;
     if (cfg.nameColor === "accent") return theme.accent;
@@ -544,7 +551,7 @@
   }
 
   function buildRow(m) {
-    var li = node("li", "cf-msg" + (m.action ? " action" : "") + (cfg.animate ? " new" : ""));
+    var li = node("li", "cf-msg" + (m.action ? " action" : "") + (cfg.animate ? " new" : "") + (cfg.bubbleMode && m.id % 2 === 1 ? " alt" : ""));
     li.setAttribute("data-id", String(m.id));
     m.parts = {};
     if (cfg.showAvatars) {
@@ -732,7 +739,10 @@
     s.setProperty("--cf-avatar", cfg.avatarSize + "em");
     s.setProperty("--cf-avatar-r", cfg.avatarShape === "square" ? "0" : cfg.avatarShape === "rounded" ? "22%" : "50%");
     el.app.classList.toggle("inline", cfg.inline);
-    el.app.classList.toggle("bubbles", cfg.bubbles);
+    el.app.classList.toggle("bubbles", cfg.bubbles || cfg.bubbleMode);
+    el.app.classList.toggle("bubble-mode", cfg.bubbleMode);
+    // Every other bubble is the accent colour, and its words are whichever of the preset's text and its panel colour reads better on that.
+    s.setProperty("--cf-alt-text", readableOn(theme.accent, theme.text, solid(theme.panel)));
     el.app.classList.toggle("newest-top", cfg.newestTop);
     el.title.textContent = cfg.title;
     el.title.hidden = !cfg.showTitle || !cfg.title;
