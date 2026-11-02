@@ -415,6 +415,7 @@
     c.rotate = bool(f.rotate, true);
     c.rotateSeconds = clamp(num(f.rotateSeconds, 4), 1, 60);
     c.fadeSeconds = clamp(num(f.fadeSeconds, 0.6), 0.1, 3);
+    c.spread = bool(f.spread, true);
     c.showNames = bool(f.showNames, true);
     c.iconColor = str(f.iconColor, "accent");
     if (c.iconColor !== "text" && c.iconColor !== "brand") c.iconColor = "accent";
@@ -482,6 +483,7 @@
     el.root.hidden = count === 0;
     var rotating = cfg.rotate && el.left.children.length > 1;
     if (rotating) el.left.classList.add("rotating"); else el.left.classList.remove("rotating");
+    if (cfg.spread && !rotating) el.left.classList.add("spread"); else el.left.classList.remove("spread");
     if (rotating) show(0);
     else for (var j = 0; j < el.left.children.length; j++) { el.left.children[j].classList.add("on"); }
     startRotation();

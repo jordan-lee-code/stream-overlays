@@ -56,6 +56,15 @@ const nameOf = (n) => (n.children[1] ? n.children[1].textContent : "");
   ok(/\.sb-left\.rotating \.sb-item\s*\{[^}]*opacity:\s*0[^}]*transition:\s*opacity/.test(css), "the others are faded out by a transition on opacity, so it is a fade and not a jump");
   ok(/\.sb-left\.rotating\s*\{[^}]*display:\s*grid/.test(css) && /grid-area:\s*1 \/ 1/.test(css), "all the sites share one cell, so the bar does not change width as they change");
 
+  section("spreading across the box");
+  await load({ rotate: false });
+  ok(E("sb-left").classList.contains("spread"), "side by side, the sites spread across the width, so the gaps follow the box");
+  await load({ rotate: false, spread: false }); ok(!E("sb-left").classList.contains("spread"), "or can stay close together on the left");
+  await load({}); ok(!E("sb-left").classList.contains("spread"), "rotating, there is one at a time and nothing to spread");
+  await load({ rotate: false }); await load({}); ok(!E("sb-left").classList.contains("spread"), "going back to rotating leaves nothing behind");
+  ok(/\.sb-left\.spread\s*\{[^}]*flex:\s*1 1 0[^}]*justify-content:\s*space-between/.test(css), "the left side takes the room that is left and divides it between the sites");
+  ok(/\.sb-left\.spread\s*\{[^}]*margin-right:\s*calc\(var\(--sb-gap/.test(css), "and keeps the gap setting between the last site and the right side");
+
   section("the look");
   await load({ textSize: 2, iconScale: 2, gap: 3 });
   let a = env.vars("sb-app");

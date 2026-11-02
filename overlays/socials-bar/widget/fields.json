@@ -125,6 +125,12 @@
     "value": true,
     "group": "Layout"
   },
+  "spread": {
+    "type": "checkbox",
+    "label": "Spread the sites across the width of the box, so the gaps grow and shrink with the box you draw in StreamElements (untick to keep them close together on the left)",
+    "value": true,
+    "group": "Layout"
+  },
   "iconColor": {
     "type": "dropdown",
     "label": "Logo colour",
@@ -155,7 +161,7 @@
   },
   "gap": {
     "type": "number",
-    "label": "Space between the sites (1 is about one letter wide)",
+    "label": "Smallest space between the sites (1 is about one letter wide). With Spread on, the gaps grow beyond this to use the width of the box",
     "value": 2,
     "group": "Size",
     "min": 0.2,

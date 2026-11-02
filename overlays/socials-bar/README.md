@@ -11,6 +11,7 @@ It is a single self-contained widget in plain JavaScript, with no dependencies a
 - Sixteen sites: Instagram, YouTube, TikTok, Twitter or X, Bluesky, Twitch, Discord, Facebook, Threads, Mastodon, Snapchat, GitHub, Kick and Reddit on the left, and Ko-fi and Patreon on the right. A site with a blank handle is left out, so you only show the ones you use.
 - The left side rotates: one site at a time fades out as the next fades in, and the bar stays the width of the widest one, so nothing jumps about. You choose how many seconds each stays and how long the fade takes, or untick Rotate to show them all side by side.
 - A logo in front of every handle, in your accent colour, your text colour, or each site's own colour. Or logos on their own, with no handles.
+- Gaps that follow the box: side by side, the sites spread across the width you give the widget in StreamElements, so a wide box gets wide gaps and a narrow one gets close ones. Your gap setting is the least there can be.
 - Wraps when it is tight: if there are too many for the width of the box, the sites wrap onto a second row instead of running off the edge.
 - Scales with the box: the text scales with the width of the box you draw.
 - Customisable: around fifty settings cover the handles, rotation, sizes, shape, outline, colours, fonts and animation.
@@ -88,7 +89,7 @@ The sites on the left show in the order they are listed in the settings. Ko-fi c
 
 By default the left side shows one site at a time. Each stays for **Seconds each site stays on screen** (four by default, never less than one), then fades out while the next fades in over **Seconds the fade between sites takes**. The sites all share one space, so the bar is as wide as the widest handle and the right side does not shift.
 
-Untick **Rotate the left side** to show every site side by side. With only one site on the left there is nothing to rotate, so it just stays. **Animate** off stops the fade, and the sites then change without it.
+Untick **Rotate the left side** to show every site side by side. They spread across the width of the box you draw in StreamElements, with **Smallest space between the sites** as the least there can be. Untick **Spread the sites across the width of the box** to keep them close together on the left instead. With only one site on the left there is nothing to rotate, so it just stays. **Animate** off stops the fade, and the sites then change without it.
 
 The logos are the sites' own marks, drawn from [Simple Icons](https://simpleicons.org), which are released into the public domain (CC0). The logos belong to the sites they stand for, and are here only to point to your own pages.
 
@@ -101,7 +102,7 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | Left side | A handle for each of Instagram, YouTube, TikTok, Twitter or X, Bluesky, Twitch, Discord, Facebook, Threads, Mastodon, Snapchat, GitHub, Kick and Reddit. |
 | Right side | Ko-fi and Patreon. |
 | Rotation | Whether the left side rotates, how long each site stays, and how long the fade takes. |
-| Layout | Whether handles show beside the logos, and the logo colour. |
+| Layout | Whether the sites spread across the width of the box, whether handles show beside the logos, and the logo colour. |
 | Size | Text size, how big the logos are and the space between sites. |
 | Look | The style preset, font, boldness, corners, padding, outer frame, outline, shadow, Animate and whether it shrinks to fit the box. |
 | Custom colours | Panel, text and accent colours, used when the style preset is Custom. A checkbox there also lets the Panel opacity apply to any preset, not only Custom. |
