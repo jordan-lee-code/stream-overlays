@@ -322,6 +322,7 @@
       grow: bool(f.grow, true),
       themePreset: str(f.themePreset, "glass"),
       panelOpacity: clamp(num(f.panelOpacity, 0.55), 0, 1),
+      usePanelOpacity: bool(f.usePanelOpacity, false),
       fontFamily: str(f.fontFamily, BASE.font),
       colors: {
         bg: str(f.colorPanel, "#000000"),
@@ -399,6 +400,20 @@
   // ---------------------------------------------------------------------------
   // Theme
   // ---------------------------------------------------------------------------
+  // A preset's panel made as solid as the Panel opacity setting says, when the checkbox asks for it: a colour takes the opacity outright,
+  // and a picture (a flag) has each of its colours made that much more see-through.
+  function colorAt(css, a) {
+    var m = /^#([0-9a-f]{6})$/i.exec(css), n;
+    if (m) { n = parseInt(m[1], 16); return "rgba(" + ((n >> 16) & 255) + ", " + ((n >> 8) & 255) + ", " + (n & 255) + ", " + a + ")"; }
+    m = /^rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/i.exec(css);
+    return m ? "rgba(" + m[1] + ", " + m[2] + ", " + m[3] + ", " + a + ")" : css;
+  }
+  function fadeImage(css, a) {
+    return String(css).replace(/#([0-9a-f]{6})\b|rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*(?:,\s*([\d.]+))?\s*\)/gi, function (all, hex, r, g, b, al) {
+      if (hex) return colorAt("#" + hex, a);
+      return "rgba(" + r + ", " + g + ", " + b + ", " + Math.round((al === undefined ? 1 : parseFloat(al)) * a * 1000) / 1000 + ")";
+    });
+  }
   function resolvedTheme() {
     var p = PRESETS[cfg.themePreset] || BASE;
     if (cfg.themePreset === "custom") {
@@ -408,10 +423,11 @@
         track: rgba(cfg.custom.track, cfg.look.trackOpacity), segs: cfg.custom.segs, font: cfg.fontFamily
       };
     }
+    var solid = cfg.usePanelOpacity ? cfg.panelOpacity : null;
     return {
-      bg: p.bg, text: p.text, accent: p.accent, onAccent: p.onAccent || p.bg,
+      bg: solid === null ? p.bg : colorAt(p.bg, solid), text: p.text, accent: p.accent, onAccent: p.onAccent || p.bg,
       row: p.row || "rgba(255, 255, 255, 0.42)", track: p.track || "rgba(0, 0, 0, 0.11)",
-      segs: p.segs, font: p.font, bgimg: p.bgimg || ""
+      segs: p.segs, font: p.font, bgimg: solid === null || !p.bgimg ? (p.bgimg || "") : fadeImage(p.bgimg, solid), flagSrc: p.bgimg || ""
     };
   }
 
@@ -441,7 +457,7 @@
     var C = cfg.custom, L = cfg.look;
     var pick = function (own, fallback) { return custom ? own : fallback; };
     // The outer frame is a border in the accent colour. With it off, the outline is what the settings describe, if anything.
-    var stripes = L.frame && !custom ? stripesOf(t.bgimg) : [];
+    var stripes = L.frame && !custom ? stripesOf(t.flagSrc || t.bgimg) : [];
     root.style.setProperty("--frame-img", stripes.length ? stripeGradient(stripes) : "none");
     root.style.setProperty("--c-border", L.frame ? (stripes.length ? "transparent" : t.accent) : pick(C.border, t.accent));
     root.style.setProperty("--c-title", pick(C.title, t.text));
@@ -500,7 +516,7 @@
     if (L.animate) root.classList.remove("no-motion");
     else root.classList.add("no-motion");
 
-    applyDecor(cfg.decor, el.card, !custom && stripesOf(t.bgimg).length ? stripesOf(t.bgimg) : [t.accent], L.animate, t.text);
+    applyDecor(cfg.decor, el.card, !custom && stripesOf(t.flagSrc || t.bgimg).length ? stripesOf(t.flagSrc || t.bgimg) : [t.accent], L.animate, t.text);
     document.body.style.background = "transparent";
     loadFont(t.font);
     if (L.titleFont) loadFont(L.titleFont, "vote-font-link-title");

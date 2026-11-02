@@ -163,6 +163,21 @@ module.exports = function createEnv(root) {
       env.ok(env.vars(appId)["--w-text"] === expectedPresets.celestial.text, "a preset ignores the colour pickers");
       await env.load({ themePreset: "nonsense" });
       env.ok(env.vars(appId)["--w-bg"] !== undefined, "an unknown preset name does not break the widget");
+      // Panel opacity with a preset: off unless asked for, and then it sets how solid the preset's panel is, and fades a flag's stripes too.
+      await env.load({ themePreset: "glass", panelOpacity: 0.2 });
+      env.ok(env.vars(appId)["--w-bg"] === expectedPresets.glass.panel, "a preset keeps its own opacity unless the checkbox is ticked (" + env.vars(appId)["--w-bg"] + ")");
+      await env.load({ themePreset: "glass", usePanelOpacity: true, panelOpacity: 0.3 });
+      env.ok(env.vars(appId)["--w-bg"] === "rgba(0, 0, 0, 0.3)" && env.vars(appId)["--w-text"] === expectedPresets.glass.text && env.vars(appId)["--w-accent"] === expectedPresets.glass.accent, "ticked, the panel takes that opacity and nothing else about the preset changes (" + env.vars(appId)["--w-bg"] + ")");
+      await env.load({ themePreset: "pastelpink", usePanelOpacity: true, panelOpacity: 0.3 });
+      env.ok(env.vars(appId)["--w-bg"] === "rgba(255, 227, 236, 0.3)", "a solid colour preset turns see-through too (" + env.vars(appId)["--w-bg"] + ")");
+      await env.load({ themePreset: "pride", usePanelOpacity: true, panelOpacity: 0.3 });
+      env.ok(/^rgba\(194, 168, 154, 0\.3\)$/.test(env.vars(appId)["--w-bg"]) && String(env.vars(appId)["--w-bgimg"]).indexOf("#") === -1 && /rgba\(229, 0, 0, 0\.3\)/.test(env.vars(appId)["--w-bgimg"]) && /0\.135/.test(env.vars(appId)["--w-bgimg"]), "and a flag's stripes and the light wash over them fade with it (" + env.vars(appId)["--w-bgimg"] + ")");
+      await env.load({ themePreset: "glass", usePanelOpacity: true, panelOpacity: 1 });
+      env.ok(env.vars(appId)["--w-bg"] === "rgba(0, 0, 0, 1)", "at 1 it is solid");
+      await env.load({ themePreset: "glass", usePanelOpacity: true, panelOpacity: 9 });
+      env.ok(env.vars(appId)["--w-bg"] === "rgba(0, 0, 0, 1)", "and never more than that");
+      await env.load({ themePreset: "custom", colorPanel: "#102030", usePanelOpacity: true, panelOpacity: 0.5 });
+      env.ok(env.vars(appId)["--w-bg"] === "rgba(16, 32, 48, 0.5)", "Custom is as it was, with the box ticked or not");
     },
     // The outer frame: a border round the widget in the accent colour, on by default, in every preset. `appId` is the element
     // that carries the --w-* variables, as for checkPresets.

@@ -518,6 +518,14 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   ok(V["--label-scale"] === "1.2" && V["--label-weight"] === "500" && V["--key-scale"] === "1.1" && V["--key-w"] === "400", "option text and chips");
   ok(V["--count-scale"] === "1" && V["--count-weight"] === "800" && V["--count-opacity"] === "0.5", "count text");
   ok(V["--foot-scale"] === "0.9" && V["--foot-w"] === "400" && V["--foot-opacity"] === "0.4" && V["--lost-opacity"] === "0.2", "footer and lost options");
+  load({ themePreset: "pastelpink" }); await wait(5); const solidBg = V["--bg"];
+  load({ themePreset: "pastelpink", panelOpacity: 0.3 }); await wait(5);
+  ok(V["--bg"] === solidBg, "a preset keeps its own opacity unless the box is ticked");
+  load({ themePreset: "pastelpink", usePanelOpacity: true, panelOpacity: 0.3 }); await wait(5);
+  ok(V["--bg"] === "rgba(255, 227, 236, 0.3)", "ticked, the preset's panel takes the Panel opacity (" + V["--bg"] + ")");
+  load({ themePreset: "pride", usePanelOpacity: true, panelOpacity: 0.3 }); await wait(5);
+  ok(String(V["--bg-img"]).indexOf("#") === -1 && /rgba\(229, 0, 0, 0\.3\)/.test(V["--bg-img"]), "and a flag's stripes fade with it (" + V["--bg-img"] + ")");
+  ok(/#E50000/i.test(V["--frame-img"] || ""), "while the frame and the decorations still know the flag's own colours (" + String(V["--frame-img"]).slice(0, 60) + ")");
   load({ themePreset: "custom", outerFrame: false, borderWidth: 0.2, colorPanel: "#102030", panelOpacity: 0.8, cText: "#EEEEEE", cAccent: "#FF00AA", colorOnAccent: "#001122",
     colorBorder: "#010101", colorTitle: "#020202", colorPillBg: "#030303", colorPill: "#040404", colorEyebrowBg: "#050505", colorEyebrow: "#060606",
     colorRow: "#000000", rowOpacity: 0.3, colorKey: "#070707", colorLabel: "#080808", cTrack: "#FFFFFF", trackOpacity: 0.4, colorCount: "#090909",

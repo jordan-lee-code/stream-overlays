@@ -44,6 +44,7 @@ A setting that more than one overlay needs has the same name, label and group ev
 | `animate` | One switch for all motion. When it is off, nothing moves or eases. |
 | `fit` | Shrinks the whole card until it fits the box it is given, and never enlarges it. |
 | `colorPanel`, `panelOpacity`, `cText`, `cAccent`, `cTrack`, `cWarn` | The Custom colours. |
+| `usePanelOpacity` | A checkbox, off by default, that makes the Panel opacity apply to the style preset's panel too, and not only to Custom. A flag's stripes fade with it, while the frame and the decorations keep the flag's own colours. |
 | `decoration`, `decorationCount`, `decorationSize`, `decorationMotion`, `decorationPlacement`, `decorationColor`, `decorationTint`, `decorationOpacity` | The decorations behind a panel's words: which shape (`none` by default), how many, how big, how they move, where they go (scattered, along the inside of the edges, in the corners, or on the border), their colour (the accent, the text colour, both in turn, or the tint picked) and how solid they are. |
 | `mute` | Silences every sound. |
 | `debug` | Logs every event to the browser-source console. |

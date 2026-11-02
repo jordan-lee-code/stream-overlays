@@ -407,6 +407,10 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   ok(A["--eyebrow-scale"] === "1.1" && A["--eyebrow-w"] === "800" && A["--eyebrow-spacing"] === "4" && A["--eyebrow-case"] === "none", "winner label text");
   ok(A["--name-scale"] === "0.7" && A["--name-w"] === "700" && A["--sub-scale"] === "1.3" && A["--sub-w"] === "400", "winner name and line");
   ok(A["--life-scale"] === "0.9" && A["--life-w"] === "600" && A["--question-scale"] === "1.4", "lifelines and questions");
+  load({ themePreset: "pastelpink", panelOpacity: 0.3 }); await wait(5); const solidBg = A["--bg"];
+  ok(A["--bg"] === solidBg && !/, 0\.3\)$/.test(A["--c-pill-bg"]), "a preset keeps its own opacity unless the box is ticked");
+  load({ themePreset: "pastelpink", usePanelOpacity: true, panelOpacity: 0.3 }); await wait(5);
+  ok(A["--bg"] === "rgba(255, 227, 236, 0.3)" && /, 0\.3\)$/.test(A["--c-pill-bg"]) && /, 0\.3\)$/.test(A["--c-toast-bg"]) && /, 0\.3\)$/.test(A["--c-card-bg"]), "ticked, the panel, the pills, the toast and the winner card take the Panel opacity (" + A["--c-pill-bg"] + ")");
   load({ themePreset: "custom", colorPanel: "#102030", panelOpacity: 0.8, cText: "#EEEEEE", cAccent: "#FF00AA", colorPointer: "#00FFAA",
     colorPillBg: "#010101", colorPill: "#020202", colorToastBg: "#030303", colorToast: "#040404", colorCardBg: "#050505", colorCard: "#060606",
     colorEyebrowBg: "#070707", colorEyebrow: "#080808", colorIdle: "#090909", colorGoal: "#0A0A0A", colorGoalTrack: "#FFFFFF", goalTrackOpacity: 0.4,

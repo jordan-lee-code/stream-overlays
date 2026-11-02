@@ -147,7 +147,7 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | Wheel | The shape, idle drift, chat-colour slices, the rim and divider thickness, the size and boldness of the names, the hub ring and a shadow. |
 | Pills and cards | The roundness, padding and tilt of pills, the toast and the winner card, the goal bar's thickness, an outer frame, an outline, tails and shadows. |
 | Text | The size and boldness of the empty-wheel message, toast, pills, goal label, winner label, winner name, line under the winner and lifelines. |
-| Look and Custom colours | One of the twenty-two shared style presets (Soft black by default) or Custom colours and font, with a colour for every part. |
+| Look and Custom colours | One of the twenty-two shared style presets (Soft black by default) or Custom colours and font, with a colour for every part. A checkbox in Custom colours also lets the Panel opacity apply to any preset, not only Custom. |
 | Decorations | The shape, where they go, how many, how big, how solid, their colour, and how they move. |
 | Animation | One switch for all animation, the spin and winner display times, and how long the toast, card, goal bar and countdown pulse take. |
 | Sounds | A sound and volume for someone joining, each tick and the winner, plus a master mute. |

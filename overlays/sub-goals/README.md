@@ -142,7 +142,7 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | Goals | How many show at once, their order, whether reached goals stay, and the celebration time. |
 | Wording | The words for sub and subs, the celebrating text, the reached text and the paused note. |
 | Look | The style preset (one of twenty-two, or Custom), the font, the heading, panel shape and padding, bar thickness and spacing, the thank you message, and the switch for animation. |
-| Custom colours | A colour for each part, used when the preset is Custom. |
+| Custom colours | A colour for each part, used when the preset is Custom. A checkbox there also lets the Panel opacity apply to any preset, not only Custom. |
 | Decorations | The shape, where they go, how many, how big, how solid, their colour, and how they move. |
 | Manual controls | Buttons to add example goals, adjust the count, start or stop tracking, reset and clear. |
 | Sounds | A sound and volume for subs, bits and goals, plus a master mute. |

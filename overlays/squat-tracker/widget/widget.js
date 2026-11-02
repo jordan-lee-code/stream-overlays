@@ -199,6 +199,7 @@
         floatBg: str(f.colorFloatBg, "#000000")
       },
       panelOpacity: clamp(num(f.panelOpacity, 0.55), 0, 1),
+      usePanelOpacity: bool(f.usePanelOpacity, false),
       look: {
         radius: clamp(num(f.radius, 14), 0, 50),
         padV: clamp(num(f.paddingV, 6), 0, 40),
@@ -248,6 +249,20 @@
   // ---------------------------------------------------------------------------
   // Theme
   // ---------------------------------------------------------------------------
+  // A preset's panel made as solid as the Panel opacity setting says, when the checkbox asks for it: a colour takes the opacity outright,
+  // and a picture (a flag) has each of its colours made that much more see-through.
+  function colorAt(css, a) {
+    var m = /^#([0-9a-f]{6})$/i.exec(css), n;
+    if (m) { n = parseInt(m[1], 16); return "rgba(" + ((n >> 16) & 255) + ", " + ((n >> 8) & 255) + ", " + (n & 255) + ", " + a + ")"; }
+    m = /^rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/i.exec(css);
+    return m ? "rgba(" + m[1] + ", " + m[2] + ", " + m[3] + ", " + a + ")" : css;
+  }
+  function fadeImage(css, a) {
+    return String(css).replace(/#([0-9a-f]{6})\b|rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*(?:,\s*([\d.]+))?\s*\)/gi, function (all, hex, r, g, b, al) {
+      if (hex) return colorAt("#" + hex, a);
+      return "rgba(" + r + ", " + g + ", " + b + ", " + Math.round((al === undefined ? 1 : parseFloat(al)) * a * 1000) / 1000 + ")";
+    });
+  }
   function resolvedTheme() {
     if (cfg.themePreset === "custom") {
       return {
@@ -260,10 +275,12 @@
     // number, outline, padlock and floating text take the accent so each preset
     // reads as itself, and the caption takes the text colour.
     var p = PRESETS[cfg.themePreset] || BASE;
+    var solid = cfg.usePanelOpacity ? cfg.panelOpacity : null;
     return {
-      bg: p.text, text: p.text, accent: p.panel, font: p.font,
-      count: p.accent, label: p.text, border: p.accent, frame: p.accent, lock: p.accent, float: p.accent, floatBg: p.strong,
-      bgimg: p.bgimg || ""
+      bg: p.text, text: p.text, accent: solid === null ? p.panel : colorAt(p.panel, solid), font: p.font,
+      count: p.accent, label: p.text, border: p.accent, frame: p.accent, lock: p.accent, float: p.accent,
+      floatBg: solid === null ? p.strong : colorAt(p.strong, solid),
+      bgimg: solid === null || !p.bgimg ? (p.bgimg || "") : fadeImage(p.bgimg, solid), flagSrc: p.bgimg || ""
     };
   }
 
@@ -287,7 +304,7 @@
     root.style.setProperty("--c-label", t.label);
     // The outer frame is a border in the accent colour; with it off, the outline is what the settings describe, if anything.
     // (The sticker is the other way round: its panel is the preset's text colour, and `t.accent` is its panel tone, so the accent is `frame`: a preset's accent, or in Custom the number's colour.)
-    var stripes = cfg.look.frame && cfg.themePreset !== "custom" ? stripesOf(t.bgimg) : [];
+    var stripes = cfg.look.frame && cfg.themePreset !== "custom" ? stripesOf(t.flagSrc || t.bgimg) : [];
     root.style.setProperty("--frame-img", stripes.length ? stripeGradient(stripes) : "none");
     root.style.setProperty("--c-border", cfg.look.frame ? (stripes.length ? "transparent" : t.frame) : t.border);
     root.style.setProperty("--c-lock", t.lock);
@@ -317,7 +334,7 @@
     root.style.setProperty("--float-s", cfg.floatMs / 1000 + "s");
     if (L.animate) root.classList.remove("no-motion");
     else root.classList.add("no-motion");
-    applyDecor(cfg.decor, el.sticker, cfg.themePreset !== "custom" && stripesOf(t.bgimg).length ? stripesOf(t.bgimg) : [t.frame], L.animate, t.count);
+    applyDecor(cfg.decor, el.sticker, cfg.themePreset !== "custom" && stripesOf(t.flagSrc || t.bgimg).length ? stripesOf(t.flagSrc || t.bgimg) : [t.frame], L.animate, t.count);
     document.body.style.background = "transparent";
     loadFont(t.font);
   }

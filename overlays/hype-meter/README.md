@@ -129,7 +129,7 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | Meter | The points, dots and level number, the level-up banner, text and bar sizes. |
 | Manual controls | Buttons to add points, change level, reset, pause and resume. |
 | Look | Title, the style preset, font, boldness, corners, padding, outer frame, outline, shadow, Animate and whether it shrinks to fit the box. |
-| Custom colours | Panel, text, accent, bar and alert colours, used when the style preset is Custom. |
+| Custom colours | Panel, text, accent, bar and alert colours, used when the style preset is Custom. A checkbox there also lets the Panel opacity apply to any preset, not only Custom. |
 | Decorations | The shape, where they go, how many, how big, how solid, their colour, and how they move. |
 | Sounds | A sound and volume for a level, the top level and losing a level, with Test buttons and a master mute. |
 | Troubleshooting | A debug log of every event to the browser-source console. |

@@ -132,7 +132,7 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | Copy | The heading, the result and tie labels, the hint line, the words for vote and votes, and a troubleshooting overlay. |
 | Card | **Grow to fill the box**, **Size of everything** (used when growing is unticked), corner roundness, padding, spacing, an outer frame, an outline, shadows, the tail and tilt of the timer and result label, and the size of each option's bar. |
 | Text | The size and boldness of the heading, countdown, result label, options, letter chips, counts and footer, an own font for the heading, and the opacity of counts, footer and options that did not win. |
-| Look and Custom colours | One of the twenty-two shared style presets (Soft black by default) or Custom colours and font, with a colour for every part and each of the eight options, and an opacity for the panel. |
+| Look and Custom colours | One of the twenty-two shared style presets (Soft black by default) or Custom colours and font, with a colour for every part and each of the eight options, and an opacity for the panel. A checkbox in Custom colours also lets the Panel opacity apply to any preset, not only Custom. |
 | Decorations | The shape, where they go, how many, how big, how solid, their colour, and how they move. |
 | Animation | One switch for all animation, and how long the bars, the card and the pulse take. |
 | Sounds | A sound and volume for a poll opening, a vote, each of the last seconds and the result, plus a master mute. |

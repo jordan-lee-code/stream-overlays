@@ -160,7 +160,7 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | Card | The art and its shape, the album, the progress bar, the lines above the title, what to do when paused, and what to say when nothing is playing. |
 | Size | Text size, the title's size, the art's size, and how fast a long name scrolls. |
 | Look | The style preset, font, boldness, corners, padding, outer frame, outline, shadow, Animate and whether the card shrinks to fit the box. |
-| Custom colours | Panel, text, accent, bar track and note colours, used when the style preset is Custom. |
+| Custom colours | Panel, text, accent, bar track and note colours, used when the style preset is Custom. A checkbox there also lets the Panel opacity apply to any preset, not only Custom. |
 | Decorations | The shape, where they go, how many, how big, how solid, their colour, and how they move. |
 | Manual controls | Buttons to hide, show and read now. |
 | Troubleshooting | A note on the card when the source cannot be read, and a debug log of every event to the browser-source console. |

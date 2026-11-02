@@ -403,6 +403,7 @@
       themePreset: str(f.themePreset, "glass"),
       fontFamily: str(f.fontFamily, BASE.font),
       panelOpacity: clamp(num(f.panelOpacity, 0.55), 0, 1),
+      usePanelOpacity: bool(f.usePanelOpacity, false),
       colors: {
         bg: str(f.colorPanel, "#000000"),
         text: str(f.cText, "#FFFFFF"),
@@ -475,6 +476,20 @@
   // ---------------------------------------------------------------------------
   // Theme
   // ---------------------------------------------------------------------------
+  // A preset's panel made as solid as the Panel opacity setting says, when the checkbox asks for it: a colour takes the opacity outright,
+  // and a picture (a flag) has each of its colours made that much more see-through.
+  function colorAt(css, a) {
+    var m = /^#([0-9a-f]{6})$/i.exec(css), n;
+    if (m) { n = parseInt(m[1], 16); return "rgba(" + ((n >> 16) & 255) + ", " + ((n >> 8) & 255) + ", " + (n & 255) + ", " + a + ")"; }
+    m = /^rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/i.exec(css);
+    return m ? "rgba(" + m[1] + ", " + m[2] + ", " + m[3] + ", " + a + ")" : css;
+  }
+  function fadeImage(css, a) {
+    return String(css).replace(/#([0-9a-f]{6})\b|rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*(?:,\s*([\d.]+))?\s*\)/gi, function (all, hex, r, g, b, al) {
+      if (hex) return colorAt("#" + hex, a);
+      return "rgba(" + r + ", " + g + ", " + b + ", " + Math.round((al === undefined ? 1 : parseFloat(al)) * a * 1000) / 1000 + ")";
+    });
+  }
   function resolvedTheme() {
     if (cfg.themePreset === "custom") {
       var q = cfg.parts;
@@ -499,9 +514,12 @@
     };
     var over = p.parts || {};
     Object.keys(over).forEach(function (k) { parts[k] = over[k]; });
+    var solid = cfg.usePanelOpacity ? cfg.panelOpacity : null;
+    if (solid !== null) parts.floatBg = colorAt(parts.floatBg, solid);
     return {
-      bg: p.bg, text: p.text, accent: p.accent,
-      fillFrom: p.fillFrom, fillTo: p.fillTo, alarm: p.alarm, font: p.font, parts: parts, bgimg: p.bgimg || "",
+      bg: solid === null ? p.bg : colorAt(p.bg, solid), text: p.text, accent: p.accent,
+      fillFrom: p.fillFrom, fillTo: p.fillTo, alarm: p.alarm, font: p.font, parts: parts,
+      bgimg: solid === null || !p.bgimg ? (p.bgimg || "") : fadeImage(p.bgimg, solid),
       flag: p.flag || null
     };
   }

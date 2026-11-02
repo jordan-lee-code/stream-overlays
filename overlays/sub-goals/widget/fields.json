@@ -361,9 +361,15 @@
     "value": "BioRhyme",
     "group": "Look"
   },
+  "usePanelOpacity": {
+    "type": "checkbox",
+    "label": "Use the panel opacity below with the style preset too, not only with Custom",
+    "value": false,
+    "group": "Look"
+  },
   "panelOpacity": {
     "type": "number",
-    "label": "Panel opacity (0 is invisible, 1 is solid) (used when the style preset is Custom)",
+    "label": "Panel opacity (0 is invisible, 1 is solid) (used when the style preset is Custom, or with any preset if the box above it is ticked)",
     "value": 0.55,
     "min": 0,
     "max": 1,
