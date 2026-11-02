@@ -15,7 +15,7 @@ It is a single self-contained widget in plain JavaScript, with no dependencies a
 - Hide and show it from chat: `!nowplaying off` and `!nowplaying on`, for you and your moderators. It stays hidden if the overlay is refreshed.
 - All twenty-two style presets, including the seven pride flags, which also stripe the progress bar.
 - Round or square album art, and sizes you can set.
-- The card keeps the size you gave it. Each of the title, the artist and the album is one line, so a long name never makes the card taller or wider, and one that does not fit scrolls along its line to the end, waits there, and goes again from the start. Every line that scrolls takes the same time, so the title and the artist finish together. A setting changes how fast, and with Animate off a long name is cut short with dots instead.
+- The card keeps the size you gave it. Each of the title, the artist and the album is one line, so a long name never makes the card taller or wider, and one that does not fit scrolls along its line to the end, waits there, and goes again from the start, or, if you choose Smoothly back and forth, slides back the way it came. Every line that scrolls takes the same time, so the title and the artist finish together. A setting changes how fast, and with Animate off a long name is cut short with dots instead.
 - Scales with the box: the text scales with the width of the box you draw, and if the box is too short for the card it shrinks to fit.
 - Customisable: around forty settings cover the source, the card, sizes, shape, outline, colours, fonts and animation.
 - An outer frame in the accent colour, on by default in every preset, and switched off with one checkbox (the flag's stripes in the pride presets).
@@ -158,7 +158,7 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | Last.fm, Tuna, Pear Desktop, Spotify | The details each source needs. |
 | Commands | The command word and who may use it. |
 | Card | The art and its shape, the album, the progress bar, whether to show the small line above the title and what it says, what to do when paused, and what to say when nothing is playing. |
-| Size | Text size, the card's height, the title's size, the artist's size, the art's size, and how fast a long name scrolls. |
+| Size | Text size, the card's height, the title's size, the artist's size, the art's size, and how a long name scrolls and how fast. |
 | Look | The style preset, font, boldness, corners, padding, outer frame, outline, shadow, Animate and whether the card shrinks to fit the box. |
 | Custom colours | Panel, text, accent, bar track and note colours, used when the style preset is Custom. A checkbox there also lets the Panel opacity apply to any preset, not only Custom. |
 | Decorations | The shape, where they go, how many, how big, how solid, their colour, and how they move. |

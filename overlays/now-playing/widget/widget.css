@@ -93,7 +93,12 @@
   animation: np-scroll var(--np-time, 8s) linear infinite;
 }
 /* It waits at the start, slides to the end, waits there, and then goes back to the start in one step and goes again. Every
-   line that scrolls has the same time for this, so they finish together. */
+   line that scrolls has the same time for this, so they finish together. With the Scroll style on back and forth, it slides back
+   the way it came instead, easing in and out at each end, and then goes again. */
+.np-run.scrolls.bounce {
+  animation-direction: alternate;
+  animation-timing-function: ease-in-out;
+}
 @keyframes np-scroll {
   0%, 15% { transform: translateX(0); }
   85%, 100% { transform: translateX(calc(var(--np-shift, 0px) * -1)); }
