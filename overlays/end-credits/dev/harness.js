@@ -305,7 +305,7 @@
   }
 
   Promise.all(["../widget/widget.html", "../widget/widget.js", "../widget/fields.json"].map(function (u) {
-    return fetch(u).then(function (r) { return u.slice(-5) === ".json" ? r.json() : r.text(); });
+    return fetch(u, { cache: "no-cache" }).then(function (r) { return u.slice(-5) === ".json" ? r.json() : r.text(); });
   })).then(function (res) {
     document.getElementById("stage").innerHTML = res[0];
     fieldDefs = res[2];
