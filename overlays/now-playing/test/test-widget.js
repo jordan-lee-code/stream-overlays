@@ -248,6 +248,17 @@ const lfTrack = (o) => Object.assign({ name: "Song", artist: { "#text": "Band" }
   ok(tb.get("grant_type") === "authorization_code" && tb.get("code") === "c0de" && tb.get("client_id") === "cid" && tb.get("code_verifier") === "ver" && !tb.has("client_secret"), "the exchange for a token sends the verifier, and no secret");
   ok(!/client_secret/i.test(page) && /spotify-pkce\.js/.test(page), "the page has no secret in it, and uses the same code the tests check");
 
+  section("the Spotify set-up window");
+  const harness = require("fs").readFileSync(require("path").join(__dirname, "../dev/harness.js"), "utf8");
+  ok((page.match(/class="step card"/g) || []).length === 4 && (page.match(/<li data-n="\d">/g) || []).length === 4, "it is four steps, one at a time, with a row showing where you are");
+  ok(/Premium/.test(page) && /Last\.fm/.test(page) && /developer\.spotify\.com\/dashboard/.test(page), "the first says what Spotify asks for, offers Last.fm, and links the dashboard");
+  ok(/id="redirect"/.test(page) && /copy-uri/.test(page) && /copy-client/.test(page) && /id="copy"/.test(page), "and each thing to copy has a button");
+  ok(/window\.opener\.postMessage\([^)]*location\.origin\)/.test(page) && !/postMessage\([^)]*["']\*["']/.test(page), "the result goes only to the page that opened the window, at this address, never to anyone (*)");
+  ok(/e\.origin !== location\.origin/.test(harness) && /d\.type !== "np-spotify-setup"/.test(harness), "and the dev page believes only a message from its own address, of that one kind");
+  ok(/window\.open\(CFG\.spotifyLink\.href/.test(harness) && /e\.preventDefault/.test(harness), "the dev page opens it in a small window, and falls back to a new tab if that is blocked");
+  ok(/spotifyClientId/.test(harness) && /spotifyRefreshToken/.test(harness) && /CFG\.demo\.hasOwnProperty/.test(harness), "the details it fills in are the ones the export already leaves out, so a token is never exported");
+  ok(!/client_secret/i.test(page) && !/[^\x00-\x7F]/.test(page), "still no secret, and the page is plain ASCII");
+
   section("every setting is wired up");
   env.checkWired();
   env.checkNotice();
