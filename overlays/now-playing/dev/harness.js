@@ -21,7 +21,7 @@
     { "label": "Player goes offline", "kind": "player", "action": "offline" },
     { "label": "Player comes back", "kind": "player", "action": "online" }
   ] }],
-  "spotifyLink": { "href": "spotify-token.html", "label": "Sign in to Spotify and get a refresh token", "hint": "Only if you want Spotify as the source. It takes a Spotify developer app, which needs Spotify Premium, and Last.fm is much quicker to set up. Read the Spotify part of the README first." },
+  "spotifyLink": { "href": "spotify-token.html", "label": "Set up Spotify", "hint": "Opens a small window with four steps, and fills in the Spotify settings here when you finish. Only if you want Spotify as the source. It takes a Spotify developer app, which needs Spotify Premium, and Last.fm is much quicker to set up. Read the Spotify part of the README first." },
   "chatDefault": "!nowplaying off",
   "demo": { "lastfmUser": "demo", "lastfmKey": "demo", "spotifyClientId": "demo", "spotifyRefreshToken": "demo" }
 };
@@ -173,6 +173,19 @@
       host.appendChild(d);
     });
   }
+  // The Spotify set-up window (spotify-token.html) tells this page when it has a token, and the Spotify settings here fill themselves in.
+  // Only a message from this same address is believed.
+  window.addEventListener("message", function (e) {
+    var d = e.data;
+    if (e.origin !== location.origin || !d || d.type !== "np-spotify-setup" || typeof d.clientId !== "string" || typeof d.refreshToken !== "string") return;
+    fieldData.source = "spotify";
+    fieldData.spotifyClientId = d.clientId;
+    fieldData.spotifyRefreshToken = d.refreshToken;
+    load();
+    rebuildSettings();
+    var note = document.getElementById("spotify-filled");
+    if (note) { note.textContent = "Filled in from the set-up window: the source is Spotify, with your client ID and refresh token. They are kept on this page only, so a reload clears them, and they are never put in the export."; note.hidden = false; }
+  });
   function rebuildSettings() {
     var host = document.getElementById("all-settings"), open = [];
     Array.prototype.forEach.call(host.querySelectorAll("details"), function (d) { if (d.open) open.push(d.querySelector("summary").textContent); });
@@ -186,7 +199,16 @@
     c.appendChild(el("h1", { text: CFG.title }));
     c.appendChild(el("p", { "class": "hint", text: CFG.hint }));
     if (CFG.spotifyLink) {
-      c.appendChild(el("p", { "class": "hint" }, [el("a", { href: CFG.spotifyLink.href, target: "_blank", rel: "noopener", text: CFG.spotifyLink.label }), document.createTextNode(". " + CFG.spotifyLink.hint)]));
+      var link = el("a", { href: CFG.spotifyLink.href, target: "_blank", rel: "noopener", text: CFG.spotifyLink.label });
+      // A small window beside the page, so the steps can be followed with this page still in view. If the browser will not open one,
+      // the link opens the same page in a new tab.
+      link.addEventListener("click", function (e) {
+        var w = null;
+        try { w = window.open(CFG.spotifyLink.href, "np-spotify-setup", "popup=yes,width=580,height=800"); } catch (err) { w = null; }
+        if (w) { e.preventDefault(); try { w.focus(); } catch (err2) { /* it is open either way */ } }
+      });
+      c.appendChild(el("p", { "class": "hint" }, [link, document.createTextNode(". " + CFG.spotifyLink.hint)]));
+      c.appendChild(el("p", { "class": "hint", id: "spotify-filled", hidden: "hidden" }));
     }
 
     c.appendChild(el("h2", { text: "Look and export" }));
