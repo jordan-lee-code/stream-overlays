@@ -56,6 +56,20 @@ const nameOf = (n) => (n.children[1] ? n.children[1].textContent : "");
   ok(/\.sb-left\.rotating \.sb-item\s*\{[^}]*opacity:\s*0[^}]*transition:\s*opacity/.test(css), "the others are faded out by a transition on opacity, so it is a fade and not a jump");
   ok(/\.sb-left\.rotating\s*\{[^}]*display:\s*grid/.test(css) && /grid-area:\s*1 \/ 1/.test(css), "all the sites share one cell, so the bar does not change width as they change");
 
+  section("turning the right side off");
+  await load({ showRight: false });
+  ok(right().length === 0, "with the right side off, ko-fi is not shown (" + right().length + ")");
+  ok(left().map(site).join() === "instagram,youtube,tiktok,twitter,bluesky" && E("sb-left").classList.contains("rotating"), "and the left side rotates on its own");
+  await wait(4000); ok(on(left()).join() === "youtube", "carrying on through the sites (" + on(left()) + ")");
+  ok(E("sb-app").classList.contains("solo"), "and sits in the middle of the bar");
+  await load({ showRight: false, patreon: "patreon.com/me" }); ok(right().length === 0, "patreon goes with it");
+  await load({ showRight: false, kofi: "" }); ok(E("sb-root").hidden === false, "the bar stays while there are sites on the left");
+  await load({ showRight: false, instagram: "", youtube: "", tiktok: "", twitter: "", bluesky: "" }); ok(E("sb-root").hidden === true, "and goes when there is nothing left to show, even with ko-fi typed in");
+  await load({ showRight: false }); await load({});
+  ok(right().length === 1 && !E("sb-app").classList.contains("solo"), "turning it back on brings ko-fi back, with nothing left behind");
+  await load({ kofi: "" }); ok(E("sb-app").classList.contains("solo"), "a blank ko-fi and patreon do the same as turning it off");
+  ok(/\.sb-app\.solo \.sb-left\.rotating\s*\{[^}]*justify-items:\s*center/.test(css), "with nothing on the right, the rotating site is centred");
+
   section("spreading across the box");
   await load({ rotate: false });
   ok(E("sb-left").classList.contains("spread"), "side by side, the sites spread across the width, so the gaps follow the box");

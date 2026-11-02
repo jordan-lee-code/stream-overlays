@@ -85,6 +85,8 @@ Each site has its own text box, and what you type is exactly what is shown, so w
 
 The sites on the left show in the order they are listed in the settings. Ko-fi comes first on the right, then Patreon.
 
+To show only the rotating sites, untick **Show the right side**. Ko-fi and Patreon are hidden without losing what you typed, and the sites rotate in the middle of the bar. Clearing both handles does the same.
+
 ## Rotation
 
 By default the left side shows one site at a time. Each stays for **Seconds each site stays on screen** (four by default, never less than one), then fades out while the next fades in over **Seconds the fade between sites takes**. The sites all share one space, so the bar is as wide as the widest handle and the right side does not shift.
@@ -100,7 +102,7 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | Group | What it covers |
 | --- | --- |
 | Left side | A handle for each of Instagram, YouTube, TikTok, Twitter or X, Bluesky, Twitch, Discord, Facebook, Threads, Mastodon, Snapchat, GitHub, Kick and Reddit. |
-| Right side | Ko-fi and Patreon. |
+| Right side | Whether to show it, and Ko-fi and Patreon. |
 | Rotation | Whether the left side rotates, how long each site stays, and how long the fade takes. |
 | Layout | Whether the sites spread across the width of the box, whether handles show beside the logos, and the logo colour. |
 | Size | Text size, how big the logos are and the space between sites. |

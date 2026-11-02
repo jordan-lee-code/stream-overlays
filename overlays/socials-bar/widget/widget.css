@@ -66,6 +66,8 @@
 /* The bar: sites on the left, support links on the right. When there are too many for the width, they wrap onto a second row. */
 .sb-side { display: flex; flex-wrap: wrap; align-items: center; column-gap: calc(var(--sb-gap, 1.6) * var(--sb-squeeze, 1) * 1em); row-gap: 0.3em; min-width: 0; }
 .sb-right { margin-left: auto; justify-content: flex-end; }
+/* With nothing on the right, the sites rotate in the middle of the bar. */
+.sb-app.solo .sb-left.rotating { flex: 1 1 auto; justify-items: center; }
 /* Spread: the left side takes all the room the right side leaves, and the sites divide it between them, so the gaps follow the
    width of the box. The gap setting is the least there can be. */
 .sb-left.spread { flex: 1 1 0; justify-content: space-between; }
