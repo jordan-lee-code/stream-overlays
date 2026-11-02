@@ -186,6 +186,7 @@ const app = () => E("cam-app");
   await load({ brbIcon: "", awayIcon: "" }); boss("!camera brb"); ok(icon() === "", "icons can be left off");
   await env.checkPresets("cam-root");
   await env.checkFrame("cam-root");
+  await env.checkDecor("cam-app");
 
   section("the frame round the window");
   const fill = () => env.vars("cam-root")["--cam-frame-fill"], ring = () => E("cam-root").classList.contains("no-frame");

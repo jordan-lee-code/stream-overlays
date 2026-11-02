@@ -19,6 +19,7 @@ It is a single self-contained widget in plain JavaScript, with no dependencies a
 - Customisable: around 45 settings cover the wording, sizes, shape, outline, colours, fonts and animation.
 - Tests and a dev harness: a local harness with quick buttons for every command, and an automated test script.
 - An outer frame in the accent colour, on by default in every preset, and switched off with one checkbox (the flag's stripes in the pride presets).
+- Decorations: sparkles, hearts, stars, flowers, moons, snowflakes, bubbles, butterflies, clouds, leaves, paw prints, music notes or bows behind the words, scattered, along the edges, in the corners or on the border, in the accent colour, a pride flag's colours or a colour of your own, twinkling, drifting or still. Off by default.
 
 ## Screenshots
 
@@ -72,6 +73,10 @@ In **Schedule**, write each slot in its own setting as a day, a time and what is
 
 Up to ten slots are read, in the order written, and a blank one is left out. A slot whose day starts with the same first three letters as today's is highlighted, so `Wed`, `Wednesday` and `Weds` all match a Wednesday, and the highlight moves on at midnight by itself. The weekday is read from the clock of the computer running the overlay. A line for the time zone, such as "All times are GMT", can go under the list.
 
+**Decorations.** Flowers behind the words, here in the Pastel sage preset.
+
+<p><img src="docs/decorations.png" alt="Task list with flowers in the Pastel sage preset" width="380"></p>
+
 ## Style presets
 
 One setting picks the look. The same twenty-two presets, with the same colours, are in every overlay in this set, so overlays from this set match whichever you choose. This is how each one looks in this overlay. The presets are defined once, in the [kit](../../kit), and a test keeps this overlay in step with it.
@@ -121,9 +126,12 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | Manual controls | Buttons to add a test task, tick off the next, clear the ticked and clear everything. |
 | Look | Title, the style preset, font, boldness, corners, padding, outer frame, outline, shadow, Animate and whether it shrinks to fit the box. |
 | Custom colours | Panel, text, accent and bar colours, used when the style preset is Custom. |
+| Decorations | The shape, where they go, how many, how big, how solid, their colour, and how they move. |
 | Troubleshooting | A debug log of every event to the browser-source console. |
 
 The **outer frame** is a border round the widget in the preset's accent colour, on by default in every preset. Untick **An outer frame** under Look for none, or set the outline thickness to change how thick it is, since at 0 it has a default thickness that grows with the box. In a pride preset the frame is the flag's stripes, as a ring that follows the panel's corners.
+
+The **decorations** are small shapes drawn behind the words: sparkles, hearts, stars, flowers, moons, snowflakes, bubbles, butterflies, clouds, leaves, paw prints, music notes, bows, or a mix of sparkles, hearts and stars. Choose one under **Decorations**, then where they go (scattered, along the inside of the edges, in the corners, or on the border with half of each outside it), how many (up to 24), how big, how solid, and whether they twinkle in place, drift upwards or stay still. They take the accent colour, or in a pride preset the colours of the flag in turn, or you can ask for the text colour, both in turn, or a colour of your own. On the border they need a little room round the widget in its box, since StreamElements shows only what is inside the box, and a panel that fills its box has none. With Animate off they stay still. They are off by default.
 
 The full list, with defaults, is in [`widget/fields.json`](widget/fields.json). The colour and font pickers apply only when the style preset is **Custom**.
 

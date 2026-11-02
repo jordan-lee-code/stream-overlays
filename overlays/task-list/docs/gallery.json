@@ -57,6 +57,18 @@
         "showNumbers": false
       },
       "script": "chat('!task add say hello to chat');chat('!task add play the new game');chat('!task add draw something');chat('!task add post to socials');chat('!task add stretch');chat('!task done 1');chat('!task done 2');"
+    },
+    {
+      "file": "decorations.png",
+      "width": 380,
+      "height": 260,
+      "base": "scene",
+      "fields": {
+        "decoration": "flowers",
+        "decorationCount": 10,
+        "themePreset": "pastelsage",
+        "animate": false
+      }
     }
   ]
 }

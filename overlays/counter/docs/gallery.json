@@ -53,6 +53,19 @@
         "flashSeconds": 60
       },
       "script": "chat('!count +4');"
+    },
+    {
+      "file": "decorations.png",
+      "width": 400,
+      "height": 270,
+      "base": "scene",
+      "fields": {
+        "decoration": "leaves",
+        "decorationCount": 10,
+        "themePreset": "pastelsage",
+        "animate": false,
+        "decorationPlacement": "edges"
+      }
     }
   ]
 }

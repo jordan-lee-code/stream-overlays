@@ -37,6 +37,19 @@
         "borderWidth": 0.2,
         "colorBorder": "#FF8FC7"
       }
+    },
+    {
+      "file": "decorations.png",
+      "width": 300,
+      "height": 200,
+      "base": "scene",
+      "fields": {
+        "decoration": "stars",
+        "decorationCount": 8,
+        "themePreset": "neon",
+        "animate": false,
+        "decorationPlacement": "corners"
+      }
     }
   ]
 }

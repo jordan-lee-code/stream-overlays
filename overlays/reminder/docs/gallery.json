@@ -42,6 +42,19 @@
         "title": "Heads up"
       },
       "script": "chat('!reminder 1s clean room');"
+    },
+    {
+      "file": "decorations.png",
+      "width": 380,
+      "height": 140,
+      "base": "scene",
+      "fields": {
+        "decoration": "clouds",
+        "decorationCount": 10,
+        "themePreset": "ocean",
+        "animate": false,
+        "decorationPlacement": "scatter"
+      }
     }
   ]
 }

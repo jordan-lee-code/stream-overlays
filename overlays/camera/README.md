@@ -21,6 +21,7 @@ It is a single self-contained widget in plain JavaScript, with no dependencies a
 - Scales with the box: the text scales with the window, and if the box is too short for the nameplate, it shrinks to fit.
 - Customisable: around sixty settings cover the commands, safety, wording, icons, nameplate, window, frame, sizes, shape, outline, colours, fonts, sounds and animation.
 - An outer frame in the accent colour, on by default in every preset, and switched off with one checkbox (the flag's stripes in the pride presets).
+- Decorations: sparkles, hearts, stars, flowers, moons, snowflakes, bubbles, butterflies, clouds, leaves, paw prints, music notes or bows behind the words, scattered, along the edges, in the corners or on the border, in the accent colour, a pride flag's colours or a colour of your own, twinkling, drifting or still. Off by default.
 
 ## Screenshots
 
@@ -39,6 +40,10 @@ It is a single self-contained widget in plain JavaScript, with no dependencies a
 **A flag for the frame.** In a pride preset the frame is the flag, in stripes.
 
 <p><img src="docs/pride.png" alt="A cover in the trans flag's blue, pink and white, with a striped frame, showing the away message and a countdown" width="420"></p>
+
+**Decorations.** Butterflies behind the words, along the edges, here in the Pastel goth preset.
+
+<p><img src="docs/decorations.png" alt="Camera with butterflies, along the edges in the Pastel goth preset" width="420"></p>
 
 ## Style presets
 
@@ -175,11 +180,14 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | Size | The cover's text size, the nameplate's text size, the size of your name and the space between the lines. |
 | Look | The style preset, font, boldness, corners, padding, outer frame, outline, shadow, Animate and whether the nameplate shrinks to fit the box. |
 | Custom colours | Panel, text, accent and tag colours, used when the style preset is Custom. |
+| Decorations | The shape, where they go, how many, how big, how solid, their colour, and how they move. |
 | Manual controls | Buttons to cover the camera, cover it as be right back or away, and uncover it. |
 | Sounds | A sound when the camera is covered and another when it is uncovered, each with a volume and a Test button, and a master mute. |
 | Troubleshooting | A debug log of every event to the browser-source console. |
 
 The **outer frame** is a border round the nameplate in the preset's accent colour, on by default in every preset, beside the frame round the window, which has its own settings under Frame. Untick **An outer frame** under Look for none, or set the outline thickness to change how thick it is, since at 0 it has a default thickness that grows with the box. With the frame unticked, the outline is whatever you set, as before, in the outline colour. In a pride preset the frame is the flag's stripes, as a ring that follows the panel's corners.
+
+The **decorations** are small shapes drawn behind the words: sparkles, hearts, stars, flowers, moons, snowflakes, bubbles, butterflies, clouds, leaves, paw prints, music notes, bows, or a mix of sparkles, hearts and stars. Choose one under **Decorations**, then where they go (scattered, along the inside of the edges, in the corners, or on the border with half of each outside it), how many (up to 24), how big, how solid, and whether they twinkle in place, drift upwards or stay still. They take the accent colour, or in a pride preset the colours of the flag in turn, or you can ask for the text colour, both in turn, or a colour of your own. On the border they need a little room round the widget in its box, since StreamElements shows only what is inside the box, and a panel that fills its box has none. With Animate off they stay still. They are off by default. They go on the nameplate, and never over your camera.
 
 The full list, with defaults, is in [`widget/fields.json`](widget/fields.json). The colour and font pickers apply only when the style preset is **Custom**.
 

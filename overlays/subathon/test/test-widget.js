@@ -22,7 +22,7 @@ function makeEl(id) {
       contains(c) { return this._s.has(c); },
       toggle(c, on) { if (on === undefined) on = !this._s.has(c); if (on) this._s.add(c); else this._s.delete(c); }
     },
-    addEventListener() {},
+    addEventListener() {}, setAttribute() {},
     appendChild(c) { return this.insertBefore(c, null); },
     insertBefore(c, ref) {
       if (c.parentNode) c.parentNode.removeChild(c);
@@ -537,13 +537,81 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   await load({ tmStart: "10:00:00", tmSoundPower: "data:audio/wav;base64,CCCC" });
   audioLog.length = 0; boss("!subathon powerup 2 10m"); ok(audioLog.length === 1, "starting a power-up plays its sound");
 
+  console.log("\n[decorations]");
+  {
+    const settle = async o => { await load(o); await wait(5); };
+    {
+      const host = () => E("subathon-app");
+      const layer = () => host().children.find(c => String(c.className).indexOf("w-deco") === 0);
+      const items = () => (layer() ? layer().children : []);
+      await settle({});
+      ok(!layer() && !host().style.isolation, "there are no decorations unless they are asked for (subathon-app)");
+      await settle({ decoration: "hearts", decorationCount: 6 });
+      ok(items().length === 6 && items().every(i => i.className === "w-di hearts") && host().children[0] === layer() && host().style.isolation === "isolate", "choosing hearts draws six behind the words");
+      reload(); await wait(5);
+      ok(host().children.filter(c => String(c.className).indexOf("w-deco") === 0).length === 1, "and loading again does not pile them up");
+      await settle({ decoration: "mixed", decorationCount: 3 });
+      ok(items().map(i => i.className.split(" ")[1]).join() === "sparkles,hearts,stars", "mixed takes sparkles, hearts and stars in turn");
+      await settle({ decoration: "stars", decorationCount: 99 }); ok(items().length === 24, "no more than 24");
+      await settle({ decoration: "stars", decorationMotion: "drift" }); ok(layer().className === "w-deco drift", "they can drift");
+      await settle({ decoration: "stars", tmAnimate: false }); ok(layer().className.split(" ").indexOf("still") !== -1, "and with Animate off they stay still");
+      await settle({ decoration: "stars", decorationSize: 2 }); ok(layer().style["--w-deco-size"] === 2, "their size is a setting");
+      await settle({ decoration: "stars", decorationCount: 7, themePreset: "trans" });
+      ok(items().every((i, n) => i.style["--c"].toLowerCase() === ["#5bcefa", "#f5a9b8", "#ffffff", "#f5a9b8", "#5bcefa"][n % 5]), "in a pride preset they take the colours of the flag in turn (" + items().map(i => i.style["--c"]).join(" ") + ")");
+      await settle({ decoration: "butterflies", decorationCount: 8, decorationPlacement: "edges" });
+      ok(items().every(i => i.className === "w-di butterflies") && items().map(i => [parseFloat(i.style["--x"]), parseFloat(i.style["--y"])]).every(([x, y]) => x <= 6 || x >= 86 || y <= 6 || y >= 82), "the newer shapes work, and along the edges every one sits on the border");
+      await settle({ decoration: "stars", decorationCount: 8, decorationPlacement: "border" });
+      ok(layer().className.split(" ").indexOf("outside") !== -1 && items().map(i => [parseFloat(i.style["--x"]), parseFloat(i.style["--y"])]).every(([x, y]) => x < 0.1 || x > 99.9 || y < 0.1 || y > 99.9), "on the border every shape sits on the edge itself, and the layer is let out");
+      await settle({ decoration: "stars", decorationCount: 4, decorationPlacement: "corners" });
+      ok(new Set(items().map(i => (parseFloat(i.style["--x"]) < 50 ? "l" : "r") + (parseFloat(i.style["--y"]) < 50 ? "t" : "b"))).size === 4, "in the corners, four shapes take one corner each");
+      await settle({ decoration: "stars", decorationCount: 3, decorationColor: "custom", decorationTint: "#ABCDEF" });
+      ok(items().every(i => i.style["--c"] === "#ABCDEF"), "a colour of your own");
+      await settle({ decoration: "stars", decorationColor: "text" }); ok(new Set(items().map(i => i.style["--c"])).size === 1, "or the text colour");
+      await settle({ decoration: "stars", decorationOpacity: 0.5 }); ok(layer().style["--w-deco-opacity"] === 0.5, "how solid they are is a setting");
+      await settle({ decoration: "stars" }); await settle({ decoration: "none" });
+      ok(!layer() && !host().style.isolation, "turning them off takes them away");
+      await settle({ decoration: "confetti" }); ok(!layer(), "and a shape that does not exist is none");
+    }
+    {
+      const host = () => E("incentive-panel");
+      const layer = () => host().children.find(c => String(c.className).indexOf("w-deco") === 0);
+      const items = () => (layer() ? layer().children : []);
+      await settle({});
+      ok(!layer() && !host().style.isolation, "there are no decorations unless they are asked for (incentive-panel)");
+      await settle({ decoration: "hearts", decorationCount: 6 });
+      ok(items().length === 6 && items().every(i => i.className === "w-di hearts") && host().children[0] === layer() && host().style.isolation === "isolate", "choosing hearts draws six behind the words");
+      reload(); await wait(5);
+      ok(host().children.filter(c => String(c.className).indexOf("w-deco") === 0).length === 1, "and loading again does not pile them up");
+      await settle({ decoration: "mixed", decorationCount: 3 });
+      ok(items().map(i => i.className.split(" ")[1]).join() === "sparkles,hearts,stars", "mixed takes sparkles, hearts and stars in turn");
+      await settle({ decoration: "stars", decorationCount: 99 }); ok(items().length === 24, "no more than 24");
+      await settle({ decoration: "stars", decorationMotion: "drift" }); ok(layer().className === "w-deco drift", "they can drift");
+      await settle({ decoration: "stars", animate: false }); ok(layer().className.split(" ").indexOf("still") !== -1, "and with Animate off they stay still");
+      await settle({ decoration: "stars", decorationSize: 2 }); ok(layer().style["--w-deco-size"] === 2, "their size is a setting");
+      await settle({ decoration: "stars", decorationCount: 7, themePreset: "trans" });
+      ok(items().every((i, n) => i.style["--c"].toLowerCase() === ["#5bcefa", "#f5a9b8", "#ffffff", "#f5a9b8", "#5bcefa"][n % 5]), "in a pride preset they take the colours of the flag in turn (" + items().map(i => i.style["--c"]).join(" ") + ")");
+      await settle({ decoration: "butterflies", decorationCount: 8, decorationPlacement: "edges" });
+      ok(items().every(i => i.className === "w-di butterflies") && items().map(i => [parseFloat(i.style["--x"]), parseFloat(i.style["--y"])]).every(([x, y]) => x <= 6 || x >= 86 || y <= 6 || y >= 82), "the newer shapes work, and along the edges every one sits on the border");
+      await settle({ decoration: "stars", decorationCount: 8, decorationPlacement: "border" });
+      ok(layer().className.split(" ").indexOf("outside") !== -1 && items().map(i => [parseFloat(i.style["--x"]), parseFloat(i.style["--y"])]).every(([x, y]) => x < 0.1 || x > 99.9 || y < 0.1 || y > 99.9), "on the border every shape sits on the edge itself, and the layer is let out");
+      await settle({ decoration: "stars", decorationCount: 4, decorationPlacement: "corners" });
+      ok(new Set(items().map(i => (parseFloat(i.style["--x"]) < 50 ? "l" : "r") + (parseFloat(i.style["--y"]) < 50 ? "t" : "b"))).size === 4, "in the corners, four shapes take one corner each");
+      await settle({ decoration: "stars", decorationCount: 3, decorationColor: "custom", decorationTint: "#ABCDEF" });
+      ok(items().every(i => i.style["--c"] === "#ABCDEF"), "a colour of your own");
+      await settle({ decoration: "stars", decorationColor: "text" }); ok(new Set(items().map(i => i.style["--c"])).size === 1, "or the text colour");
+      await settle({ decoration: "stars", decorationOpacity: 0.5 }); ok(layer().style["--w-deco-opacity"] === 0.5, "how solid they are is a setting");
+      await settle({ decoration: "stars" }); await settle({ decoration: "none" });
+      ok(!layer() && !host().style.isolation, "turning them off takes them away");
+      await settle({ decoration: "confetti" }); ok(!layer(), "and a shape that does not exist is none");
+    }
+  }
   console.log("\n[every setting is wired up]");
   const missing = Object.keys(fields).filter(k => /^tm/.test(k) && fields[k].type !== "button" && clockSrc.indexOf("f." + k) === -1);
   ok(missing.length === 0, "every clock setting is read by the widget" + (missing.length ? " (unread: " + missing.join(", ") + ")" : ""));
   const unhandled = Object.keys(fields).filter(k => fields[k].type === "button" && /^tm/.test(k) && clockSrc.indexOf('case "' + k + '"') === -1);
   ok(unhandled.length === 0, "every clock button does something" + (unhandled.length ? " (dead: " + unhandled.join(", ") + ")" : ""));
   const goalKeys = Object.keys(fields).filter(k => !/^tm/.test(k));
-  ok(goalKeys.every(k => /^Goals: /.test(fields[k].group)), "every goals setting sits under a Goals group, apart from the clock's");
+  ok(goalKeys.every(k => /^Goals: /.test(fields[k].group) || /^decoration/.test(k)), "every goals setting sits under a Goals group, apart from the clock's and the decorations, which are one setting for both");
   ok(Object.keys(fields).filter(k => /^tm/.test(k)).every(k => /^Clock: /.test(fields[k].group)), "and every clock setting under a Clock group");
   const noDash = ["README.md", "CONTRIBUTING.md"].every(f => !fs.existsSync(ROOT + "/" + f) || !/[\u2013\u2014]/.test(fs.readFileSync(ROOT + "/" + f, "utf8")));
   ok(noDash, "the docs use no em or en dashes");

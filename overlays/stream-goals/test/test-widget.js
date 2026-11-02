@@ -99,6 +99,7 @@ const HOUR = 3600000;
   await load({ title: "Tonight" }); ok(E("sg-title").textContent === "Tonight", "and renamed");
   await env.checkPresets("sg-app");
   await env.checkFrame("sg-app");
+  await env.checkDecor("sg-app");
 
   section("sounds");
   await load({ targetSubs: 2, raiseSubs: 0, soundProgress: "data:audio/wav;base64,AA", soundProgressVol: 40, soundReached: "data:audio/wav;base64,BB" });

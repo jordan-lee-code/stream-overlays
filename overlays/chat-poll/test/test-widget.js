@@ -17,7 +17,16 @@ function makeEl(id) {
     classList: {
       _s: null, add(c) { this._s.add(c); }, remove(c) { this._s.delete(c); }, contains(c) { return this._s.has(c); }
     },
-    addEventListener() {}, appendChild() {}
+    addEventListener() {}, children: [], className: "", parentNode: null, setAttribute() {},
+    get firstChild() { return this.children[0] || null; },
+    appendChild(c) { return this.insertBefore(c, null); },
+    insertBefore(c, ref) {
+      if (c.parentNode) c.parentNode.removeChild(c);
+      const at = ref ? this.children.indexOf(ref) : -1;
+      if (at === -1) this.children.push(c); else this.children.splice(at, 0, c);
+      c.parentNode = this; return c;
+    },
+    removeChild(c) { const at = this.children.indexOf(c); if (at !== -1) this.children.splice(at, 1); c.parentNode = null; return c; }
   };
   e.classList._s = e._cls; return e;
 }
@@ -655,6 +664,42 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   ok(V["--frame-img"] === "none", "and a preset with no flag has no ring");
   load({ themePreset: "trans", outerFrame: false }); await wait(5);
   ok(V["--frame-img"] === "none", "and unticking the frame takes the stripes away too");
+  console.log("\n[decorations]");
+  {
+    const settle = async o => { await load(o); await wait(5); };
+    {
+      const host = () => elements["vote-card"];
+      const layer = () => host().children.find(c => String(c.className).indexOf("w-deco") === 0);
+      const items = () => (layer() ? layer().children : []);
+      await settle({});
+      ok(!layer() && !host().style.isolation, "there are no decorations unless they are asked for (vote-card)");
+      await settle({ decoration: "hearts", decorationCount: 6 });
+      ok(items().length === 6 && items().every(i => i.className === "w-di hearts") && host().children[0] === layer() && host().style.isolation === "isolate", "choosing hearts draws six behind the words");
+      reload(); await wait(5);
+      ok(host().children.filter(c => String(c.className).indexOf("w-deco") === 0).length === 1, "and loading again does not pile them up");
+      await settle({ decoration: "mixed", decorationCount: 3 });
+      ok(items().map(i => i.className.split(" ")[1]).join() === "sparkles,hearts,stars", "mixed takes sparkles, hearts and stars in turn");
+      await settle({ decoration: "stars", decorationCount: 99 }); ok(items().length === 24, "no more than 24");
+      await settle({ decoration: "stars", decorationMotion: "drift" }); ok(layer().className === "w-deco drift", "they can drift");
+      await settle({ decoration: "stars", animate: false }); ok(layer().className.split(" ").indexOf("still") !== -1, "and with Animate off they stay still");
+      await settle({ decoration: "stars", decorationSize: 2 }); ok(layer().style["--w-deco-size"] === 2, "their size is a setting");
+      await settle({ decoration: "stars", decorationCount: 7, themePreset: "trans" });
+      ok(items().every((i, n) => i.style["--c"].toLowerCase() === ["#5bcefa", "#f5a9b8", "#ffffff", "#f5a9b8", "#5bcefa"][n % 5]), "in a pride preset they take the colours of the flag in turn (" + items().map(i => i.style["--c"]).join(" ") + ")");
+      await settle({ decoration: "butterflies", decorationCount: 8, decorationPlacement: "edges" });
+      ok(items().every(i => i.className === "w-di butterflies") && items().map(i => [parseFloat(i.style["--x"]), parseFloat(i.style["--y"])]).every(([x, y]) => x <= 6 || x >= 86 || y <= 6 || y >= 82), "the newer shapes work, and along the edges every one sits on the border");
+      await settle({ decoration: "stars", decorationCount: 8, decorationPlacement: "border" });
+      ok(layer().className.split(" ").indexOf("outside") !== -1 && items().map(i => [parseFloat(i.style["--x"]), parseFloat(i.style["--y"])]).every(([x, y]) => x < 0.1 || x > 99.9 || y < 0.1 || y > 99.9), "on the border every shape sits on the edge itself, and the layer is let out");
+      await settle({ decoration: "stars", decorationCount: 4, decorationPlacement: "corners" });
+      ok(new Set(items().map(i => (parseFloat(i.style["--x"]) < 50 ? "l" : "r") + (parseFloat(i.style["--y"]) < 50 ? "t" : "b"))).size === 4, "in the corners, four shapes take one corner each");
+      await settle({ decoration: "stars", decorationCount: 3, decorationColor: "custom", decorationTint: "#ABCDEF" });
+      ok(items().every(i => i.style["--c"] === "#ABCDEF"), "a colour of your own");
+      await settle({ decoration: "stars", decorationColor: "text" }); ok(new Set(items().map(i => i.style["--c"])).size === 1, "or the text colour");
+      await settle({ decoration: "stars", decorationOpacity: 0.5 }); ok(layer().style["--w-deco-opacity"] === 0.5, "how solid they are is a setting");
+      await settle({ decoration: "stars" }); await settle({ decoration: "none" });
+      ok(!layer() && !host().style.isolation, "turning them off takes them away");
+      await settle({ decoration: "confetti" }); ok(!layer(), "and a shape that does not exist is none");
+    }
+  }
   console.log("\n=== " + pass + " passed, " + fail + " failed ===");
   process.exit(fail ? 1 : 0);
 })();

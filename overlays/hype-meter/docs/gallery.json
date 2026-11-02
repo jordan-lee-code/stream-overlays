@@ -51,6 +51,18 @@
         "title": "Chat energy"
       },
       "script": "chat('!hype level 3');chat('!hype add 120');"
+    },
+    {
+      "file": "decorations.png",
+      "width": 380,
+      "height": 205,
+      "base": "scene",
+      "fields": {
+        "decoration": "sparkles",
+        "decorationCount": 10,
+        "themePreset": "sunset",
+        "animate": false
+      }
     }
   ]
 }

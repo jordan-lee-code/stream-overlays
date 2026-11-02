@@ -142,6 +142,7 @@ const cls = c => E("sc-app").classList.contains(c);
   await load({ urgentSeconds: 0 }); boss("!countdown 5s"); await skip(1 * SEC); ok(!E("sc-clock").classList.contains("hot"), "the urgent colour can be turned off");
   await env.checkPresets("sc-app");
   await env.checkFrame("sc-app");
+  await env.checkDecor("sc-app");
 
   section("the stylesheet");
   const css = require("fs").readFileSync(require("path").join(__dirname, "../widget/widget.css"), "utf8");

@@ -191,6 +191,66 @@ module.exports = function createEnv(root) {
       env.ok(border() === "3px solid #010101", "with the frame unticked a Custom outline is the colour and thickness you set (" + border() + ")");
       await env.load({});
     },
+    // The decorations: shapes drawn behind a panel's words, off by default. `hostId` is the panel they are drawn in.
+    async checkDecor(hostId) {
+      const host = E(hostId);
+      const layer = () => host.children.find(c => String(c.className).indexOf("w-deco") === 0);
+      const items = () => (layer() ? layer().children : []);
+      const xs = () => items().map(i => i.style["--x"] + "," + i.style["--y"]).join(";");
+      await env.load({});
+      env.ok(!layer() && !host.style.isolation, "there are no decorations unless they are asked for");
+      await env.load({ decoration: "hearts", decorationCount: 6 });
+      env.ok(items().length === 6 && items().every(i => i.className === "w-di hearts") && host.children[0] === layer(), "choosing hearts draws six, as the first thing in the panel so they sit behind its words");
+      env.ok(host.style.isolation === "isolate", "and the panel keeps them above its own background and below its words");
+      await env.reload();
+      env.ok(host.children.filter(c => String(c.className).indexOf("w-deco") === 0).length === 1, "loading again does not pile them up");
+      const first = xs(); await env.load({ decoration: "hearts", decorationCount: 6 });
+      env.ok(xs() === first && first.indexOf("undefined") === -1, "they sit in the same places each time (" + first.split(";")[0] + ")");
+      await env.load({ decoration: "sparkles", decorationCount: 99 }); env.ok(items().length === 24, "no more than 24");
+      await env.load({ decoration: "sparkles", decorationCount: 0 }); env.ok(items().length === 1, "and at least one");
+      await env.load({ decoration: "mixed", decorationCount: 6 });
+      env.ok(items().map(i => i.className.split(" ")[1]).join() === "sparkles,hearts,stars,sparkles,hearts,stars", "mixed takes sparkles, hearts and stars in turn");
+      for (const kind of ["sparkles", "hearts", "stars", "flowers", "moons", "snowflakes", "bubbles", "butterflies", "clouds", "leaves", "paws", "notes", "bows"]) {
+        await env.load({ decoration: kind, decorationCount: 2 });
+        if (!items().every(i => i.className === "w-di " + kind)) env.ok(false, kind + " is not drawn");
+      }
+      env.ok(true, "sparkles, hearts, stars, flowers, moons, snowflakes, bubbles, butterflies, clouds, leaves, paw prints, music notes and bows are all shapes");
+      await env.load({ decoration: "confetti" }); env.ok(!layer(), "a shape that does not exist is none");
+      await env.load({ decoration: "stars", decorationMotion: "twinkle" }); env.ok(layer().className === "w-deco twinkle", "they twinkle by default");
+      await env.load({ decoration: "stars", decorationMotion: "drift" }); env.ok(layer().className === "w-deco drift", "or drift upwards");
+      await env.load({ decoration: "stars", decorationMotion: "still" }); env.ok(layer().className === "w-deco still", "or stay still");
+      await env.load({ decoration: "stars", decorationMotion: "spin" }); env.ok(layer().className === "w-deco twinkle", "an unknown motion twinkles");
+      await env.load({ decoration: "stars", animate: false }); env.ok(layer().className.split(" ").indexOf("still") !== -1, "with Animate off they stay still");
+      await env.load({ decoration: "stars", decorationSize: 2 }); env.ok(layer().style["--w-deco-size"] === 2, "their size is a setting");
+      await env.load({ decoration: "stars", decorationSize: 99 }); env.ok(layer().style["--w-deco-size"] === 4, "within limits");
+      await env.load({ decoration: "stars", decorationCount: 5 });
+      env.ok(items().every(i => i.style["--c"] === expectedPresets.glass.accent), "they take the accent colour (" + items()[0].style["--c"] + ")");
+      await env.load({ decoration: "stars", decorationCount: 7, themePreset: "trans" });
+      const flag = expectedPresets.trans.flag;
+      env.ok(items().every((i, n) => i.style["--c"].toLowerCase() === flag[n % flag.length].toLowerCase()), "and in a pride preset the colours of its flag, in turn (" + items().map(i => i.style["--c"]).join(" ") + ")");
+      const pts = () => items().map(i => [parseFloat(i.style["--x"]), parseFloat(i.style["--y"])]);
+      await env.load({ decoration: "stars", decorationCount: 8 }); const scattered = JSON.stringify(pts());
+      await env.load({ decoration: "stars", decorationCount: 8, decorationPlacement: "edges" });
+      env.ok(pts().every(([x, y]) => x <= 6 || x >= 86 || y <= 6 || y >= 82) && JSON.stringify(pts()) !== scattered, "along the edges every shape sits on the border");
+      await env.load({ decoration: "stars", decorationCount: 8, decorationPlacement: "border" });
+      env.ok(layer().className.split(" ").indexOf("outside") !== -1 && pts().every(([x, y]) => x < 0.1 || x > 99.9 || y < 0.1 || y > 99.9), "on the border every shape sits on the edge itself, and the layer is let out to show the half that is outside");
+      await env.load({ decoration: "stars", decorationCount: 8, decorationPlacement: "edges" }); env.ok(layer().className.split(" ").indexOf("outside") === -1, "while along the edges stays inside");
+      await env.load({ decoration: "stars", decorationCount: 4, decorationPlacement: "corners" });
+      env.ok(new Set(pts().map(([x, y]) => (x < 50 ? "l" : "r") + (y < 50 ? "t" : "b"))).size === 4, "in the corners, four shapes take one corner each");
+      await env.load({ decoration: "stars", decorationCount: 8, decorationPlacement: "nowhere" }); env.ok(JSON.stringify(pts()) === scattered, "an unknown place is scattered");
+      await env.load({ decoration: "stars", decorationCount: 4, themePreset: "midnight", decorationColor: "text" });
+      env.ok(items().every(i => i.style["--c"] === expectedPresets.midnight.text), "they can take the text colour (" + items()[0].style["--c"] + ")");
+      await env.load({ decoration: "stars", decorationCount: 4, themePreset: "midnight", decorationColor: "mixed" });
+      env.ok(items().map(i => i.style["--c"]).join() === [expectedPresets.midnight.accent, expectedPresets.midnight.text, expectedPresets.midnight.accent, expectedPresets.midnight.text].join(), "or the accent and the text colour in turn");
+      await env.load({ decoration: "stars", decorationCount: 3, decorationColor: "custom", decorationTint: "#ABCDEF" });
+      env.ok(items().every(i => i.style["--c"] === "#ABCDEF"), "or a colour of your own");
+      await env.load({ decoration: "stars", decorationColor: "nonsense" }); env.ok(items()[0].style["--c"] === expectedPresets.glass.accent, "an unknown colour choice is the accent");
+      await env.load({ decoration: "stars", decorationOpacity: 0.5 }); env.ok(layer().style["--w-deco-opacity"] === 0.5, "how solid they are is a setting");
+      await env.load({ decoration: "stars", decorationOpacity: 0 }); env.ok(layer().style["--w-deco-opacity"] === 0.1, "never quite invisible");
+      await env.load({ decoration: "stars" }); await env.load({ decoration: "none" });
+      env.ok(!layer() && !host.style.isolation, "turning them off takes them away");
+      await env.load({});
+    },
     // Every setting must be read by the widget, and every button handled.
     checkWired(prefixRe) {
       const noRead = Object.keys(fields).filter(k => fields[k].type !== "button" && src.indexOf("f." + k) === -1);

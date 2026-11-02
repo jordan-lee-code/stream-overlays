@@ -21,6 +21,7 @@ It is a single self-contained widget in plain JavaScript, with no dependencies a
 - Saved: the last 50 events and the totals survive a browser-source refresh.
 - Tests and a dev harness: a local harness with a time machine and an automated test script, so nothing needs a live stream.
 - An outer frame in the accent colour, on by default in every preset, and switched off with one checkbox (the flag's stripes in the pride presets).
+- Decorations: sparkles, hearts, stars, flowers, moons, snowflakes, bubbles, butterflies, clouds, leaves, paw prints, music notes or bows behind the words, scattered, along the edges, in the corners or on the border, in the accent colour, a pride flag's colours or a colour of your own, twinkling, drifting or still. Off by default.
 
 ## Screenshots
 
@@ -31,6 +32,10 @@ It is a single self-contained widget in plain JavaScript, with no dependencies a
 **Your own look.** Choose Custom for the style preset and every colour, the font, the outline and the wording are settings.
 
 <p><img src="docs/custom.png" alt="A pink activity feed in a script font" width="380"></p>
+
+**Decorations.** Hearts behind the words, here in the Rose preset.
+
+<p><img src="docs/decorations.png" alt="Recent activity with hearts in the Rose preset" width="380"></p>
 
 ## Style presets
 
@@ -121,10 +126,13 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | Manual controls | Buttons to clear the feed, or the feed and the totals. |
 | Look | Title, the style preset, font, boldness, corners, padding, outer frame, outline, shadow, Animate and whether it shrinks to fit the box. |
 | Custom colours | Panel, text, accent, tag and alert colours, used when the style preset is Custom. |
+| Decorations | The shape, where they go, how many, how big, how solid, their colour, and how they move. |
 | Sounds | A sound and volume for an event arriving, with a Test button and a master mute. |
 | Troubleshooting | A debug log of every event to the browser-source console. |
 
 The **outer frame** is a border round the widget in the preset's accent colour, on by default in every preset. Untick **An outer frame** under Look for none, or set the outline thickness to change how thick it is, since at 0 it has a default thickness that grows with the box. With the frame unticked, the outline is whatever you set, as before, in the outline colour. In a pride preset the frame is the flag's stripes, as a ring that follows the panel's corners.
+
+The **decorations** are small shapes drawn behind the words: sparkles, hearts, stars, flowers, moons, snowflakes, bubbles, butterflies, clouds, leaves, paw prints, music notes, bows, or a mix of sparkles, hearts and stars. Choose one under **Decorations**, then where they go (scattered, along the inside of the edges, in the corners, or on the border with half of each outside it), how many (up to 24), how big, how solid, and whether they twinkle in place, drift upwards or stay still. They take the accent colour, or in a pride preset the colours of the flag in turn, or you can ask for the text colour, both in turn, or a colour of your own. On the border they need a little room round the widget in its box, since StreamElements shows only what is inside the box, and a panel that fills its box has none. With Animate off they stay still. They are off by default.
 
 The full list, with defaults, is in [`widget/fields.json`](widget/fields.json). The colour and font pickers apply only when the style preset is **Custom**.
 

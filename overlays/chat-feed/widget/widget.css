@@ -194,6 +194,9 @@
 
 #cf-app { position: relative; }
 
+/* Decorations round each bubble hang half outside it, so the list leaves them a margin to show in. */
+#cf-app.decor-bubbles .cf-list { padding: 0.7em 1em; }
+
 /* In bubbles the frame belongs to each bubble and not to the whole widget, so a pride preset's ring is drawn round each one. */
 #cf-app.bubbles::after { display: none; }
 #cf-app.bubbles .cf-msg { position: relative; }
@@ -226,3 +229,63 @@
   mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   mask-composite: exclude;
 }
+
+/* ---- decorations, shared by every overlay in this set ---- */
+/* The shapes widget.js draws behind a panel's words. Each takes its position, size, colour and timing from custom properties. */
+.w-deco {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: -1;
+}
+.w-di {
+  position: absolute;
+  left: var(--x, 50%);
+  top: var(--y, 50%);
+  /* A share of the panel's width, but never more than a share of the box's, so a small sticker and a wide card both get shapes that suit them. */
+  --wd: min(calc(var(--w-deco-size, 1) * var(--s, 1) * 18%), calc(var(--w-deco-size, 1) * var(--s, 1) * 4.6cqw));
+  width: var(--wd);
+  aspect-ratio: 1;
+  background: var(--c, currentColor);
+  opacity: var(--w-deco-opacity, 0.8);
+  -webkit-mask-image: var(--m);
+  mask-image: var(--m);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+}
+/* On the border: nothing is clipped, and each shape is centred on its point, so half of it is outside the panel. There has to be
+   room round the widget in its box for that half to show. */
+.w-deco.outside { overflow: visible; }
+.w-deco.outside .w-di { margin: calc(var(--wd) * -0.5) 0 0 calc(var(--wd) * -0.5); }
+.w-di.sparkles { --m: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 0C13 8 16 11 24 12C16 13 13 16 12 24C11 16 8 13 0 12C8 11 11 8 12 0Z'/%3E%3C/svg%3E"); }
+.w-di.hearts { --m: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 21C5 15 1 11.5 1 7.5C1 4.5 3.3 2.5 6 2.5C8.5 2.5 10.7 4 12 6C13.3 4 15.5 2.5 18 2.5C20.7 2.5 23 4.5 23 7.5C23 11.5 19 15 12 21Z'/%3E%3C/svg%3E"); }
+.w-di.stars { --m: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 1.5L14.9 8.6L22.5 9.2L16.7 14.2L18.5 21.6L12 17.6L5.5 21.6L7.3 14.2L1.5 9.2L9.1 8.6Z'/%3E%3C/svg%3E"); }
+.w-di.flowers { --m: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='5.8' r='4.6'/%3E%3Ccircle cx='18.2' cy='10.3' r='4.6'/%3E%3Ccircle cx='15.8' cy='17.6' r='4.6'/%3E%3Ccircle cx='8.2' cy='17.6' r='4.6'/%3E%3Ccircle cx='5.8' cy='10.3' r='4.6'/%3E%3Ccircle cx='12' cy='12' r='3.4'/%3E%3C/svg%3E"); }
+.w-di.moons { --m: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M20 14.5A9 9 0 1 1 9.5 4A7 7 0 0 0 20 14.5Z'/%3E%3C/svg%3E"); }
+.w-di.snowflakes { --m: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg fill='none' stroke='%23000' stroke-width='2.2' stroke-linecap='round'%3E%3Cpath d='M12 2V22M3.3 7L20.7 17M3.3 17L20.7 7'/%3E%3C/g%3E%3C/svg%3E"); }
+.w-di.bubbles { --m: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='9' fill='none' stroke='%23000' stroke-width='2.4'/%3E%3Cpath d='M7.5 10A5 5 0 0 1 10.5 7' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E"); }
+.w-di.butterflies { --m: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 11C9 3 2 2 2 8C2 12 6 13 12 12C6 13 3 17 5 20C7 23 11 18 12 13C13 18 17 23 19 20C21 17 18 13 12 12C18 13 22 12 22 8C22 2 15 3 12 11Z'/%3E%3Crect x='11.1' y='5' width='1.8' height='14' rx='0.9'/%3E%3C/svg%3E"); }
+.w-di.clouds { --m: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6.5 19A4.5 4.5 0 0 1 6 10A6 6 0 0 1 17.2 8.2A4.8 4.8 0 0 1 18 19Z'/%3E%3C/svg%3E"); }
+.w-di.leaves { --m: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M20 3C9 3 4 9 4 15C4 17 5 19 6 20C7 14 11 10 17 8C12 11 9 15 8 21C16 21 21 14 20 3Z'/%3E%3C/svg%3E"); }
+.w-di.paws { --m: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cellipse cx='12' cy='16' rx='5.2' ry='4.4'/%3E%3Ccircle cx='5' cy='10' r='2.2'/%3E%3Ccircle cx='9.3' cy='5.8' r='2.3'/%3E%3Ccircle cx='14.7' cy='5.8' r='2.3'/%3E%3Ccircle cx='19' cy='10' r='2.2'/%3E%3C/svg%3E"); }
+.w-di.notes { --m: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg fill='none' stroke='%23000' stroke-width='2' stroke-linejoin='round'%3E%3Cpath d='M8.5 17V5L20 3V15'/%3E%3C/g%3E%3Ccircle cx='6' cy='17.5' r='3'/%3E%3Ccircle cx='17.5' cy='15.5' r='3'/%3E%3C/svg%3E"); }
+.w-di.bows { --m: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 12C8 5 2 5 2 10C2 15 8 15 12 12C16 15 22 15 22 10C22 5 16 5 12 12Z'/%3E%3Cpath d='M11 13L7 21L10 19.5L12 22L14 19.5L17 21L13 13Z'/%3E%3C/svg%3E"); }
+.w-deco.twinkle .w-di { animation: w-twinkle var(--d, 3s) ease-in-out var(--dl, 0s) infinite; }
+.w-deco.drift .w-di { animation: w-drift var(--d, 8s) linear var(--dl, 0s) infinite; }
+.w-deco.still .w-di { animation: none; }
+@keyframes w-twinkle {
+  0%, 100% { opacity: calc(var(--w-deco-opacity, 0.8) * 0.2); transform: scale(0.65); }
+  50% { opacity: calc(var(--w-deco-opacity, 0.8) * 1.1); transform: scale(1.1); }
+}
+@keyframes w-drift {
+  0% { opacity: 0; transform: translateY(1.5cqw) scale(0.8); }
+  25%, 70% { opacity: calc(var(--w-deco-opacity, 0.8) * 1.05); }
+  100% { opacity: 0; transform: translateY(-4cqw) scale(1.05); }
+}
+/* ---- end of the decorations ---- */

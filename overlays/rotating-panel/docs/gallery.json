@@ -42,6 +42,18 @@
         "entry2": "Discord | come and hang out"
       },
       "script": "chat('!panel go 2');"
+    },
+    {
+      "file": "decorations.png",
+      "width": 420,
+      "height": 150,
+      "base": "scene",
+      "fields": {
+        "decoration": "snowflakes",
+        "decorationCount": 10,
+        "themePreset": "frost",
+        "animate": false
+      }
     }
   ]
 }

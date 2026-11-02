@@ -22,6 +22,7 @@ It is a single self-contained widget in plain JavaScript, with no dependencies a
 - Customisable: around 46 settings cover how many messages show, the layout, pictures, pronouns, sizes, shape, outline, colours, fonts, sounds and animation.
 - Tests and a dev harness: a local harness where you can type a real Twitch login and see their real picture and pronouns, and an automated test script, so nothing needs a live stream.
 - An outer frame in the accent colour, on by default in every preset, and switched off with one checkbox (the flag's stripes in the pride presets).
+- Decorations: sparkles, hearts, stars, flowers, moons, snowflakes, bubbles, butterflies, clouds, leaves, paw prints, music notes or bows behind the words, scattered, along the edges, in the corners or on the border, in the accent colour, a pride flag's colours or a colour of your own, twinkling, drifting or still. Off by default.
 
 ## Screenshots
 
@@ -38,6 +39,14 @@ It is a single self-contained widget in plain JavaScript, with no dependencies a
 <p><img src="docs/bubble-mode.png" alt="Four chat messages on rounded bubbles that alternate between deep navy and pale periwinkle blue" width="420"></p>
 
 The pictures in these screenshots are drawn examples, not real profiles.
+
+**Decorations.** Hearts behind the words, here in the Pastel pink preset.
+
+<p><img src="docs/decorations.png" alt="Chat feed with hearts in the Pastel pink preset" width="420"></p>
+
+With bubble mode or the bubbles card style, tick **Put the decorations round each chat bubble** and each bubble gets its own: a larger one on a lower corner and smaller ones at the ends, half outside its edge, mirrored on every other bubble.
+
+<p><img src="docs/decorations-bubbles.png" alt="Chat feed in bubble mode with hearts round each bubble" width="420"></p>
 
 ## Style presets
 
@@ -140,11 +149,14 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | Size | Text size and the space between messages. |
 | Look | Title, the style preset, font, boldness, corners, padding, outer frame, outline, shadow and Animate. |
 | Custom colours | Panel, text, accent, tag and alert colours, used when the style preset is Custom. |
+| Decorations | The shape, where they go, how many, how big, how solid, their colour, and how they move. |
 | Manual controls | Buttons to show example messages and to clear the screen. |
 | Sounds | A sound and volume for a message arriving, with a Test button and a master mute. |
 | Troubleshooting | A debug log of every event to the browser-source console. |
 
 The **outer frame** is a border round the widget in the preset's accent colour, on by default in every preset. Untick **An outer frame** under Look for none, or set the outline thickness to change how thick it is, since at 0 it has a default thickness that grows with the box. With the frame unticked, the outline is whatever you set, as before, in the outline colour. In a pride preset the frame is the flag's stripes, as a ring that follows the panel's corners.
+
+The **decorations** are small shapes drawn behind the words: sparkles, hearts, stars, flowers, moons, snowflakes, bubbles, butterflies, clouds, leaves, paw prints, music notes, bows, or a mix of sparkles, hearts and stars. Choose one under **Decorations**, then where they go (scattered, along the inside of the edges, in the corners, or on the border with half of each outside it), how many (up to 24), how big, how solid, and whether they twinkle in place, drift upwards or stay still. They take the accent colour, or in a pride preset the colours of the flag in turn, or you can ask for the text colour, both in turn, or a colour of your own. On the border they need a little room round the widget in its box, since StreamElements shows only what is inside the box, and a panel that fills its box has none. With Animate off they stay still. They are off by default. Under bubble mode or the bubbles card style you can put them round each chat bubble instead of the whole panel, up to six a bubble, and the list leaves a little margin for them to show in.
 
 The full list, with defaults, is in [`widget/fields.json`](widget/fields.json). The colour and font pickers apply only when the style preset is **Custom**.
 

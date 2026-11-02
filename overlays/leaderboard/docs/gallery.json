@@ -48,6 +48,18 @@
         "formatGifts": "{n} gifts"
       },
       "script": "function bomb(n,w){sub({gifted:true,bulkGifted:true,amount:n,sender:w,tier:'1000'})}bomb(24,'Alice');bomb(15,'Bea');bomb(10,'Cass');bomb(6,'Dev');bomb(3,'Eli');cheer(2500,'Dev');cheer(1800,'Alice');cheer(900,'Gus');cheer(450,'Hana');cheer(200,'Bea');"
+    },
+    {
+      "file": "decorations.png",
+      "width": 340,
+      "height": 190,
+      "base": "scene",
+      "fields": {
+        "decoration": "stars",
+        "decorationCount": 10,
+        "themePreset": "midnight",
+        "animate": false
+      }
     }
   ]
 }

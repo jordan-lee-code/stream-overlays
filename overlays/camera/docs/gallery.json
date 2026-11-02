@@ -134,6 +134,19 @@
         "frameWidth": 2.5
       },
       "script": "chat('!camera away 5m');"
+    },
+    {
+      "file": "decorations.png",
+      "width": 420,
+      "height": 300,
+      "base": "scene",
+      "fields": {
+        "decoration": "butterflies",
+        "decorationCount": 10,
+        "themePreset": "pastelgoth",
+        "animate": false,
+        "decorationPlacement": "edges"
+      }
     }
   ]
 }
