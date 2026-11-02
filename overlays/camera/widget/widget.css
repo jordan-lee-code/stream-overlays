@@ -123,9 +123,10 @@
 .cam-hold.done { display: none; }
 
 .cam-app {
+  --w-inset: max(0px, calc((var(--w-radius) - 24px) * 0.36));   /* the least room round the content that keeps its corners inside the panel's rounded ones */
   flex: 0 0 auto;
   width: 100%;
-  padding: calc(var(--w-pad) * 1em) 3cqw;
+  padding: max(calc(var(--w-pad) * 1em), var(--w-inset, 0px)) max(3cqw, var(--w-inset, 0px));
   font-family: var(--w-font);
   font-size: var(--cam-size, 5cqw);
   text-align: center;

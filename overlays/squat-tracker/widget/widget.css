@@ -78,7 +78,9 @@
   align-items: center;
   justify-content: center;
   gap: calc(var(--gap) * 1cqmin);
-  padding: calc(var(--pad-v) * 1cqmin) calc(var(--pad-h) * 1cqmin);
+  /* The least room round the content that keeps its corners inside the card's rounded ones. */
+  --w-inset: max(0cqmin, calc((var(--radius-pct) - 14) * 0.36cqmin));
+  padding: max(calc(var(--pad-v) * 1cqmin), var(--w-inset)) max(calc(var(--pad-h) * 1cqmin), var(--w-inset));
   background: var(--accent);
   background-image: var(--box-img, none);
   color: var(--c-count);
