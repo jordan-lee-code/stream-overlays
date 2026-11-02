@@ -269,6 +269,9 @@ module.exports = function createEnv(root) {
       env.ok(items().every(i => i.style["--c"] === "#ABCDEF"), "or a colour of your own");
       await env.load({ decoration: "stars", decorationColor: "nonsense" }); env.ok(items()[0].style["--c"] === expectedPresets.glass.accent, "an unknown colour choice is the accent");
       await env.load({ decoration: "stars", decorationOpacity: 0.7 }); env.ok(layer().style["--w-deco-opacity"] === 0.7, "how solid they are is a setting");
+      const decoCss = fs.readFileSync(path.join(root, "widget", "widget.css"), "utf8");
+      const dip = /@keyframes w-twinkle\s*\{\s*0%, 100%\s*\{\s*opacity:\s*calc\(var\(--w-deco-opacity, 0\.5\) \* ([\d.]+)\)/.exec(decoCss);
+      env.ok(dip && parseFloat(dip[1]) >= 0.5 && parseFloat(dip[1]) < 1, "a twinkling shape dips only part of the way from the opacity that was set, so a solid one stays mostly bright (" + (dip && dip[1]) + ")");
       await env.load({ decoration: "stars" }); env.ok(layer().style["--w-deco-opacity"] === 0.5, "half solid unless asked, so words stay readable over them");
       await env.load({ decoration: "stars", decorationOpacity: 0 }); env.ok(layer().style["--w-deco-opacity"] === 0.1, "never quite invisible");
       await env.load({ decoration: "stars" }); await env.load({ decoration: "none" });

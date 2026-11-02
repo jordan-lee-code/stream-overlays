@@ -546,7 +546,7 @@
   },
   "decorationOpacity": {
     "type": "number",
-    "label": "How solid the decorations are, 0.1 to 1",
+    "label": "Decoration opacity, 0.1 to 1 (separate from the panel's opacity, and 1 is fully solid). Twinkling dips a little and drifting fades in and out, so choose Stay still to keep them fully solid",
     "value": 0.5,
     "min": 0.1,
     "max": 1,

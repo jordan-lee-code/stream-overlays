@@ -283,7 +283,7 @@
 .w-deco.drift .w-di { animation: w-drift var(--d, 8s) linear var(--dl, 0s) infinite; }
 .w-deco.still .w-di { animation: none; }
 @keyframes w-twinkle {
-  0%, 100% { opacity: calc(var(--w-deco-opacity, 0.5) * 0.2); transform: scale(0.65); }
+  0%, 100% { opacity: calc(var(--w-deco-opacity, 0.5) * 0.55); transform: scale(0.75); }
   50% { opacity: calc(var(--w-deco-opacity, 0.5) * 1.1); transform: scale(1.1); }
 }
 @keyframes w-drift {
