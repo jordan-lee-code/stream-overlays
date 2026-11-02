@@ -123,7 +123,9 @@
   display: flex;
   flex-direction: column;
   gap: calc(var(--gap) * 1em);
-  padding: calc(var(--pad-v) * 1em) calc(var(--pad-h) * 1em) calc(var(--pad-v) * 0.8em);
+  /* The least room round the content that keeps its corners inside the card's rounded ones. */
+  --w-inset: max(0em, calc((var(--radius) - 0.8) * 0.36em));
+  padding: max(calc(var(--pad-v) * 1em), var(--w-inset)) max(calc(var(--pad-h) * 1em), var(--w-inset)) max(calc(var(--pad-v) * 0.8em), var(--w-inset));
   background: var(--bg);
   background-image: var(--bg-img, none);
   border: calc(var(--border-w) * 1em) solid var(--c-border);

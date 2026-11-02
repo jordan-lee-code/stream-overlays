@@ -40,7 +40,7 @@
   gap: 0.9em;
   width: 100%;
   height: var(--np-card-h, auto);
-  padding: calc(var(--w-pad) * 1em);
+  padding: calc(var(--w-pad) * 1em) max(calc(var(--w-pad) * 1em), max(0px, calc((var(--w-radius) - 24px) * 0.36)));
   font-family: var(--w-font);
   font-size: var(--np-size, 4.2cqw);
   color: var(--w-text);

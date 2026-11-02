@@ -82,7 +82,9 @@
   width: 100%;
   min-width: 0;
   overflow: hidden;
-  padding: var(--pad-v) var(--pad-h);
+  /* The least room round the content that keeps its corners inside the card's rounded ones. */
+  --w-inset: max(0px, calc((var(--radius) - 24px) * 0.36));
+  padding: max(var(--pad-v), var(--w-inset)) max(var(--pad-h), var(--w-inset));
   background: var(--panel);
   background-image: var(--panel-img, none);
   border: var(--border-w) solid var(--border-c);

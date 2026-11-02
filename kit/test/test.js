@@ -145,6 +145,21 @@ asection("fitting a card to its box");
   });
 }
 
+asection("rounded corners");
+{
+  const repoRoot = path.join(__dirname, "..", "..");
+  // An overlay whose panel is a window the words scroll through is meant to have them pass behind its corners.
+  const SCROLLS = { "end-credits": "its panel is a window the credits scroll through" };
+  fs.readdirSync(path.join(repoRoot, "overlays")).filter(n => fs.statSync(path.join(repoRoot, "overlays", n)).isDirectory()).sort().forEach(n => {
+    const fields = JSON.parse(fs.readFileSync(path.join(repoRoot, "overlays", n, "widget", "fields.json"), "utf8"));
+    if (!fields.radius || SCROLLS[n]) return;
+    atest(n + " keeps its content inside its rounded corners", () => {
+      const css = fs.readFileSync(path.join(repoRoot, "overlays", n, "widget", "widget.css"), "utf8");
+      assert.ok(/\*\s*0\.36(em|cqmin)?\)/.test(css) && /padding:[^;]*max\(/.test(css),         n + " has a corner radius but its padding does not make room for it (see Content stays inside rounded corners in docs/STANDARDS.md)");
+    });
+  });
+}
+
 asection("the website");
 {
   const site = require("../../scripts/build-site");

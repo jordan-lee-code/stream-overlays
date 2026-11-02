@@ -34,6 +34,7 @@
   --w-alarm: #D64545;
   --w-font: "BioRhyme", Georgia, serif;
   --w-radius: 24px;
+  --w-inset: max(0px, calc((var(--w-radius) - 24px) * 0.36));   /* the least room round the content that keeps its corners inside the panel's rounded ones */
   --w-pad: 0.5;
   --w-weight: 800;
   --w-border: 0 solid #FFFFFF;
@@ -44,7 +45,7 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  padding: calc(var(--w-pad) * 1em) 3cqw;
+  padding: max(calc(var(--w-pad) * 1em), var(--w-inset, 0px)) max(3cqw, var(--w-inset, 0px));
   font-family: var(--w-font);
   font-size: var(--cf-size, 4.2cqw);
   color: var(--w-text);
