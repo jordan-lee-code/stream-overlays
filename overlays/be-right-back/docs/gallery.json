@@ -1,0 +1,89 @@
+{
+  "width": 640,
+  "height": 360,
+  "fields": {
+    "animate": false
+  },
+  "script": "chat('!brb at 20:00');",
+  "pictures": [
+    {
+      "file": "default.png",
+      "width": 640,
+      "height": 360,
+      "fields": {
+        "animate": false
+      },
+      "script": "chat('!brb at 20:00');"
+    },
+    {
+      "file": "away.png",
+      "width": 640,
+      "height": 360,
+      "fields": {
+        "animate": false
+      },
+      "script": "chat('!brb');__t+=192000;"
+    },
+    {
+      "file": "late.png",
+      "width": 640,
+      "height": 360,
+      "fields": {
+        "animate": false
+      },
+      "script": "chat('!brb 1s');__t+=2000;"
+    },
+    {
+      "file": "idle.png",
+      "width": 640,
+      "height": 360,
+      "fields": {
+        "animate": false,
+        "messages": "Back in a few minutes"
+      },
+      "script": ""
+    },
+    {
+      "file": "stretched.png",
+      "width": 300,
+      "height": 460,
+      "fields": {
+        "animate": false,
+        "themePreset": "trans"
+      },
+      "script": "chat('!brb at 21:00');"
+    },
+    {
+      "file": "custom.png",
+      "width": 640,
+      "height": 360,
+      "fields": {
+        "animate": false,
+        "themePreset": "custom",
+        "colorPanel": "#3a1030",
+        "panelOpacity": 0.9,
+        "cText": "#FFE3F1",
+        "cAccent": "#FF8FC7",
+        "fontFamily": "Lobster",
+        "radius": 36,
+        "title": "Gone for a bit",
+        "showReturn": false,
+        "messages": "Settle in with a warm drink"
+      },
+      "script": "chat('!brb at 20:00');"
+    },
+    {
+      "file": "decorations.png",
+      "width": 640,
+      "height": 360,
+      "base": "scene",
+      "fields": {
+        "decoration": "moons",
+        "decorationCount": 10,
+        "themePreset": "midnight",
+        "animate": false
+      }
+    }
+  ],
+  "setup": "var __t=(function(){var d=new Date();d.setHours(19,55,28,0);return d.getTime();})();Date.now=function(){return __t;};"
+}
