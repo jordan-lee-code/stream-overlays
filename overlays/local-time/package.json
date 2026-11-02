@@ -1,0 +1,34 @@
+{
+  "name": "local-time-overlay",
+  "version": "1.0.0",
+  "description": "A StreamElements custom widget: the time in any timezone, with a line above it such as Local timezone: GMT.",
+  "private": true,
+  "license": "MIT",
+  "author": "Jordan Lee",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jordan-lee-code/stream-overlays.git",
+    "directory": "overlays/local-time"
+  },
+  "bugs": {
+    "url": "https://github.com/jordan-lee-code/stream-overlays/issues"
+  },
+  "homepage": "https://github.com/jordan-lee-code/stream-overlays/tree/main/overlays/local-time",
+  "keywords": [
+    "streamelements",
+    "twitch",
+    "overlay",
+    "widget",
+    "clock",
+    "time",
+    "timezone"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "funding": "https://ko-fi.com/journeyingjordan",
+  "scripts": {
+    "test": "node test/test-widget.js",
+    "dev": "python3 -m http.server 8000"
+  }
+}

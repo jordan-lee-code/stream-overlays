@@ -1,0 +1,296 @@
+/* A small mock of the page and StreamElements, shared by the tests. It runs the real
+   widget/widget.js with a clock the test controls, drives it through the same
+   onWidgetLoad and onEventReceived events StreamElements sends, and lets the test read
+   the rendered result back out. */
+const fs = require("fs"), vm = require("vm"), path = require("path");
+const createClock = require("./clock");
+
+module.exports = function createEnv(root) {
+  const src = fs.readFileSync(path.join(root, "widget/widget.js"), "utf8");
+  const fields = JSON.parse(fs.readFileSync(path.join(root, "widget/fields.json"), "utf8"));
+  const expectedPresets = JSON.parse(fs.readFileSync(path.join(root, "test/presets.expected.json"), "utf8"));
+
+  function makeEl(id) {
+    const e = {
+      scrollWidth: 0, clientWidth: 0, offsetHeight: 0, clientHeight: 0, offsetWidth: 0,
+      id, tagName: "div", className: "", textContent: "", innerHTML: "", hidden: false, href: "", rel: "",
+      parentNode: null, children: [], _cls: new Set(), _attrs: {},
+      style: { setProperty(k, v) { this[k] = v; } },
+      classList: {
+        _s: null, add(c) { this._s.add(c); }, remove(c) { this._s.delete(c); },
+        contains(c) { return this._s.has(c); },
+        toggle(c, on) { if (on === undefined) on = !this._s.has(c); if (on) this._s.add(c); else this._s.delete(c); }
+      },
+      setAttribute(k, v) { this._attrs[k] = v; }, getAttribute(k) { return this._attrs[k]; },
+      removeAttribute(k) { delete this._attrs[k]; if (k === "src") this.src = ""; },
+      addEventListener() {},
+      appendChild(c) { return this.insertBefore(c, null); },
+      insertBefore(c, ref) {
+        if (c.parentNode) c.parentNode.removeChild(c);
+        const at = ref ? this.children.indexOf(ref) : -1;
+        if (at === -1) this.children.push(c); else this.children.splice(at, 0, c);
+        c.parentNode = this; return c;
+      },
+      removeChild(c) { const at = this.children.indexOf(c); if (at !== -1) this.children.splice(at, 1); c.parentNode = null; return c; },
+      get firstChild() { return this.children[0] || null; }
+    };
+    e.classList._s = e._cls; return e;
+  }
+  const elements = {};
+  const document = {
+    getElementById: id => (elements[id] = elements[id] || makeEl(id)),
+    createElement: tag => { const e = makeEl("x"); e.tagName = tag; return e; },
+    head: makeEl("head"), body: makeEl("body"), fonts: null
+  };
+  const E = id => document.getElementById(id);
+
+  const listeners = {};
+  const window = {
+    addEventListener(t, fn) { (listeners[t] = listeners[t] || []).push(fn); },
+    dispatchEvent(e) { (listeners[e.type] || []).forEach(fn => fn(e)); }
+  };
+  class CustomEvent { constructor(t, i) { this.type = t; this.detail = i && i.detail; } }
+  const storeData = {};
+  const SE_API = { store: {
+    set(k, v) { storeData[k] = JSON.parse(JSON.stringify(v)); return Promise.resolve(); },
+    // A test can make the store slow, with env.storeLatency in pretend milliseconds, or one that never answers, with Infinity.
+    get(k) {
+      const v = storeData[k] ? JSON.parse(JSON.stringify(storeData[k])) : null;
+      if (env.storeLatency === undefined) return Promise.resolve(v);
+      if (env.storeLatency === Infinity) return new Promise(() => {});
+      return new Promise(r => clock.setTimeout(() => r(v), env.storeLatency));
+    }
+  } };
+  const audioLog = [];
+  class Audio {
+    constructor(s) { this.src = s; this.volume = 1; audioLog.push(this); }
+    play() { this.played = true; return Promise.resolve(); }
+  }
+  // A pretend network. A test sets what each address answers with: `env.net((url, opts) => ({ text: "..." }))`
+  // or `({ json: [...] })`, `({ ok: false })`, `({ status: 204 })`, `({ json: {}, headers: { "Retry-After": 7 } })`, or throws to
+  // be offline. Every request is logged, and `env.fetchOpts` has the options each was made with (method, headers, body).
+  const fetchLog = [], fetchOpts = [];
+  let netHandler = () => { throw new Error("offline"); };
+  const fetch = (url, opts) => {
+    fetchLog.push(String(url)); fetchOpts.push(opts || null);
+    return Promise.resolve().then(() => netHandler(String(url), opts || {})).then(r => {
+      const status = r.status || (r.ok === false ? 404 : 200);
+      return {
+        ok: r.ok !== false && status < 400, status,
+        headers: { get: k => ((r.headers || {})[k] === undefined ? null : String(r.headers[k])) },
+        text: () => Promise.resolve(r.text === undefined ? JSON.stringify(r.json) : r.text),
+        json: () => Promise.resolve(r.json)
+      };
+    });
+  };
+  // Time is pretend. The widget's timers run on this clock, and `wait` moves it, so a test never
+  // sleeps. The date the widget reads is separate and stays still until a test sets `env.fake`,
+  // which is how a test makes minutes or hours pass for a widget that works from the date.
+  const clock = createClock();
+  const env = { fake: 1700000000000, clock };
+  class FakeDate extends Date { static now() { return env.fake; } }
+  const sandbox = {
+    window, document, CustomEvent, SE_API, Audio, Date: FakeDate, fetch,
+    setTimeout: clock.setTimeout, clearTimeout: clock.clearTimeout, setInterval: clock.setInterval, clearInterval: clock.clearInterval,
+    console, Math, Promise, JSON,
+    parseFloat, parseInt, isNaN, String, Array, Object, encodeURIComponent, RegExp
+  };
+  sandbox.global = sandbox; vm.createContext(sandbox); vm.runInContext(src, sandbox);
+
+  let pass = 0, fail = 0;
+  const wait = ms => clock.advance(ms);
+  let lastFD = {};
+  Object.assign(env, {
+    src, fields, expectedPresets, E, storeData, audioLog, wait, fetchLog, fetchOpts, document,
+    net(fn) { netHandler = fn; fetchLog.length = 0; fetchOpts.length = 0; },
+    ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } else { fail++; console.log("  FAIL " + msg); } },
+    section(t) { console.log("\n[" + t + "]"); },
+    fieldData(ov) {
+      const fd = {}; Object.keys(fields).forEach(k => { if (fields[k].type !== "button") fd[k] = fields[k].value; });
+      return Object.assign(fd, ov || {});
+    },
+    async load(ov, keep) {
+      if (!keep) Object.keys(storeData).forEach(k => delete storeData[k]);
+      lastFD = env.fieldData(ov);
+      window.dispatchEvent(new CustomEvent("onWidgetLoad", { detail: { fieldData: lastFD } }));
+      await wait(5);
+    },
+    async reload() { window.dispatchEvent(new CustomEvent("onWidgetLoad", { detail: { fieldData: lastFD } })); await wait(5); },
+    // A plain window event, such as a resize.
+    fire(type) { window.dispatchEvent(new CustomEvent(type)); },
+    ev(listener, event) { window.dispatchEvent(new CustomEvent("onEventReceived", { detail: { listener, event } })); },
+    chat(text, o) {
+      o = o || {}; const badges = [];
+      if (o.broadcaster) badges.push({ type: "broadcaster" });
+      if (o.mod) badges.push({ type: "moderator" });
+      env.ev("message", { data: { text, nick: (o.nick || "viewer").toLowerCase(), displayName: o.nick || "Viewer", badges, tags: { mod: o.mod ? "1" : "0" } } });
+    },
+    boss(t) { env.chat(t, { broadcaster: true }); },
+    button(field) { env.ev("widget-button", { field }); },
+    async advance(ms) { env.fake += ms; await wait(260); },
+    async settled() { await wait(260); },
+    vars(id) { return E(id).style; },
+    // Every preset's label, panel, text, accent and font must match the shared table, in
+    // the same order, with Custom last. `appId` is the card that carries the --w-* variables.
+    async checkPresets(appId) {
+      const opts = fields.themePreset.options, keys = Object.keys(opts);
+      env.ok(keys.length === Object.keys(expectedPresets).length + 1 && keys[keys.length - 1] === "custom", "the dropdown has the twenty-two shared presets and Custom (" + keys.length + ")");
+      env.ok(fields.themePreset.value === "glass", "Soft black is the default");
+      let all = true;
+      for (const key of Object.keys(expectedPresets)) {
+        const x = expectedPresets[key];
+        if (opts[key] !== x.label) { all = false; console.log("    label differs for " + key); }
+        await env.load({ themePreset: key });
+        const v = env.vars(appId);
+        if (v["--w-bg"] !== x.panel || v["--w-text"] !== x.text || v["--w-accent"] !== x.accent || String(v["--w-font"]).indexOf('"' + x.font + '"') !== 0) {
+          all = false; console.log("    colours differ for " + key + ": " + v["--w-bg"]);
+        }
+        // A pride preset puts its flag behind the panel as an image. Every other preset leaves the panel plain.
+        if (v["--w-edge"] !== (x.flag ? "inset 0 0 0 1px rgba(20, 16, 38, 0.38)" : "none")) { all = false; console.log("    outline differs for " + key + ": " + v["--w-edge"]); }
+        if (v["--w-bgimg"] !== (x.bgimg || "none")) { all = false; console.log("    panel image differs for " + key + ": " + v["--w-bgimg"]); }
+        // A pride preset gives bars the stripes of its flag, top to bottom. Every other preset gives them the accent.
+        const wantFlag = x.flag ? "linear-gradient(180deg, " + x.flag[0] + " 0% " + (100 / x.flag.length) + "%" : x.accent;
+        if (x.flag ? String(v["--w-flag"]).indexOf(wantFlag) !== 0 || String(v["--w-flag"]).split(", ").length !== x.flag.length + 1 : v["--w-flag"] !== wantFlag) {
+          all = false; console.log("    bar differs for " + key + ": " + v["--w-flag"]);
+        }
+      }
+      env.ok(all, "every preset's label, panel, text, accent and font match the shared table");
+      await env.load({ themePreset: "custom", colorPanel: "#102030", panelOpacity: 0.5, cText: "#112233", cAccent: "#445566", cWarn: "#778899", fontFamily: "Lobster" });
+      const v = env.vars(appId);
+      env.ok(v["--w-bg"] === "rgba(16, 32, 48, 0.5)" && v["--w-text"] === "#112233" && v["--w-accent"] === "#445566" && v["--w-alarm"] === "#778899", "Custom uses the colour pickers (" + v["--w-bg"] + ")");
+      env.ok(String(v["--w-font"]).indexOf("Lobster") !== -1, "and the font setting");
+      await env.load({ themePreset: "celestial", colorPanel: "#102030", cText: "#112233" });
+      env.ok(env.vars(appId)["--w-text"] === expectedPresets.celestial.text, "a preset ignores the colour pickers");
+      await env.load({ themePreset: "nonsense" });
+      env.ok(env.vars(appId)["--w-bg"] !== undefined, "an unknown preset name does not break the widget");
+      // Panel opacity with a preset: off unless asked for, and then it sets how solid the preset's panel is, and fades a flag's stripes too.
+      await env.load({ themePreset: "glass", panelOpacity: 0.2 });
+      env.ok(env.vars(appId)["--w-bg"] === expectedPresets.glass.panel, "a preset keeps its own opacity unless the checkbox is ticked (" + env.vars(appId)["--w-bg"] + ")");
+      await env.load({ themePreset: "glass", usePanelOpacity: true, panelOpacity: 0.3 });
+      env.ok(env.vars(appId)["--w-bg"] === "rgba(0, 0, 0, 0.3)" && env.vars(appId)["--w-text"] === expectedPresets.glass.text && env.vars(appId)["--w-accent"] === expectedPresets.glass.accent, "ticked, the panel takes that opacity and nothing else about the preset changes (" + env.vars(appId)["--w-bg"] + ")");
+      await env.load({ themePreset: "pastelpink", usePanelOpacity: true, panelOpacity: 0.3 });
+      env.ok(env.vars(appId)["--w-bg"] === "rgba(255, 227, 236, 0.3)", "a solid colour preset turns see-through too (" + env.vars(appId)["--w-bg"] + ")");
+      await env.load({ themePreset: "pride", usePanelOpacity: true, panelOpacity: 0.3 });
+      env.ok(/^rgba\(194, 168, 154, 0\.3\)$/.test(env.vars(appId)["--w-bg"]) && String(env.vars(appId)["--w-bgimg"]).indexOf("#") === -1 && /rgba\(229, 0, 0, 0\.3\)/.test(env.vars(appId)["--w-bgimg"]) && /0\.135/.test(env.vars(appId)["--w-bgimg"]), "and a flag's stripes and the light wash over them fade with it (" + env.vars(appId)["--w-bgimg"] + ")");
+      await env.load({ themePreset: "glass", usePanelOpacity: true, panelOpacity: 1 });
+      env.ok(env.vars(appId)["--w-bg"] === "rgba(0, 0, 0, 1)", "at 1 it is solid");
+      await env.load({ themePreset: "glass", usePanelOpacity: true, panelOpacity: 9 });
+      env.ok(env.vars(appId)["--w-bg"] === "rgba(0, 0, 0, 1)", "and never more than that");
+      await env.load({ themePreset: "custom", colorPanel: "#102030", usePanelOpacity: true, panelOpacity: 0.5 });
+      env.ok(env.vars(appId)["--w-bg"] === "rgba(16, 32, 48, 0.5)", "Custom is as it was, with the box ticked or not");
+    },
+    // The outer frame: a border round the widget in the accent colour, on by default, in every preset. `appId` is the element
+    // that carries the --w-* variables, as for checkPresets.
+    async checkFrame(appId) {
+      const border = () => String(env.vars(appId)["--w-border"]);
+      const DEFAULT = "max(2px, 0.6cqw)";
+      let all = true, flags = 0;
+      const ring = () => String(env.vars(appId)["--w-frame-img"]);
+      for (const key of Object.keys(expectedPresets)) {
+        await env.load({ themePreset: key });
+        const x = expectedPresets[key];
+        // A plain preset's frame is its accent. A pride preset's is its flag's stripes, as a ring, so the border is only the room it takes.
+        const want = x.flag ? DEFAULT + " solid transparent" : DEFAULT + " solid " + x.accent;
+        const stripesOk = x.flag ? ring().indexOf("linear-gradient(180deg, " + x.flag[0]) === 0 && ring().split(", ").length === x.flag.length + 1 : ring() === "none";
+        if (border() !== want || !stripesOk) { all = false; console.log("    frame differs for " + key + ": " + border() + " / " + ring().slice(0, 60)); }
+        if (x.flag) flags++;
+      }
+      env.ok(all, "by default there is an outer frame in every one of the " + Object.keys(expectedPresets).length + " presets: the accent colour, and for the " + flags + " pride flags their stripes, as thick as a default that grows with the box");
+      await env.load({ outerFrame: false });
+      env.ok(border() === "0px solid #FFFFFF", "it can be switched off, which leaves no outline (" + border() + ")");
+      await env.load({ outerFrame: false, themePreset: "trans" });
+      env.ok(ring() === "none" && border() === "0px solid #FFFFFF", "and that takes a pride preset's stripes away too (" + ring().slice(0, 30) + ")");
+      await env.load({ borderWidth: 6 });
+      env.ok(border() === "6px solid " + expectedPresets.glass.accent, "a thickness sets the frame's thickness (" + border() + ")");
+      await env.load({ themePreset: "custom", cAccent: "#FF00AA", borderColor: "#010101", borderWidth: 3 });
+      env.ok(border() === "3px solid #FF00AA", "and in Custom the frame is the accent colour you picked, not the outline colour (" + border() + ")");
+      await env.load({ themePreset: "custom", cAccent: "#FF00AA", borderColor: "#010101", borderWidth: 3, outerFrame: false });
+      env.ok(border() === "3px solid #010101", "with the frame unticked a Custom outline is the colour and thickness you set (" + border() + ")");
+      await env.load({});
+    },
+    // The decorations: shapes drawn behind a panel's words, off by default. `hostId` is the panel they are drawn in.
+    async checkDecor(hostId) {
+      const host = E(hostId);
+      const layer = () => host.children.find(c => String(c.className).indexOf("w-deco") === 0);
+      const items = () => (layer() ? layer().children : []);
+      const xs = () => items().map(i => i.style["--x"] + "," + i.style["--y"]).join(";");
+      await env.load({});
+      env.ok(!layer() && !host.style.isolation, "there are no decorations unless they are asked for");
+      await env.load({ decoration: "hearts", decorationCount: 6 });
+      env.ok(items().length === 6 && items().every(i => i.className === "w-di hearts") && host.children[0] === layer(), "choosing hearts draws six, as the first thing in the panel so they sit behind its words");
+      env.ok(host.style.isolation === "isolate", "and the panel keeps them above its own background and below its words");
+      await env.reload();
+      env.ok(host.children.filter(c => String(c.className).indexOf("w-deco") === 0).length === 1, "loading again does not pile them up");
+      const first = xs(); await env.load({ decoration: "hearts", decorationCount: 6 });
+      env.ok(xs() === first && first.indexOf("undefined") === -1, "they sit in the same places each time (" + first.split(";")[0] + ")");
+      await env.load({ decoration: "sparkles", decorationCount: 99 }); env.ok(items().length === 24, "no more than 24");
+      await env.load({ decoration: "sparkles", decorationCount: 0 }); env.ok(items().length === 1, "and at least one");
+      await env.load({ decoration: "mixed", decorationCount: 6 });
+      env.ok(items().map(i => i.className.split(" ")[1]).join() === "sparkles,hearts,stars,sparkles,hearts,stars", "mixed takes sparkles, hearts and stars in turn");
+      for (const kind of ["sparkles", "hearts", "stars", "flowers", "moons", "snowflakes", "bubbles", "butterflies", "clouds", "leaves", "paws", "notes", "bows"]) {
+        await env.load({ decoration: kind, decorationCount: 2 });
+        if (!items().every(i => i.className === "w-di " + kind)) env.ok(false, kind + " is not drawn");
+      }
+      env.ok(true, "sparkles, hearts, stars, flowers, moons, snowflakes, bubbles, butterflies, clouds, leaves, paw prints, music notes and bows are all shapes");
+      await env.load({ decoration: "confetti" }); env.ok(!layer(), "a shape that does not exist is none");
+      await env.load({ decoration: "stars", decorationMotion: "twinkle" }); env.ok(layer().className === "w-deco twinkle", "they twinkle by default");
+      await env.load({ decoration: "stars", decorationMotion: "drift" }); env.ok(layer().className === "w-deco drift", "or drift upwards");
+      await env.load({ decoration: "stars", decorationMotion: "still" }); env.ok(layer().className === "w-deco still", "or stay still");
+      await env.load({ decoration: "stars", decorationMotion: "spin" }); env.ok(layer().className === "w-deco twinkle", "an unknown motion twinkles");
+      await env.load({ decoration: "stars", animate: false }); env.ok(layer().className.split(" ").indexOf("still") !== -1, "with Animate off they stay still");
+      await env.load({ decoration: "stars", decorationSize: 2 }); env.ok(layer().style["--w-deco-size"] === 2, "their size is a setting");
+      await env.load({ decoration: "stars", decorationSize: 99 }); env.ok(layer().style["--w-deco-size"] === 4, "within limits");
+      await env.load({ decoration: "stars", decorationCount: 5 });
+      env.ok(items().every(i => i.style["--c"] === expectedPresets.glass.accent), "they take the accent colour (" + items()[0].style["--c"] + ")");
+      await env.load({ decoration: "stars", decorationCount: 7, themePreset: "trans" });
+      const flag = expectedPresets.trans.flag;
+      env.ok(items().every((i, n) => i.style["--c"].toLowerCase() === flag[n % flag.length].toLowerCase()), "and in a pride preset the colours of its flag, in turn (" + items().map(i => i.style["--c"]).join(" ") + ")");
+      const pts = () => items().map(i => [parseFloat(i.style["--x"]), parseFloat(i.style["--y"])]);
+      await env.load({ decoration: "stars", decorationCount: 8 }); const scattered = JSON.stringify(pts());
+      await env.load({ decoration: "stars", decorationCount: 8, decorationPlacement: "edges" });
+      env.ok(pts().every(([x, y]) => x <= 6 || x >= 86 || y <= 6 || y >= 82) && JSON.stringify(pts()) !== scattered, "along the edges every shape sits on the border");
+      await env.load({ decoration: "stars", decorationCount: 8, decorationPlacement: "border" });
+      env.ok(layer().className.split(" ").indexOf("outside") !== -1 && pts().every(([x, y]) => x < 0.1 || x > 99.9 || y < 0.1 || y > 99.9), "on the border every shape sits on the edge itself, and the layer is let out to show the half that is outside");
+      await env.load({ decoration: "stars", decorationCount: 8, decorationPlacement: "edges" }); env.ok(layer().className.split(" ").indexOf("outside") === -1, "while along the edges stays inside");
+      await env.load({ decoration: "stars", decorationCount: 4, decorationPlacement: "corners" });
+      env.ok(new Set(pts().map(([x, y]) => (x < 50 ? "l" : "r") + (y < 50 ? "t" : "b"))).size === 4, "in the corners, four shapes take one corner each");
+      await env.load({ decoration: "stars", decorationCount: 2, decorationPlacement: "offset" });
+      env.ok(pts().length === 2 && pts().every(([x]) => x > 50) && pts()[0][1] < 50 && pts()[1][1] > 50, "offset from the corners, two shapes take the top right and the bottom right");
+      await env.load({ decoration: "stars", decorationCount: 4, decorationPlacement: "offset" });
+      env.ok(new Set(pts().map(([x, y]) => (x < 50 ? "l" : "r") + (y < 50 ? "t" : "b"))).size === 4 && pts().every(([x, y]) => x > 4 && x < 90 && y > 4 && y < 85), "four take one corner each, a little way in and not on it");
+      await env.load({ decoration: "stars", decorationCount: 12, decorationPlacement: "offset" });
+      env.ok(pts().every(([x, y]) => x >= 7 && x <= 84 && y >= 6 && y <= 84), "and a second and third ring stay inside the panel");
+      await env.load({ decoration: "stars", decorationCount: 8, decorationPlacement: "nowhere" }); env.ok(JSON.stringify(pts()) === scattered, "an unknown place is scattered");
+      await env.load({ decoration: "stars", decorationCount: 4, themePreset: "midnight", decorationColor: "text" });
+      env.ok(items().every(i => i.style["--c"] === expectedPresets.midnight.text), "they can take the text colour (" + items()[0].style["--c"] + ")");
+      await env.load({ decoration: "stars", decorationCount: 4, themePreset: "midnight", decorationColor: "mixed" });
+      env.ok(items().map(i => i.style["--c"]).join() === [expectedPresets.midnight.accent, expectedPresets.midnight.text, expectedPresets.midnight.accent, expectedPresets.midnight.text].join(), "or the accent and the text colour in turn");
+      await env.load({ decoration: "stars", decorationCount: 3, decorationColor: "custom", decorationTint: "#ABCDEF" });
+      env.ok(items().every(i => i.style["--c"] === "#ABCDEF"), "or a colour of your own");
+      await env.load({ decoration: "stars", decorationColor: "nonsense" }); env.ok(items()[0].style["--c"] === expectedPresets.glass.accent, "an unknown colour choice is the accent");
+      await env.load({ decoration: "stars", decorationOpacity: 0.7 }); env.ok(layer().style["--w-deco-opacity"] === 0.7, "how solid they are is a setting");
+      await env.load({ decoration: "stars" }); env.ok(layer().style["--w-deco-opacity"] === 0.5, "half solid unless asked, so words stay readable over them");
+      await env.load({ decoration: "stars", decorationOpacity: 0 }); env.ok(layer().style["--w-deco-opacity"] === 0.1, "never quite invisible");
+      await env.load({ decoration: "stars" }); await env.load({ decoration: "none" });
+      env.ok(!layer() && !host.style.isolation, "turning them off takes them away");
+      await env.load({});
+    },
+    // Every setting must be read by the widget, and every button handled.
+    checkWired(prefixRe) {
+      const noRead = Object.keys(fields).filter(k => fields[k].type !== "button" && src.indexOf("f." + k) === -1);
+      env.ok(noRead.length === 0, "every setting is read by the widget" + (noRead.length ? " (unread: " + noRead.join(", ") + ")" : ""));
+      const dead = Object.keys(fields).filter(k => fields[k].type === "button" && src.indexOf('case "' + k + '"') === -1);
+      env.ok(dead.length === 0, "every button does something" + (dead.length ? " (dead: " + dead.join(", ") + ")" : ""));
+      const bare = Object.keys(fields).filter(k => !fields[k].group);
+      env.ok(bare.length === 0, "every setting is in a group");
+    },
+    checkNotice(root2) {
+      const html = fs.readFileSync(path.join(root, "widget/widget.html"), "utf8");
+      env.ok(/ko-fi\.com\/journeyingjordan/.test(src.slice(0, 400)) && /ko-fi\.com\/journeyingjordan/.test(html.slice(0, 300)), "the licence notice is in the widget files");
+      const bad = ["README.md", "CONTRIBUTING.md"].filter(f => fs.existsSync(path.join(root, f)) && /[\u2013\u2014]/.test(fs.readFileSync(path.join(root, f), "utf8")));
+      env.ok(bad.length === 0, "the docs use no em or en dashes");
+    },
+    finish() { console.log("\n=== " + pass + " passed, " + fail + " failed ==="); process.exit(fail ? 1 : 0); }
+  });
+  return env;
+};
