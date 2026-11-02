@@ -150,6 +150,15 @@
     "min": 2,
     "step": 0.1
   },
+  "cardHeight": {
+    "type": "number",
+    "label": "Card height, as a percent of the box's height (0 is automatic). When set, the art and the text scale to fill it, so Text size is not used",
+    "value": 0,
+    "group": "Size",
+    "min": 0,
+    "max": 100,
+    "step": 1
+  },
   "scrollSpeed": {
     "type": "number",
     "label": "How fast a name too long for the card scrolls (1 is a steady read, 2 is twice as fast)",

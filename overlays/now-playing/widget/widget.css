@@ -39,6 +39,7 @@
   align-items: center;
   gap: 0.9em;
   width: 100%;
+  height: var(--np-card-h, auto);
   padding: calc(var(--w-pad) * 1em);
   font-family: var(--w-font);
   font-size: var(--np-size, 4.2cqw);
