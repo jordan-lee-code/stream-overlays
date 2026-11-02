@@ -22,26 +22,44 @@
     "decoration", "decorationCount", "decorationSize", "decorationMotion", "decorationPlacement", "decorationColor", "decorationTint", "decorationOpacity"
   ];
 
+  // Settings known to be wording or behaviour. A design file never carries these, and one that does is not obeyed, so a file that was
+  // edited by hand cannot change an overlay's commands or title. A setting this list has never heard of is allowed through.
+  var NOT_DESIGN = ["command", "whoCanManage", "title", "showTitle", "animate", "fit", "mute", "debug"];
+
+  // Every decoration setting is design, including any that are added later, so a new one travels without this list changing.
+  var DESIGN_PREFIXES = ["decoration"];
+  function isDesign(k) {
+    if (DESIGN_KEYS.indexOf(k) !== -1) return true;
+    for (var i = 0; i < DESIGN_PREFIXES.length; i++) { if (k.indexOf(DESIGN_PREFIXES[i]) === 0) return true; }
+    return false;
+  }
+  // A key that could reach into an object's own plumbing is never a setting.
+  function safeKey(k) { return k !== "__proto__" && k !== "constructor" && k !== "prototype"; }
+
   // The design in a fields.json, the file the page exports: each setting's current value.
   function pick(fields) {
     var out = {};
-    DESIGN_KEYS.forEach(function (k) {
-      var d = fields && fields[k];
-      if (d && typeof d === "object" && d.type !== "button" && d.value !== undefined) out[k] = d.value;
+    Object.keys(fields || {}).forEach(function (k) {
+      var d = fields[k];
+      if (safeKey(k) && isDesign(k) && d && typeof d === "object" && d.type !== "button" && d.value !== undefined) out[k] = d.value;
     });
     return out;
   }
 
   // Reads what was pasted or chosen. It can be a design file, a plain object of settings, or a whole fields.json.
+  // A design file was written by this panel, so everything in it is design, including settings this version of the panel has never
+  // heard of: a design saved by a newer overlay still works here, and what this overlay lacks is left alone. A plain object or a
+  // fields.json could hold anything, so only the settings known to be design are taken from those.
   function parse(text) {
-    var data;
-    try { data = JSON.parse(String(text || "").replace(new RegExp("^" + String.fromCharCode(0xFEFF)), "")); } catch (e) { return { error: "That is not a design. It should be the text from Copy design, or a design.json file." }; }
-    if (!data || typeof data !== "object" || Array.isArray(data)) return { error: "That is not a design. It should be the text from Copy design, or a design.json file." };
+    var data, bad = { error: "That is not a design. It should be the text from Copy design, or a design.json file." };
+    try { data = JSON.parse(String(text || "").replace(new RegExp("^" + String.fromCharCode(0xFEFF)), "")); } catch (e) { return bad; }
+    if (!data || typeof data !== "object" || Array.isArray(data)) return bad;
+    var isFile = !!data[MARK] && data.settings && typeof data.settings === "object" && !Array.isArray(data.settings);
     var from = typeof data.from === "string" ? data.from : "";
-    var src = data[MARK] && data.settings && typeof data.settings === "object" ? data.settings : data;
+    var src = isFile ? data.settings : data;
     var settings = {};
-    DESIGN_KEYS.forEach(function (k) {
-      if (!Object.prototype.hasOwnProperty.call(src, k)) return;
+    Object.keys(src).forEach(function (k) {
+      if (!safeKey(k) || NOT_DESIGN.indexOf(k) !== -1 || (!isFile && !isDesign(k))) return;
       var v = src[k];
       // A fields.json setting is an object with its value inside.
       if (v && typeof v === "object" && !Array.isArray(v) && Object.prototype.hasOwnProperty.call(v, "value")) v = v.value;
@@ -57,7 +75,7 @@
   function choose(settings, defs) {
     var values = {}, missing = 0, skipped = [];
     Object.keys(settings).forEach(function (k) {
-      var d = defs && defs[k], v = settings[k];
+      var d = defs && Object.prototype.hasOwnProperty.call(defs, k) && defs[k], v = settings[k];
       if (!d || d.type === "button") { missing++; return; }
       if (d.type === "dropdown") {
         if (d.options && Object.prototype.hasOwnProperty.call(d.options, String(v))) values[k] = String(v); else skipped.push(k);
@@ -83,7 +101,7 @@
     return s;
   }
 
-  var api = { DESIGN_KEYS: DESIGN_KEYS, pick: pick, parse: parse, choose: choose, describe: describe, STORE_KEY: STORE_KEY };
+  var api = { DESIGN_KEYS: DESIGN_KEYS, NOT_DESIGN: NOT_DESIGN, isDesign: isDesign, pick: pick, parse: parse, choose: choose, describe: describe, STORE_KEY: STORE_KEY };
   if (typeof module === "object" && module.exports) { module.exports = api; return; }
 
   var STYLE = "#design-panel { margin: 0 0 14px; padding: 12px; border: 2px solid #9fd8c8; border-radius: 12px; background: #f2fbf8; }" +

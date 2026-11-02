@@ -223,7 +223,8 @@ asection("the website");
     const D = require("../shared/design-panel.js");
     const ids = require("../src/settings").STANDARD;
     D.DESIGN_KEYS.forEach(k => assert.ok(ids[k], k + " is not a standard setting"));
-    ["animate", "fit", "mute", "debug", "title", "command"].forEach(k => assert.ok(D.DESIGN_KEYS.indexOf(k) === -1, k + " is behaviour or wording, not design"));
+    ["animate", "fit", "mute", "debug", "title", "command"].forEach(k => assert.ok(D.DESIGN_KEYS.indexOf(k) === -1 && D.NOT_DESIGN.indexOf(k) !== -1, k + " is behaviour or wording, not design"));
+    assert.ok(D.NOT_DESIGN.every(k => !D.isDesign(k)), "nothing is both");
     const fields = { themePreset: { type: "dropdown", value: "midnight", options: { glass: "G", midnight: "M" } }, title: { type: "text", value: "Hi" }, radius: { type: "number", value: 12, min: 0, max: 60 }, cText: { type: "colorpicker", value: "#fff" }, go: { type: "button" } };
     assert.deepStrictEqual(D.pick(fields), { themePreset: "midnight", radius: 12, cText: "#fff" }, "only design settings are picked, never wording or a button");
     // a design file, a plain object, and a fields.json all read the same
@@ -232,6 +233,20 @@ asection("the website");
     assert.strictEqual(one.from, "Reminder");
     assert.deepStrictEqual(D.parse('{"themePreset":"glass","radius":8}').settings, { themePreset: "glass", radius: 8 });
     assert.deepStrictEqual(D.parse(JSON.stringify(fields)).settings, { themePreset: "midnight", radius: 12, cText: "#fff" }, "a whole fields.json works too");
+    // forward compatibility: a design from a newer overlay still works, and what this one lacks is left alone
+    const newer = D.parse(JSON.stringify({ "stream-overlays-design": 2, from: "Newer", settings: { themePreset: "rose", decorationShimmer: "high", glowStrength: 3, nested: { a: 1 }, nothing: null } }));
+    assert.deepStrictEqual(newer.settings, { themePreset: "rose", decorationShimmer: "high", glowStrength: 3 }, "a design file keeps settings this version has never heard of, and a later format number is still read");
+    const rose = D.choose(newer.settings, { themePreset: { type: "dropdown", options: { rose: "R" } } });
+    assert.deepStrictEqual(rose.values, { themePreset: "rose" }, "the settings it has are applied");
+    assert.strictEqual(rose.missing, 2, "and the ones it lacks are left alone, so they stay as they were");
+    assert.deepStrictEqual(D.parse('{"themePreset":"glass","glowStrength":3,"title":"x"}').settings, { themePreset: "glass" }, "a plain object is held to what is known to be design");
+    assert.deepStrictEqual(D.parse('{"decorationShimmer":"high","radius":5}').settings, { decorationShimmer: "high", radius: 5 }, "except that every decoration setting is design, including new ones");
+    assert.ok(D.isDesign("decorationBlur") && !D.isDesign("title") && !D.isDesign("decor"), "a new decoration setting is design without the list changing");
+    assert.deepStrictEqual(D.pick({ decorationBlur: { type: "number", value: 2 }, title: { type: "text", value: "t" } }), { decorationBlur: 2 }, "and is exported");
+    const evil = D.parse('{"stream-overlays-design":1,"settings":{"__proto__":{"x":1},"constructor":"y","radius":3}}');
+    assert.deepStrictEqual(evil.settings, { radius: 3 }, "keys that reach into an object's plumbing are never settings");
+    assert.strictEqual(({}).x, undefined, "and nothing is polluted");
+    assert.deepStrictEqual(D.choose({ radius: 3, toString: "x", hasOwnProperty: "y" }, { radius: { type: "number" } }).values, { radius: 3 }, "a setting named like an object method is not mistaken for one");
     ["", "nope", "[]", "null", "42", '{"hello":1}'].forEach(t => assert.ok(D.parse(t).error, JSON.stringify(t) + " is not a design"));
     // what suits this overlay
     const defs = { themePreset: { type: "dropdown", options: { glass: "G", rose: "R" } }, radius: { type: "number", min: 0, max: 60 }, outerFrame: { type: "checkbox" }, cText: { type: "colorpicker" }, decoration: { type: "dropdown", options: { none: "None", stars: "S" } }, go: { type: "button" } };
