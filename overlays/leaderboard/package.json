@@ -2,6 +2,7 @@
   "name": "leaderboard-overlay",
   "version": "1.0.0",
   "description": "A StreamElements custom widget: leaderboards for top gifters, cheerers and tippers, rotating through the boards.",
+  "category": "chat",
   "private": true,
   "license": "MIT",
   "author": "Jordan Lee",

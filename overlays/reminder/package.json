@@ -2,6 +2,7 @@
   "name": "reminder-overlay",
   "version": "1.0.0",
   "description": "A StreamElements custom widget: set a reminder from chat with !reminder 15m clean room, and it stays on screen until you clear it.",
+  "category": "info",
   "private": true,
   "license": "MIT",
   "author": "Jordan Lee",

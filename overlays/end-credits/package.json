@@ -2,6 +2,7 @@
   "name": "end-credits-overlay",
   "version": "1.0.0",
   "description": "A StreamElements custom widget: end credits that collect your subscribers, gifters, cheerers, tippers, raiders, followers and chatters through the stream and roll them as a thank-you.",
+  "category": "start-end",
   "private": true,
   "license": "MIT",
   "author": "Jordan Lee",

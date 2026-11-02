@@ -2,6 +2,7 @@
   "name": "camera-overlay",
   "version": "1.0.0",
   "description": "A StreamElements custom widget for your camera: a framed window the camera shows through, a nameplate with your name, pronouns and rotating lines, and a cover that blocks the camera from chat commands such as !camera off and !camera brb, in the same style presets as the rest of the set.",
+  "category": "info",
   "private": true,
   "license": "MIT",
   "author": "Jordan Lee",

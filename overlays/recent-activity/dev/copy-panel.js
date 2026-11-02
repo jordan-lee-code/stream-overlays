@@ -30,7 +30,23 @@
     "#copy-panel .copy-btn.failed { background: #fde3e3; border-color: #e08a8a; }" +
     "#copy-panel #copy-msg { min-height: 1.3em; margin: 8px 0 0; font-size: 12px; }" +
     "#copy-panel textarea { display: block; width: 100%; height: 90px; margin-top: 8px; font-size: 11px; }" +
-    "#copy-panel textarea[hidden] { display: none; }";
+    "#copy-panel textarea[hidden] { display: none; }" +
+    /* Dark by default, as the landing page is. The choice is kept under one name for the whole site, so the two agree. */
+    "html:not([data-theme=\"light\"]) #copy-panel { border-color: #6a4cb8; background: #271f3b; }" +
+    "html:not([data-theme=\"light\"]) #copy-panel ol { color: #cfc7e3; }" +
+    "html:not([data-theme=\"light\"]) #copy-panel .copy-btn small { color: #b3abc6; }" +
+    "html:not([data-theme=\"light\"]) #copy-panel .copy-btn.done { background: #1d3a27; border-color: #3f8a57; }" +
+    "html:not([data-theme=\"light\"]) #copy-panel .copy-btn.failed { background: #432326; border-color: #a55a5a; }" +
+    "html:not([data-theme=\"light\"]) #copy-panel textarea { background: #15121d; color: inherit; border: 1px solid #443a63; }" +
+    "#theme-toggle { float: right; margin: 0 0 6px 8px; padding: 2px 9px; font-size: 11px; }";
+
+  var THEME_KEY = "stream-overlays-theme";
+  function storedTheme() { try { return localStorage.getItem(THEME_KEY) === "light" ? "light" : "dark"; } catch (e) { return "dark"; } }
+  function setTheme(t) {
+    if (t === "light") document.documentElement.setAttribute("data-theme", "light"); else document.documentElement.removeAttribute("data-theme");
+    try { localStorage.setItem(THEME_KEY, t); } catch (e) {}
+  }
+  setTheme(storedTheme());
 
   // The dev page's own stylesheet link is cached just as long, so it is pointed at the file again with a changing address.
   Array.prototype.forEach.call(document.querySelectorAll('link[rel="stylesheet"][href$="widget.css"]'), function (l) { l.href = "../widget/widget.css?v=" + Date.now(); });
@@ -125,6 +141,13 @@
       });
       grid.appendChild(b);
     });
+    var theme = document.createElement("button");
+    theme.id = "theme-toggle";
+    theme.type = "button";
+    var label = function () { theme.textContent = document.documentElement.getAttribute("data-theme") === "light" ? "Dark mode" : "Light mode"; };
+    theme.addEventListener("click", function () { setTheme(document.documentElement.getAttribute("data-theme") === "light" ? "dark" : "light"); label(); });
+    label();
+    panel.insertBefore(theme, panel.firstChild);
     panel.appendChild(grid);
     panel.appendChild(msg);
     panel.appendChild(box);

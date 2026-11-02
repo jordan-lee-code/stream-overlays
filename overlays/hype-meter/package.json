@@ -2,6 +2,7 @@
   "name": "hype-meter-overlay",
   "version": "1.0.0",
   "description": "A StreamElements custom widget: a hype meter that chat activity, subs, bits and tips fill, with levels and decay.",
+  "category": "goals",
   "private": true,
   "license": "MIT",
   "author": "Jordan Lee",

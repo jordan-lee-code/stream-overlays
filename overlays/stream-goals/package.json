@@ -2,6 +2,7 @@
   "name": "stream-goals-overlay",
   "version": "1.0.0",
   "description": "A StreamElements custom widget: sub and bits goals for the stream that start again by themselves for each new stream.",
+  "category": "goals",
   "private": true,
   "license": "MIT",
   "author": "Jordan Lee",

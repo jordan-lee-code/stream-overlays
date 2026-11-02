@@ -2,6 +2,7 @@
   "name": "subathon-overlay",
   "version": "1.0.0",
   "description": "A StreamElements custom widget that runs a whole subathon: a clock that subs, bits and tips add time to, with a cap, power-ups and goals.",
+  "category": "goals",
   "private": true,
   "license": "MIT",
   "author": "Jordan Lee",
