@@ -793,6 +793,7 @@
       "scatter": "Scattered over the panel",
       "edges": "Along the inside of the edges",
       "corners": "In the corners",
+      "offset": "A little way in from the corners (top right and bottom right first)",
       "border": "On the border, half outside it (leave a little room round the widget)"
     },
     "group": "Decorations"

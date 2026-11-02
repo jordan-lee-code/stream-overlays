@@ -1055,6 +1055,10 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
       ok(layer().className.split(" ").indexOf("outside") !== -1 && items().map(i => [parseFloat(i.style["--x"]), parseFloat(i.style["--y"])]).every(([x, y]) => x < 0.1 || x > 99.9 || y < 0.1 || y > 99.9), "on the border every shape sits on the edge itself, and the layer is let out");
       await settle({ decoration: "stars", decorationCount: 4, decorationPlacement: "corners" });
       ok(new Set(items().map(i => (parseFloat(i.style["--x"]) < 50 ? "l" : "r") + (parseFloat(i.style["--y"]) < 50 ? "t" : "b"))).size === 4, "in the corners, four shapes take one corner each");
+      await settle({ decoration: "stars", decorationCount: 2, decorationPlacement: "offset" });
+      ok(items().length === 2 && items().every(i => parseFloat(i.style["--x"]) > 50) && parseFloat(items()[0].style["--y"]) < 50 && parseFloat(items()[1].style["--y"]) > 50, "offset from the corners, two shapes take the top right and the bottom right");
+      await settle({ decoration: "stars", decorationCount: 12, decorationPlacement: "offset" });
+      ok(items().every(i => parseFloat(i.style["--x"]) >= 7 && parseFloat(i.style["--x"]) <= 84 && parseFloat(i.style["--y"]) >= 6 && parseFloat(i.style["--y"]) <= 84), "and a second and third ring stay inside the panel");
       await settle({ decoration: "stars", decorationCount: 3, decorationColor: "custom", decorationTint: "#ABCDEF" });
       ok(items().every(i => i.style["--c"] === "#ABCDEF"), "a colour of your own");
       await settle({ decoration: "stars", decorationColor: "text" }); ok(new Set(items().map(i => i.style["--c"])).size === 1, "or the text colour");
