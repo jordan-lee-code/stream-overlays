@@ -168,6 +168,18 @@
   }
   // The copy panel (copy-panel.js) reads the settings as they are configured here through this.
   window.__exportFields = exportText;
+  // The design panel (design-panel.js) applies a saved design through this: only settings this overlay has, never a button.
+  window.__importFields = function (values) {
+    var n = 0;
+    Object.keys(values || {}).forEach(function (k) {
+      var d = fieldDefs[k];
+      if (!d || d.type === "button" || d.type === "sound-input") return;
+      fieldData[k] = values[k]; n++;
+    });
+    rebuildSettings();
+    load()
+    return n;
+  };
   function syncLook() {
     var sel = document.getElementById("look-preset");
     if (sel && fieldData.themePreset !== undefined) sel.value = fieldData.themePreset;

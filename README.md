@@ -49,6 +49,10 @@ A set of StreamElements custom widgets for Twitch streams. Each is plain JavaScr
 2. In StreamElements, add a **Custom Widget** to your overlay, and paste each file from the overlay's `widget/` folder into the matching tab: `widget.html` into HTML, `widget.css` into CSS, `widget.js` into JS and `fields.json` into Fields.
 3. Choose a **Style preset** in the settings.
 
+## Setting the look once
+
+Every overlay's dev page has a **Design** panel. Set the style preset, font, colours, shape, frame and decorations in one overlay, save the design, and apply it in any other, so the look only has to be configured once. It can also be copied or downloaded as a small file, to keep or share. Only the design travels, so each overlay keeps its own wording and behaviour settings.
+
 ## Trying one without going live
 
 Every overlay has a local dev harness that stands in for StreamElements.
