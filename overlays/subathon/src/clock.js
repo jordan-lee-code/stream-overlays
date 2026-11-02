@@ -768,7 +768,7 @@
   // flag colours. They are placed by a fixed recipe and not at random, so they sit in the same places every time the widget loads.
   var DECOR_KINDS = { sparkles: 1, hearts: 1, stars: 1, flowers: 1, moons: 1, snowflakes: 1, bubbles: 1, butterflies: 1, clouds: 1, leaves: 1, paws: 1, notes: 1, bows: 1, mixed: 1 };
   var DECOR_MOTION = { twinkle: 1, drift: 1, still: 1 };
-  var DECOR_PLACE = { scatter: 1, edges: 1, corners: 1, border: 1 };
+  var DECOR_PLACE = { scatter: 1, edges: 1, corners: 1, offset: 1, border: 1 };
   var DECOR_COLOR = { accent: 1, text: 1, mixed: 1, custom: 1 };
   function readDecor(f) {
     f = f || {};
@@ -819,6 +819,13 @@
         var rim = frac(0.07 + n * 0.618034) * 4, run = frac(rim) * 100;
         if (rim < 1) { x = run; y = 0; } else if (rim < 2) { x = 100; y = run; } else if (rim < 3) { x = 100 - run; y = 100; } else { x = 0; y = 100 - run; }
         s = 0.8 + frac(n * 0.37 + 0.2) * 0.4;
+      } else if (d.place === "offset") {
+        // A little way in from the corners and not on them, as in a few small sparkles dotted round a card: top right and bottom right
+        // first, then top left and bottom left, and a second ring further in once there are more than four.
+        var step = Math.floor(n / 4), right = n % 4 < 2, top = n % 4 === 0 || n % 4 === 2;
+        x = right ? 84 - step * 8 : 7 + step * 8;
+        y = top ? 6 + step * 8 : 84 - step * 8;
+        s = (n % 2 === 0 ? 0.9 : 1.1) - Math.min(step, 2) * 0.15;
       } else if (d.place === "corners") {
         // The four corners in turn, and a second ring a little further in once there are more than four.
         var ring = Math.floor(n / 4), cx = n % 4 < 2 ? 3 + ring * 9 : 88 - ring * 9, cy = n % 4 === 0 || n % 4 === 3 ? 4 + ring * 9 : 84 - ring * 9;

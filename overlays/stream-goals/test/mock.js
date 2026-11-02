@@ -239,6 +239,12 @@ module.exports = function createEnv(root) {
       await env.load({ decoration: "stars", decorationCount: 8, decorationPlacement: "edges" }); env.ok(layer().className.split(" ").indexOf("outside") === -1, "while along the edges stays inside");
       await env.load({ decoration: "stars", decorationCount: 4, decorationPlacement: "corners" });
       env.ok(new Set(pts().map(([x, y]) => (x < 50 ? "l" : "r") + (y < 50 ? "t" : "b"))).size === 4, "in the corners, four shapes take one corner each");
+      await env.load({ decoration: "stars", decorationCount: 2, decorationPlacement: "offset" });
+      env.ok(pts().length === 2 && pts().every(([x]) => x > 50) && pts()[0][1] < 50 && pts()[1][1] > 50, "offset from the corners, two shapes take the top right and the bottom right");
+      await env.load({ decoration: "stars", decorationCount: 4, decorationPlacement: "offset" });
+      env.ok(new Set(pts().map(([x, y]) => (x < 50 ? "l" : "r") + (y < 50 ? "t" : "b"))).size === 4 && pts().every(([x, y]) => x > 4 && x < 90 && y > 4 && y < 85), "four take one corner each, a little way in and not on it");
+      await env.load({ decoration: "stars", decorationCount: 12, decorationPlacement: "offset" });
+      env.ok(pts().every(([x, y]) => x >= 7 && x <= 84 && y >= 6 && y <= 84), "and a second and third ring stay inside the panel");
       await env.load({ decoration: "stars", decorationCount: 8, decorationPlacement: "nowhere" }); env.ok(JSON.stringify(pts()) === scattered, "an unknown place is scattered");
       await env.load({ decoration: "stars", decorationCount: 4, themePreset: "midnight", decorationColor: "text" });
       env.ok(items().every(i => i.style["--c"] === expectedPresets.midnight.text), "they can take the text colour (" + items()[0].style["--c"] + ")");
