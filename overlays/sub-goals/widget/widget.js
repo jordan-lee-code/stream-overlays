@@ -1234,7 +1234,7 @@
       place: DECOR_PLACE[place] === 1 ? place : "scatter",
       color: DECOR_COLOR[color] === 1 ? color : "accent",
       tint: str(f.decorationTint, "#FFB6D9"),
-      opacity: clamp(num(f.decorationOpacity, 0.8), 0.1, 1)
+      opacity: clamp(num(f.decorationOpacity, 0.5), 0.1, 1)
     };
   }
   // `host` is the panel the shapes sit behind, `colors` the list of colours they take in turn (the accent, or a flag), `animate` whether they
