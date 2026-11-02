@@ -118,6 +118,7 @@ const nameOf = (n) => (n.children[1] ? n.children[1].textContent : "");
   await load({ animate: false }); ok(E("sb-root").classList.contains("no-motion"), "Animate off stops motion");
   await env.checkPresets("sb-app");
   await env.checkFrame("sb-app");
+  await env.checkFill("sb-root");
   await env.checkDecor("sb-app");
 
   section("every setting is wired up");

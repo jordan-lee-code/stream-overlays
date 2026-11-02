@@ -8,6 +8,7 @@ It is a single self-contained widget in plain JavaScript, with no dependencies a
 
 ## Features
 
+- Stays put in OBS: the panel is always as tall as the box you draw, with its content in the middle, so it does not grow or shrink as entries come and go. Untick Fill the height of the box for a panel as tall as its content.
 - Three boards: top gifters (gifted subs), top cheerers (bits) and top tippers, shown one at a time, rotating, or pinned to one.
 - Gift bombs counted once: a gift of 10 credits the gifter 10, not once per recipient (see [How counting works](#how-counting-works)).
 - Names matched ignoring case: `alice` and `Alice` are one person, and the latest spelling is shown.
@@ -117,7 +118,7 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | Wording | The three titles, how each total reads, and the currency symbol. |
 | Rows | Rank numbers, first place highlight, longest name, text sizes, row spacing and the pop. |
 | Manual controls | Buttons to show the next board, go back to rotating, and clear every board. |
-| Look | A title that replaces the boards' own, the style preset, font, boldness, corners, padding, outer frame, outline, shadow, Animate and whether it shrinks to fit the box. |
+| Look | A title that replaces the boards' own, the style preset, font, boldness, corners, padding, outer frame, outline, shadow, Animate and whether it fills the height of the box and whether it shrinks to fit it. |
 | Custom colours | Panel, text, accent, bar and alert colours, used when the style preset is Custom. A checkbox there also lets the Panel opacity apply to any preset, not only Custom. |
 | Decorations | The shape, where they go, how many, how big, how solid (the Decoration opacity, which is its own setting and not the panel's, and 1 is fully solid), their colour, and how they move. |
 | Sounds | A sound and volume for a total changing and for taking first place, with Test buttons and a master mute. |

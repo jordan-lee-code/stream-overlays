@@ -24,7 +24,7 @@
 
   // Settings known to be wording or behaviour. A design file never carries these, and one that does is not obeyed, so a file that was
   // edited by hand cannot change an overlay's commands or title. A setting this list has never heard of is allowed through.
-  var NOT_DESIGN = ["command", "whoCanManage", "title", "showTitle", "animate", "fit", "mute", "debug"];
+  var NOT_DESIGN = ["command", "whoCanManage", "title", "showTitle", "animate", "fit", "fillBox", "mute", "debug"];
 
   // Every decoration setting is design, including any that are added later, so a new one travels without this list changing.
   var DESIGN_PREFIXES = ["decoration"];

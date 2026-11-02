@@ -93,6 +93,7 @@ const ENTRIES = { entry1: "Twitch | twitch.tv/me", entry2: "Discord | discord.gg
   await load(Object.assign({ title: "Links" }, ENTRIES)); ok(E("rp-title").textContent === "Links", "and it can be renamed");
   await env.checkPresets("rp-app");
   await env.checkFrame("rp-app");
+  await env.checkFill("rp-root");
   await env.checkDecor("rp-app");
 
   section("every setting is wired up");

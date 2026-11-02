@@ -84,6 +84,7 @@ const WINTER = [2026, 1, 15, 15, 7, 9], SUMMER = [2026, 7, 1, 12, 0, 0];
   await load({ animate: false }); ok(E("lt-root").classList.contains("no-motion"), "Animate off stops motion");
   await env.checkPresets("lt-app");
   await env.checkFrame("lt-app");
+  await env.checkFill("lt-root");
   await env.checkDecor("lt-app");
 
   section("every setting is wired up");

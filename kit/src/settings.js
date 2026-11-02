@@ -22,6 +22,7 @@ const STANDARD = {
   shadow: { type: "checkbox" },
   animate: { type: "checkbox", value: true },
   fit: { type: "checkbox", value: true },
+  fillBox: { type: "checkbox", value: true },
   colorPanel: { type: "colorpicker" },
   panelOpacity: { type: "number" },
   usePanelOpacity: { type: "checkbox", value: false },

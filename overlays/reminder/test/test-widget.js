@@ -137,6 +137,7 @@ const stored = () => (storeData.reminder_v1 ? storeData.reminder_v1.items : []);
   await L({ title: "Heads up" }); boss("!reminder 1m a"); await skip(61000); ok(E("rm-title").textContent === "Heads up", "and it can be renamed");
   await env.checkPresets("rm-app");
   await env.checkFrame("rm-app");
+  await env.checkFill("rm-root");
   await env.checkDecor("rm-app");
 
   section("disappearing when there is nothing to show");

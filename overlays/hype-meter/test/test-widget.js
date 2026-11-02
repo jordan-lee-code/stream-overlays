@@ -125,6 +125,7 @@ const pipsOn = () => E("hy-pips").children.filter(p => p.className.indexOf("on")
   await load({ showTitle: false }); ok(E("hy-title").hidden, "the title can be hidden");
   await env.checkPresets("hy-app");
   await env.checkFrame("hy-app");
+  await env.checkFill("hy-root");
   await env.checkDecor("hy-app");
 
   section("sounds");

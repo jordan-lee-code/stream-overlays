@@ -14,6 +14,7 @@ It is a single self-contained widget in plain JavaScript, with no dependencies a
 - Gaps that follow the box: side by side, the sites spread across the width you give the widget in StreamElements, so a wide box gets wide gaps and a narrow one gets close ones. Your gap setting is the least there can be.
 - Compresses when the box is narrower: the text follows the height of the box and not its width, so drawing the box narrower closes the gaps up, between the sites and between the left and right sides, and leaves the text alone. Only when the gaps cannot close any further does the whole bar shrink, just far enough to stay on one line. Untick Shrink to fit the box and the sites wrap onto a second row instead.
 - Sized by the height of the box: the text is a share of the box's height, so a wide, short box gives a bar with room to spread, and a narrow one a bar that compresses.
+- Stays put in OBS: the panel is always as tall as the box you draw, with its content in the middle, so it does not grow or shrink as entries come and go. Untick Fill the height of the box for a panel as tall as its content.
 - Customisable: around fifty settings cover the handles, rotation, sizes, shape, outline, colours, fonts and animation.
 - All twenty-two style presets, including the seven pride flags.
 - An outer frame in the accent colour, on by default in every preset, and switched off with one checkbox (the flag's stripes in the pride presets).
@@ -106,7 +107,7 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | Rotation | Whether the left side rotates, how long each site stays, and how long the fade takes. |
 | Layout | Whether the sites spread across the width of the box, whether handles show beside the logos, and the logo colour. |
 | Size | Text size, how big the logos are and the space between sites. |
-| Look | The style preset, font, boldness, corners, padding, outer frame, outline, shadow, Animate and whether it shrinks to fit the box (on by default, and what keeps everything on one line). |
+| Look | The style preset, font, boldness, corners, padding, outer frame, outline, shadow, Animate and whether it fills the height of the box and whether it shrinks to fit it. |
 | Custom colours | Panel, text and accent colours, used when the style preset is Custom. A checkbox there also lets the Panel opacity apply to any preset, not only Custom. |
 | Decorations | The shape, where they go, how many, how big, how solid (the Decoration opacity, which is its own setting and not the panel's, and 1 is fully solid), their colour, and how they move. Twinkling dips a little and drifting fades in and out, so choose Stay still, or turn Animate off, to keep them fully solid. |
 | Troubleshooting | A debug line in the browser-source console saying how many sites are shown. |

@@ -93,6 +93,9 @@
 
 #sb-app { position: relative; }
 
+/* Fill the height of the box: the bar is as tall as the box, and its sites sit in the middle of it. */
+#sb-root.fill #sb-app { flex: 1 1 auto; align-content: center; }
+
 /* The outer frame in a pride preset: the flag's stripes, as a ring over the panel's edge that follows its corners. It is the
    panel's padding box with the inside masked out. A preset with no flag has no ring, and its frame is the border. */
 #sb-app::after {

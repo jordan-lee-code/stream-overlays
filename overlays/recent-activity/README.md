@@ -8,6 +8,7 @@ It is a single self-contained widget in plain JavaScript, with no dependencies a
 
 ## Features
 
+- Stays put in OBS: the panel is always as tall as the box you draw, with its content in the middle, so it does not grow or shrink as entries come and go. Untick Fill the height of the box for a panel as tall as its content.
 - Every kind of event: new subs and resubs, gifted subs, bits, tips, follows and raids, each on or off.
 - Gift bombs counted once: a gift of 10 is one line saying so, not one per recipient (see [How events are read](#how-events-are-read)).
 - Your wording: every sentence is a setting, with tokens for the name, count, amount and months, and each kind has a small tag you can rename.
@@ -124,7 +125,7 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | Tags and totals | The small tag for each kind, and which running totals show and how they are labelled. |
 | Size | Text, title and latest-event sizes, and the space between events. |
 | Manual controls | Buttons to clear the feed, or the feed and the totals. |
-| Look | Title, the style preset, font, boldness, corners, padding, outer frame, outline, shadow, Animate and whether it shrinks to fit the box. |
+| Look | Title, the style preset, font, boldness, corners, padding, outer frame, outline, shadow, Animate and whether it fills the height of the box and whether it shrinks to fit it. |
 | Custom colours | Panel, text, accent, tag and alert colours, used when the style preset is Custom. A checkbox there also lets the Panel opacity apply to any preset, not only Custom. |
 | Decorations | The shape, where they go, how many, how big, how solid (the Decoration opacity, which is its own setting and not the panel's, and 1 is fully solid), their colour, and how they move. |
 | Sounds | A sound and volume for an event arriving, with a Test button and a master mute. |
