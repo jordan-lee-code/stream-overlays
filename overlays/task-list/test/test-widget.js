@@ -116,6 +116,7 @@ const SLOTS = { mode: "schedule", slot1: "Monday | 7pm | Chill games", slot2: "W
   await load({ title: "To do" }); boss("!task add a"); ok(E("tl-title").textContent === "To do", "and it can be renamed");
   await env.checkPresets("tl-app");
   await env.checkFrame("tl-app");
+  await env.checkFill("tl-root");
   await env.checkDecor("tl-app");
 
   section("every setting is wired up");

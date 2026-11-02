@@ -287,6 +287,11 @@ module.exports = function createEnv(root) {
       const bare = Object.keys(fields).filter(k => !fields[k].group);
       env.ok(bare.length === 0, "every setting is in a group");
     },
+    async checkFill(rootId) {
+      await env.load({}); env.ok(env.E(rootId).classList.contains("fill"), "the panel fills the height of the box by default");
+      await env.load({ fillBox: false }); env.ok(!env.E(rootId).classList.contains("fill"), "and Fill the height of the box can be turned off");
+      await env.load({}); env.ok(env.E(rootId).classList.contains("fill"), "and back on");
+    },
     checkNotice(root2) {
       const html = fs.readFileSync(path.join(root, "widget/widget.html"), "utf8");
       env.ok(/ko-fi\.com\/journeyingjordan/.test(src.slice(0, 400)) && /ko-fi\.com\/journeyingjordan/.test(html.slice(0, 300)), "the licence notice is in the widget files");

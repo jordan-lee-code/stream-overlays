@@ -130,6 +130,7 @@
       weight: clamp(num(f.weight, 800), 100, 900),
       animate: bool(f.animate, true),
       fit: bool(f.fit, true),
+      fillBox: bool(f.fillBox, true),
       mute: bool(f.mute, false),
       debug: bool(f.debug, false),
       decor: readDecor(f)
@@ -203,6 +204,8 @@
     s.setProperty("--w-frame-img", stripes ? flagGradient(t.flag) : "none");
     s.setProperty("--w-shadow", c.shadow ? "0 0.3em 1.2em rgba(0, 0, 0, 0.45)" : "none");
     root.classList.toggle("no-motion", !c.animate);
+    // The panel is as tall as the box, so it stays where it was put as entries come and go. The stylesheet does the rest.
+    root.classList.toggle("fill", !!c.fillBox);
     applyDecor(c.decor, app, t.flag || [t.accent], c.animate, t.text);
     watchFit(root, app, c.fit);
     loadFont(fontLinkId, t.font);

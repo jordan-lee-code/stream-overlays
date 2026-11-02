@@ -186,12 +186,12 @@
   "currency": {
     "type": "text",
     "label": "Currency symbol for tips (a blank shows none)",
-    "value": "£",
+    "value": "\u00a3",
     "group": "Counting"
   },
   "currencyAfter": {
     "type": "checkbox",
-    "label": "Put the symbol after the amount (5€ or 5 kr) instead of before it (£5)",
+    "label": "Put the symbol after the amount (5\u20ac or 5 kr) instead of before it (\u00a35)",
     "value": false,
     "group": "Counting"
   },
@@ -207,9 +207,9 @@
     "value": "auto",
     "group": "Counting",
     "options": {
-      "auto": "Only when there are some (£5 and £5.50)",
-      "always": "Always (£5.00)",
-      "none": "Never, rounded to a whole number (£6)"
+      "auto": "Only when there are some (\u00a35 and \u00a35.50)",
+      "always": "Always (\u00a35.00)",
+      "none": "Never, rounded to a whole number (\u00a36)"
     }
   },
   "reachedText": {
@@ -390,6 +390,12 @@
   "fit": {
     "type": "checkbox",
     "label": "Shrink to fit the box: when the box is too short for everything, the whole card gets smaller instead of running off the bottom",
+    "value": true,
+    "group": "Look"
+  },
+  "fillBox": {
+    "type": "checkbox",
+    "label": "Fill the height of the box: the panel is always as tall as the box you draw, with its content in the middle, so it stays put in OBS as things come and go (untick for a panel as tall as its content). If there is too much for the box, Shrink to fit makes it smaller",
     "value": true,
     "group": "Look"
   },

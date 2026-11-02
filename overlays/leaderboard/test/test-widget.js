@@ -125,6 +125,7 @@ const names = () => E("lb-list").children.filter(li => li.className.indexOf("lb-
   ok(heading() === "Gift heroes" && E("lb-list").children[0].textContent === "Be the first", "titles and the empty text are settings");
   await env.checkPresets("lb-app");
   await env.checkFrame("lb-app");
+  await env.checkFill("lb-root");
   await env.checkDecor("lb-app");
 
   section("sounds");

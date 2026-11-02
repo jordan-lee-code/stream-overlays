@@ -8,6 +8,7 @@ It is a single self-contained widget in plain JavaScript, with no dependencies a
 
 ## Features
 
+- Stays put in OBS: the panel is always as tall as the box you draw, with its content in the middle, so it does not grow or shrink as entries come and go. Untick Fill the height of the box for a panel as tall as its content.
 - Starts again for each stream: it notices a quiet gap between streams and begins afresh, or it can reset only when you ask, or on every load (see [Starting again](#starting-again)).
 - Subs and bits: with optional tip and follow goals, each with its own label, goal and bar, and each switched on or off as you need, so only the goals you want take up room on screen.
 - A donation goal: switch on the tip goal and name it for what it is for, such as "Tip goal: new pc". It counts money written your way: the symbol before or after the amount, a comma or a point for the decimal, and cents shown or not. Switch off the others if the donation goal is all you want.
@@ -126,7 +127,7 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | Counting | Sub points, how a count reads, the currency symbol and where it goes, the decimal and whether cents show, the reached text and how long it shows before a raise. |
 | Sizes | Text, title and bar sizes, and the space between goals. |
 | Manual controls | Buttons to start again, pause and resume. |
-| Look | Title, the style preset, font, boldness, corners, padding, outer frame, outline, shadow, Animate and whether it shrinks to fit the box. |
+| Look | Title, the style preset, font, boldness, corners, padding, outer frame, outline, shadow, Animate and whether it fills the height of the box and whether it shrinks to fit it. |
 | Custom colours | Panel, text, accent, bar and alert colours, used when the style preset is Custom. A checkbox there also lets the Panel opacity apply to any preset, not only Custom. |
 | Decorations | The shape, where they go, how many, how big, how solid (the Decoration opacity, which is its own setting and not the panel's, and 1 is fully solid), their colour, and how they move. |
 | Sounds | A sound and volume for progress and for a goal being reached, with Test buttons and a master mute. |

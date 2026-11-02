@@ -8,6 +8,7 @@ It is a single self-contained widget in plain JavaScript, with no dependencies a
 
 ## Features
 
+- Stays put in OBS: the panel is always as tall as the box you draw, with its content in the middle, so it does not grow or shrink as entries come and go. Untick Fill the height of the box for a panel as tall as its content.
 - Socials and commands in one place: each entry is a heading and its words, written as `Discord | discord.gg/yourinvite`.
 - Up to twelve entries, in the order written, or shuffled each time round.
 - A card that keeps its size: every entry sits in the same space, so the panel is as tall as its tallest entry and never jumps as they take turns.
@@ -116,7 +117,7 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | Rotation | How long each stays, shuffling, how an entry arrives, the dots and the bar, and where the words sit. |
 | Size | Text, heading and title sizes, and the space between a heading and its words. |
 | Manual controls | Buttons for next, previous, pause, carry on, hide and show. |
-| Look | Title, the style preset, font, boldness, corners, padding, outer frame, outline, shadow, Animate and whether it shrinks to fit the box. |
+| Look | Title, the style preset, font, boldness, corners, padding, outer frame, outline, shadow, Animate and whether it fills the height of the box and whether it shrinks to fit it. |
 | Custom colours | Panel, text, accent and dot colours, used when the style preset is Custom. A checkbox there also lets the Panel opacity apply to any preset, not only Custom. |
 | Decorations | The shape, where they go, how many, how big, how solid (the Decoration opacity, which is its own setting and not the panel's, and 1 is fully solid), their colour, and how they move. |
 | Troubleshooting | A debug log of every event to the browser-source console. |

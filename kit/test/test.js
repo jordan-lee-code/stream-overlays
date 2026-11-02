@@ -160,6 +160,20 @@ asection("rounded corners");
   });
 }
 
+asection("filling the box");
+{
+  const repoRoot = path.join(__dirname, "..", "..");
+  fs.readdirSync(path.join(repoRoot, "overlays")).filter(n => fs.statSync(path.join(repoRoot, "overlays", n)).isDirectory()).sort().forEach(n => {
+    const fields = JSON.parse(fs.readFileSync(path.join(repoRoot, "overlays", n, "widget", "fields.json"), "utf8"));
+    if (!fields.fillBox) return;
+    atest(n + " fills the height of its box when asked", () => {
+      assert.strictEqual(fields.fillBox.type, "checkbox"); assert.strictEqual(fields.fillBox.value, true, "it is on by default");
+      const css = fs.readFileSync(path.join(repoRoot, "overlays", n, "widget", "widget.css"), "utf8");
+      assert.ok(/-root\.fill #[a-z]+-app[^{]*\{[^}]*flex:\s*1 1 auto/.test(css), n + " has a Fill the height of the box setting but its stylesheet has no rule for it");
+    });
+  });
+}
+
 asection("the website");
 {
   const site = require("../../scripts/build-site");

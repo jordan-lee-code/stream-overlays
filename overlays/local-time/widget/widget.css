@@ -84,6 +84,9 @@
 
 #lt-app { position: relative; }
 
+/* Fill the height of the box: the panel is as tall as the box, with its content in the middle. */
+#lt-root.fill #lt-app { flex: 1 1 auto; display: flex; flex-direction: column; justify-content: center; }
+
 /* The outer frame in a pride preset: the flag's stripes, as a ring over the panel's edge that follows its corners. It is the
    panel's padding box with the inside masked out. A preset with no flag has no ring, and its frame is the border. */
 #lt-app::after {

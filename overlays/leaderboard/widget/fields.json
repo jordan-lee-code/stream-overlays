@@ -120,7 +120,7 @@
   "currency": {
     "type": "text",
     "label": "Currency symbol",
-    "value": "£",
+    "value": "\u00a3",
     "group": "Wording"
   },
   "showRank": {
@@ -304,6 +304,12 @@
   "fit": {
     "type": "checkbox",
     "label": "Shrink to fit the box: when the box is too short for everything, the whole card gets smaller instead of running off the bottom",
+    "value": true,
+    "group": "Look"
+  },
+  "fillBox": {
+    "type": "checkbox",
+    "label": "Fill the height of the box: the panel is always as tall as the box you draw, with its content in the middle, so it stays put in OBS as things come and go (untick for a panel as tall as its content). If there is too much for the box, Shrink to fit makes it smaller",
     "value": true,
     "group": "Look"
   },

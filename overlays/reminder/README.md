@@ -8,6 +8,7 @@ It is a single self-contained widget in plain JavaScript, with no dependencies a
 
 ## Features
 
+- Stays put in OBS: the panel is always as tall as the box you draw, with its content in the middle, so it does not grow or shrink as entries come and go. Untick Fill the height of the box for a panel as tall as its content.
 - Set from chat: `!reminder 15m clean room`, with times like `90s`, `1h30m`, `1:30:00` or a bare number of minutes.
 - Gone when idle: with nothing to show, the whole widget disappears and leaves its box empty, and it comes back when a reminder is due, or is waiting if you show those.
 - A countdown on every reminder: the words on the left and a timer on the right, which counts down while it waits and turns to "due" when it runs out.
@@ -118,7 +119,7 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | Reminders | The text for a reminder with no words, the snooze time, how many show at once and can wait, the repeating sound, whether a reminder shows while it counts down, and the word for when it is due. |
 | Size | Text, title and waiting-reminder sizes, the space between reminders, and the pulsing border. |
 | Manual controls | Buttons to show a test reminder, clear, clear everything, and snooze. |
-| Look | Title, the style preset, font, boldness, corners, padding, outer frame, outline, shadow, Animate and whether it shrinks to fit the box. |
+| Look | Title, the style preset, font, boldness, corners, padding, outer frame, outline, shadow, Animate and whether it fills the height of the box and whether it shrinks to fit it. |
 | Custom colours | Panel, text, accent, bar and alert colours, used when the style preset is Custom. A checkbox there also lets the Panel opacity apply to any preset, not only Custom. |
 | Decorations | The shape, where they go, how many, how big, how solid (the Decoration opacity, which is its own setting and not the panel's, and 1 is fully solid), their colour, and how they move. |
 | Sounds | A sound and volume for a reminder arriving, with a Test button and a master mute. |
