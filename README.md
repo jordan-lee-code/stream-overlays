@@ -41,6 +41,7 @@ A set of StreamElements custom widgets for Twitch streams. Each is plain JavaScr
 | Overlay | What it does |
 | --- | --- |
 | [Stream Start Countdown](overlays/start-countdown) | A full-screen starting soon countdown you set from chat, with a clock, a bar and friendly lines that take turns. |
+| [Be Right Back](overlays/be-right-back) | A break screen with a clock that counts down to your return, or up the time you have been away. |
 | [End Credits](overlays/end-credits) | A thank-you that collects your followers, subscribers, gifters, cheerers, tippers, raiders and chatters through the stream and rolls them as credits. |
 
 ## Using an overlay

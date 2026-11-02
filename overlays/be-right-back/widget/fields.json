@@ -1,0 +1,402 @@
+{
+  "command": {
+    "type": "text",
+    "label": "Command word",
+    "value": "!brb",
+    "group": "Commands"
+  },
+  "whoCanManage": {
+    "type": "dropdown",
+    "label": "Who can use it",
+    "value": "mods",
+    "options": {
+      "broadcaster": "Broadcaster only",
+      "mods": "Broadcaster + moderators"
+    },
+    "group": "Commands"
+  },
+  "startMinutes": {
+    "type": "number",
+    "label": "Length of a break started with no time given (!brb), in minutes. 0 means no set time: the clock counts up how long you have been away",
+    "value": 0,
+    "group": "Break",
+    "min": 0,
+    "max": 2880,
+    "step": 1
+  },
+  "countLabel": {
+    "type": "text",
+    "label": "Words above the clock when you have said when you will be back",
+    "value": "Back in",
+    "group": "Break"
+  },
+  "awayLabel": {
+    "type": "text",
+    "label": "Words above the clock when there is no set time and it is counting up",
+    "value": "Away for",
+    "group": "Break"
+  },
+  "lateTitle": {
+    "type": "text",
+    "label": "What the headline says when the time you gave has passed and you are not back yet",
+    "value": "Back any moment now",
+    "group": "Break"
+  },
+  "showReturn": {
+    "type": "checkbox",
+    "label": "Show the time you will be back under the clock",
+    "value": true,
+    "group": "Break"
+  },
+  "returnPrefix": {
+    "type": "text",
+    "label": "Words before the time you will be back",
+    "value": "Back at",
+    "group": "Break"
+  },
+  "clock24": {
+    "type": "checkbox",
+    "label": "Show that time on a 24-hour clock (untick for am and pm)",
+    "value": true,
+    "group": "Break"
+  },
+  "showBar": {
+    "type": "checkbox",
+    "label": "Show a bar that fills as the time you gave runs down",
+    "value": true,
+    "group": "Break"
+  },
+  "messages": {
+    "type": "text",
+    "label": "Lines that rotate under the clock, separated by a vertical bar (leave blank for none)",
+    "value": "Grab a drink and stretch your legs | Chat is open, say hi to each other | Back soon, I promise",
+    "group": "Messages"
+  },
+  "messageSeconds": {
+    "type": "number",
+    "label": "Seconds each line stays",
+    "value": 8,
+    "group": "Messages",
+    "min": 2,
+    "step": 1
+  },
+  "clockSize": {
+    "type": "number",
+    "label": "Clock size, in units (a unit is a hundredth of the box width at 16 by 9)",
+    "value": 15,
+    "group": "Size",
+    "min": 2,
+    "step": 0.5
+  },
+  "titleSize": {
+    "type": "number",
+    "label": "Headline size, in units",
+    "value": 5.5,
+    "group": "Size",
+    "min": 1,
+    "step": 0.1
+  },
+  "labelSize": {
+    "type": "number",
+    "label": "Size of the words above the clock, in units",
+    "value": 3,
+    "group": "Size",
+    "min": 1,
+    "step": 0.1
+  },
+  "messageSize": {
+    "type": "number",
+    "label": "Rotating line size, in units",
+    "value": 2.6,
+    "group": "Size",
+    "min": 1,
+    "step": 0.1
+  },
+  "atSize": {
+    "type": "number",
+    "label": "Size of the time you will be back, in units",
+    "value": 2.6,
+    "group": "Size",
+    "min": 1,
+    "step": 0.1
+  },
+  "barSize": {
+    "type": "number",
+    "label": "Bar thickness, in units",
+    "value": 1.2,
+    "group": "Size",
+    "min": 0.2,
+    "step": 0.1
+  },
+  "gap": {
+    "type": "number",
+    "label": "Space between the parts, in units",
+    "value": 1.6,
+    "group": "Size",
+    "min": 0,
+    "step": 0.1
+  },
+  "btnStart": {
+    "type": "button",
+    "label": "Start a break (the default length, or counting up)",
+    "group": "Manual controls"
+  },
+  "btnAdd5": {
+    "type": "button",
+    "label": "Add five minutes",
+    "group": "Manual controls"
+  },
+  "btnLess1": {
+    "type": "button",
+    "label": "Take a minute off",
+    "group": "Manual controls"
+  },
+  "btnStop": {
+    "type": "button",
+    "label": "I am back: clear the break",
+    "group": "Manual controls"
+  },
+  "title": {
+    "type": "text",
+    "label": "Headline",
+    "value": "Be right back",
+    "group": "Look"
+  },
+  "showTitle": {
+    "type": "checkbox",
+    "label": "Show the title",
+    "value": true,
+    "group": "Look"
+  },
+  "themePreset": {
+    "type": "dropdown",
+    "label": "Style preset (the same twenty-two are in every overlay in this set)",
+    "value": "glass",
+    "options": {
+      "glass": "Soft black (default)",
+      "frost": "Soft white",
+      "midnight": "Midnight blue",
+      "sunset": "Sunset",
+      "forest": "Forest",
+      "ocean": "Ocean",
+      "rose": "Rose",
+      "neon": "Neon",
+      "cosycabin": "Cosy cabin",
+      "pastel": "Cosy summer pastel",
+      "celestial": "Celestial",
+      "pastelgoth": "Pastel goth",
+      "pastelpink": "Pastel pink",
+      "pastelsage": "Pastel sage",
+      "faegreen": "Fae green",
+      "pride": "Rainbow pride",
+      "trans": "Trans pride",
+      "bi": "Bi pride",
+      "pan": "Pan pride",
+      "enby": "Non-binary pride",
+      "lesbian": "Lesbian pride",
+      "ace": "Ace pride",
+      "custom": "Custom (use the colours below)"
+    },
+    "group": "Look"
+  },
+  "fontFamily": {
+    "type": "googleFont",
+    "label": "Font (used when the style preset is Custom)",
+    "value": "BioRhyme",
+    "group": "Look"
+  },
+  "weight": {
+    "type": "number",
+    "label": "Boldness (100 to 900)",
+    "value": 800,
+    "min": 100,
+    "max": 900,
+    "step": 100,
+    "group": "Look"
+  },
+  "radius": {
+    "type": "number",
+    "label": "Corner roundness, in pixels",
+    "value": 0,
+    "min": 0,
+    "max": 100,
+    "step": 1,
+    "group": "Look"
+  },
+  "outerFrame": {
+    "type": "checkbox",
+    "label": "An outer frame round the widget in the accent colour, or the flag's stripes in a pride preset. Untick it for none",
+    "value": true,
+    "group": "Look"
+  },
+  "borderWidth": {
+    "type": "number",
+    "label": "Frame and outline thickness in pixels. At 0 the frame has a default thickness that grows with the box, and with the frame unticked there is no outline",
+    "value": 0,
+    "min": 0,
+    "max": 20,
+    "step": 1,
+    "group": "Look"
+  },
+  "borderColor": {
+    "type": "colorpicker",
+    "label": "Outline colour, used when the outer frame is unticked and the thickness is above 0 (the frame itself is always the accent colour)",
+    "value": "#FFFFFF",
+    "group": "Look"
+  },
+  "shadow": {
+    "type": "checkbox",
+    "label": "Shadow",
+    "value": false,
+    "group": "Look"
+  },
+  "animate": {
+    "type": "checkbox",
+    "label": "Animate",
+    "value": true,
+    "group": "Look"
+  },
+  "colorPanel": {
+    "type": "colorpicker",
+    "label": "Panel colour (used when the style preset is Custom)",
+    "value": "#000000",
+    "group": "Custom colours"
+  },
+  "usePanelOpacity": {
+    "type": "checkbox",
+    "label": "Use the panel opacity below with the style preset too, not only with Custom",
+    "value": false,
+    "group": "Custom colours"
+  },
+  "panelOpacity": {
+    "type": "number",
+    "label": "Panel opacity, 0 to 1 (used when the style preset is Custom, or with any preset if the box above it is ticked)",
+    "value": 0.55,
+    "min": 0,
+    "max": 1,
+    "step": 0.05,
+    "group": "Custom colours"
+  },
+  "cText": {
+    "type": "colorpicker",
+    "label": "Text (used when the style preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Custom colours"
+  },
+  "cAccent": {
+    "type": "colorpicker",
+    "label": "Accent (used when the style preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Custom colours"
+  },
+  "cTrack": {
+    "type": "colorpicker",
+    "label": "Bar (used when the style preset is Custom)",
+    "value": "#444444",
+    "group": "Custom colours"
+  },
+  "cWarn": {
+    "type": "colorpicker",
+    "label": "Alert colour (used when the style preset is Custom)",
+    "value": "#D64545",
+    "group": "Custom colours"
+  },
+  "decoration": {
+    "type": "dropdown",
+    "label": "Decorations drawn behind the words, in the accent colour (or the flag's colours in a pride preset)",
+    "value": "none",
+    "options": {
+      "none": "None",
+      "sparkles": "Sparkles",
+      "hearts": "Hearts",
+      "stars": "Stars",
+      "flowers": "Flowers",
+      "moons": "Moons",
+      "snowflakes": "Snowflakes",
+      "bubbles": "Bubbles",
+      "butterflies": "Butterflies",
+      "clouds": "Clouds",
+      "leaves": "Leaves",
+      "paws": "Paw prints",
+      "notes": "Music notes",
+      "bows": "Bows",
+      "mixed": "Sparkles, hearts and stars"
+    },
+    "group": "Decorations"
+  },
+  "decorationCount": {
+    "type": "number",
+    "label": "How many decorations (1 to 24)",
+    "value": 8,
+    "min": 1,
+    "max": 24,
+    "step": 1,
+    "group": "Decorations"
+  },
+  "decorationSize": {
+    "type": "number",
+    "label": "Decoration size, as a multiple of the usual",
+    "value": 1,
+    "min": 0.3,
+    "max": 4,
+    "step": 0.1,
+    "group": "Decorations"
+  },
+  "decorationMotion": {
+    "type": "dropdown",
+    "label": "How decorations move (with Animate off they stay still)",
+    "value": "twinkle",
+    "options": {
+      "twinkle": "Twinkle in place",
+      "drift": "Drift upwards and fade",
+      "still": "Stay still"
+    },
+    "group": "Decorations"
+  },
+  "decorationPlacement": {
+    "type": "dropdown",
+    "label": "Where the decorations go",
+    "value": "scatter",
+    "options": {
+      "scatter": "Scattered over the panel",
+      "edges": "Along the inside of the edges",
+      "corners": "In the corners",
+      "offset": "A little way in from the corners (top right and bottom right first)",
+      "border": "On the border, half outside it (leave a little room round the widget)"
+    },
+    "group": "Decorations"
+  },
+  "decorationColor": {
+    "type": "dropdown",
+    "label": "Decoration colour",
+    "value": "accent",
+    "options": {
+      "accent": "The accent colour (a pride preset's flag colours)",
+      "text": "The text colour",
+      "mixed": "The accent and text colours, in turn",
+      "custom": "The colour picked below"
+    },
+    "group": "Decorations"
+  },
+  "decorationTint": {
+    "type": "colorpicker",
+    "label": "Decoration colour to use when the colour above is the one picked here",
+    "value": "#FFB6D9",
+    "group": "Decorations"
+  },
+  "decorationOpacity": {
+    "type": "number",
+    "label": "Decoration opacity, 0.1 to 1 (separate from the panel's opacity, and 1 is fully solid). Twinkling dips a little and drifting fades in and out, so choose Stay still to keep them fully solid",
+    "value": 0.5,
+    "min": 0.1,
+    "max": 1,
+    "step": 0.05,
+    "group": "Decorations"
+  },
+  "debug": {
+    "type": "checkbox",
+    "label": "Log every event to the browser-source console",
+    "value": false,
+    "group": "Troubleshooting"
+  }
+}
