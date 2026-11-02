@@ -17,6 +17,8 @@
   -webkit-font-smoothing: antialiased;
 }
 #sc-root * { box-sizing: border-box; }
+/* Decorations on the border hang half outside the panel, so a panel that fills the box leaves them a little room. */
+#sc-root:has(#sc-app > .w-deco.outside) { padding: 3%; }
 #sc-root [hidden] { display: none !important; }
 
 /* The Animate field: when it is off, nothing moves or eases. */

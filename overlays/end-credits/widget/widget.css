@@ -17,6 +17,11 @@
   -webkit-font-smoothing: antialiased;
 }
 #ec-root * { box-sizing: border-box; }
+/* Decorations on the border hang half outside the panel, so a panel that fills the box leaves them a little room. */
+#ec-root:has(#ec-app > .w-deco.outside) { padding: 3%; }
+#ec-app:has(> .w-deco.outside) { overflow: visible; }
+/* The credits are clipped to the panel by this window, so the panel itself can let its decorations hang outside. */
+.ec-window { position: absolute; inset: 0; overflow: hidden; border-radius: inherit; }
 #ec-root [hidden] { display: none !important; }
 /* Until the credits roll the whole widget is gone. */
 #ec-root[hidden] { display: none !important; }

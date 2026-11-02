@@ -194,6 +194,9 @@
 
 #cf-app { position: relative; }
 
+/* On the border, the shapes hang half outside the panel, so it stops clipping them. */
+#cf-app:has(> .w-deco.outside) { overflow: visible; }
+
 /* Decorations round each bubble hang half outside it, so the list leaves them a margin to show in. */
 #cf-app.decor-bubbles .cf-list { padding: 0.7em 1em; }
 
