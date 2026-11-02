@@ -64,7 +64,7 @@
   },
   "spotifyRefreshToken": {
     "type": "text",
-    "label": "Your Spotify refresh token, from the sign-in page described in this overlay's README. It lets anyone who sees this overlay's address read what you play, so do not share the address",
+    "label": "Your Spotify refresh token, from the sign-in page described in this overlay's README (the dev page links to it, and Last.fm is the easier way to read Spotify). It lets anyone who sees this overlay's address read what you play, so do not share the address",
     "value": "",
     "group": "Spotify"
   },
@@ -142,6 +142,15 @@
     "value": 4.2,
     "group": "Size",
     "min": 2,
+    "step": 0.1
+  },
+  "scrollSpeed": {
+    "type": "number",
+    "label": "How fast a name too long for the card scrolls (1 is a steady read, 2 is twice as fast)",
+    "value": 1,
+    "group": "Size",
+    "min": 0.3,
+    "max": 3,
     "step": 0.1
   },
   "titleScale": {

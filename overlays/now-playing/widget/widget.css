@@ -76,17 +76,27 @@
   text-transform: uppercase;
   color: var(--w-accent);
 }
+/* One line each, whatever the name, so the card keeps the size the box gives it. A name that is too long slides along its line
+   (see .np-run), and with Animate off, where nothing may move, it is cut short with dots instead. */
 .np-title {
   font-size: calc(1em * var(--np-title, 1.25));
   font-weight: var(--w-weight);
   overflow: hidden;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow-wrap: anywhere;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .np-artist { font-size: 0.85em; font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .np-album { font-size: 0.65em; font-weight: 700; opacity: 0.85; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.np-run.scrolls {
+  display: inline-block;
+  animation: np-scroll var(--np-time, 8s) linear infinite;
+}
+/* It waits at the start, slides to the end, waits there, and then goes back to the start in one step and goes again. Every
+   line that scrolls has the same time for this, so they finish together. */
+@keyframes np-scroll {
+  0%, 15% { transform: translateX(0); }
+  85%, 100% { transform: translateX(calc(var(--np-shift, 0px) * -1)); }
+}
 .np-progress { display: flex; align-items: center; gap: 0.5em; margin-top: 0.45em; }
 .np-time { flex: 0 0 auto; font-size: 0.55em; font-weight: 700; font-variant-numeric: tabular-nums; }
 .np-track { flex: 1 1 auto; height: 0.4em; overflow: hidden; background: var(--w-track); border-radius: 999px; }

@@ -14,9 +14,14 @@
     { "label": "Play / pause", "kind": "player", "action": "toggle" },
     { "label": "Stop (nothing playing)", "kind": "player", "action": "stop" },
     { "label": "Skip 30 seconds", "kind": "player", "action": "skip" },
+    { "label": "Long title (should scroll)", "kind": "player", "action": "longTitle" },
+    { "label": "Long artist and album (should scroll)", "kind": "player", "action": "longArtist" },
+    { "label": "Everything long", "kind": "player", "action": "longAll" },
+    { "label": "Short names (should stay still)", "kind": "player", "action": "short" },
     { "label": "Player goes offline", "kind": "player", "action": "offline" },
     { "label": "Player comes back", "kind": "player", "action": "online" }
   ] }],
+  "spotifyLink": { "href": "spotify-token.html", "label": "Sign in to Spotify and get a refresh token", "hint": "Only if you want Spotify as the source. It takes a Spotify developer app, which needs Spotify Premium, and Last.fm is much quicker to set up. Read the Spotify part of the README first." },
   "chatDefault": "!nowplaying off",
   "demo": { "lastfmUser": "demo", "lastfmKey": "demo", "spotifyClientId": "demo", "spotifyRefreshToken": "demo" }
 };
@@ -38,16 +43,26 @@
     { title: "Kettle Song", artist: "The Quiet Hours", album: "Rainy Window", dur: 187000, art: "art/cover2.svg" },
     { title: "A Very Long Track Name That Goes On And On, Part Two (Extended Mix)", artist: "Someone With A Long Name, Another Artist", album: "Greatest Hits Volume Twelve", dur: 301000, art: "art/cover3.svg" }
   ];
+  // The tracks the long-name buttons play. The card must keep its size for all of them, and scroll whichever line is too long.
+  var SPECIAL = {
+    longTitle: { title: "The Extraordinarily Long Title Of A Song That Could Never Fit On One Line Of This Card, Even In A Very Wide Box (Remastered Deluxe Anniversary Edition)", artist: "The Quiet Hours", album: "Rainy Window", dur: 240000, art: "art/cover2.svg" },
+    longArtist: { title: "Kettle Song", artist: "The Quiet Hours, Mina and the Lanterns, Someone With A Long Name, Another Artist, And Yet Another Collaborator", album: "A Compilation Album With A Name Much Longer Than The Card Is Wide", dur: 240000, art: "art/cover1.svg" },
+    longAll: { title: "An Impossibly Long Title, Part One Of Three, Recorded Live At The Longest Venue Name In The World (Extended Mix)", artist: "Someone With A Long Name, Another Artist, And A Third One Besides", album: "Greatest Hits Volume Twelve, The Complete Collection", dur: 301000, art: "art/cover3.svg" },
+    short: { title: "Hi", artist: "Me", album: "One", dur: 120000, art: "art/cover1.svg" }
+  };
+  var special = null;
+  function track() { return special || TRACKS[player.i]; }
   var player = { i: 0, playing: true, stopped: false, offline: false, pos: 45000, at: Date.now() };
   function here() { return player.playing ? player.pos + (Date.now() - player.at) : player.pos; }
-  function now() { var p = Math.min(here(), TRACKS[player.i].dur); player.pos = p; player.at = Date.now(); return p; }
-  function art() { return new URL(TRACKS[player.i].art, location.href).href; }
+  function now() { var p = Math.min(here(), track().dur); player.pos = p; player.at = Date.now(); return p; }
+  function art() { return new URL(track().art, location.href).href; }
   function act(a) {
     now();
-    if (a === "next" || a === "prev") { player.i = (player.i + (a === "next" ? 1 : TRACKS.length - 1)) % TRACKS.length; player.pos = 0; player.stopped = false; player.playing = true; }
+    if (SPECIAL[a]) { special = SPECIAL[a]; player.pos = 0; player.stopped = false; player.playing = true; }
+    else if (a === "next" || a === "prev") { special = null; player.i = (player.i + (a === "next" ? 1 : TRACKS.length - 1)) % TRACKS.length; player.pos = 0; player.stopped = false; player.playing = true; }
     else if (a === "toggle") { player.stopped = false; player.playing = !player.playing; }
     else if (a === "stop") player.stopped = true;
-    else if (a === "skip") player.pos = Math.min(player.pos + 30000, TRACKS[player.i].dur - 1000);
+    else if (a === "skip") player.pos = Math.min(player.pos + 30000, track().dur - 1000);
     else if (a === "offline") player.offline = true;
     else if (a === "online") player.offline = false;
     player.at = Date.now();
@@ -56,7 +71,7 @@
   var realFetch = window.fetch.bind(window);
   window.fetch = function (url, opts) {
     url = String(url);
-    var t = TRACKS[player.i], playing = !player.stopped && player.playing, p = now();
+    var t = track(), playing = !player.stopped && player.playing, p = now();
     if (url.indexOf("http://localhost:1608/") === 0 || url.indexOf("http://localhost:26538/") === 0 || url.indexOf("https://ws.audioscrobbler.com/") === 0 || url.indexOf("https://accounts.spotify.com/") === 0 || url.indexOf("https://api.spotify.com/") === 0) {
       if (player.offline) return Promise.reject(new TypeError("Failed to fetch"));
       if (url.indexOf("http://localhost:1608/") === 0) return reply({ status: player.stopped ? "stopped" : playing ? "playing" : "paused", title: t.title, artists: t.artist.split(", "), album: t.album, cover_url: art(), progress: p, duration: t.dur });
@@ -170,6 +185,9 @@
     c.innerHTML = "";
     c.appendChild(el("h1", { text: CFG.title }));
     c.appendChild(el("p", { "class": "hint", text: CFG.hint }));
+    if (CFG.spotifyLink) {
+      c.appendChild(el("p", { "class": "hint" }, [el("a", { href: CFG.spotifyLink.href, target: "_blank", rel: "noopener", text: CFG.spotifyLink.label }), document.createTextNode(". " + CFG.spotifyLink.hint)]));
+    }
 
     c.appendChild(el("h2", { text: "Look and export" }));
     if (fieldDefs.themePreset) {

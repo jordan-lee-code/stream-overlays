@@ -116,6 +116,8 @@ module.exports = function createEnv(root) {
       await wait(5);
     },
     async reload() { window.dispatchEvent(new CustomEvent("onWidgetLoad", { detail: { fieldData: lastFD } })); await wait(5); },
+    // A plain window event, such as a resize.
+    fire(type) { window.dispatchEvent(new CustomEvent(type)); },
     ev(listener, event) { window.dispatchEvent(new CustomEvent("onEventReceived", { detail: { listener, event } })); },
     chat(text, o) {
       o = o || {}; const badges = [];
