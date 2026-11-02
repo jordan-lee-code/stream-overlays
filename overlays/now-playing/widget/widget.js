@@ -370,12 +370,14 @@
     c.showAlbum = bool(f.showAlbum, false);
     c.showProgress = bool(f.showProgress, true);
     c.showPaused = bool(f.showPaused, true);
+    c.showLabel = bool(f.showLabel, true);
     c.labelPlaying = txt(f.labelPlaying, "Now playing");
     c.labelPaused = txt(f.labelPaused, "Paused");
     c.idleText = trim(txt(f.idleText, ""));
     c.showProblems = bool(f.showProblems, false);
     c.textSize = Math.max(2, num(f.textSize, 4.2));
-    c.titleScale = clamp(num(f.titleScale, 1.25), 0.5, 3);
+    c.titleScale = clamp(num(f.titleScale, 1.5), 0.5, 3);
+    c.artistScale = clamp(num(f.artistScale, 1), 0.5, 3);
     c.scrollSpeed = clamp(num(f.scrollSpeed, 1), 0.3, 3);
     c.artSize = clamp(num(f.artSize, 4.4), 2, 10);
     return c;
@@ -602,7 +604,7 @@
       fit();
       return;
     }
-    show(el.label, t.playing ? cfg.labelPlaying : cfg.labelPaused);
+    show(el.label, cfg.showLabel ? (t.playing ? cfg.labelPlaying : cfg.labelPaused) : "");
     show(el.title, t.title);
     show(el.artist, t.artist);
     show(el.album, cfg.showAlbum ? t.album : "");
@@ -628,6 +630,7 @@
     var s = el.app.style;
     s.setProperty("--np-size", cfg.textSize + "cqw");
     s.setProperty("--np-title", cfg.titleScale);
+    s.setProperty("--np-artist", cfg.artistScale);
     s.setProperty("--np-art", cfg.artSize);
   }
 
