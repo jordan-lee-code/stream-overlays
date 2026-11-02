@@ -27,6 +27,18 @@
             "value": false
           },
           {
+            "label": "Right side on",
+            "kind": "set",
+            "field": "showRight",
+            "value": true
+          },
+          {
+            "label": "Right side off",
+            "kind": "set",
+            "field": "showRight",
+            "value": false
+          },
+          {
             "label": "Handles shown",
             "kind": "set",
             "field": "showNames",

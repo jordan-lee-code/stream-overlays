@@ -412,6 +412,7 @@
       patreon: txt(f.patreon, "")
     };
     for (var k in c.handles) { if (c.handles.hasOwnProperty(k)) c.handles[k] = c.handles[k].replace(/^\s+|\s+$/g, ""); }
+    c.showRight = bool(f.showRight, true);
     c.rotate = bool(f.rotate, true);
     c.rotateSeconds = clamp(num(f.rotateSeconds, 4), 1, 60);
     c.fadeSeconds = clamp(num(f.fadeSeconds, 0.6), 0.1, 3);
@@ -476,11 +477,12 @@
     var count = 0;
     for (var i = 0; i < SITES.length; i++) {
       var s = SITES[i], h = cfg.handles[s.id];
-      if (!h) continue;
+      if (!h || (s.side === "right" && !cfg.showRight)) continue;
       (s.side === "right" ? el.right : el.left).appendChild(itemFor(s, h));
       count++;
     }
     el.root.hidden = count === 0;
+    if (el.right.children.length) el.app.classList.remove("solo"); else el.app.classList.add("solo");
     var rotating = cfg.rotate && el.left.children.length > 1;
     if (rotating) el.left.classList.add("rotating"); else el.left.classList.remove("rotating");
     if (cfg.spread && !rotating) el.left.classList.add("spread"); else el.left.classList.remove("spread");

@@ -83,6 +83,12 @@
     "value": "",
     "group": "Left side"
   },
+  "showRight": {
+    "type": "checkbox",
+    "label": "Show the right side (Ko-fi and Patreon). Untick to hide it without losing what you typed, and the left side rotates on its own, centred",
+    "value": true,
+    "group": "Right side"
+  },
   "kofi": {
     "type": "text",
     "label": "Ko-fi (shown on the right of the bar)",
