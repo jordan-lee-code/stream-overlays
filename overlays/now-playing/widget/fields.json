@@ -159,6 +159,16 @@
     "max": 100,
     "step": 1
   },
+  "scrollStyle": {
+    "type": "dropdown",
+    "label": "How a name too long for the card scrolls",
+    "value": "jump",
+    "options": {
+      "jump": "Along to the end, then back to the start in one step",
+      "bounce": "Smoothly back and forth"
+    },
+    "group": "Size"
+  },
   "scrollSpeed": {
     "type": "number",
     "label": "How fast a name too long for the card scrolls (1 is a steady read, 2 is twice as fast)",

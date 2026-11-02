@@ -403,6 +403,7 @@
     c.artistScale = clamp(num(f.artistScale, 1), 0.5, 3);
     c.cardHeight = clamp(num(f.cardHeight, 0), 0, 100);
     c.scrollSpeed = clamp(num(f.scrollSpeed, 1), 0.3, 3);
+    c.scrollStyle = str(f.scrollStyle, "jump") === "bounce" ? "bounce" : "jump";
     c.artSize = clamp(num(f.artSize, 4.4), 2, 10);
     return c;
   }
@@ -578,7 +579,7 @@
       if (e > longest) longest = e;
     }
     var time = longest ? (longest / (SCROLL_PX_PER_SECOND * cfg.scrollSpeed) / SCROLL_MOVING).toFixed(2) : "0";
-    var sig = extra.map(Math.ceil).join("|") + "/" + time, again = sig !== scrollSig;
+    var sig = extra.map(Math.ceil).join("|") + "/" + time + "/" + cfg.scrollStyle, again = sig !== scrollSig;
     for (i = 0; i < lines.length; i++) {
       var r = lines[i] && lines[i].firstChild;
       if (r && r.classList && extra[i] && !r.classList.contains("scrolls")) again = true;
@@ -596,8 +597,11 @@
         node.style.setProperty("--np-shift", Math.ceil(extra[i]) + "px");
         node.style.setProperty("--np-time", time + "s");
         node.classList.add("scrolls");
+        // Either it goes back to the start in one step and goes again, or it slides back the way it came.
+        if (cfg.scrollStyle === "bounce") node.classList.add("bounce"); else node.classList.remove("bounce");
       } else {
         node.classList.remove("scrolls");
+        node.classList.remove("bounce");
       }
     }
   }
