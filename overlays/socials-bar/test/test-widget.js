@@ -63,7 +63,7 @@ const nameOf = (n) => (n.children[1] ? n.children[1].textContent : "");
   await load({}); ok(!E("sb-left").classList.contains("spread"), "rotating, there is one at a time and nothing to spread");
   await load({ rotate: false }); await load({}); ok(!E("sb-left").classList.contains("spread"), "going back to rotating leaves nothing behind");
   ok(/\.sb-left\.spread\s*\{[^}]*flex:\s*1 1 0[^}]*justify-content:\s*space-between/.test(css), "the left side takes the room that is left and divides it between the sites");
-  ok(/\.sb-left\.spread\s*\{[^}]*margin-right:\s*calc\(var\(--sb-gap/.test(css), "and keeps the gap setting between the last site and the right side");
+  ok(/#sb-app\s*\{[^}]*column-gap:\s*calc\(var\(--sb-gap[^}]*--sb-squeeze/.test(css) && /\.sb-side\s*\{[^}]*column-gap:\s*calc\(var\(--sb-gap[^}]*--sb-squeeze/.test(css), "the gaps, between the sites and between the two sides, close up together when the bar is squeezed");
 
   section("the look");
   await load({ textSize: 2, iconScale: 2, gap: 3 });

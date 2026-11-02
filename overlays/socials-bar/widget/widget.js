@@ -487,6 +487,8 @@
     if (rotating) show(0);
     else for (var j = 0; j < el.left.children.length; j++) { el.left.children[j].classList.add("on"); }
     startRotation();
+    watchWidth();
+    tighten();
   }
   function applyLook() {
     applyCommonTheme(cfg, el.root, el.app, "sb-font-link");
@@ -498,6 +500,37 @@
     el.app.classList.remove("ic-text");
     el.app.classList.remove("ic-brand");
     if (cfg.iconColor !== "accent") el.app.classList.add("ic-" + cfg.iconColor);
+  }
+  // The gaps are as wide as the setting says while there is room. When the bar would wrap, they close up, a step at a time and
+  // down to a quarter, before anything is moved onto a second row. The first step that fits is kept.
+  var SQUEEZE = [1, 0.8, 0.6, 0.45, 0.3, 0.2];
+  function wrapped() {
+    var sides = [el.left, el.right], tops = [];
+    for (var s = 0; s < sides.length; s++) {
+      for (var i = 0; i < sides[s].children.length; i++) {
+        var it = sides[s].children[i];
+        if (it.classList.contains("on") || !sides[s].classList.contains("rotating")) tops.push(it.offsetTop);
+      }
+    }
+    if (el.left.children.length && el.right.children.length) {
+      var a = el.left.getBoundingClientRect(), b = el.right.getBoundingClientRect();
+      if (a.bottom <= b.top || b.bottom <= a.top) return true;
+    }
+    for (var t = 1; t < tops.length; t++) { if (Math.abs(tops[t] - tops[0]) > 2) return true; }
+    return false;
+  }
+  function tighten() {
+    if (!el.app || !el.app.style || typeof el.app.getBoundingClientRect !== "function") return;
+    var k = 0;
+    el.app.style.setProperty("--sb-squeeze", SQUEEZE[0]);
+    while (k < SQUEEZE.length - 1 && wrapped()) { k++; el.app.style.setProperty("--sb-squeeze", SQUEEZE[k]); }
+  }
+  var tightenSoon = null;
+  function watchWidth() {
+    if (tightenSoon) return;
+    tightenSoon = function () { setTimeout(tighten, 30); };
+    if (typeof ResizeObserver === "function") new ResizeObserver(tightenSoon).observe(el.root);
+    if (typeof document !== "undefined" && document.fonts && document.fonts.ready) document.fonts.ready.then(tightenSoon);
   }
   function bind() {
     var ids = { root: "sb-root", app: "sb-app", left: "sb-left", right: "sb-right" };

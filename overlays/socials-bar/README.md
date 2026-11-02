@@ -12,7 +12,7 @@ It is a single self-contained widget in plain JavaScript, with no dependencies a
 - The left side rotates: one site at a time fades out as the next fades in, and the bar stays the width of the widest one, so nothing jumps about. You choose how many seconds each stays and how long the fade takes, or untick Rotate to show them all side by side.
 - A logo in front of every handle, in your accent colour, your text colour, or each site's own colour. Or logos on their own, with no handles.
 - Gaps that follow the box: side by side, the sites spread across the width you give the widget in StreamElements, so a wide box gets wide gaps and a narrow one gets close ones. Your gap setting is the least there can be.
-- Wraps when it is tight: if there are too many for the width of the box, the sites wrap onto a second row instead of running off the edge.
+- Closes up when it is tight: when there is less room, the gaps between the sites, and between the left and right sides, shrink to as little as a fifth of the setting before anything moves. Only if there is still not enough room do the sites wrap onto a second row instead of running off the edge.
 - Scales with the box: the text scales with the width of the box you draw.
 - Customisable: around fifty settings cover the handles, rotation, sizes, shape, outline, colours, fonts and animation.
 - All twenty-two style presets, including the seven pride flags.
