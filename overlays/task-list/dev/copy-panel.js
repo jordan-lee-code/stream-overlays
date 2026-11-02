@@ -32,8 +32,13 @@
     "#copy-panel textarea { display: block; width: 100%; height: 90px; margin-top: 8px; font-size: 11px; }" +
     "#copy-panel textarea[hidden] { display: none; }";
 
+  // The dev page's own stylesheet link is cached just as long, so it is pointed at the file again with a changing address.
+  Array.prototype.forEach.call(document.querySelectorAll('link[rel="stylesheet"][href$="widget.css"]'), function (l) { l.href = "../widget/widget.css?v=" + Date.now(); });
+
   function fetchText(url) {
-    return fetch(url).then(function (r) {
+    // Asked afresh each time, since a browser may otherwise hand back a widget.js from hours ago, and the copy that goes into StreamElements
+    // would then be the old one next to a new fields.json.
+    return fetch(url, { cache: "no-cache" }).then(function (r) {
       if (!r.ok) throw new Error("Could not load " + url.replace("../widget/", "") + " (" + r.status + ").");
       return r.text();
     });

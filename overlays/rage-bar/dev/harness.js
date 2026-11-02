@@ -564,14 +564,14 @@
 
   // ---- boot ----
   Promise.all([
-    fetch("../widget/widget.html").then(function (r) { return r.text(); }),
-    fetch("../widget/fields.json").then(function (r) { return r.json(); })
+    fetch("../widget/widget.html", { cache: "no-cache" }).then(function (r) { return r.text(); }),
+    fetch("../widget/fields.json", { cache: "no-cache" }).then(function (r) { return r.json(); })
   ]).then(function (res) {
     document.getElementById("stage").innerHTML = res[0];
     fieldDefs = res[1];
     fieldData = buildFieldData(res[1]);
     fieldData.debug = false;   // the console is for the real stream, not for here
-    return loadScript("../widget/widget.js");
+    return loadScript("../widget/widget.js?v=" + Date.now());
   }).then(function () {
     fitStage();
     window.addEventListener("resize", fitStage);
