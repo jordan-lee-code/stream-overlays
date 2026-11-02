@@ -23,6 +23,7 @@ A set of StreamElements custom widgets for Twitch streams. Each is plain JavaScr
 | [Rotating Panel](overlays/rotating-panel) | One panel that takes turns showing your socials and chat commands. |
 | [End Credits](overlays/end-credits) | A thank-you that collects your followers, subscribers, gifters, cheerers, tippers, raiders and chatters through the stream and rolls them as credits. |
 | [Task List and Schedule](overlays/task-list) | A task list you tick off from chat, or a weekly schedule with today's slot highlighted. |
+| [Local Time](overlays/local-time) | The time in any timezone, with a line above it such as Local timezone: GMT. |
 
 ## Using an overlay
 

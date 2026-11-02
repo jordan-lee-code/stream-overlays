@@ -1,0 +1,53 @@
+{
+  "width": 420,
+  "height": 170,
+  "fields": {
+    "animate": false,
+    "timezone": "Europe/London"
+  },
+  "setup": "Date.now=function(){return 1768489629000};",
+  "pictures": [
+    {
+      "file": "default.png",
+      "width": 420,
+      "height": 170,
+      "base": "scene"
+    },
+    {
+      "file": "twelve.png",
+      "width": 420,
+      "height": 200,
+      "base": "scene",
+      "fields": {
+        "timezone": "America/New_York",
+        "hour24": false,
+        "showDate": true,
+        "themePreset": "midnight"
+      }
+    },
+    {
+      "file": "custom.png",
+      "width": 420,
+      "height": 170,
+      "base": "scene",
+      "fields": {
+        "timezone": "Asia/Tokyo",
+        "showSeconds": false,
+        "labelText": "Time in {city} ({offset})",
+        "themePreset": "pastelpink"
+      }
+    },
+    {
+      "file": "decorations.png",
+      "width": 420,
+      "height": 170,
+      "base": "scene",
+      "fields": {
+        "decoration": "stars",
+        "decorationCount": 6,
+        "themePreset": "celestial",
+        "decorationPlacement": "offset"
+      }
+    }
+  ]
+}
