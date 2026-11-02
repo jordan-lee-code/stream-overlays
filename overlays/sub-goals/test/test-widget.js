@@ -928,6 +928,12 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   ok(/family=BioRhyme:wght@200\.\.800/.test(elements["incentive-font-link"].href || ""), "its whole weight range is requested, so any boldness is real");
   load({ themePreset: "custom",colorPanel: "#336699", panelOpacity: 0.3, radius: 10 }); await wait(5);
   ok(app["--panel"] === "rgba(51, 102, 153, 0.3)" && app["--radius"] === "10px", "panel colour, opacity and radius are configurable (" + app["--panel"] + ")");
+  load({ themePreset: "pastelpink", panelOpacity: 0.3 }); await wait(5);
+  ok(!/, 0\.3\)$/.test(app["--panel"]), "a preset keeps its own opacity unless the box is ticked");
+  load({ themePreset: "pastelpink", usePanelOpacity: true, panelOpacity: 0.3 }); await wait(5);
+  ok(app["--panel"] === "rgba(255, 227, 236, 0.3)", "ticked, the preset's panel takes the Panel opacity (" + app["--panel"] + ")");
+  load({ themePreset: "pride", usePanelOpacity: true, panelOpacity: 0.3 }); await wait(5);
+  ok(String(app["--panel-img"]).indexOf("#") === -1 && /rgba\(229, 0, 0, 0\.3\)/.test(app["--panel-img"]), "and a flag's stripes fade with it (" + app["--panel-img"] + ")");
   load({ themePreset: "custom",colorPanel: "nonsense" }); await wait(5);
   ok(app["--panel"] === "rgba(0, 0, 0, 0.55)", "a bad colour falls back to black");
   load({ title: "" }); await wait(5);

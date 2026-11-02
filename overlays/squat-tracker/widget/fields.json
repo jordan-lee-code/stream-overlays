@@ -310,9 +310,15 @@
     "value": "#000000",
     "group": "Custom colours"
   },
+  "usePanelOpacity": {
+    "type": "checkbox",
+    "label": "Use the panel opacity below with the style preset too, not only with Custom",
+    "value": false,
+    "group": "Custom colours"
+  },
   "panelOpacity": {
     "type": "number",
-    "label": "Box and floating chip opacity (used when the preset is Custom; 0 is invisible, 1 is solid)",
+    "label": "Box and floating chip opacity (used when the preset is Custom, or with any preset if the box above it is ticked; 0 is invisible, 1 is solid)",
     "value": 0.55,
     "min": 0,
     "max": 1,

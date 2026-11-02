@@ -263,9 +263,15 @@
     "value": "#000000",
     "group": "Custom colours"
   },
+  "usePanelOpacity": {
+    "type": "checkbox",
+    "label": "Use the panel opacity below with the style preset too, not only with Custom",
+    "value": false,
+    "group": "Custom colours"
+  },
   "panelOpacity": {
     "type": "number",
-    "label": "Panel opacity, 0 to 1 (used when the style preset is Custom)",
+    "label": "Panel opacity, 0 to 1 (used when the style preset is Custom, or with any preset if the box above it is ticked)",
     "value": 0.55,
     "min": 0,
     "max": 1,

@@ -551,8 +551,29 @@
     for (var i = 0; i < n; i++) parts.push(stripes[i] + " " + (i * 100 / n) + "% " + ((i + 1) * 100 / n) + "%");
     return "linear-gradient(180deg, " + parts.join(", ") + ")";
   }
+  // A preset's panel made as solid as the Panel opacity setting says, when the checkbox asks for it: a colour takes the opacity outright,
+  // and a picture (a flag) has each of its colours made that much more see-through.
+  function colorAt(css, a) {
+    var m = /^#([0-9a-f]{6})$/i.exec(css), n;
+    if (m) { n = parseInt(m[1], 16); return "rgba(" + ((n >> 16) & 255) + ", " + ((n >> 8) & 255) + ", " + (n & 255) + ", " + a + ")"; }
+    m = /^rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/i.exec(css);
+    return m ? "rgba(" + m[1] + ", " + m[2] + ", " + m[3] + ", " + a + ")" : css;
+  }
+  function fadeImage(css, a) {
+    return String(css).replace(/#([0-9a-f]{6})\b|rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*(?:,\s*([\d.]+))?\s*\)/gi, function (all, hex, r, g, b, al) {
+      if (hex) return colorAt("#" + hex, a);
+      return "rgba(" + r + ", " + g + ", " + b + ", " + Math.round((al === undefined ? 1 : parseFloat(al)) * a * 1000) / 1000 + ")";
+    });
+  }
   function themeColours() {
     var p = cfg.themePreset !== "custom" ? PRESETS[cfg.themePreset] : null;
+    if (p && cfg.usePanelOpacity) {
+      var a = clamp(cfg.panelOpacity, 0, 1), out = {}, k;
+      for (k in p) { if (p.hasOwnProperty(k)) out[k] = p[k]; }
+      out.panel = colorAt(p.panel, a);
+      if (p.bgimg) out.bgimg = fadeImage(p.bgimg, a);
+      return out;
+    }
     if (p) return p;
     return {
       panel: rgba(cfg.colorPanel, cfg.panelOpacity), text: cfg.cText, accent: cfg.cAccent,
@@ -720,6 +741,7 @@
       themePreset: str(f.themePreset, "glass"),
       colorPanel: str(f.colorPanel, "#000000"),
       panelOpacity: num(f.panelOpacity, 0.55),
+      usePanelOpacity: bool(f.usePanelOpacity, false),
       radius: Math.max(0, num(f.radius, 24)),
       borderWidth: Math.max(0, num(f.borderWidth, 0)),
       borderColor: str(f.borderColor, "#FFFFFF"),

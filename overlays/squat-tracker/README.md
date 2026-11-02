@@ -126,7 +126,7 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | Look | A caption under the number, the floating `+N` (its prefix, suffix and how long it stays), the padlock, and the tail. |
 | Sticker | The size of the number, caption and floating text, corner roundness, padding, the gap between number and caption, tilt, an outer frame, an outline and shadows. |
 | Text | The boldness of the number, caption and floating text, and the caption's opacity and letter spacing. |
-| Look and Custom colours | One of the twenty-two shared style presets (Soft black by default) or Custom colours and font, with separate colours for the box, number, caption, outline, padlock and floating text, and an opacity for the box. |
+| Look and Custom colours | One of the twenty-two shared style presets (Soft black by default) or Custom colours and font, with separate colours for the box, number, caption, outline, padlock and floating text, and an opacity for the box. A checkbox in Custom colours also lets the Panel opacity apply to any preset, not only Custom. |
 | Decorations | The shape, where they go, how many, how big, how solid, their colour, and how they move. |
 | Animation | One switch for all animation, how far the sticker swells when the count changes, and how long that takes. |
 | Sounds | A sound and volume for a gift adding squats, for locking and for unlocking, plus a master mute. |

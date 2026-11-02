@@ -179,7 +179,7 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | Frame | Whether there is a frame, how thick it is, and its colour. |
 | Size | The cover's text size, the nameplate's text size, the size of your name and the space between the lines. |
 | Look | The style preset, font, boldness, corners, padding, outer frame, outline, shadow, Animate and whether the nameplate shrinks to fit the box. |
-| Custom colours | Panel, text, accent and tag colours, used when the style preset is Custom. |
+| Custom colours | Panel, text, accent and tag colours, used when the style preset is Custom. A checkbox there also lets the Panel opacity apply to any preset, not only Custom. |
 | Decorations | The shape, where they go, how many, how big, how solid, their colour, and how they move. |
 | Manual controls | Buttons to cover the camera, cover it as be right back or away, and uncover it. |
 | Sounds | A sound when the camera is covered and another when it is uncovered, each with a volume and a Test button, and a master mute. |

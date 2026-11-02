@@ -115,6 +115,7 @@
       themePreset: str(f.themePreset, "glass"),
       colorPanel: str(f.colorPanel, "#000000"),
       panelOpacity: num(f.panelOpacity, 0.55),
+      usePanelOpacity: bool(f.usePanelOpacity, false),
       cText: str(f.cText, "#FFFFFF"),
       cAccent: str(f.cAccent, "#FFFFFF"),
       cTrack: str(f.cTrack, "#444444"),
@@ -134,9 +135,31 @@
       decor: readDecor(f)
     };
   }
+  // A preset's panel colour and its background picture, made as solid as the Panel opacity setting says. A colour (hex or rgb) takes that
+  // opacity outright. A picture, such as a flag, has each of its colours made that much more see-through, so the stripes fade too.
+  function colorAt(css, a) {
+    var m = /^#([0-9a-f]{6})$/i.exec(css), n;
+    if (m) { n = parseInt(m[1], 16); return "rgba(" + ((n >> 16) & 255) + ", " + ((n >> 8) & 255) + ", " + (n & 255) + ", " + a + ")"; }
+    m = /^rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/i.exec(css);
+    return m ? "rgba(" + m[1] + ", " + m[2] + ", " + m[3] + ", " + a + ")" : css;
+  }
+  function fadeImage(css, a) {
+    return String(css).replace(/#([0-9a-f]{6})\b|rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*(?:,\s*([\d.]+))?\s*\)/gi, function (all, hex, r, g, b, al) {
+      if (hex) return colorAt("#" + hex, a);
+      return "rgba(" + r + ", " + g + ", " + b + ", " + Math.round((al === undefined ? 1 : parseFloat(al)) * a * 1000) / 1000 + ")";
+    });
+  }
+  function withOpacity(p, a) {
+    var out = {}, k;
+    for (k in p) { if (p.hasOwnProperty(k)) out[k] = p[k]; }
+    out.panel = colorAt(p.panel, a);
+    if (p.strong) out.strong = colorAt(p.strong, a);
+    if (p.bgimg) out.bgimg = fadeImage(p.bgimg, a);
+    return out;
+  }
   function themeOf(c) {
     var p = c.themePreset !== "custom" ? PRESETS[c.themePreset] : null;
-    if (p) return p;
+    if (p) return c.usePanelOpacity ? withOpacity(p, clamp(c.panelOpacity, 0, 1)) : p;
     return { panel: rgba(c.colorPanel, c.panelOpacity), text: c.cText, accent: c.cAccent, track: c.cTrack, alarm: c.cWarn, font: c.fontFamily };
   }
   function loadFont(linkId, name) {

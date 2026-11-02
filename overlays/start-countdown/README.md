@@ -129,7 +129,7 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | Size | The clock, headline, line and start time sizes, the bar's thickness and the space between the parts, all in units of the box. |
 | Manual controls | Buttons to start, add five minutes, take a minute off, go live and clear. |
 | Look | Headline, the style preset, font, boldness, corners, outer frame, outline, shadow and Animate. |
-| Custom colours | Panel, text, accent, bar and alert colours, used when the style preset is Custom. |
+| Custom colours | Panel, text, accent, bar and alert colours, used when the style preset is Custom. A checkbox there also lets the Panel opacity apply to any preset, not only Custom. |
 | Decorations | The shape, where they go, how many, how big, how solid, their colour, and how they move. |
 | Sounds | A sound and volume for the moment you go live, with a Test button and a master mute. |
 | Troubleshooting | A debug log of every event to the browser-source console. |

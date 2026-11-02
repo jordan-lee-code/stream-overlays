@@ -317,6 +317,10 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   ok(A["--c-lock"] === "#444444" && A["--c-float"] === "#555555" && A["--c-float-bg"] === "rgba(102, 102, 102, 0.55)", "and for the padlock and the floating chip (" + A["--c-float-bg"] + ")");
   load({ themePreset: "custom", colorPanel: "#112233", panelOpacity: 0.9 }); await wait(5);
   ok(A["--accent"] === "rgba(17, 34, 51, 0.9)", "a Custom box has its own opacity (" + A["--accent"] + ")");
+  load({ themePreset: "pastelpink", panelOpacity: 0.3 }); await wait(5); const solidBox = A["--accent"];
+  ok(A["--accent"] === solidBox && !/, 0\.3\)$/.test(solidBox), "a preset keeps its own opacity unless the box is ticked");
+  load({ themePreset: "pastelpink", usePanelOpacity: true, panelOpacity: 0.3 }); await wait(5);
+  ok(A["--accent"] === "rgba(255, 227, 236, 0.3)" && /, 0\.3\)$/.test(A["--c-float-bg"]), "ticked, the box and the floating chip take the Panel opacity (" + A["--accent"] + ")");
   load({ themePreset: "celestial", colorCount: "#111111" }); await wait(5);
   ok(A["--c-count"] !== "#111111", "a preset ignores the custom colours");
   load({ radius: 999, countScale: 99, tilt: 99, popScale: 0, labelOpacity: 5 }); await wait(5);

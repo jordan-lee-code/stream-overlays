@@ -212,6 +212,7 @@
       look: {
         panel: str(f.colorPanel, "#000000"),
         opacity: clamp(num(f.panelOpacity, 0.55), 0, 1),
+        usePanelOpacity: bool(f.usePanelOpacity, false),
         radius: Math.max(0, num(f.radius, 24)),
         padV: Math.max(0, num(f.paddingV, 0.55)),
         padH: Math.max(0, num(f.paddingH, 0.7)),
@@ -328,6 +329,20 @@
     return "linear-gradient(180deg, " + parts.join(", ") + ")";
   }
 
+  // A preset's panel made as solid as the Panel opacity setting says, when the checkbox asks for it: a colour takes the opacity outright,
+  // and a picture (a flag) has each of its colours made that much more see-through.
+  function colorAt(css, a) {
+    var m = /^#([0-9a-f]{6})$/i.exec(css), n;
+    if (m) { n = parseInt(m[1], 16); return "rgba(" + ((n >> 16) & 255) + ", " + ((n >> 8) & 255) + ", " + (n & 255) + ", " + a + ")"; }
+    m = /^rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/i.exec(css);
+    return m ? "rgba(" + m[1] + ", " + m[2] + ", " + m[3] + ", " + a + ")" : css;
+  }
+  function fadeImage(css, a) {
+    return String(css).replace(/#([0-9a-f]{6})\b|rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*(?:,\s*([\d.]+))?\s*\)/gi, function (all, hex, r, g, b, al) {
+      if (hex) return colorAt("#" + hex, a);
+      return "rgba(" + r + ", " + g + ", " + b + ", " + Math.round((al === undefined ? 1 : parseFloat(al)) * a * 1000) / 1000 + ")";
+    });
+  }
   function themeColours() {
     var L = cfg.look;
     if (cfg.themePreset === "custom") {
@@ -338,10 +353,11 @@
       };
     }
     var P = PRESETS[cfg.themePreset] || PRESETS.glass;
+    var solid = L.usePanelOpacity ? L.opacity : null;
     return {
-      panel: P.panel, text: P.text, waiting: P.text, done: P.text, title: P.text, total: P.text,
+      panel: solid === null ? P.panel : colorAt(P.panel, solid), text: P.text, waiting: P.text, done: P.text, title: P.text, total: P.text,
       thanks: P.text, accent: P.accent, track: P.track, glow: rgba(P.glow, 0.7), borderC: P.accent, font: P.font,
-      flag: P.flag ? flagGradient(P.flag) : "", bgimg: P.bgimg || ""
+      flag: P.flag ? flagGradient(P.flag) : "", bgimg: solid === null || !P.bgimg ? (P.bgimg || "") : fadeImage(P.bgimg, solid)
     };
   }
 

@@ -130,7 +130,7 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | Size | The title, list heading and name sizes, and the space between the lists, in units of the box. |
 | Manual controls | Buttons to roll, roll a sample, stop and start the lists again. |
 | Look | Title, the style preset, font, boldness, corners, outer frame, outline, shadow and Animate. |
-| Custom colours | Panel, text and accent colours, used when the style preset is Custom. |
+| Custom colours | Panel, text and accent colours, used when the style preset is Custom. A checkbox there also lets the Panel opacity apply to any preset, not only Custom. |
 | Decorations | The shape, where they go, how many, how big, how solid, their colour, and how they move. |
 | Troubleshooting | A debug log of every event to the browser-source console. |
 

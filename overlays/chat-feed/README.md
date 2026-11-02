@@ -148,7 +148,7 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | Pronouns | Whether they show, how they are written, and pronouns set by hand. |
 | Size | Text size and the space between messages. |
 | Look | Title, the style preset, font, boldness, corners, padding, outer frame, outline, shadow and Animate. |
-| Custom colours | Panel, text, accent, tag and alert colours, used when the style preset is Custom. |
+| Custom colours | Panel, text, accent, tag and alert colours, used when the style preset is Custom. A checkbox there also lets the Panel opacity apply to any preset, not only Custom. |
 | Decorations | The shape, where they go, how many, how big, how solid, their colour, and how they move. |
 | Manual controls | Buttons to show example messages and to clear the screen. |
 | Sounds | A sound and volume for a message arriving, with a Test button and a master mute. |

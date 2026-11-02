@@ -1827,6 +1827,10 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   ok(R["--note-scale"] === "0.9" && R["--note-w"] === "400" && R["--note-opacity"] === "0.4" && R["--float-scale"] === "2" && R["--float-w"] === "800", "note and floating text");
   await load({ lockedOpacity: 0.3, offOpacity: 0.2, popScale: 1.3 });
   ok(R["--locked-opacity"] === "0.3" && R["--off-opacity"] === "0.2" && R["--pop-scale"] === "1.3", "locked and off looks, and the swell");
+  await load({ themePreset: "pastelpink", panelOpacity: 0.3 }); const solidBg = R["--bg"];
+  ok(R["--bg"] === solidBg && !/, 0\.3\)$/.test(solidBg), "a preset keeps its own opacity unless the box is ticked");
+  await load({ themePreset: "pastelpink", usePanelOpacity: true, panelOpacity: 0.3 });
+  ok(R["--bg"] === "rgba(255, 227, 236, 0.3)", "ticked, the card takes the Panel opacity (" + R["--bg"] + ")");
   await load({ themePreset: "custom", outerFrame: false, borderWidth: 2, colorPanel: "#102030", panelOpacity: 0.8, cText: "#EEEEEE", cAccent: "#FF00AA", colorFillFrom: "#010101", colorFillTo: "#020202", colorAlarm: "#030303",
     colorTitle: "#040404", colorTimer: "#050505", colorReadout: "#060606", colorNote: "#070707", colorBorder: "#080808", cTrack: "#FFFFFF", trackOpacity: 0.4,
     colorLock: "#090909", colorLockHole: "#0A0A0A", colorFloat: "#0B0B0B", colorFloatBg: "#000000", colorAlert: "#0C0C0C", colorAlertFill: "#0D0D0D" });

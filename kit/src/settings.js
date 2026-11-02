@@ -24,6 +24,7 @@ const STANDARD = {
   fit: { type: "checkbox", value: true },
   colorPanel: { type: "colorpicker" },
   panelOpacity: { type: "number" },
+  usePanelOpacity: { type: "checkbox", value: false },
   cText: { type: "colorpicker" },
   cAccent: { type: "colorpicker" },
   cTrack: { type: "colorpicker" },

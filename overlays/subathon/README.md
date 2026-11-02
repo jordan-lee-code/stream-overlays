@@ -173,7 +173,7 @@ Every setting has a plain label in StreamElements. The clock's settings sit unde
 | Clock: Time per event | Minutes for each sub tier, gifted sub, 100 bits, unit of tip, follow and raid. |
 | Clock: Power-ups and sleep | The power-up multiplier, length and event count with Start and End buttons, and the sleep multiplier with its buttons. |
 | Clock: Look | Title, which parts are shown, order, whether the big clock counts down or up, the elapsed line and its labels, the day number and how it counts, clock size, boldness, spacing, the gap to the goals, how long the time-added line stays, Animate, and whether the clock shrinks to fit the box. |
-| Clock: Custom colours | Colours for the digits, status line, time-added chip and warning, used when the style preset is Custom. |
+| Clock: Custom colours | Colours for the digits, status line, time-added chip and warning, used when the style preset is Custom. A checkbox in Custom colours also lets the Panel opacity apply to any preset, not only Custom. |
 | Decorations | The shape, where they go, how many, how big, how solid, their colour, and how they move. |
 | Clock: Manual controls | Buttons to resume, pause, add, subtract, lock, unlock, and move the day number. |
 | Clock: Sounds | Sounds and volumes for time added, reaching zero and a power-up starting, with Test buttons and a master mute. |

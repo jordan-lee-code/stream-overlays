@@ -492,6 +492,10 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   ok(vars()["--sa-font"].indexOf("Lobster") !== -1 && /Lobster/.test(E("subathon-font-link").href), "and the font setting, which is loaded from Google Fonts");
   await load({ themePreset: "celestial", colorPanel: "#102030", tmText: "#112233" });
   ok(vars()["--sa-text"] === expectedPresets.celestial.text, "a preset ignores the colour pickers");
+  await load({ themePreset: "pastelpink", panelOpacity: 0.3 });
+  ok(vars()["--sa-bg"] === expectedPresets.pastelpink.panel, "a preset keeps its own opacity unless the box is ticked");
+  await load({ themePreset: "pastelpink", usePanelOpacity: true, panelOpacity: 0.3 });
+  ok(vars()["--sa-bg"] === "rgba(255, 227, 236, 0.3)", "ticked, the preset's panel takes the Panel opacity (" + vars()["--sa-bg"] + ")");
   await load({ themePreset: "nonsense" });
   ok(vars()["--sa-bg"] === "rgba(16, 32, 48, 0.55)" || vars()["--sa-bg"] !== undefined, "an unknown preset name does not break the clock");
   await load({ themePreset: "glass", radius: 40, outerFrame: false, borderWidth: 3, borderColor: "#FF0000", shadow: true, tmClockSize: 12, tmGap: 20, tmWeight: 600, tmAnimate: false });

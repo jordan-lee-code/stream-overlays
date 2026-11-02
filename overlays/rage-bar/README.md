@@ -232,7 +232,7 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | Wording | Every word in the line under the bar, the readouts and the floating text. |
 | Card | Corner roundness, padding, spacing, tilt, an outer frame, an outline, shadows, the tail and the bar's thickness. |
 | Text | The size and boldness of the heading, countdown, readout, line and floating text. |
-| Look and Custom colours | One of the twenty-two shared style presets (Soft black by default) or Custom colours and font, with a colour for every part. |
+| Look and Custom colours | One of the twenty-two shared style presets (Soft black by default) or Custom colours and font, with a colour for every part. A checkbox in Custom colours also lets the Panel opacity apply to any preset, not only Custom. |
 | Decorations | The shape, where they go, how many, how big, how solid, their colour, and how they move. |
 | Animation | One switch for all animation, and how long the fill, swell, floating text, glow, save window pulse and shake take. |
 | Sounds | A sound and volume for a contribution, a lock, a lock breaking, the bar filling, a save and a reset, plus a master mute. |
