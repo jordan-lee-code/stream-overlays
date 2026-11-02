@@ -1,0 +1,418 @@
+{
+  "instagram": {
+    "type": "text",
+    "label": "Instagram (your handle as you want it shown; leave blank to hide it)",
+    "value": "@yourname",
+    "group": "Left side"
+  },
+  "youtube": {
+    "type": "text",
+    "label": "YouTube",
+    "value": "@yourname",
+    "group": "Left side"
+  },
+  "tiktok": {
+    "type": "text",
+    "label": "TikTok",
+    "value": "@yourname",
+    "group": "Left side"
+  },
+  "twitter": {
+    "type": "text",
+    "label": "Twitter or X",
+    "value": "@yourname",
+    "group": "Left side"
+  },
+  "bluesky": {
+    "type": "text",
+    "label": "Bluesky",
+    "value": "@yourname",
+    "group": "Left side"
+  },
+  "twitch": {
+    "type": "text",
+    "label": "Twitch",
+    "value": "",
+    "group": "Left side"
+  },
+  "discord": {
+    "type": "text",
+    "label": "Discord",
+    "value": "",
+    "group": "Left side"
+  },
+  "facebook": {
+    "type": "text",
+    "label": "Facebook",
+    "value": "",
+    "group": "Left side"
+  },
+  "threads": {
+    "type": "text",
+    "label": "Threads",
+    "value": "",
+    "group": "Left side"
+  },
+  "mastodon": {
+    "type": "text",
+    "label": "Mastodon",
+    "value": "",
+    "group": "Left side"
+  },
+  "snapchat": {
+    "type": "text",
+    "label": "Snapchat",
+    "value": "",
+    "group": "Left side"
+  },
+  "github": {
+    "type": "text",
+    "label": "GitHub",
+    "value": "",
+    "group": "Left side"
+  },
+  "kick": {
+    "type": "text",
+    "label": "Kick",
+    "value": "",
+    "group": "Left side"
+  },
+  "reddit": {
+    "type": "text",
+    "label": "Reddit",
+    "value": "",
+    "group": "Left side"
+  },
+  "kofi": {
+    "type": "text",
+    "label": "Ko-fi (shown on the right of the bar)",
+    "value": "ko-fi.com/yourname",
+    "group": "Right side"
+  },
+  "patreon": {
+    "type": "text",
+    "label": "Patreon (shown on the right, after Ko-fi)",
+    "value": "",
+    "group": "Right side"
+  },
+  "rotate": {
+    "type": "checkbox",
+    "label": "Rotate the left side: show one site at a time, fading from one to the next (untick to show them all side by side)",
+    "value": true,
+    "group": "Rotation"
+  },
+  "rotateSeconds": {
+    "type": "number",
+    "label": "Seconds each site stays on screen",
+    "value": 4,
+    "group": "Rotation",
+    "min": 1,
+    "max": 60,
+    "step": 0.5
+  },
+  "fadeSeconds": {
+    "type": "number",
+    "label": "Seconds the fade between sites takes",
+    "value": 0.6,
+    "group": "Rotation",
+    "min": 0.1,
+    "max": 3,
+    "step": 0.1
+  },
+  "showNames": {
+    "type": "checkbox",
+    "label": "Show the handle beside each logo (untick for the logos on their own)",
+    "value": true,
+    "group": "Layout"
+  },
+  "spread": {
+    "type": "checkbox",
+    "label": "Spread the sites across the width of the box, so the gaps grow and shrink with the box you draw in StreamElements (untick to keep them close together on the left)",
+    "value": true,
+    "group": "Layout"
+  },
+  "iconColor": {
+    "type": "dropdown",
+    "label": "Logo colour",
+    "value": "accent",
+    "options": {
+      "accent": "The style preset's accent colour",
+      "text": "The style preset's text colour",
+      "brand": "Each site's own colour (Instagram pink, YouTube red and so on)"
+    },
+    "group": "Layout"
+  },
+  "textSize": {
+    "type": "number",
+    "label": "Text size, as a percent of the box's height. The text follows the height, so drawing the box narrower closes the gaps up instead of making the text smaller",
+    "value": 24,
+    "group": "Size",
+    "min": 5,
+    "step": 1,
+    "max": 80
+  },
+  "iconScale": {
+    "type": "number",
+    "label": "How big the logos are (1 is the height of the text)",
+    "value": 1.3,
+    "group": "Size",
+    "min": 0.5,
+    "max": 4,
+    "step": 0.05
+  },
+  "gap": {
+    "type": "number",
+    "label": "Smallest space between the sites (1 is about one letter wide). With Spread on, the gaps grow beyond this to use the width of the box",
+    "value": 2,
+    "group": "Size",
+    "min": 0.2,
+    "max": 8,
+    "step": 0.1
+  },
+  "themePreset": {
+    "type": "dropdown",
+    "label": "Style preset (the same twenty-two are in every overlay in this set)",
+    "value": "glass",
+    "options": {
+      "glass": "Soft black (default)",
+      "frost": "Soft white",
+      "midnight": "Midnight blue",
+      "sunset": "Sunset",
+      "forest": "Forest",
+      "ocean": "Ocean",
+      "rose": "Rose",
+      "neon": "Neon",
+      "cosycabin": "Cosy cabin",
+      "pastel": "Cosy summer pastel",
+      "celestial": "Celestial",
+      "pastelgoth": "Pastel goth",
+      "pastelpink": "Pastel pink",
+      "pastelsage": "Pastel sage",
+      "faegreen": "Fae green",
+      "pride": "Rainbow pride",
+      "trans": "Trans pride",
+      "bi": "Bi pride",
+      "pan": "Pan pride",
+      "enby": "Non-binary pride",
+      "lesbian": "Lesbian pride",
+      "ace": "Ace pride",
+      "custom": "Custom (use the colours below)"
+    },
+    "group": "Look"
+  },
+  "fontFamily": {
+    "type": "googleFont",
+    "label": "Font (used when the style preset is Custom)",
+    "value": "BioRhyme",
+    "group": "Look"
+  },
+  "weight": {
+    "type": "number",
+    "label": "Boldness (100 to 900)",
+    "value": 800,
+    "min": 100,
+    "max": 900,
+    "step": 100,
+    "group": "Look"
+  },
+  "radius": {
+    "type": "number",
+    "label": "Corner roundness, in pixels",
+    "value": 24,
+    "min": 0,
+    "max": 100,
+    "step": 1,
+    "group": "Look"
+  },
+  "pad": {
+    "type": "number",
+    "label": "Padding above and below",
+    "value": 0.5,
+    "min": 0,
+    "max": 3,
+    "step": 0.05,
+    "group": "Look"
+  },
+  "outerFrame": {
+    "type": "checkbox",
+    "label": "An outer frame round the widget in the accent colour, or the flag's stripes in a pride preset. Untick it for none",
+    "value": true,
+    "group": "Look"
+  },
+  "borderWidth": {
+    "type": "number",
+    "label": "Frame and outline thickness in pixels. At 0 the frame has a default thickness that grows with the box, and with the frame unticked there is no outline",
+    "value": 0,
+    "min": 0,
+    "max": 20,
+    "step": 1,
+    "group": "Look"
+  },
+  "borderColor": {
+    "type": "colorpicker",
+    "label": "Outline colour, used when the outer frame is unticked and the thickness is above 0 (the frame itself is always the accent colour)",
+    "value": "#FFFFFF",
+    "group": "Look"
+  },
+  "shadow": {
+    "type": "checkbox",
+    "label": "Shadow",
+    "value": false,
+    "group": "Look"
+  },
+  "animate": {
+    "type": "checkbox",
+    "label": "Animate",
+    "value": true,
+    "group": "Look"
+  },
+  "fit": {
+    "type": "checkbox",
+    "label": "Shrink to fit the box: when there is not enough room for everything on one line, the gaps close up and then the whole bar gets smaller, instead of wrapping onto a second row or running off the edge",
+    "value": true,
+    "group": "Look"
+  },
+  "colorPanel": {
+    "type": "colorpicker",
+    "label": "Panel colour (used when the style preset is Custom)",
+    "value": "#000000",
+    "group": "Custom colours"
+  },
+  "usePanelOpacity": {
+    "type": "checkbox",
+    "label": "Use the panel opacity below with the style preset too, not only with Custom",
+    "value": false,
+    "group": "Custom colours"
+  },
+  "panelOpacity": {
+    "type": "number",
+    "label": "Panel opacity, 0 to 1 (used when the style preset is Custom, or with any preset if the box above it is ticked)",
+    "value": 0.55,
+    "min": 0,
+    "max": 1,
+    "step": 0.05,
+    "group": "Custom colours"
+  },
+  "cText": {
+    "type": "colorpicker",
+    "label": "Text (used when the style preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Custom colours"
+  },
+  "cAccent": {
+    "type": "colorpicker",
+    "label": "Accent (used when the style preset is Custom)",
+    "value": "#FFFFFF",
+    "group": "Custom colours"
+  },
+  "cTrack": {
+    "type": "colorpicker",
+    "label": "Bars and chips (used when the style preset is Custom)",
+    "value": "#444444",
+    "group": "Custom colours"
+  },
+  "cWarn": {
+    "type": "colorpicker",
+    "label": "Alert colour (used when the style preset is Custom)",
+    "value": "#D64545",
+    "group": "Custom colours"
+  },
+  "decoration": {
+    "type": "dropdown",
+    "label": "Decorations drawn behind the words, in the accent colour (or the flag's colours in a pride preset)",
+    "value": "none",
+    "options": {
+      "none": "None",
+      "sparkles": "Sparkles",
+      "hearts": "Hearts",
+      "stars": "Stars",
+      "flowers": "Flowers",
+      "moons": "Moons",
+      "snowflakes": "Snowflakes",
+      "bubbles": "Bubbles",
+      "butterflies": "Butterflies",
+      "clouds": "Clouds",
+      "leaves": "Leaves",
+      "paws": "Paw prints",
+      "notes": "Music notes",
+      "bows": "Bows",
+      "mixed": "Sparkles, hearts and stars"
+    },
+    "group": "Decorations"
+  },
+  "decorationCount": {
+    "type": "number",
+    "label": "How many decorations (1 to 24)",
+    "value": 8,
+    "min": 1,
+    "max": 24,
+    "step": 1,
+    "group": "Decorations"
+  },
+  "decorationSize": {
+    "type": "number",
+    "label": "Decoration size, as a multiple of the usual",
+    "value": 1,
+    "min": 0.3,
+    "max": 4,
+    "step": 0.1,
+    "group": "Decorations"
+  },
+  "decorationMotion": {
+    "type": "dropdown",
+    "label": "How decorations move (with Animate off they stay still)",
+    "value": "twinkle",
+    "options": {
+      "twinkle": "Twinkle in place",
+      "drift": "Drift upwards and fade",
+      "still": "Stay still"
+    },
+    "group": "Decorations"
+  },
+  "decorationPlacement": {
+    "type": "dropdown",
+    "label": "Where the decorations go",
+    "value": "scatter",
+    "options": {
+      "scatter": "Scattered over the panel",
+      "edges": "Along the inside of the edges",
+      "corners": "In the corners",
+      "offset": "A little way in from the corners (top right and bottom right first)",
+      "border": "On the border, half outside it (leave a little room round the widget)"
+    },
+    "group": "Decorations"
+  },
+  "decorationColor": {
+    "type": "dropdown",
+    "label": "Decoration colour",
+    "value": "accent",
+    "options": {
+      "accent": "The accent colour (a pride preset's flag colours)",
+      "text": "The text colour",
+      "mixed": "The accent and text colours, in turn",
+      "custom": "The colour picked below"
+    },
+    "group": "Decorations"
+  },
+  "decorationTint": {
+    "type": "colorpicker",
+    "label": "Decoration colour to use when the colour above is the one picked here",
+    "value": "#FFB6D9",
+    "group": "Decorations"
+  },
+  "decorationOpacity": {
+    "type": "number",
+    "label": "Decoration opacity, 0.1 to 1 (separate from the panel's opacity, and 1 is fully solid). Twinkling dips a little and drifting fades in and out, so choose Stay still to keep them fully solid",
+    "value": 0.5,
+    "min": 0.1,
+    "max": 1,
+    "step": 0.05,
+    "group": "Decorations"
+  },
+  "debug": {
+    "type": "checkbox",
+    "label": "Log every event to the browser-source console",
+    "value": false,
+    "group": "Troubleshooting"
+  }
+}
