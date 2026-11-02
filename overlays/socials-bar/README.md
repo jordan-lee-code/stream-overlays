@@ -12,8 +12,8 @@ It is a single self-contained widget in plain JavaScript, with no dependencies a
 - The left side rotates: one site at a time fades out as the next fades in, and the bar stays the width of the widest one, so nothing jumps about. You choose how many seconds each stays and how long the fade takes, or untick Rotate to show them all side by side.
 - A logo in front of every handle, in your accent colour, your text colour, or each site's own colour. Or logos on their own, with no handles.
 - Gaps that follow the box: side by side, the sites spread across the width you give the widget in StreamElements, so a wide box gets wide gaps and a narrow one gets close ones. Your gap setting is the least there can be.
-- Squeezes onto one line: when there is less room, the gaps between the sites, and between the left and right sides, close up to as little as a fifth of the setting, and then the whole bar shrinks just far enough to stay on one line, with the two sides close together. Untick Shrink to fit the box and the sites wrap onto a second row instead.
-- Scales with the box: the text scales with the width of the box you draw.
+- Compresses when the box is narrower: the text follows the height of the box and not its width, so drawing the box narrower closes the gaps up, between the sites and between the left and right sides, and leaves the text alone. Only when the gaps cannot close any further does the whole bar shrink, just far enough to stay on one line. Untick Shrink to fit the box and the sites wrap onto a second row instead.
+- Sized by the height of the box: the text is a share of the box's height, so a wide, short box gives a bar with room to spread, and a narrow one a bar that compresses.
 - Customisable: around fifty settings cover the handles, rotation, sizes, shape, outline, colours, fonts and animation.
 - All twenty-two style presets, including the seven pride flags.
 - An outer frame in the accent colour, on by default in every preset, and switched off with one checkbox (the flag's stripes in the pride presets).
@@ -75,7 +75,7 @@ Choose **Custom** to use the colour pickers and font instead. They are ignored w
 2. Select the widget, open **Settings, Open Editor**, and paste each file from `widget/` into the matching tab: `widget.html` into HTML, `widget.css` into CSS, `widget.js` into JS, and `fields.json` into Fields.
 3. Click **Done**. The settings are grouped into Left side, Right side, Rotation, Layout, Size, Look, Custom colours, Decorations and Troubleshooting.
 4. Type your own handles under **Left side** and **Right side**. They start out as `@yourname`, so replace each one and clear the ones you do not use.
-5. Size and position the widget. A box that is wide and short suits it, such as 900 by 90.
+5. Size and position the widget. A box that is wide and short suits it, such as 900 by 80. The text is a share of the box's height, so make the box taller for bigger text, or change **Text size**.
 
 The widget does not read chat or events, so it works as soon as it is on an overlay.
 

@@ -1,6 +1,6 @@
 {
   "width": 900,
-  "height": 90,
+  "height": 80,
   "fields": {
     "animate": false,
     "rotateSeconds": 60
@@ -10,13 +10,13 @@
     {
       "file": "default.png",
       "width": 900,
-      "height": 90,
+      "height": 80,
       "base": "scene"
     },
     {
       "file": "all.png",
-      "width": 900,
-      "height": 90,
+      "width": 1300,
+      "height": 80,
       "base": "scene",
       "fields": {
         "rotate": false,
@@ -24,26 +24,27 @@
         "discord": "yourname",
         "iconColor": "brand",
         "themePreset": "midnight",
-        "textSize": 1.05
+        "textSize": 20
       }
     },
     {
       "file": "logos.png",
       "width": 900,
-      "height": 90,
+      "height": 80,
       "base": "scene",
       "fields": {
         "rotate": false,
         "showNames": false,
         "patreon": "patreon.com/yourname",
         "themePreset": "pastelpink",
-        "iconScale": 1.6
+        "iconScale": 1.6,
+        "textSize": 26
       }
     },
     {
       "file": "decorations.png",
       "width": 900,
-      "height": 90,
+      "height": 80,
       "base": "scene",
       "fields": {
         "decoration": "stars",

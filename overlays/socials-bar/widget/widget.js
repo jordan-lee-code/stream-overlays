@@ -419,7 +419,7 @@
     c.showNames = bool(f.showNames, true);
     c.iconColor = str(f.iconColor, "accent");
     if (c.iconColor !== "text" && c.iconColor !== "brand") c.iconColor = "accent";
-    c.textSize = Math.max(0.5, num(f.textSize, 1.6));
+    c.textSize = clamp(num(f.textSize, 24), 5, 80);
     c.iconScale = clamp(num(f.iconScale, 1.3), 0.5, 4);
     c.gap = clamp(num(f.gap, 1.6), 0.2, 8);
     return c;
@@ -493,7 +493,7 @@
   function applyLook() {
     applyCommonTheme(cfg, el.root, el.app, "sb-font-link");
     var s = el.app.style;
-    s.setProperty("--sb-size", cfg.textSize + "cqw");
+    s.setProperty("--sb-size", cfg.textSize + "cqh");
     s.setProperty("--sb-icon", cfg.iconScale);
     s.setProperty("--sb-gap", cfg.gap);
     s.setProperty("--sb-fade", cfg.fadeSeconds + "s");

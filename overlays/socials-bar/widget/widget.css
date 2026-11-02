@@ -11,9 +11,11 @@
   margin: 0;
   display: flex;
   flex-direction: column;
-  /* The width reference for the cqw sizes below. A container's own cqw units resolve
-     against its parent, so the card cannot be the container itself. */
-  container-type: inline-size;
+  /* The size reference for the cqh sizes below. The text follows the height of the box and not its width, so a box that is
+     drawn narrower closes the gaps up and leaves the text alone, and the text only gets smaller once the gaps cannot close
+     any further. */
+  container-type: size;
+  justify-content: center;
   -webkit-font-smoothing: antialiased;
 }
 #sb-root * { box-sizing: border-box; }
@@ -44,7 +46,7 @@
 
   flex: 0 0 auto;
   width: 100%;
-  padding: calc(var(--w-pad) * 1em) 3cqw;
+  padding: calc(var(--w-pad) * 1em) 0.9em;
   font-family: var(--w-font);
   color: var(--w-text);
   background: var(--w-bg);
@@ -53,7 +55,7 @@
   border-radius: var(--w-radius);
   box-shadow: var(--w-shadow);
   line-height: 1.15;
-  font-size: calc(var(--sb-size, 1.6cqw) * var(--sb-shrink, 1));
+  font-size: calc(var(--sb-size, 24cqh) * var(--sb-shrink, 1));
   display: flex;
   flex-wrap: wrap;
   align-items: center;
