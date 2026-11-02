@@ -65,6 +65,26 @@ const nameOf = (n) => (n.children[1] ? n.children[1].textContent : "");
   ok(/\.sb-left\.spread\s*\{[^}]*flex:\s*1 1 0[^}]*justify-content:\s*space-between/.test(css), "the left side takes the room that is left and divides it between the sites");
   ok(/#sb-app\s*\{[^}]*column-gap:\s*calc\(var\(--sb-gap[^}]*--sb-squeeze/.test(css) && /\.sb-side\s*\{[^}]*column-gap:\s*calc\(var\(--sb-gap[^}]*--sb-squeeze/.test(css), "the gaps, between the sites and between the two sides, close up together when the bar is squeezed");
 
+  section("squeezing into a small box");
+  // The mock has no layout, so the sides are given rectangles that say whether the bar would wrap at the current gaps and size.
+  const stub = (wraps) => {
+    E("sb-left").getBoundingClientRect = () => ({ top: 0, bottom: 10 });
+    E("sb-right").getBoundingClientRect = () => (wraps(env.vars("sb-app")) ? { top: 20, bottom: 30 } : { top: 0, bottom: 10 });
+    E("sb-app").getBoundingClientRect = () => ({ top: 0, bottom: 10 });
+  };
+  stub(() => false); await load({});
+  ok(env.vars("sb-app")["--sb-squeeze"] === 1 && env.vars("sb-app")["--sb-shrink"] === 1, "with room to spare nothing is squeezed or shrunk");
+  stub(v => v["--sb-squeeze"] > 0.6); await load({});
+  ok(env.vars("sb-app")["--sb-squeeze"] === 0.6 && env.vars("sb-app")["--sb-shrink"] === 1, "a little short of room, the gaps close up first and the size is left alone (" + env.vars("sb-app")["--sb-squeeze"] + ")");
+  stub(v => v["--sb-shrink"] > 0.5); await load({});
+  ok(env.vars("sb-app")["--sb-squeeze"] === 0.2, "short of room, the gaps close up as far as they go");
+  ok(env.vars("sb-app")["--sb-shrink"] <= 0.5 && env.vars("sb-app")["--sb-shrink"] > 0.49, "and then the whole bar shrinks just far enough to stay on one line (" + env.vars("sb-app")["--sb-shrink"] + ")");
+  await load({ fit: false }); ok(env.vars("sb-app")["--sb-shrink"] === 1, "with Shrink to fit off it keeps its size, and wraps");
+  stub(() => true); await load({});
+  ok(env.vars("sb-app")["--sb-shrink"] === 0.2, "it never shrinks past a fifth");
+  stub(() => false); await load({}); ok(env.vars("sb-app")["--sb-shrink"] === 1 && env.vars("sb-app")["--sb-squeeze"] === 1, "and when there is room again it returns to full size");
+  ok(/font-size:\s*calc\(var\(--sb-size[^;]*--sb-shrink/.test(css), "the size is the text size times the shrink");
+
   section("the look");
   await load({ textSize: 2, iconScale: 2, gap: 3 });
   let a = env.vars("sb-app");

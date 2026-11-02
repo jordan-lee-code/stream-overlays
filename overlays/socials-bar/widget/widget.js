@@ -502,7 +502,8 @@
     if (cfg.iconColor !== "accent") el.app.classList.add("ic-" + cfg.iconColor);
   }
   // The gaps are as wide as the setting says while there is room. When the bar would wrap, they close up, a step at a time and
-  // down to a quarter, before anything is moved onto a second row. The first step that fits is kept.
+  // down to a fifth, before anything else happens. If it still does not fit and Shrink to fit is on, the whole bar gets smaller
+  // until it does, so it stays on one line with the two sides close together. The first step that fits is kept.
   var SQUEEZE = [1, 0.8, 0.6, 0.45, 0.3, 0.2];
   function wrapped() {
     var sides = [el.left, el.right], tops = [];
@@ -522,8 +523,17 @@
   function tighten() {
     if (!el.app || !el.app.style || typeof el.app.getBoundingClientRect !== "function") return;
     var k = 0;
+    el.app.style.setProperty("--sb-shrink", 1);
     el.app.style.setProperty("--sb-squeeze", SQUEEZE[0]);
     while (k < SQUEEZE.length - 1 && wrapped()) { k++; el.app.style.setProperty("--sb-squeeze", SQUEEZE[k]); }
+    if (!cfg.fit || !wrapped()) return;
+    var lo = 0.2, hi = 1;
+    for (var i = 0; i < 8; i++) {
+      var mid = (lo + hi) / 2;
+      el.app.style.setProperty("--sb-shrink", mid);
+      if (wrapped()) hi = mid; else lo = mid;
+    }
+    el.app.style.setProperty("--sb-shrink", Math.round(lo * 1000) / 1000);
   }
   var tightenSoon = null;
   function watchWidth() {
