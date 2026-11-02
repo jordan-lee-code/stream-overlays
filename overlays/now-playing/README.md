@@ -158,7 +158,7 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | Last.fm, Tuna, Pear Desktop, Spotify | The details each source needs. |
 | Commands | The command word and who may use it. |
 | Card | The art and its shape, the album, the progress bar, whether to show the small line above the title and what it says, what to do when paused, and what to say when nothing is playing. |
-| Size | Text size, the title's size, the artist's size, the art's size, and how fast a long name scrolls. |
+| Size | Text size, the card's height, the title's size, the artist's size, the art's size, and how fast a long name scrolls. |
 | Look | The style preset, font, boldness, corners, padding, outer frame, outline, shadow, Animate and whether the card shrinks to fit the box. |
 | Custom colours | Panel, text, accent, bar track and note colours, used when the style preset is Custom. A checkbox there also lets the Panel opacity apply to any preset, not only Custom. |
 | Decorations | The shape, where they go, how many, how big, how solid, their colour, and how they move. |

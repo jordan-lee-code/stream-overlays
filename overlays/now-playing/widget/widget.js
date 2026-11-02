@@ -401,6 +401,7 @@
     c.textSize = Math.max(2, num(f.textSize, 4.2));
     c.titleScale = clamp(num(f.titleScale, 1.5), 0.5, 3);
     c.artistScale = clamp(num(f.artistScale, 1), 0.5, 3);
+    c.cardHeight = clamp(num(f.cardHeight, 0), 0, 100);
     c.scrollSpeed = clamp(num(f.scrollSpeed, 1), 0.3, 3);
     c.artSize = clamp(num(f.artSize, 4.4), 2, 10);
     return c;
@@ -648,10 +649,26 @@
     render();
   }
 
+  // How tall the card is in its own text size (em), worked out from the settings and not from the track, so the card and its words stay
+  // put from one song to the next: the lines of text stacked, or the art if that is taller, and the padding above and below.
+  function cardEms() {
+    var lines = cfg.titleScale * 1.2 + cfg.artistScale * 1.2;
+    if (cfg.showLabel && (cfg.labelPlaying || cfg.labelPaused)) lines += 0.6 * 1.2;
+    if (cfg.showAlbum) lines += 0.65 * 1.2;
+    if (cfg.showProgress && cfg.source !== "lastfm") lines += 0.45 + 0.55 * 1.2;
+    return (cfg.showArt ? Math.max(cfg.artSize, lines) : lines) + cfg.pad * 2;
+  }
   function applyLook() {
     applyCommonTheme(cfg, el.root, el.app, "np-font-link");
     var s = el.app.style;
-    s.setProperty("--np-size", cfg.textSize + "cqw");
+    // With a card height, that is the size of the card and the words and the art are sized to fill it, whatever the width of the box.
+    if (cfg.cardHeight > 0) {
+      s.setProperty("--np-card-h", cfg.cardHeight + "cqh");
+      s.setProperty("--np-size", (cfg.cardHeight / cardEms()).toFixed(3) + "cqh");
+    } else {
+      s.setProperty("--np-card-h", "auto");
+      s.setProperty("--np-size", cfg.textSize + "cqw");
+    }
     s.setProperty("--np-title", cfg.titleScale);
     s.setProperty("--np-artist", cfg.artistScale);
     s.setProperty("--np-art", cfg.artSize);

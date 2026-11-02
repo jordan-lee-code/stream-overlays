@@ -178,7 +178,7 @@ const lfTrack = (o) => Object.assign({ name: "Song", artist: { "#text": "Band" }
   fits("np-title", 900, 300);
   await wait(5100);
   ok(title() === LONG && scrolls("np-title"), "and a long one starts it again");
-  ok(!/(^|[^-])height:/.test(ruleOf(".np-card")) && !/(^|[^-])height:/.test(ruleOf(".np-title")), "the card's height is never set from the name, so it keeps the size the box gives it");
+  ok(!/(^|[^-])height: *(?! )(?!var\(--np-card-h, auto\))/.test(ruleOf(".np-card")) && !/(^|[^-])height:/.test(ruleOf(".np-title")), "the card's height is never set from the name: it is automatic, or the Card height setting, so it keeps the size the box gives it");
 
   section("showing it");
   net(() => ({ json: lastfmJson([lfTrack()]) }));
@@ -199,6 +199,18 @@ const lfTrack = (o) => Object.assign({ name: "Song", artist: { "#text": "Band" }
   const v = env.vars("np-app"); ok(v["--np-size"] === "7cqw" && v["--np-title"] === 2 && v["--np-art"] === 6, "the sizes are settings");
   await load(cfgLf({ titleScale: 99, artSize: 99 })); ok(env.vars("np-app")["--np-title"] === 3 && env.vars("np-app")["--np-art"] === 10, "within limits");
   await load(cfgLf()); ok(env.vars("np-app")["--np-title"] === 1.5 && env.vars("np-app")["--np-artist"] === 1, "the title and the artist are bigger than the card's own text by default (" + env.vars("np-app")["--np-title"] + ", " + env.vars("np-app")["--np-artist"] + ")");
+  await load(cfgLf()); ok(env.vars("np-app")["--np-card-h"] === "auto" && env.vars("np-app")["--np-size"] === "4.2cqw", "the card's height is automatic by default, as before (" + env.vars("np-app")["--np-card-h"] + ")");
+  await load(cfgLf({ cardHeight: 40 })); let sized = env.vars("np-app");
+  ok(sized["--np-card-h"] === "40cqh" && Math.abs(parseFloat(sized["--np-size"]) - 40 / 5.4) < 0.01 && /cqh$/.test(sized["--np-size"]), "with a card height, the card is that tall and the text is sized from it (" + sized["--np-card-h"] + ", " + sized["--np-size"] + ")");
+  await load(cfgLf({ cardHeight: 40, showArt: false })); sized = env.vars("np-app");
+  ok(Math.abs(parseFloat(sized["--np-size"]) - 40 / (3.72 + 1)) < 0.01, "without the art, the text alone sets how much has to fit (" + sized["--np-size"] + ")");
+  await load(cfgLf({ cardHeight: 40, showAlbum: true, showArt: false })); sized = env.vars("np-app");
+  ok(parseFloat(sized["--np-size"]) < 40 / (3.72 + 1) - 0.01, "an album line makes room, so the text is a little smaller to fit the same height (" + sized["--np-size"] + ")");
+  await load({ source: "tuna", cardHeight: 40, showArt: false }); sized = env.vars("np-app");
+  ok(parseFloat(sized["--np-size"]) < 40 / (3.72 + 1) - 0.01, "and so does a progress bar, which Last.fm does not have");
+  await load(cfgLf({ cardHeight: 99999 })); ok(env.vars("np-app")["--np-card-h"] === "100cqh", "never taller than the box");
+  await load(cfgLf({ cardHeight: -5 })); ok(env.vars("np-app")["--np-card-h"] === "auto", "and a negative one means automatic");
+  ok(/height:\s*var\(--np-card-h/.test(require("fs").readFileSync(require("path").join(__dirname, "../widget/widget.css"), "utf8")), "the stylesheet takes the height from that setting");
   await load(cfgLf({ artistScale: 2 })); ok(env.vars("np-app")["--np-artist"] === 2, "and the artist's size is a setting");
   await load(cfgLf({ artistScale: 99 })); ok(env.vars("np-app")["--np-artist"] === 3, "within limits");
   await load(cfgLf({ artistScale: 0 })); ok(env.vars("np-app")["--np-artist"] === 0.5, "both ways");
