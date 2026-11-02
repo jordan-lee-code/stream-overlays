@@ -41,6 +41,7 @@ A set of StreamElements custom widgets for Twitch streams. Each is plain JavaScr
 | Overlay | What it does |
 | --- | --- |
 | [Stream Start Countdown](overlays/start-countdown) | A full-screen starting soon countdown you set from chat, with a clock, a bar and friendly lines that take turns. |
+| [Be Right Back](overlays/be-right-back) | A break screen with a clock that counts down to your return, or up the time you have been away. |
 | [End Credits](overlays/end-credits) | A thank-you that collects your followers, subscribers, gifters, cheerers, tippers, raiders and chatters through the stream and rolls them as credits. |
 
 ## Using an overlay
@@ -48,6 +49,10 @@ A set of StreamElements custom widgets for Twitch streams. Each is plain JavaScr
 1. Open the overlay's folder and read its README.
 2. In StreamElements, add a **Custom Widget** to your overlay, and paste each file from the overlay's `widget/` folder into the matching tab: `widget.html` into HTML, `widget.css` into CSS, `widget.js` into JS and `fields.json` into Fields.
 3. Choose a **Style preset** in the settings.
+
+## Setting the look once
+
+Every overlay's dev page has a **Design** panel. Set the style preset, font, colours, shape, frame and decorations in one overlay, save the design, and apply it in any other, so the look only has to be configured once. It can also be copied or downloaded as a small file, to keep or share. Only the design travels, so each overlay keeps its own wording and behaviour settings.
 
 ## Trying one without going live
 

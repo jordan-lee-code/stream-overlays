@@ -224,6 +224,56 @@ asection("the website");
       assert.strictEqual(fs.readFileSync(path.join(dev, "copy-panel.js"), "utf8"), fs.readFileSync(path.join(__dirname, "../shared/copy-panel.js"), "utf8"), n + " has a different panel");
     });
   });
+  atest("every dev page loads the design panel, and can apply a design to its own settings", () => {
+    names.forEach(n => {
+      const dev = path.join(repoRoot, "overlays", n, "dev");
+      assert.ok(fs.readFileSync(path.join(dev, "index.html"), "utf8").indexOf('<script src="design-panel.js"></script>') !== -1, n + " does not load the design panel");
+      const h = fs.readFileSync(path.join(dev, "harness.js"), "utf8");
+      assert.ok(h.indexOf("window.__importFields = function") !== -1, n + " cannot apply a design");
+      assert.ok(/d\.type === "button"/.test(h.slice(h.indexOf("window.__importFields"))), n + " could press a button by importing");
+      assert.strictEqual(fs.readFileSync(path.join(dev, "design-panel.js"), "utf8"), fs.readFileSync(path.join(__dirname, "../shared/design-panel.js"), "utf8"), n + " has a different design panel");
+    });
+  });
+  atest("the design panel picks, reads and applies only the design", () => {
+    const D = require("../shared/design-panel.js");
+    const ids = require("../src/settings").STANDARD;
+    D.DESIGN_KEYS.forEach(k => assert.ok(ids[k], k + " is not a standard setting"));
+    ["animate", "fit", "mute", "debug", "title", "command"].forEach(k => assert.ok(D.DESIGN_KEYS.indexOf(k) === -1 && D.NOT_DESIGN.indexOf(k) !== -1, k + " is behaviour or wording, not design"));
+    assert.ok(D.NOT_DESIGN.every(k => !D.isDesign(k)), "nothing is both");
+    const fields = { themePreset: { type: "dropdown", value: "midnight", options: { glass: "G", midnight: "M" } }, title: { type: "text", value: "Hi" }, radius: { type: "number", value: 12, min: 0, max: 60 }, cText: { type: "colorpicker", value: "#fff" }, go: { type: "button" } };
+    assert.deepStrictEqual(D.pick(fields), { themePreset: "midnight", radius: 12, cText: "#fff" }, "only design settings are picked, never wording or a button");
+    // a design file, a plain object, and a fields.json all read the same
+    const one = D.parse(JSON.stringify({ "stream-overlays-design": 1, from: "Reminder", settings: { themePreset: "midnight", radius: 12, title: "no" } }));
+    assert.deepStrictEqual(one.settings, { themePreset: "midnight", radius: 12 }, "other settings in a file are ignored");
+    assert.strictEqual(one.from, "Reminder");
+    assert.deepStrictEqual(D.parse('{"themePreset":"glass","radius":8}').settings, { themePreset: "glass", radius: 8 });
+    assert.deepStrictEqual(D.parse(JSON.stringify(fields)).settings, { themePreset: "midnight", radius: 12, cText: "#fff" }, "a whole fields.json works too");
+    // forward compatibility: a design from a newer overlay still works, and what this one lacks is left alone
+    const newer = D.parse(JSON.stringify({ "stream-overlays-design": 2, from: "Newer", settings: { themePreset: "rose", decorationShimmer: "high", glowStrength: 3, nested: { a: 1 }, nothing: null } }));
+    assert.deepStrictEqual(newer.settings, { themePreset: "rose", decorationShimmer: "high", glowStrength: 3 }, "a design file keeps settings this version has never heard of, and a later format number is still read");
+    const rose = D.choose(newer.settings, { themePreset: { type: "dropdown", options: { rose: "R" } } });
+    assert.deepStrictEqual(rose.values, { themePreset: "rose" }, "the settings it has are applied");
+    assert.strictEqual(rose.missing, 2, "and the ones it lacks are left alone, so they stay as they were");
+    assert.deepStrictEqual(D.parse('{"themePreset":"glass","glowStrength":3,"title":"x"}').settings, { themePreset: "glass" }, "a plain object is held to what is known to be design");
+    assert.deepStrictEqual(D.parse('{"decorationShimmer":"high","radius":5}').settings, { decorationShimmer: "high", radius: 5 }, "except that every decoration setting is design, including new ones");
+    assert.ok(D.isDesign("decorationBlur") && !D.isDesign("title") && !D.isDesign("decor"), "a new decoration setting is design without the list changing");
+    assert.deepStrictEqual(D.pick({ decorationBlur: { type: "number", value: 2 }, title: { type: "text", value: "t" } }), { decorationBlur: 2 }, "and is exported");
+    const evil = D.parse('{"stream-overlays-design":1,"settings":{"__proto__":{"x":1},"constructor":"y","radius":3}}');
+    assert.deepStrictEqual(evil.settings, { radius: 3 }, "keys that reach into an object's plumbing are never settings");
+    assert.strictEqual(({}).x, undefined, "and nothing is polluted");
+    assert.deepStrictEqual(D.choose({ radius: 3, toString: "x", hasOwnProperty: "y" }, { radius: { type: "number" } }).values, { radius: 3 }, "a setting named like an object method is not mistaken for one");
+    ["", "nope", "[]", "null", "42", '{"hello":1}'].forEach(t => assert.ok(D.parse(t).error, JSON.stringify(t) + " is not a design"));
+    // what suits this overlay
+    const defs = { themePreset: { type: "dropdown", options: { glass: "G", rose: "R" } }, radius: { type: "number", min: 0, max: 60 }, outerFrame: { type: "checkbox" }, cText: { type: "colorpicker" }, decoration: { type: "dropdown", options: { none: "None", stars: "S" } }, go: { type: "button" } };
+    const r = D.choose({ themePreset: "rose", radius: 99, outerFrame: "false", cText: "#112233", decoration: "snowflakes", weight: 700, go: 1, cAccent: "#fff" }, defs);
+    assert.deepStrictEqual(r.values, { themePreset: "rose", radius: 60, outerFrame: false, cText: "#112233" }, "values are made to fit what each setting takes");
+    assert.deepStrictEqual(r.skipped, ["decoration"], "a choice this overlay does not offer is skipped, and named");
+    assert.strictEqual(r.missing, 3, "settings the overlay does not have are counted and left alone, and a button is never one");
+    assert.deepStrictEqual(D.choose({ radius: "abc", outerFrame: "maybe" }, defs).values, {}, "nonsense is not applied");
+    assert.deepStrictEqual(D.choose({ radius: "12" }, defs).values, { radius: 12 }, "a number in text is read");
+    assert.ok(/Applied 4 design settings from Reminder\./.test(D.describe("Reminder", 4, { missing: 0, skipped: [] })));
+    assert.ok(/1 is not in this overlay/.test(D.describe("", 2, { missing: 1, skipped: [] })) && /decoration could not be used/.test(D.describe("", 2, { missing: 0, skipped: ["decoration"] })));
+  });
   atest("every picture in an overlay's docs folder has a scene that can make it again", () => {
     names.forEach(n => {
       const docs = path.join(repoRoot, "overlays", n, "docs");
