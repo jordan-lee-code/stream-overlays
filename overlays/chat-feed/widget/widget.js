@@ -265,7 +265,7 @@
       place: DECOR_PLACE[place] === 1 ? place : "scatter",
       color: DECOR_COLOR[color] === 1 ? color : "accent",
       tint: str(f.decorationTint, "#FFB6D9"),
-      opacity: clamp(num(f.decorationOpacity, 0.8), 0.1, 1)
+      opacity: clamp(num(f.decorationOpacity, 0.5), 0.1, 1)
     };
   }
   // `host` is the panel the shapes sit behind, `colors` the list of colours they take in turn (the accent, or a flag), `animate` whether they
@@ -661,14 +661,14 @@
       d.place = "border"; d.count = Math.min(d.count, 6);
       applyDecor(d, li, theme.flag || [theme.accent], cfg.animate, theme.text);
       // Then moved to where they look best on a bubble: a big one on a lower corner, small ones at the middle of each end, and so on.
-      // Every other bubble is the mirror image, so they do not all look stamped.
+      // Every other bubble is the mirror image, and each is nudged and resized a little by its number, so they do not all look stamped.
       var spots = [[100, 100, 1.5], [0, 52, 0.9], [100, 38, 0.8], [88, 112, 0.7], [2, -4, 0.8], [0, 108, 1], [96, -6, 0.7], [-8, 78, 0.7]];
-      var layer = li.firstChild, flip = m.id % 2 === 1;
+      var layer = li.firstChild, flip = m.id % 2 === 1, nudge = ((m.id * 7) % 5 - 2) * 3, grow = 0.9 + ((m.id * 3) % 5) * 0.05;
       for (var q = 0; layer && layer.children && q < layer.children.length; q++) {
         var sp = spots[q % spots.length], dot = layer.children[q];
         dot.style.setProperty("--x", (flip ? 100 - sp[0] : sp[0]) + "%");
-        dot.style.setProperty("--y", sp[1] + "%");
-        dot.style.setProperty("--s", String(sp[2]));
+        dot.style.setProperty("--y", (sp[1] === 0 || sp[1] === 100 ? sp[1] : sp[1] + nudge) + "%");
+        dot.style.setProperty("--s", (sp[2] * grow).toFixed(2));
       }
     }
     return li;

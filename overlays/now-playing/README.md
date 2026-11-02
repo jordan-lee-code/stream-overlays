@@ -15,6 +15,7 @@ It is a single self-contained widget in plain JavaScript, with no dependencies a
 - Hide and show it from chat: `!nowplaying off` and `!nowplaying on`, for you and your moderators. It stays hidden if the overlay is refreshed.
 - All twenty-two style presets, including the seven pride flags, which also stripe the progress bar.
 - Round or square album art, and sizes you can set.
+- The card keeps the size you gave it. Each of the title, the artist and the album is one line, so a long name never makes the card taller or wider, and one that does not fit scrolls along its line to the end, waits there, and goes again from the start. Every line that scrolls takes the same time, so the title and the artist finish together. A setting changes how fast, and with Animate off a long name is cut short with dots instead.
 - Scales with the box: the text scales with the width of the box you draw, and if the box is too short for the card it shrinks to fit.
 - Customisable: around forty settings cover the source, the card, sizes, shape, outline, colours, fonts and animation.
 - An outer frame in the accent colour, on by default in every preset, and switched off with one checkbox (the flag's stripes in the pride presets).
@@ -80,6 +81,8 @@ Choose **Custom** to use the colour pickers and font instead. They are ignored w
 
 ## Choosing where to read from
 
+If you are not sure, start with **Last.fm**. It needs a free account and a key, works with almost any player including Spotify, and has nothing to sign in to. Choose **Tuna** if you stream from the PC that plays the music and already use OBS plugins. **Spotify** directly is the most exact and the most work, and it needs a Premium account, so it is the one to pick only if the others do not give you what you want.
+
 | Source | Best for | What you need | How quickly it follows |
 | --- | --- | --- | --- |
 | Last.fm | Almost any player, and the least to set up | A free Last.fm API key and your username, and your player connected to Last.fm | A few seconds behind |
@@ -107,12 +110,16 @@ Pear Desktop is a desktop app for YouTube Music. Turn on its **API Server** plug
 
 ### Spotify
 
-This one takes the most setting up, once, and is the most exact. It needs a Spotify developer app and a sign-in:
+This one takes the most setting up, once, and is the most exact. It needs a Spotify developer app and a sign-in. Before you begin, read the note below on what Spotify asks of you, because it may rule this route out.
 
 1. At `developer.spotify.com/dashboard`, create an app. Spotify's rules for developer apps change from time to time, so read what the dashboard says about who may use one.
-2. Open this overlay's sign-in page, `dev/spotify-token.html`, which is on the overlay's website next to its dev page (or serve this folder yourself, as under Local development, and use `http://127.0.0.1:8000/dev/spotify-token.html`). It shows the exact address to add under your app's redirect URIs. Add it and save.
+2. Open this overlay's sign-in page, `spotify-token.html`. On the overlay's website it is linked near the top of the dev page's panel. If you are serving the folder yourself, as under Local development, it is at `http://127.0.0.1:8000/dev/spotify-token.html`. It shows the exact address to add under your app's redirect URIs. Add it and save.
 3. Paste your app's client ID into the page and sign in. It asks only for permission to see what is playing, and gives you a refresh token.
 4. Put the client ID and the refresh token into the Spotify group.
+
+**What Spotify asks of you.** As of February 2026, Spotify says that a developer app in its default Development Mode needs the account that owns it to have Spotify Premium, that each developer gets one such app, and that an app can be used by only five authorised accounts, you being one. That comes from Spotify's own announcement, [Update on Developer Access and Platform Security](https://developer.spotify.com/blog/2026-02-06-update-on-developer-access-and-platform-security), and I have not tested it. Spotify has changed these rules before and may again, so the dashboard is the thing to trust over this page.
+
+If you do not have Premium, cannot make an app, or reach a limit, you have not done anything wrong, and there are two good ways round it. Connect Spotify to Last.fm from Last.fm's settings and read it with the Last.fm source, which is free and has no sign-in, though it is a few seconds behind and has no progress bar. Or use Tuna, if you stream from the PC that plays the music.
 
 The refresh token is a key, and the settings of a StreamElements widget can be read by anyone who has your overlay's address, so keep the address to yourself. The token can only read what you are playing. You can take it back at any time from your Spotify account's apps page, and a new one is made the same way.
 
@@ -151,7 +158,7 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | Last.fm, Tuna, Pear Desktop, Spotify | The details each source needs. |
 | Commands | The command word and who may use it. |
 | Card | The art and its shape, the album, the progress bar, the lines above the title, what to do when paused, and what to say when nothing is playing. |
-| Size | Text size, the title's size and the art's size. |
+| Size | Text size, the title's size, the art's size, and how fast a long name scrolls. |
 | Look | The style preset, font, boldness, corners, padding, outer frame, outline, shadow, Animate and whether the card shrinks to fit the box. |
 | Custom colours | Panel, text, accent, bar track and note colours, used when the style preset is Custom. |
 | Decorations | The shape, where they go, how many, how big, how solid, their colour, and how they move. |
@@ -176,6 +183,8 @@ npm run dev
 The harness stands in for StreamElements, and also for the music. A **pretend player** answers as Last.fm, Tuna, Pear Desktop and Spotify would, so you can try every source without any of them running: change tracks, pause, stop, skip ahead, and take the player offline to see what the card does. Choose the source under **Source** in Every setting. The sign-in details in the harness are stand-ins, and are not put into the `fields.json` you copy out.
 
 At the top of the harness, **Look and export** switches the style preset on the live widget, and can download or copy a `fields.json` with your current settings as its defaults. The page also has the **Copy into StreamElements** panel, which copies each of the four files so nobody has to download the repository.
+
+The **pretend player** also has buttons for long names: a long title, a long artist and album, everything long, and short names. The card should stay exactly the same size for all of them, scroll whichever line is too long, and keep the short ones still. Try them with the box-size bar below at a few widths, since a name that fits in a wide box scrolls in a narrow one.
 
 The **box-size bar** at the bottom of the stage sets the size of the widget's box in pixels, from two number boxes or a list of common sizes, and remembers it for next time. A StreamElements widget fills whatever box you draw for it, so drawing it in different boxes is the quickest way to see how it behaves. It is the same bar on every overlay's dev page.
 

@@ -116,6 +116,8 @@ module.exports = function createEnv(root) {
       await wait(5);
     },
     async reload() { window.dispatchEvent(new CustomEvent("onWidgetLoad", { detail: { fieldData: lastFD } })); await wait(5); },
+    // A plain window event, such as a resize.
+    fire(type) { window.dispatchEvent(new CustomEvent(type)); },
     ev(listener, event) { window.dispatchEvent(new CustomEvent("onEventReceived", { detail: { listener, event } })); },
     chat(text, o) {
       o = o || {}; const badges = [];
@@ -245,7 +247,8 @@ module.exports = function createEnv(root) {
       await env.load({ decoration: "stars", decorationCount: 3, decorationColor: "custom", decorationTint: "#ABCDEF" });
       env.ok(items().every(i => i.style["--c"] === "#ABCDEF"), "or a colour of your own");
       await env.load({ decoration: "stars", decorationColor: "nonsense" }); env.ok(items()[0].style["--c"] === expectedPresets.glass.accent, "an unknown colour choice is the accent");
-      await env.load({ decoration: "stars", decorationOpacity: 0.5 }); env.ok(layer().style["--w-deco-opacity"] === 0.5, "how solid they are is a setting");
+      await env.load({ decoration: "stars", decorationOpacity: 0.7 }); env.ok(layer().style["--w-deco-opacity"] === 0.7, "how solid they are is a setting");
+      await env.load({ decoration: "stars" }); env.ok(layer().style["--w-deco-opacity"] === 0.5, "half solid unless asked, so words stay readable over them");
       await env.load({ decoration: "stars", decorationOpacity: 0 }); env.ok(layer().style["--w-deco-opacity"] === 0.1, "never quite invisible");
       await env.load({ decoration: "stars" }); await env.load({ decoration: "none" });
       env.ok(!layer() && !host.style.isolation, "turning them off takes them away");

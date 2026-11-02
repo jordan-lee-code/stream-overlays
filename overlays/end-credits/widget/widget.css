@@ -17,6 +17,11 @@
   -webkit-font-smoothing: antialiased;
 }
 #ec-root * { box-sizing: border-box; }
+/* Decorations on the border hang half outside the panel, so a panel that fills the box leaves them a little room. */
+#ec-root:has(#ec-app > .w-deco.outside) { padding: 3%; }
+#ec-app:has(> .w-deco.outside) { overflow: visible; }
+/* The credits are clipped to the panel by this window, so the panel itself can let its decorations hang outside. */
+.ec-window { position: absolute; inset: 0; overflow: hidden; border-radius: inherit; }
 #ec-root [hidden] { display: none !important; }
 /* Until the credits roll the whole widget is gone. */
 #ec-root[hidden] { display: none !important; }
@@ -142,7 +147,7 @@
   width: var(--wd);
   aspect-ratio: 1;
   background: var(--c, currentColor);
-  opacity: var(--w-deco-opacity, 0.8);
+  opacity: var(--w-deco-opacity, 0.5);
   -webkit-mask-image: var(--m);
   mask-image: var(--m);
   -webkit-mask-repeat: no-repeat;
@@ -173,12 +178,12 @@
 .w-deco.drift .w-di { animation: w-drift var(--d, 8s) linear var(--dl, 0s) infinite; }
 .w-deco.still .w-di { animation: none; }
 @keyframes w-twinkle {
-  0%, 100% { opacity: calc(var(--w-deco-opacity, 0.8) * 0.2); transform: scale(0.65); }
-  50% { opacity: calc(var(--w-deco-opacity, 0.8) * 1.1); transform: scale(1.1); }
+  0%, 100% { opacity: calc(var(--w-deco-opacity, 0.5) * 0.2); transform: scale(0.65); }
+  50% { opacity: calc(var(--w-deco-opacity, 0.5) * 1.1); transform: scale(1.1); }
 }
 @keyframes w-drift {
   0% { opacity: 0; transform: translateY(1.5cqw) scale(0.8); }
-  25%, 70% { opacity: calc(var(--w-deco-opacity, 0.8) * 1.05); }
+  25%, 70% { opacity: calc(var(--w-deco-opacity, 0.5) * 1.05); }
   100% { opacity: 0; transform: translateY(-4cqw) scale(1.05); }
 }
 /* ---- end of the decorations ---- */

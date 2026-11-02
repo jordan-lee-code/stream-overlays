@@ -265,7 +265,7 @@
       place: DECOR_PLACE[place] === 1 ? place : "scatter",
       color: DECOR_COLOR[color] === 1 ? color : "accent",
       tint: str(f.decorationTint, "#FFB6D9"),
-      opacity: clamp(num(f.decorationOpacity, 0.8), 0.1, 1)
+      opacity: clamp(num(f.decorationOpacity, 0.5), 0.1, 1)
     };
   }
   // `host` is the panel the shapes sit behind, `colors` the list of colours they take in turn (the accent, or a flag), `animate` whether they
@@ -369,6 +369,7 @@
     c.showProblems = bool(f.showProblems, false);
     c.textSize = Math.max(2, num(f.textSize, 4.2));
     c.titleScale = clamp(num(f.titleScale, 1.25), 0.5, 3);
+    c.scrollSpeed = clamp(num(f.scrollSpeed, 1), 0.3, 3);
     c.artSize = clamp(num(f.artSize, 4.4), 2, 10);
     return c;
   }
@@ -508,9 +509,64 @@
 
   // ---- showing it ----
 
+  // Each line is one line, whatever it says, so a long name never makes the card taller or wider. The words sit in a run inside
+  // the line, and a run that is wider than the line slides along it to the end and back, with a pause at each end (see fit).
   function show(node, text) {
-    node.textContent = text;
+    var run = node.firstChild && node.firstChild.className && String(node.firstChild.className).indexOf("np-run") === 0 ? node.firstChild : null;
+    if (!run) {
+      node.textContent = "";
+      run = document.createElement("span");
+      run.className = "np-run";
+      node.appendChild(run);
+    }
+    if (run.textContent !== text) {
+      run.textContent = text;
+      // A different name starts again from the beginning.
+      run.classList.remove("scrolls");
+      if (run.offsetWidth !== undefined) void run.offsetWidth;
+      scrollSig = "";
+    }
     node.hidden = !text;
+  }
+  // 45 pixels a second reads comfortably at the usual size; the Scroll speed setting is a multiple of that.
+  var SCROLL_PX_PER_SECOND = 45, SCROLL_MOVING = 0.7, scrollSig = "";
+  // Every line that is too long takes the same time for the whole trip, so they all reach the end together and start again together,
+  // which is easier on the eye than lines running to their own clocks. The longest sets the time, and a shorter one moves more slowly.
+  function fit() {
+    if (!el.app) return;
+    var lines = [el.title, el.artist, el.album], extra = [], longest = 0, i;
+    for (i = 0; i < lines.length; i++) {
+      var run = lines[i] && lines[i].firstChild, e = 0;
+      if (run && run.classList && !lines[i].hidden && cfg.animate && lines[i].clientWidth > 0) {
+        e = (run.offsetWidth || run.scrollWidth || 0) - lines[i].clientWidth;
+        if (e <= 1) e = 0;
+      }
+      extra.push(e);
+      if (e > longest) longest = e;
+    }
+    var time = longest ? (longest / (SCROLL_PX_PER_SECOND * cfg.scrollSpeed) / SCROLL_MOVING).toFixed(2) : "0";
+    var sig = extra.map(Math.ceil).join("|") + "/" + time, again = sig !== scrollSig;
+    for (i = 0; i < lines.length; i++) {
+      var r = lines[i] && lines[i].firstChild;
+      if (r && r.classList && extra[i] && !r.classList.contains("scrolls")) again = true;
+    }
+    scrollSig = sig;
+    // A change in what scrolls starts every line again from the beginning, together.
+    if (again) {
+      for (i = 0; i < lines.length; i++) { if (lines[i] && lines[i].firstChild && lines[i].firstChild.classList) lines[i].firstChild.classList.remove("scrolls"); }
+      if (el.title && el.title.firstChild && el.title.firstChild.offsetWidth !== undefined) void el.title.firstChild.offsetWidth;
+    }
+    for (i = 0; i < lines.length; i++) {
+      var node = lines[i] && lines[i].firstChild;
+      if (!node || !node.classList) continue;
+      if (extra[i]) {
+        node.style.setProperty("--np-shift", Math.ceil(extra[i]) + "px");
+        node.style.setProperty("--np-time", time + "s");
+        node.classList.add("scrolls");
+      } else {
+        node.classList.remove("scrolls");
+      }
+    }
   }
   function clock(msec) {
     var s = Math.max(0, Math.floor(msec / 1000)), h = Math.floor(s / 3600), m = Math.floor(s / 60) % 60;
@@ -536,6 +592,7 @@
       show(el.label, ""); show(el.title, words ? cfg.idleText : ""); show(el.artist, ""); show(el.album, "");
       el.artWrap.hidden = true; el.progress.hidden = true;
       shownId = null; shownArt = null;
+      fit();
       return;
     }
     show(el.label, t.playing ? cfg.labelPlaying : cfg.labelPaused);
@@ -548,6 +605,7 @@
     var bar = cfg.showProgress && position() !== null;
     el.progress.hidden = !bar;
     if (bar) { el.dur.textContent = clock(t.dur); tick(); }
+    fit();
     if (t.id !== shownId) {
       shownId = t.id;
       if (cfg.animate) { el.app.classList.remove("pop"); if (el.app.offsetWidth !== undefined) void el.app.offsetWidth; el.app.classList.add("pop"); }
@@ -594,6 +652,7 @@
     for (var k in ids) { if (ids.hasOwnProperty(k)) el[k] = byId(ids[k]); }
   }
 
+  window.addEventListener("resize", fit);
   window.addEventListener("onWidgetLoad", function (obj) {
     gen++;
     var myGen = gen;
@@ -608,6 +667,9 @@
     applyLook();
     render();
     tickTimer = setInterval(tick, 1000);
+    // The size of the box can change, and a font can arrive late, and either one changes what fits on a line.
+    if (typeof ResizeObserver !== "undefined" && el.app.parentNode && !el.watched) { el.watched = true; try { new ResizeObserver(fit).observe(el.app); } catch (e) { /* the resize event below still covers it */ } }
+    if (typeof document !== "undefined" && document.fonts && document.fonts.ready && document.fonts.ready.then) document.fonts.ready.then(fit);
     // The card waits for the saved on or off state, so a refresh while it is switched off never shows it for a moment.
     var settled = false;
     function settle(saved) {
