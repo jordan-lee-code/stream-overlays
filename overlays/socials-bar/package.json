@@ -2,6 +2,7 @@
   "name": "socials-bar-overlay",
   "version": "1.0.0",
   "description": "A StreamElements custom widget: a horizontal socials bar with logos, rotating through your sites on the left and Ko-fi on the right.",
+  "category": "info",
   "private": true,
   "license": "MIT",
   "author": "Jordan Lee",

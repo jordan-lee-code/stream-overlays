@@ -2,29 +2,46 @@
 
 A set of StreamElements custom widgets for Twitch streams. Each is plain JavaScript with no dependencies and nothing to install: you paste its four files into a StreamElements custom widget. They share one design, twenty-two style presets including seven pride flags, so they look like one family on a stream.
 
+**Goals and counters**
+
 | Overlay | What it does |
 | --- | --- |
 | [Sub Goals](overlays/sub-goals) | Goals that fill as chat reaches them, with names like "15 subs unlocks chat confessions". |
 | [Subathon](overlays/subathon) | A subathon clock with a cap, power-ups and sub goals underneath. |
-| [Spin Wheel](overlays/spin-wheel) | A wheel for giveaways, raffles and forfeits. |
-| [Chat Poll](overlays/chat-poll) | Quick polls voted on by typing an option. |
 | [Squat Tracker](overlays/squat-tracker) | A running count driven by gifted sub bombs. |
 | [Rage Bar](overlays/rage-bar) | A bar chat fills with subs, bits and channel points. |
 | [Chat Counter](overlays/counter) | A counter chat commands change, for deaths, wins and anything else. |
-| [Leaderboard](overlays/leaderboard) | Top gifters, cheerers and tippers. |
 | [Hype Meter](overlays/hype-meter) | A meter that chat activity fills, with levels. |
-| [Recent Activity](overlays/recent-activity) | The latest subs, gifts, bits, tips, follows and raids. |
 | [Stream Goals](overlays/stream-goals) | Sub and bits goals that start again for each stream. |
-| [Reminder](overlays/reminder) | Reminders you set from chat, which stay on screen until cleared. |
+
+**Chat and viewers**
+
+| Overlay | What it does |
+| --- | --- |
+| [Spin Wheel](overlays/spin-wheel) | A wheel for giveaways, raffles and forfeits. |
+| [Chat Poll](overlays/chat-poll) | Quick polls voted on by typing an option. |
+| [Leaderboard](overlays/leaderboard) | Top gifters, cheerers and tippers. |
+| [Recent Activity](overlays/recent-activity) | The latest subs, gifts, bits, tips, follows and raids. |
 | [Chat Feed](overlays/chat-feed) | On-screen chat with profile pictures and pronouns, in the same style presets. |
+
+**On-screen info**
+
+| Overlay | What it does |
+| --- | --- |
+| [Reminder](overlays/reminder) | Reminders you set from chat, which stay on screen until cleared. |
 | [Camera](overlays/camera) | A framed window for your camera with a nameplate, and a cover that you and your moderators control from chat: off, brb, away, or a message of your own. |
 | [Now Playing](overlays/now-playing) | What you are playing, from Last.fm, Tuna, Spotify or Pear Desktop, with album art and a progress bar. |
-| [Stream Start Countdown](overlays/start-countdown) | A full-screen starting soon countdown you set from chat, with a clock, a bar and friendly lines that take turns. |
 | [Rotating Panel](overlays/rotating-panel) | One panel that takes turns showing your socials and chat commands. |
-| [End Credits](overlays/end-credits) | A thank-you that collects your followers, subscribers, gifters, cheerers, tippers, raiders and chatters through the stream and rolls them as credits. |
 | [Task List and Schedule](overlays/task-list) | A task list you tick off from chat, or a weekly schedule with today's slot highlighted. |
 | [Local Time](overlays/local-time) | The time in any timezone, with a line above it such as Local timezone: GMT. |
 | [Socials Bar](overlays/socials-bar) | A horizontal bar of your social logos and handles, rotating on the left, with Ko-fi on the right. |
+
+**Stream start and end**
+
+| Overlay | What it does |
+| --- | --- |
+| [Stream Start Countdown](overlays/start-countdown) | A full-screen starting soon countdown you set from chat, with a clock, a bar and friendly lines that take turns. |
+| [End Credits](overlays/end-credits) | A thank-you that collects your followers, subscribers, gifters, cheerers, tippers, raiders and chatters through the stream and rolls them as credits. |
 
 ## Using an overlay
 

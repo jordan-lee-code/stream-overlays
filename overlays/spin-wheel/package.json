@@ -2,6 +2,7 @@
   "name": "spin-wheel-overlay",
   "version": "1.0.0",
   "description": "A StreamElements custom widget: a spinning wheel for giveaways, raffles and forfeits.",
+  "category": "chat",
   "private": true,
   "license": "MIT",
   "author": "Jordan Lee",

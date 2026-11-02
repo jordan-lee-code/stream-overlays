@@ -168,6 +168,29 @@ asection("the website");
       assert.ok(index.indexOf('src="' + n + '/card.png"') !== -1, n + " does not show its card");
     });
   });
+  atest("every overlay is in a group, and the landing page shows the groups in order with their overlays under them", () => {
+    const groups = site.CATEGORIES.map(g => g.id);
+    names.forEach(n => {
+      const cat = JSON.parse(fs.readFileSync(path.join(repoRoot, "overlays", n, "package.json"), "utf8")).category;
+      assert.ok(groups.indexOf(cat) !== -1, n + " needs a category in its package.json, one of " + groups.join(", "));
+    });
+    const at = site.CATEGORIES.map(g => index.indexOf('<section id="' + g.id + '"'));
+    assert.ok(at.every((x, i) => x !== -1 && (i === 0 || x > at[i - 1])), "the groups are not all on the page, in order");
+    site.CATEGORIES.forEach((g, i) => {
+      const part = index.slice(at[i], at[i + 1] === undefined ? index.length : at[i + 1]);
+      names.filter(n => JSON.parse(fs.readFileSync(path.join(repoRoot, "overlays", n, "package.json"), "utf8")).category === g.id)
+        .forEach(n => assert.ok(part.indexOf('href="' + n + '/dev/"') !== -1, n + " is not under " + g.title));
+    });
+    assert.ok(names.every(n => index.split('href="' + n + '/dev/"').length > 1), "an overlay is missing");
+    names.forEach(n => { const row = new RegExp("\\(overlays/" + n + "\\) \\|"); assert.ok(row.test(fs.readFileSync(path.join(repoRoot, "README.md"), "utf8")), n + " is not in the root README"); });
+  });
+  atest("the website is dark by default, and the choice is kept for the dev pages", () => {
+    assert.ok(/:root \{ color-scheme: dark;/.test(index) && /html\[data-theme="light"\]/.test(index), "the landing page is not dark by default");
+    assert.ok(/id="theme"/.test(index) && /stream-overlays-theme/.test(index), "no switch to light");
+    const dev = fs.readFileSync(path.join(repoRoot, "kit", "shared", "dev.css"), "utf8");
+    assert.ok(/html:not\(\[data-theme="light"\]\) body \{ background:/.test(dev), "the dev pages are not dark by default");
+    assert.ok(/stream-overlays-theme/.test(fs.readFileSync(path.join(repoRoot, "kit", "shared", "copy-panel.js"), "utf8")), "the dev pages do not share the choice");
+  });
   atest("the tests, the docs and the tooling are left out", () => {
     names.forEach(n => ["test", "docs", "package.json", "README.md"].forEach(f => assert.ok(!fs.existsSync(path.join(outDir, n, f)), n + " should not carry " + f)));
     assert.ok(!fs.existsSync(path.join(outDir, "kit")) && !fs.existsSync(path.join(outDir, "scripts")));

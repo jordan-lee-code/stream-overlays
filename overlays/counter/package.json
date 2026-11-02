@@ -2,6 +2,7 @@
   "name": "counter-overlay",
   "version": "1.0.0",
   "description": "A StreamElements custom widget: a counter that chat commands change, for deaths, wins and anything else worth counting.",
+  "category": "goals",
   "private": true,
   "license": "MIT",
   "author": "Jordan Lee",

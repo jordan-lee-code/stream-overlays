@@ -2,6 +2,7 @@
   "name": "start-countdown-overlay",
   "version": "1.0.0",
   "description": "A StreamElements custom widget: a full-screen starting-soon countdown you set from chat with !countdown 10m or !countdown at 20:30, with a clock, a bar and rotating lines.",
+  "category": "start-end",
   "private": true,
   "license": "MIT",
   "author": "Jordan Lee",

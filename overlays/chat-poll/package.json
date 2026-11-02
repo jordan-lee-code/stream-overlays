@@ -2,6 +2,7 @@
   "name": "chat-poll-overlay",
   "version": "1.0.0",
   "description": "A StreamElements custom widget for quick chat polls, voted on by typing an option.",
+  "category": "chat",
   "private": true,
   "license": "MIT",
   "author": "Jordan Lee",

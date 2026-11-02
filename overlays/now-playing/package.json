@@ -2,6 +2,7 @@
   "name": "now-playing-overlay",
   "version": "1.0.0",
   "description": "A StreamElements custom widget that shows what you are playing, from Last.fm, Tuna, Spotify or Pear Desktop (YouTube Music), with album art and a progress bar, in the same style presets as the rest of the set.",
+  "category": "info",
   "private": true,
   "license": "MIT",
   "author": "Jordan Lee",

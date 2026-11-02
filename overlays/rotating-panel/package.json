@@ -2,6 +2,7 @@
   "name": "rotating-panel-overlay",
   "version": "1.0.0",
   "description": "A StreamElements custom widget: one panel that takes turns showing your socials and chat commands, such as Discord, !lurk and !socials.",
+  "category": "info",
   "private": true,
   "license": "MIT",
   "author": "Jordan Lee",

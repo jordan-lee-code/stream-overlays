@@ -2,6 +2,7 @@
   "name": "squat-tracker-overlay",
   "version": "1.0.0",
   "description": "A StreamElements custom widget that counts squats owed from gifted sub bombs.",
+  "category": "goals",
   "private": true,
   "license": "MIT",
   "author": "Jordan Lee",

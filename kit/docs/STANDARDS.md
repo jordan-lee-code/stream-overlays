@@ -152,7 +152,7 @@ The look of the page is shared in the same way. [`shared/dev.css`](../shared/dev
 
 ## The website
 
-GitHub Pages serves each overlay's dev page and widget files, so nobody has to download the repository: `scripts/build-site.js` copies `widget/` and `dev/` from each overlay, adds a landing page with a card for each, and the Pages workflow publishes it whenever `main` changes. A card's picture is `docs/card.png`, drawn from the overlay's `docs/gallery.json` scene with `overlay-kit gallery <dir> --card`, and every overlay needs one. Text on a card comes from the overlay's `package.json` and README title and is escaped, never run as markup.
+GitHub Pages serves each overlay's dev page and widget files, so nobody has to download the repository: `scripts/build-site.js` copies `widget/` and `dev/` from each overlay, adds a landing page with a card for each, sorted into groups, and the Pages workflow publishes it whenever `main` changes. A card's picture is `docs/card.png`, drawn from the overlay's `docs/gallery.json` scene with `overlay-kit gallery <dir> --card`, and every overlay needs one. Each overlay names its group in its `package.json` as `category` (`goals`, `chat`, `info` or `start-end`, listed in `scripts/build-site.js`), and the landing page shows a heading and a card for each, with a link to each group at the top. The site is dark by default, with a button to switch to light that is remembered in the visitor's browser, and the dev pages follow the same choice. Text on a card comes from the overlay's `package.json` and README title and is escaped, never run as markup.
 
 ## Releases
 

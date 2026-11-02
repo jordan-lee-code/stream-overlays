@@ -2,6 +2,7 @@
   "name": "recent-activity-overlay",
   "version": "1.0.0",
   "description": "A StreamElements custom widget: the latest subs, gifts, bits, tips, follows and raids, with stream totals.",
+  "category": "chat",
   "private": true,
   "license": "MIT",
   "author": "Jordan Lee",

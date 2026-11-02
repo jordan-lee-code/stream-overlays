@@ -2,6 +2,7 @@
   "name": "task-list-overlay",
   "version": "1.0.0",
   "description": "A StreamElements custom widget: a task list you tick off from chat with !task add and !task done, or a weekly schedule written in the settings.",
+  "category": "info",
   "private": true,
   "license": "MIT",
   "author": "Jordan Lee",

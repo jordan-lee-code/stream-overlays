@@ -2,6 +2,7 @@
   "name": "local-time-overlay",
   "version": "1.0.0",
   "description": "A StreamElements custom widget: the time in any timezone, with a line above it such as Local timezone: GMT.",
+  "category": "info",
   "private": true,
   "license": "MIT",
   "author": "Jordan Lee",
