@@ -450,6 +450,7 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
       ok(items().length === 2 && items().every(i => parseFloat(i.style["--x"]) > 50) && parseFloat(items()[0].style["--y"]) < 50 && parseFloat(items()[1].style["--y"]) > 50, "offset from the corners, two shapes take the top right and the bottom right");
       await settle({ decoration: "stars", decorationCount: 12, decorationPlacement: "offset" });
       ok(items().every(i => parseFloat(i.style["--x"]) >= 7 && parseFloat(i.style["--x"]) <= 84 && parseFloat(i.style["--y"]) >= 6 && parseFloat(i.style["--y"]) <= 84), "and a second and third ring stay inside the panel");
+      await settle({ decoration: "stars", decorationCount: 4, decorationColor: "white" }); ok(items().length === 4 && items().every(i => i.style["--c"] === "#FFFFFF"), "pure white");
       await settle({ decoration: "stars", decorationCount: 3, decorationColor: "custom", decorationTint: "#ABCDEF" });
       ok(items().every(i => i.style["--c"] === "#ABCDEF"), "a colour of your own");
       await settle({ decoration: "stars", decorationColor: "text" }); ok(new Set(items().map(i => i.style["--c"])).size === 1, "or the text colour");

@@ -375,6 +375,7 @@
       "accent": "The accent colour (a pride preset's flag colours)",
       "text": "The text colour",
       "mixed": "The accent and text colours, in turn",
+      "white": "Pure white",
       "custom": "The colour picked below"
     },
     "group": "Decorations"

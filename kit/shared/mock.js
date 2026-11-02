@@ -265,6 +265,8 @@ module.exports = function createEnv(root) {
       env.ok(items().every(i => i.style["--c"] === expectedPresets.midnight.text), "they can take the text colour (" + items()[0].style["--c"] + ")");
       await env.load({ decoration: "stars", decorationCount: 4, themePreset: "midnight", decorationColor: "mixed" });
       env.ok(items().map(i => i.style["--c"]).join() === [expectedPresets.midnight.accent, expectedPresets.midnight.text, expectedPresets.midnight.accent, expectedPresets.midnight.text].join(), "or the accent and the text colour in turn");
+      await env.load({ decoration: "stars", decorationCount: 5, themePreset: "pride", decorationColor: "white" });
+      env.ok(items().length === 5 && items().every(i => i.style["--c"] === "#FFFFFF"), "or pure white, whatever the preset, even a flag's (" + items()[0].style["--c"] + ")");
       await env.load({ decoration: "stars", decorationCount: 3, decorationColor: "custom", decorationTint: "#ABCDEF" });
       env.ok(items().every(i => i.style["--c"] === "#ABCDEF"), "or a colour of your own");
       await env.load({ decoration: "stars", decorationColor: "nonsense" }); env.ok(items()[0].style["--c"] === expectedPresets.glass.accent, "an unknown colour choice is the accent");

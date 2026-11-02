@@ -1643,7 +1643,7 @@
   var DECOR_KINDS = { sparkles: 1, hearts: 1, stars: 1, flowers: 1, moons: 1, snowflakes: 1, bubbles: 1, butterflies: 1, clouds: 1, leaves: 1, paws: 1, notes: 1, bows: 1, mixed: 1 };
   var DECOR_MOTION = { twinkle: 1, drift: 1, still: 1 };
   var DECOR_PLACE = { scatter: 1, edges: 1, corners: 1, offset: 1, border: 1 };
-  var DECOR_COLOR = { accent: 1, text: 1, mixed: 1, custom: 1 };
+  var DECOR_COLOR = { accent: 1, text: 1, mixed: 1, white: 1, custom: 1 };
   function readDecor(f) {
     f = f || {};
     var kind = str(f.decoration, "none"), motion = str(f.decorationMotion, "twinkle"), place = str(f.decorationPlacement, "scatter"), color = str(f.decorationColor, "accent");
@@ -1675,6 +1675,7 @@
     var mix = ["sparkles", "hearts", "stars"], pal = colors && colors.length ? colors : ["currentColor"];
     // Which colours the shapes take, in turn: the accent (or the flag), the text colour, both together, or one you pick.
     if (d.color === "text" && text) pal = [text];
+    else if (d.color === "white") pal = ["#FFFFFF"];
     else if (d.color === "custom") pal = [d.tint];
     else if (d.color === "mixed" && text) pal = pal.concat([text]);
     for (var n = 0; n < d.count; n++) {
