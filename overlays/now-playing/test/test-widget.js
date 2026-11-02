@@ -187,6 +187,8 @@ const lfTrack = (o) => Object.assign({ name: "Song", artist: { "#text": "Band" }
   await load(cfgLf({ showArt: false })); ok(E("np-art-wrap").hidden, "the art can be left off");
   await load(cfgLf({ artShape: "round" })); ok(E("np-app").classList.contains("round-art"), "or round");
   await load(cfgLf({ labelPlaying: "" })); ok(label() === "", "the line above the title can be blank");
+  await load(cfgLf()); ok(label() === "Now playing", "and shows by default");
+  await load(cfgLf({ showLabel: false })); ok(label() === "" && E("np-label").hidden, "or can be taken off with one checkbox");
   await load(cfgLf({ labelPlaying: "Listening to" })); ok(label() === "Listening to", "or anything you like");
   net(() => ({ json: tunaJson({ status: "paused" }) })); await load({ source: "tuna", showPaused: false }); ok(gone(), "paused can be treated as nothing playing");
   net(() => ({ json: lastfmJson([lfTrack({ "@attr": undefined })]) })); await load(cfgLf({ idleText: "Nothing on right now" })); ok(!gone() && title() === "Nothing on right now" && artist() === "" && E("np-art-wrap").hidden && E("np-progress").hidden, "when nothing is playing it can say so, with nothing else on the card");
@@ -196,6 +198,10 @@ const lfTrack = (o) => Object.assign({ name: "Song", artist: { "#text": "Band" }
   await load(cfgLf({ textSize: 7, titleScale: 2, artSize: 6 }));
   const v = env.vars("np-app"); ok(v["--np-size"] === "7cqw" && v["--np-title"] === 2 && v["--np-art"] === 6, "the sizes are settings");
   await load(cfgLf({ titleScale: 99, artSize: 99 })); ok(env.vars("np-app")["--np-title"] === 3 && env.vars("np-app")["--np-art"] === 10, "within limits");
+  await load(cfgLf()); ok(env.vars("np-app")["--np-title"] === 1.5 && env.vars("np-app")["--np-artist"] === 1, "the title and the artist are bigger than the card's own text by default (" + env.vars("np-app")["--np-title"] + ", " + env.vars("np-app")["--np-artist"] + ")");
+  await load(cfgLf({ artistScale: 2 })); ok(env.vars("np-app")["--np-artist"] === 2, "and the artist's size is a setting");
+  await load(cfgLf({ artistScale: 99 })); ok(env.vars("np-app")["--np-artist"] === 3, "within limits");
+  await load(cfgLf({ artistScale: 0 })); ok(env.vars("np-app")["--np-artist"] === 0.5, "both ways");
   await load(cfgLf({ themePreset: "pride" })); ok(String(env.vars("np-app")["--w-flag"]).indexOf("linear-gradient(180deg") === 0, "a pride preset's bar wears its flag");
   await env.checkPresets("np-app");
   await env.checkFrame("np-app");

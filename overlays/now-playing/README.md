@@ -9,7 +9,7 @@ It is a single self-contained widget in plain JavaScript, with no dependencies a
 ## Features
 
 - Four ways to read what is playing: Last.fm, Tuna, Spotify and Pear Desktop, chosen with one setting. Each is explained below, and which one suits you depends on the player and on whether you want to sign in to anything.
-- The album art, the title, the artist and, if you like, the album, with a small line above that says Now playing or Paused in your own words.
+- The album art, the title, the artist and, if you like, the album, with a small line above that says Now playing or Paused in your own words, or none at all, since it can be switched off. The title and the artist are large enough to read from across the room, and each has its own size setting.
 - A progress bar with the times, which keeps moving between reads, so it stays smooth. It needs a source that says how far through the track it is, which is every source except Last.fm.
 - A track that is paused can stay on the card with its own line, or count as nothing playing. When nothing is playing the card fades away, or says what you choose, such as "Nothing on right now".
 - Hide and show it from chat: `!nowplaying off` and `!nowplaying on`, for you and your moderators. It stays hidden if the overlay is refreshed.
@@ -157,8 +157,8 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | Source | Which source to read from, and how often. |
 | Last.fm, Tuna, Pear Desktop, Spotify | The details each source needs. |
 | Commands | The command word and who may use it. |
-| Card | The art and its shape, the album, the progress bar, the lines above the title, what to do when paused, and what to say when nothing is playing. |
-| Size | Text size, the title's size, the art's size, and how fast a long name scrolls. |
+| Card | The art and its shape, the album, the progress bar, whether to show the small line above the title and what it says, what to do when paused, and what to say when nothing is playing. |
+| Size | Text size, the title's size, the artist's size, the art's size, and how fast a long name scrolls. |
 | Look | The style preset, font, boldness, corners, padding, outer frame, outline, shadow, Animate and whether the card shrinks to fit the box. |
 | Custom colours | Panel, text, accent, bar track and note colours, used when the style preset is Custom. |
 | Decorations | The shape, where they go, how many, how big, how solid, their colour, and how they move. |

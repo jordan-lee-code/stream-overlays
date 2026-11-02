@@ -79,13 +79,13 @@
 /* One line each, whatever the name, so the card keeps the size the box gives it. A name that is too long slides along its line
    (see .np-run), and with Animate off, where nothing may move, it is cut short with dots instead. */
 .np-title {
-  font-size: calc(1em * var(--np-title, 1.25));
+  font-size: calc(1em * var(--np-title, 1.5));
   font-weight: var(--w-weight);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.np-artist { font-size: 0.85em; font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.np-artist { font-size: calc(1em * var(--np-artist, 1)); font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .np-album { font-size: 0.65em; font-weight: 700; opacity: 0.85; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .np-run.scrolls {
   display: inline-block;
