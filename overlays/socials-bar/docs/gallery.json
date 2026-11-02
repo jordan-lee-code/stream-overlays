@@ -1,0 +1,56 @@
+{
+  "width": 900,
+  "height": 90,
+  "fields": {
+    "animate": false,
+    "rotateSeconds": 60
+  },
+  "setup": "",
+  "pictures": [
+    {
+      "file": "default.png",
+      "width": 900,
+      "height": 90,
+      "base": "scene"
+    },
+    {
+      "file": "all.png",
+      "width": 900,
+      "height": 90,
+      "base": "scene",
+      "fields": {
+        "rotate": false,
+        "twitch": "@yourname",
+        "discord": "yourname",
+        "iconColor": "brand",
+        "themePreset": "midnight",
+        "textSize": 1.05
+      }
+    },
+    {
+      "file": "logos.png",
+      "width": 900,
+      "height": 90,
+      "base": "scene",
+      "fields": {
+        "rotate": false,
+        "showNames": false,
+        "patreon": "patreon.com/yourname",
+        "themePreset": "pastelpink",
+        "iconScale": 1.6
+      }
+    },
+    {
+      "file": "decorations.png",
+      "width": 900,
+      "height": 90,
+      "base": "scene",
+      "fields": {
+        "decoration": "stars",
+        "decorationCount": 8,
+        "themePreset": "celestial",
+        "decorationPlacement": "edges"
+      }
+    }
+  ]
+}

@@ -24,6 +24,7 @@ A set of StreamElements custom widgets for Twitch streams. Each is plain JavaScr
 | [End Credits](overlays/end-credits) | A thank-you that collects your followers, subscribers, gifters, cheerers, tippers, raiders and chatters through the stream and rolls them as credits. |
 | [Task List and Schedule](overlays/task-list) | A task list you tick off from chat, or a weekly schedule with today's slot highlighted. |
 | [Local Time](overlays/local-time) | The time in any timezone, with a line above it such as Local timezone: GMT. |
+| [Socials Bar](overlays/socials-bar) | A horizontal bar of your social logos and handles, rotating on the left, with Ko-fi on the right. |
 
 ## Using an overlay
 
