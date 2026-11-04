@@ -508,13 +508,38 @@
       case "add": if (kind && !isNaN(n)) setCount(kind, state.counts[kind] + n); break;
       case "pause": state.paused = true; save(); render(); break;
       case "resume": state.paused = false; save(); render(); break;
+      case "snapshot": if (kind === "" && (args[0] || "").toLowerCase() === "hide") hideSnapshot(); else showSnapshot(); break;
     }
+  }
+  // A snapshot is the settings and the saved counts as they are right now, as one line of text, so a problem seen on stream can be
+  // looked at again in the dev page. It goes to the console, to the clipboard where the browser allows it, and onto the widget in a box
+  // that can be selected and copied (in OBS, through Interact on the source). It hides again by itself.
+  var rawFields = {}, snapTimer = 0;
+  function snapshot() {
+    var fields = {}, k;
+    for (k in rawFields) if (rawFields.hasOwnProperty(k)) fields[k] = rawFields[k];
+    return { overlay: "stream-goals", version: 1, takenAt: now(), fields: fields, state: state };
+  }
+  function hideSnapshot() {
+    clearTimeout(snapTimer);
+    if (el.snap) el.snap.hidden = true;
+  }
+  function showSnapshot() {
+    var text = JSON.stringify(snapshot());
+    try { console.log("[stream-goals snapshot] " + text); } catch (e) { /* no console, no matter */ }
+    try { if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).catch(function () {}); } catch (e2) { /* the box below is the way in that always works */ }
+    if (!el.snap) return;
+    el.snap.value = text; el.snap.hidden = false;
+    try { el.snap.focus(); el.snap.select(); } catch (e3) { /* selecting is only a convenience */ }
+    clearTimeout(snapTimer);
+    snapTimer = setTimeout(hideSnapshot, 180000);
   }
   function handleButton(field) {
     switch (field) {
       case "btnReset": newStream(); save(); render(); break;
       case "btnPause": state.paused = true; save(); render(); break;
       case "btnResume": state.paused = false; save(); render(); break;
+      case "btnSnapshot": showSnapshot(); break;
       case "test_soundProgress": sound("progress"); break;
       case "test_soundReached": sound("reached"); break;
     }
@@ -599,7 +624,7 @@
     s.setProperty("--sg-gap", cfg.rowGap + "em");
   }
   function bind() {
-    el.root = byId("sg-root"); el.app = byId("sg-app"); el.title = byId("sg-title"); el.status = byId("sg-status");
+    el.snap = byId("sg-snap"); if (el.snap) el.snap.hidden = true; el.root = byId("sg-root"); el.app = byId("sg-app"); el.title = byId("sg-title"); el.status = byId("sg-status");
     el.rows = {}; el.labels = {}; el.levels = {}; el.counts = {}; el.fills = {};
     for (var i = 0; i < KINDS.length; i++) {
       var k = KINDS[i];
@@ -615,7 +640,8 @@
   }, 1000);
 
   window.addEventListener("onWidgetLoad", function (obj) {
-    cfg = readConfig((obj && obj.detail && obj.detail.fieldData) || {});
+    rawFields = (obj && obj.detail && obj.detail.fieldData) || {};
+    cfg = readConfig(rawFields);
     bind();
     if (!el.app) return;
     applyLook();

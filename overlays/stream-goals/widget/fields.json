@@ -326,6 +326,11 @@
     "label": "Resume counting",
     "group": "Manual controls"
   },
+  "btnSnapshot": {
+    "type": "button",
+    "label": "Show a snapshot for troubleshooting (the settings and counts as they are now)",
+    "group": "Manual controls"
+  },
   "title": {
     "type": "text",
     "label": "Title",
