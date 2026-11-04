@@ -75,6 +75,9 @@
 /* A label, and the name after it, wraps onto another line when the amount leaves it little room, so none of it is ever hidden. */
 .sg-label { min-width: 0; overflow-wrap: anywhere; }
 .sg-name { min-width: 0; }
+/* A row kept on one line: the label and its level do not wrap, and widget.js shrinks the row's text until the line fits. */
+.sg-top.one { flex-wrap: nowrap; }
+.sg-top.one .sg-name, .sg-top.one .sg-label { white-space: nowrap; }
 .sg-level { margin-left: 0.5em; font-size: 0.8em; opacity: 0.75; white-space: nowrap; }
 .sg-count { font-variant-numeric: tabular-nums; white-space: nowrap; opacity: 0.9; }
 .sg-bar {
