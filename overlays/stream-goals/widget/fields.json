@@ -435,6 +435,16 @@
     "value": true,
     "group": "Look"
   },
+  "layout": {
+    "type": "dropdown",
+    "label": "Layout",
+    "value": "stacked",
+    "options": {
+      "stacked": "Stacked: one goal under another",
+      "row": "Side by side: the goals in a row, for a short, wide strip"
+    },
+    "group": "Look"
+  },
   "fit": {
     "type": "checkbox",
     "label": "Shrink to fit the box: when the box is too short for everything, the whole card gets smaller instead of running off the bottom",

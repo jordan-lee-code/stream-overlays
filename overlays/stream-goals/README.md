@@ -9,6 +9,7 @@ It is a single self-contained widget in plain JavaScript, with no dependencies a
 ## Features
 
 - Stays put in OBS: the panel is always as tall as the box you draw, with its content in the middle, so it does not grow or shrink as entries come and go. Untick Fill the height of the box for a panel as tall as its content.
+- Side by side: set Layout to Side by side and the goals sit in a row, so a short, wide strip holds them all in the least room (see the picture below).
 - Starts again for each stream: it notices a quiet gap between streams and begins afresh, or it can reset only when you ask, or on every load (see [Starting again](#starting-again)).
 - Subs and bits: with optional tip and follow goals, each with its own label, goal and bar, and each switched on or off as you need, so only the goals you want take up room on screen.
 - A donation goal: switch on the tip goal and name it for what it is for, such as "Tip goal: new pc". It counts money written your way: the symbol before or after the amount, a comma or a point for the decimal, and cents shown or not. Switch off the others if the donation goal is all you want.
@@ -25,6 +26,10 @@ It is a single self-contained widget in plain JavaScript, with no dependencies a
 - Decorations: sparkles, hearts, stars, flowers, moons, snowflakes, bubbles, butterflies, clouds, leaves, paw prints, music notes or bows behind the words, scattered, along the edges, in the corners, a little way in from the corners or on the border, in the accent colour, a pride flag's colours or a colour of your own, twinkling, drifting or still. Off by default.
 
 ## Screenshots
+
+**Side by side.** A short, wide strip, with the goals in a row.
+
+<p><img src="docs/row.png" alt="The sub goal at 37 of 50 and the bits goal at 3,200 of 5,000 side by side in one short row" width="520"></p>
 
 **Reaching a goal.** A goal that is reached says so, and then raises itself if you have set a stretch amount.
 

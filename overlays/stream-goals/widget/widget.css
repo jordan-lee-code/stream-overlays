@@ -92,6 +92,13 @@
 
 #sg-app { position: relative; }
 
+/* Side by side: the goals share one row, so a short, wide box holds them all. The title and the paused note keep a line
+   of their own, and each goal's label and count wrap onto two lines when it has little room. */
+#sg-root.row #sg-app, #sg-root.fill.row #sg-app { display: flex; flex-direction: row; flex-wrap: wrap; align-items: center; align-content: center; justify-content: center; column-gap: 1.2em; }
+#sg-root.row .sg-title, #sg-root.row .sg-status { flex: 0 0 100%; }
+#sg-root.row .sg-row { flex: 1 1 0; min-width: 0; margin-top: var(--sg-gap, 0.7em); }
+#sg-root.row .sg-top { flex-wrap: wrap; column-gap: 0.5em; }
+
 /* Fill the height of the box: the panel is as tall as the box, with its content in the middle. */
 #sg-root.fill #sg-app { flex: 1 1 auto; display: flex; flex-direction: column; justify-content: center; }
 

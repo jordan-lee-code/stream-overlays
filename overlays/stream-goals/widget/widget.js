@@ -388,6 +388,7 @@
     c.decimals = str(f.decimals, "auto");
     c.reachedText = txt(f.reachedText, "Goal reached!");
     c.growth = { subs: clamp(num(f.growthSubs, 1), 0.1, 10), bits: clamp(num(f.growthBits, 1), 0.1, 10), tips: clamp(num(f.growthTips, 1), 0.1, 10), follows: clamp(num(f.growthFollows, 1), 0.1, 10) };
+    c.layout = str(f.layout, "stacked") === "row" ? "row" : "stacked";
     c.showLevel = bool(f.showLevel, true); c.levelText = str(f.levelText, "Level {level}");
     c.raiseDelayMs = Math.max(1, num(f.raiseDelay, 6)) * 1000;
     c.textSize = Math.max(2, num(f.textSize, 5.5));
@@ -593,6 +594,7 @@
   function applyLook() {
     applyCommonTheme(cfg, el.root, el.app, "sg-font-link");
     var s = el.app.style;
+    el.root.classList.toggle("row", cfg.layout === "row");
     s.setProperty("--sg-size", cfg.textSize + "cqw");
     s.setProperty("--sg-title", cfg.titleScale);
     s.setProperty("--sg-bar", cfg.barHeight + "em");
