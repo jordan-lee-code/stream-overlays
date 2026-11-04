@@ -109,6 +109,10 @@ let pass = 0, fail = 0;
 function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } else { fail++; console.log("  FAIL " + msg); } }
 
 (async () => {
+  console.log("\n[the box in StreamElements]");
+  await load(); ok(!E("subathon-root").style.height, "outside a frame the card keeps the box it is given");
+  window.top = {}; await load(); ok(E("subathon-root").style.height === "100vh", "inside a frame it is as tall as the frame, so it can fit the box");
+  delete window.top;
   console.log("\n[the clock]");
   await load();
   ok(clock() === "24:00:00", "starts on the start time (" + clock() + ")");

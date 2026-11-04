@@ -248,6 +248,28 @@ asection("the website");
       assert.strictEqual(fs.readFileSync(path.join(dev, "design-panel.js"), "utf8"), fs.readFileSync(path.join(__dirname, "../shared/design-panel.js"), "utf8"), n + " has a different design panel");
     });
   });
+  atest("every dev page loads the troubleshooting import panel, the same one", () => {
+    names.forEach(n => {
+      const dev = path.join(repoRoot, "overlays", n, "dev");
+      assert.ok(fs.readFileSync(path.join(dev, "index.html"), "utf8").indexOf('<script src="snapshot-panel.js"></script>') !== -1, n + " does not load the troubleshooting import panel");
+      assert.ok(fs.readFileSync(path.join(dev, "harness.js"), "utf8").indexOf("window.__importFields = function") !== -1, n + " cannot import settings");
+      assert.strictEqual(fs.readFileSync(path.join(dev, "snapshot-panel.js"), "utf8"), fs.readFileSync(path.join(__dirname, "../shared/snapshot-panel.js"), "utf8"), n + " has a different troubleshooting import panel");
+    });
+  });
+  atest("the troubleshooting import reads the Data tab and a snapshot, and says why it cannot read anything else", () => {
+    const P = require("../shared/snapshot-panel.js");
+    const data = { command: "!goals", showSubs: true, targetSubs: 10, eventsLimit: 5, theme: "texture" };
+    const d = P.parse(JSON.stringify(data, null, 2), "stream-goals");
+    assert.ok(d.dataTab && d.fields.targetSubs === 10, "the Data tab is its settings");
+    assert.strictEqual(P.parse("[stream-goals snapshot] " + JSON.stringify({ overlay: "stream-goals", fields: data, state: { a: 1 } }), "stream-goals").state.a, 1, "a whole console line works as it is");
+    assert.throws(() => P.parse(JSON.stringify({ overlay: "counter", fields: data }), "stream-goals"), /not from this overlay \(it is from counter\)/);
+    assert.doesNotThrow(() => P.parse(JSON.stringify({ overlay: "counter", fields: data })), "with no overlay to compare against it is let through");
+    assert.throws(() => P.parse(JSON.stringify({ a: { type: "text", value: "" }, b: { type: "text" }, c: { type: "checkbox" }, d: { type: "text" } })), /fields\.json/);
+    assert.throws(() => P.parse("garbage"), /nothing to load/);
+    assert.throws(() => P.parse('{"a": 1,'), /nothing to load|not whole JSON/);
+    assert.throws(() => P.parse('{"a":1}'), /no settings in it/);
+    assert.throws(() => P.parse("[1,2,3,4,5]"), /nothing to load|no settings/);
+  });
   atest("the design panel picks, reads and applies only the design", () => {
     const D = require("../shared/design-panel.js");
     const ids = require("../src/settings").STANDARD;

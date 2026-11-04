@@ -203,6 +203,18 @@
     s.setProperty("--w-frame-w", bw);
     s.setProperty("--w-frame-img", stripes ? flagGradient(t.flag) : "none");
     s.setProperty("--w-shadow", c.shadow ? "0 0.3em 1.2em rgba(0, 0, 0, 0.45)" : "none");
+    // In StreamElements the widget is the whole page of a frame the size of its box, but that page is only as tall as its content, so
+    // "100% of the box" came out as "as tall as the card": nothing could fill the box, and a card whose text grew went past it
+    // without shrinking to fit. The height of the frame's viewport is the box, so inside a frame it is used. A widget that is not in a
+    // frame (the dev page, which draws it in a box of its own inside a bigger page) keeps the box it was given.
+    var framed = false;
+    try { framed = window.self !== window.top; } catch (e) { framed = true; }
+    if (framed) {
+      root.style.height = "100vh";
+      // The frame is the box, so nothing in it scrolls: a card a fraction of a pixel too tall must not bring up a scrollbar.
+      if (document.body && document.body.style) { document.body.style.margin = "0"; document.body.style.overflow = "hidden"; }
+      if (document.documentElement && document.documentElement.style) document.documentElement.style.overflow = "hidden";
+    }
     root.classList.toggle("no-motion", !c.animate);
     // The panel is as tall as the box, so it stays where it was put as entries come and go. The stylesheet does the rest.
     root.classList.toggle("fill", !!c.fillBox);
