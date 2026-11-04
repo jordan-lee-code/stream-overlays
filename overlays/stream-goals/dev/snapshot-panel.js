@@ -27,8 +27,11 @@
     if (i === -1 || j <= i) throw new Error("There is no snapshot in what was pasted.");
     var snap;
     try { snap = JSON.parse(s.slice(i, j + 1)); } catch (e) { throw new Error("That is not a whole snapshot, so it may have been cut short when it was copied."); }
-    if (snap && !snap.overlay && looksLikeFields(snap)) throw new Error("That is a fields.json (the settings with their labels), not a snapshot. A snapshot starts with {\"overlay\":\"" + OVERLAY + "\". Press Show a snapshot for troubleshooting on the overlay and copy what it shows.");
-    if (!snap || !snap.overlay) throw new Error("That is not a snapshot: it has no overlay name in it. A snapshot starts with {\"overlay\":\"" + OVERLAY + "\".");
+    if (snap && !snap.overlay && looksLikeFields(snap)) throw new Error("That is a fields.json (the settings with their labels), not a snapshot or the Data tab. Copy the Data tab, or press Show a snapshot for troubleshooting on the overlay.");
+    // The Data tab of the StreamElements editor is the settings as plain values, with no overlay name and no counts. It loads as
+    // settings only, and the counts on this page are left as they are.
+    if (snap && !snap.overlay && !Array.isArray(snap) && Object.keys(snap).length > 3) return { overlay: OVERLAY, fields: snap, dataTab: true };
+    if (!snap || !snap.overlay) throw new Error("That is not a snapshot or the Data tab: it has no settings in it.");
     if (snap.overlay !== OVERLAY) throw new Error("That snapshot is not from this overlay (it is from " + snap.overlay + ").");
     if (!snap.fields || typeof snap.fields !== "object") throw new Error("That snapshot has no settings in it.");
     return snap;
@@ -48,6 +51,7 @@
     var load = button("Load this snapshot", function () {
       try {
         var snap = parse(box.value), n = window.__applySnapshot(snap);
+        if (snap.dataTab) { say(n ? "Loaded " + n + " settings from the Data tab. The counts on this page are as they were." : "None of those settings belong to this overlay, so nothing changed."); return; }
         var when = snap.takenAt ? new Date(snap.takenAt).toLocaleString() : "an unknown time";
         say("Loaded " + n + " settings" + (snap.state ? " and the saved counts" : "") + ", as they were at " + when + ". The page's clock is set to match.");
       } catch (e) { say(e.message); }
@@ -59,7 +63,7 @@
     });
     return el("div", { id: "snapshot-panel" }, [
       el("h2", { text: "Troubleshooting snapshot" }),
-      el("p", { "class": "hint", text: "To look at a problem from your stream here: in StreamElements press Show a snapshot for troubleshooting under Troubleshooting, or send the snapshot command in chat as a moderator. Copy the text it shows, paste it below, and load it. The settings, the counts and the time come across as they were." }),
+      el("p", { "class": "hint", text: "To look at a problem from your stream here: in StreamElements press Show a snapshot for troubleshooting under Troubleshooting, or send the snapshot command in chat as a moderator. Copy the text it shows, paste it below, and load it. The settings, the counts and the time come across as they were. If the button shows nothing, the Data tab of the StreamElements editor works too, with the settings only." }),
       box, load, copy, msg
     ]);
   }

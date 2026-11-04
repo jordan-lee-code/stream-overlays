@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- The dev page's Troubleshooting snapshot panel also takes the Data tab of the StreamElements editor, which loads the overlay's settings without needing the snapshot button.
 - Adding to a goal from chat, such as `!goals add bits 500`, now fills the bar, pops the number, plays the sound and celebrates a reached goal, as a real sub or cheer does, instead of jumping to the new value. It still works while paused, and taking some off stays a quiet correction.
 - Stream Goals can show a snapshot of its settings and saved counts, from a button or the `!goals snapshot` chat command, and the dev page has a Troubleshooting snapshot panel that loads one, with the same settings, counts and time, so a problem seen on stream can be looked at again.
 - Stream Goals now shows a level next to a goal that raises itself, such as "Sub goal, Level 2", which goes up each time the goal is reached and raised. The wording is a setting, and it can be switched off. Each goal also has a growth setting, so every raise can be a multiple of the one before, such as 1.5 times, and the goals climb faster or slower as you go.
