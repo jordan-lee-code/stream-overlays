@@ -405,6 +405,8 @@
     c.decimalComma = bool(f.decimalComma, false);
     c.decimals = str(f.decimals, "auto");
     c.reachedText = txt(f.reachedText, "Goal reached!");
+    c.growth = { subs: clamp(num(f.growthSubs, 1), 0.1, 10), bits: clamp(num(f.growthBits, 1), 0.1, 10), tips: clamp(num(f.growthTips, 1), 0.1, 10), follows: clamp(num(f.growthFollows, 1), 0.1, 10) };
+    c.showLevel = bool(f.showLevel, true); c.levelText = str(f.levelText, "Level {level}");
     c.raiseDelayMs = Math.max(1, num(f.raiseDelay, 6)) * 1000;
     c.textSize = Math.max(2, num(f.textSize, 5.5));
     c.titleScale = Math.max(0.5, num(f.titleScale, 1.2));
@@ -416,7 +418,17 @@
   }
 
   function sound(kind) { playUrl(cfg, cfg.sounds[kind], cfg.volumes[kind]); }
-  function targetOf(k) { return cfg.base[k] + state.stage[k] * cfg.raise[k]; }
+  // Raise number 1 is the amount you set, and each one after is that many times the one before, so with a growth of
+  // 1.5 the raises are 25, 38, 56 and so on. Counts are whole numbers (never less than 1), tips keep their cents.
+  function targetAt(k, stage) {
+    var t = cfg.base[k], step = cfg.raise[k], g = cfg.growth[k], money = k === "tips";
+    for (var i = 0; i < stage; i++) {
+      t += money ? Math.max(0.01, Math.round(step * 100) / 100) : Math.max(1, Math.round(step));
+      step *= g;
+    }
+    return money ? Math.round(t * 100) / 100 : t;
+  }
+  function targetOf(k) { return targetAt(k, state.stage[k]); }
 
   // ---------------------------------------------------------------------------
   // Counting
@@ -427,11 +439,13 @@
     state = blankState();
     state.lastSeen = now();
   }
-  function count(kind, amount) {
-    if (state.paused || !(amount > 0)) return;
+  // `manual` is an amount added by hand from chat. It counts exactly as a real one does, with the bar filling, the number
+  // popping, the sound and the celebration, but it is not held back by Pause and it never decides that this is a new stream.
+  function count(kind, amount, manual) {
+    if ((state.paused && !manual) || !(amount > 0)) return;
     // The overlay may have been left open between streams, so a long quiet gap before an
     // event means this is a new stream, and it starts the goals afresh first.
-    if (cfg.resetMode === "gap" && state.lastEvent && now() - state.lastEvent > cfg.gapMs) newStream();
+    if (!manual && cfg.resetMode === "gap" && state.lastEvent && now() - state.lastEvent > cfg.gapMs) newStream();
     var wasReached = state.reached[kind];
     state.counts[kind] = Math.round((state.counts[kind] + amount) * 100) / 100;
     state.lastEvent = state.lastSeen = now();
@@ -450,6 +464,7 @@
     if (cfg.raise[kind] <= 0) return;
     while (state.counts[kind] >= targetOf(kind)) state.stage[kind]++;
     state.reached[kind] = false;
+    swapAsk[kind] = true;                                   // the words fade out and in on a raise
     save(); render();
   }
   function setCount(kind, n) {
@@ -457,8 +472,9 @@
     state.reached[kind] = false;
     if (raiseTimers[kind] !== undefined) { clearTimeout(raiseTimers[kind]); delete raiseTimers[kind]; }
     // A correction by hand picks the stage the new number belongs to, without a celebration.
-    var base = cfg.base[kind], by = cfg.raise[kind], c = state.counts[kind];
-    state.stage[kind] = by > 0 && c >= base ? Math.floor((c - base) / by) + 1 : 0;
+    var s = 0;
+    if (cfg.raise[kind] > 0 && state.counts[kind] >= cfg.base[kind]) { s = 1; while (targetAt(kind, s) <= state.counts[kind]) s++; }
+    state.stage[kind] = s;
     checkReached(kind);
     save(); render();
   }
@@ -510,16 +526,52 @@
     switch (verb) {
       case "reset": newStream(); save(); render(); break;
       case "set": if (kind && !isNaN(n)) setCount(kind, n); break;
-      case "add": if (kind && !isNaN(n)) setCount(kind, state.counts[kind] + n); break;
+      case "add":
+        if (!kind || isNaN(n)) break;
+        if (n > 0) count(kind, n, true);                       // adding fills and celebrates like a real event
+        else if (n < 0) setCount(kind, state.counts[kind] + n); // taking some off is a correction
+        break;
       case "pause": state.paused = true; save(); render(); break;
       case "resume": state.paused = false; save(); render(); break;
+      case "snapshot": if (kind === "" && (args[0] || "").toLowerCase() === "hide") hideSnapshot(); else showSnapshot(); break;
     }
+  }
+  // A snapshot is the settings and the saved counts as they are right now, as one line of text, so a problem seen on stream can be
+  // looked at again in the dev page. It goes to the console, to the clipboard where the browser allows it, and onto the widget in a box
+  // that can be selected and copied (in OBS, through Interact on the source). It hides again by itself.
+  var rawFields = {}, snapTimer = 0;
+  function snapshot() {
+    var fields = {}, k;
+    for (k in rawFields) if (rawFields.hasOwnProperty(k)) fields[k] = rawFields[k];
+    return { overlay: "stream-goals", version: 1, takenAt: now(), fields: fields, state: state };
+  }
+  function hideSnapshot() {
+    clearTimeout(snapTimer);
+    if (el.snap) el.snap.hidden = true;
+  }
+  function showSnapshot() {
+    var text = JSON.stringify(snapshot());
+    try { console.log("[stream-goals snapshot] " + text); } catch (e) { /* no console, no matter */ }
+    try { if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).catch(function () {}); } catch (e2) { /* the box below is the way in that always works */ }
+    // The box is in widget.html, but a widget whose HTML tab has not been updated yet would show nothing, so make it here when it is missing.
+    if (!el.snap && el.root) {
+      el.snap = document.createElement("textarea");
+      el.snap.id = "sg-snap"; el.snap.readOnly = true;
+      el.snap.style.cssText = "position:absolute;left:0;top:0;width:100%;height:100%;z-index:5;margin:0;padding:6px;border:0;resize:none;background:#000;color:#9fe8a8;font:11px/1.3 monospace;box-sizing:border-box";
+      el.root.appendChild(el.snap);
+    }
+    if (!el.snap) return;
+    el.snap.value = text; el.snap.hidden = false;
+    try { el.snap.focus(); el.snap.select(); } catch (e3) { /* selecting is only a convenience */ }
+    clearTimeout(snapTimer);
+    snapTimer = setTimeout(hideSnapshot, 180000);
   }
   function handleButton(field) {
     switch (field) {
       case "btnReset": newStream(); save(); render(); break;
       case "btnPause": state.paused = true; save(); render(); break;
       case "btnResume": state.paused = false; save(); render(); break;
+      case "btnSnapshot": showSnapshot(); break;
       case "test_soundProgress": sound("progress"); break;
       case "test_soundReached": sound("reached"); break;
     }
@@ -578,36 +630,85 @@
     if (!el.title || !el.title.classList) return;
     el.title.classList.remove("pop"); void el.title.offsetWidth; el.title.classList.add("pop");
   }
+  // A goal's label and its count share one line. When the count gets wider, as "Goal reached!" does, the label used to wrap onto a
+  // second line, the row grew taller, and in a short box the card ran out of room. So a row stays on one line and its text shrinks
+  // a little until it fits, by no more than a third. Only a label too long even for that is let wrap, and the card then fits the
+  // box as a whole.
+  var MIN_ROW_SCALE = 0.67, rowWatching = false;
+  // Too wide when the label has been squeezed narrower than its own text (it can shrink, so it overflows into the gap) or when
+  // the whole line runs past its row.
+  function tooWide(top) {
+    var name = top.children[0];
+    return top.scrollWidth > top.clientWidth + 1 || (name && name.scrollWidth > name.clientWidth + 1);
+  }
+  function fitRows() {
+    for (var i = 0; i < KINDS.length; i++) {
+      var row = el.rows[KINDS[i]], top = row && row.children && row.children[0];
+      if (!top || !top.style || row.hidden || typeof top.scrollWidth !== "number") continue;
+      var s = 1;
+      top.style.fontSize = ""; top.classList.add("one");
+      while (tooWide(top) && s > MIN_ROW_SCALE) { s = Math.round((s - 0.03) * 100) / 100; top.style.fontSize = (s * 100) + "%"; }
+      if (tooWide(top)) { top.classList.remove("one"); top.style.fontSize = ""; }
+    }
+    if (el.app && el.app.__fitSoon) el.app.__fitSoon();
+  }
+  function watchRows() {
+    if (rowWatching) return;
+    rowWatching = true;
+    if (typeof ResizeObserver === "function" && el.root) new ResizeObserver(function () { fitRows(); }).observe(el.root);
+    if (typeof document !== "undefined" && document.fonts && document.fonts.ready) document.fonts.ready.then(fitRows);
+  }
+  var SWAP_MS = 350, swapTimers = {}, swapAsk = {};
   function render() {
     if (!el.app) return;
     el.title.textContent = cfg.title; el.title.hidden = !cfg.showTitle || !cfg.title;
     for (var i = 0; i < KINDS.length; i++) {
       var k = KINDS[i], row = el.rows[k], target = targetOf(k), n = state.counts[k];
       row.hidden = !cfg.show[k];
-      el.labels[k].textContent = labelOf(k);
+      var lv = cfg.showLevel && cfg.raise[k] > 0 && cfg.levelText ? cfg.levelText.split("{level}").join(state.stage[k] + 1) : "";
       var done = state.reached[k];
-      el.counts[k].textContent = done && cfg.reachedText ? cfg.reachedText : cfg.format.split("{n}").join(shown(k, n)).split("{target}").join(shown(k, target));
+      // When a reached goal is raised its words fade out, change, and fade back in, instead of snapping. The bar eases on its own.
+      if (swapAsk[k] && row.classList.contains("reached") && !done && cfg.animate) {
+        if (!swapTimers[k]) {
+          row.classList.add("swap");
+          swapTimers[k] = setTimeout(function (kind) { return function () { swapTimers[kind] = 0; swapAsk[kind] = false; render(); }; }(k), SWAP_MS);
+        }
+        continue;
+      }
+      swapAsk[k] = false;
+      el.labels[k].textContent = labelOf(k);
+      el.levels[k].textContent = lv; el.levels[k].hidden = !lv;
+      row.classList.remove("swap");
       el.fills[k].style.width = clamp(n / target * 100, 0, 100) + "%";
+      el.counts[k].textContent = done && cfg.reachedText ? cfg.reachedText : cfg.format.split("{n}").join(shown(k, n)).split("{target}").join(shown(k, target));
       row.classList.toggle("reached", done);
     }
+    fitRows();
     el.app.classList.toggle("paused", state.paused);
     el.status.textContent = state.paused ? "paused" : ""; el.status.hidden = !state.paused;
   }
   function applyLook() {
     applyCommonTheme(cfg, el.root, el.app, "sg-font-link");
     var s = el.app.style;
+    // In StreamElements the widget is the whole page of a frame the size of its box, but the page is only as tall as its content,
+    // so "100% of the box" came out as "as tall as the content": nothing could fill the box. The height of the frame's viewport is
+    // the box, so inside a frame it is used. A widget that is not in a frame (the dev page, which draws it in a box of its own
+    // inside a bigger page) keeps the box it was given.
+    var framed = false;
+    try { framed = window.self !== window.top; } catch (e) { framed = true; }
+    if (framed) { el.root.style.height = "100vh"; if (document.body && document.body.style) document.body.style.margin = "0"; }
     s.setProperty("--sg-size", cfg.textSize + "cqw");
     s.setProperty("--sg-title", cfg.titleScale);
     s.setProperty("--sg-bar", cfg.barHeight + "em");
     s.setProperty("--sg-gap", cfg.rowGap + "em");
   }
   function bind() {
-    el.root = byId("sg-root"); el.app = byId("sg-app"); el.title = byId("sg-title"); el.status = byId("sg-status");
-    el.rows = {}; el.labels = {}; el.counts = {}; el.fills = {};
+    el.snap = byId("sg-snap"); if (el.snap) el.snap.hidden = true; el.root = byId("sg-root"); el.app = byId("sg-app"); el.title = byId("sg-title"); el.status = byId("sg-status");
+    el.rows = {}; el.labels = {}; el.levels = {}; el.counts = {}; el.fills = {};
     for (var i = 0; i < KINDS.length; i++) {
       var k = KINDS[i];
       el.rows[k] = byId("sg-row-" + k); el.labels[k] = byId("sg-label-" + k);
-      el.counts[k] = byId("sg-count-" + k); el.fills[k] = byId("sg-fill-" + k);
+      el.levels[k] = byId("sg-level-" + k); el.counts[k] = byId("sg-count-" + k); el.fills[k] = byId("sg-fill-" + k);
     }
   }
 
@@ -618,10 +719,11 @@
   }, 1000);
 
   window.addEventListener("onWidgetLoad", function (obj) {
-    cfg = readConfig((obj && obj.detail && obj.detail.fieldData) || {});
+    rawFields = (obj && obj.detail && obj.detail.fieldData) || {};
+    cfg = readConfig(rawFields);
     bind();
     if (!el.app) return;
-    applyLook();
+    applyLook(); watchRows();
     storeLoad(STORE_KEY, function (saved) {
       for (var k in raiseTimers) if (raiseTimers.hasOwnProperty(k)) clearTimeout(raiseTimers[k]);
       raiseTimers = {};
