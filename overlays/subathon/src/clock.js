@@ -617,6 +617,16 @@
     var root = el.root.style;
     root.setProperty("--sa-gap", cfg.gap + "px");
     el.root.classList.toggle("goals-first", cfg.order === "goals");
+    // In StreamElements the widget is the whole page of a frame the size of its box, but that page is only as tall as its content, so
+    // "100% of the box" came out as "as tall as the card" and the shrink to fit never found the card too tall. Inside a frame the
+    // height of its viewport is the box, so it is used, and nothing in the frame scrolls. Outside one (the dev page) the box is kept.
+    var framed = false;
+    try { framed = window.self !== window.top; } catch (e) { framed = true; }
+    if (framed) {
+      el.root.style.height = "100vh";
+      if (document.body && document.body.style) { document.body.style.margin = "0"; document.body.style.overflow = "hidden"; }
+      if (document.documentElement && document.documentElement.style) document.documentElement.style.overflow = "hidden";
+    }
     el.root.classList.toggle("no-motion", !cfg.animate);
     applyDecor(cfg.decor, el.app, theme.flag || [theme.accent], cfg.animate, theme.text);
     // The clock card shrinks to fit the box, but leaves some of it for the goals while they are showing.

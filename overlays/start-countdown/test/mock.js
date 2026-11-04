@@ -43,6 +43,7 @@ module.exports = function createEnv(root) {
     head: makeEl("head"), body: makeEl("body"), fonts: null
   };
   const E = id => document.getElementById(id);
+  const elementsById = elements;
 
   const listeners = {};
   const window = {
@@ -87,7 +88,7 @@ module.exports = function createEnv(root) {
   // sleeps. The date the widget reads is separate and stays still until a test sets `env.fake`,
   // which is how a test makes minutes or hours pass for a widget that works from the date.
   const clock = createClock();
-  const env = { fake: 1700000000000, clock };
+  const env = { fake: 1700000000000, clock, window };
   class FakeDate extends Date { static now() { return env.fake; } }
   const sandbox = {
     window, document, CustomEvent, SE_API, Audio, Date: FakeDate, fetch,
@@ -216,6 +217,11 @@ module.exports = function createEnv(root) {
       env.ok(border() === "3px solid #FF00AA", "and in Custom the frame is the accent colour you picked, not the outline colour (" + border() + ")");
       await env.load({ themePreset: "custom", cAccent: "#FF00AA", borderColor: "#010101", borderWidth: 3, outerFrame: false });
       env.ok(border() === "3px solid #010101", "with the frame unticked a Custom outline is the colour and thickness you set (" + border() + ")");
+      // In a frame (StreamElements) the card takes the height of the frame, which is the box. Outside one it keeps the box it is given.
+      const tall = () => Object.keys(elementsById).some(id => elementsById[id].style && elementsById[id].style.height === "100vh");
+      await env.load({}); env.ok(!tall(), "outside a frame the card keeps the box it is given");
+      env.window.top = {}; await env.load({}); env.ok(tall(), "inside a frame it is as tall as the frame, so it can fill and fit the box");
+      delete env.window.top;
       await env.load({});
     },
     // The decorations: shapes drawn behind a panel's words, off by default. `hostId` is the panel they are drawn in.
