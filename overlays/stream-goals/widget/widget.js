@@ -528,6 +528,13 @@
     var text = JSON.stringify(snapshot());
     try { console.log("[stream-goals snapshot] " + text); } catch (e) { /* no console, no matter */ }
     try { if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).catch(function () {}); } catch (e2) { /* the box below is the way in that always works */ }
+    // The box is in widget.html, but a widget whose HTML tab has not been updated yet would show nothing, so make it here when it is missing.
+    if (!el.snap && el.root) {
+      el.snap = document.createElement("textarea");
+      el.snap.id = "sg-snap"; el.snap.readOnly = true;
+      el.snap.style.cssText = "position:absolute;left:0;top:0;width:100%;height:100%;z-index:5;margin:0;padding:6px;border:0;resize:none;background:#000;color:#9fe8a8;font:11px/1.3 monospace;box-sizing:border-box";
+      el.root.appendChild(el.snap);
+    }
     if (!el.snap) return;
     el.snap.value = text; el.snap.hidden = false;
     try { el.snap.focus(); el.snap.select(); } catch (e3) { /* selecting is only a convenience */ }

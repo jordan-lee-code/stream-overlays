@@ -18,12 +18,18 @@
     "#snapshot-panel .snap-msg { min-height: 1.3em; margin: 4px 0 0; }" +
     "html:not([data-theme=\"light\"]) #snapshot-panel { background: #172a2a; border-color: #3f7d70; }";
 
+  function looksLikeFields(o) {
+    var keys = Object.keys(o);
+    return keys.length > 3 && keys.every(function (k) { return o[k] && typeof o[k] === "object" && o[k].type; });
+  }
   function parse(text) {
     var s = String(text || ""), i = s.indexOf("{"), j = s.lastIndexOf("}");
     if (i === -1 || j <= i) throw new Error("There is no snapshot in what was pasted.");
     var snap;
     try { snap = JSON.parse(s.slice(i, j + 1)); } catch (e) { throw new Error("That is not a whole snapshot, so it may have been cut short when it was copied."); }
-    if (!snap || snap.overlay !== OVERLAY) throw new Error("That snapshot is not from this overlay" + (snap && snap.overlay ? " (it is from " + snap.overlay + ")." : "."));
+    if (snap && !snap.overlay && looksLikeFields(snap)) throw new Error("That is a fields.json (the settings with their labels), not a snapshot. A snapshot starts with {\"overlay\":\"" + OVERLAY + "\". Press Show a snapshot for troubleshooting on the overlay and copy what it shows.");
+    if (!snap || !snap.overlay) throw new Error("That is not a snapshot: it has no overlay name in it. A snapshot starts with {\"overlay\":\"" + OVERLAY + "\".");
+    if (snap.overlay !== OVERLAY) throw new Error("That snapshot is not from this overlay (it is from " + snap.overlay + ").");
     if (!snap.fields || typeof snap.fields !== "object") throw new Error("That snapshot has no settings in it.");
     return snap;
   }
