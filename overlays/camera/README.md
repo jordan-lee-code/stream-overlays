@@ -17,7 +17,7 @@ It is a single self-contained widget in plain JavaScript, with no dependencies a
 - Safe by default: it starts covered and stays covered until it knows what state it was in, and a refresh of the browser source cannot flash the camera. Every protection is described below, and tested.
 - Sounds, icons and wording: a sound for covering and uncovering, an icon for each cover, and every message is a setting.
 - Remembers: a covered camera is still covered after a refresh, with its message and countdown.
-- All twenty-two style presets, including the seven pride flags.
+- All twenty-three style presets, including the seven pride flags.
 - Scales with the box: the text scales with the window, and if the box is too short for the nameplate, it shrinks to fit.
 - Customisable: around sixty settings cover the commands, safety, wording, icons, nameplate, window, frame, sizes, shape, outline, colours, fonts, sounds and animation.
 - An outer frame in the accent colour, on by default in every preset, and switched off with one checkbox (the flag's stripes in the pride presets).
@@ -47,13 +47,14 @@ It is a single self-contained widget in plain JavaScript, with no dependencies a
 
 ## Style presets
 
-One setting picks the look. The same twenty-two presets, with the same colours, are in every overlay in this set, so overlays from this set match whichever you choose. This is how each one looks in this overlay. The presets are defined once, in the [kit](../../kit), and a test keeps this overlay in step with it.
+One setting picks the look. The same twenty-three presets, with the same colours, are in every overlay in this set, so overlays from this set match whichever you choose. This is how each one looks in this overlay. The presets are defined once, in the [kit](../../kit), and a test keeps this overlay in step with it.
 
-<p><img src="docs/presets.png" alt="A grid of this overlay in each of the twenty-two style presets: Soft black, Soft white, Midnight blue, Sunset, Forest, Ocean, Rose, Neon, Cosy cabin, Cosy summer pastel, Celestial, Pastel goth, Pastel pink, Pastel sage, Fae green, Rainbow pride, Trans pride, Bi pride, Pan pride, Non-binary pride, Lesbian pride and Ace pride" width="760"></p>
+<p><img src="docs/presets.png" alt="A grid of this overlay in each of the twenty-three style presets: Soft black, Text only, Soft white, Midnight blue, Sunset, Forest, Ocean, Rose, Neon, Cosy cabin, Cosy summer pastel, Celestial, Pastel goth, Pastel pink, Pastel sage, Fae green, Rainbow pride, Trans pride, Bi pride, Pan pride, Non-binary pride, Lesbian pride and Ace pride" width="760"></p>
 
 | Preset | Look |
 | --- | --- |
 | Soft black (default) | See-through black with white text. |
+| Text only (no box) | No box, frame or shadow: just the words, with a soft dark halo so they read over any picture. |
 | Soft white | Frosted white with dark text. |
 | Midnight blue | Deep navy with a periwinkle accent. |
 | Sunset | Deep plum with orange and coral. |
@@ -128,7 +129,7 @@ A StreamElements widget can read chat but cannot write to it, so nothing is said
 
 ## How it protects you
 
-- **Solid.** The cover is the preset's panel colour with the transparency taken out, in all twenty-two presets and for a custom colour however see-through it is set, and a test checks every one.
+- **Solid.** The cover is the preset's panel colour with the transparency taken out, in all twenty-three presets and for a custom colour however see-through it is set, and a test checks every one.
 - **Instant.** Covering has no fade, because a fade would show the camera while it ran. Uncovering fades away over a third of a second.
 - **No flash on a refresh.** The widget is covered, over the whole of its box and not just the window, from the first moment, and stays covered until the saved state and the fonts have loaded. If the saved state is that the camera was covered, it stays covered, and if it was showing, the cover lifts. A moderator's command that arrives before the state is known waits and cannot uncover the camera by accident.
 - **The window cannot move under the cover.** The size of the window depends on the height of the nameplate, so the whole-box cover waits for the fonts, which decide that height, and every rotating line shares the same space, so a longer line never changes the nameplate's height and moves the window the camera sits in.
@@ -243,7 +244,7 @@ The JavaScript is plain ES5, so it can be pasted straight into the StreamElement
 
 ## Related overlays
 
-These overlays share the same default look and the same twenty-two style presets, so they sit together on one stream.
+These overlays share the same default look and the same twenty-three style presets, so they sit together on one stream.
 
 - [Sub Goals Overlay](../sub-goals): sub and bits goals that fill as chat reaches them.
 - [Subathon Overlay](../subathon): a subathon clock with a cap, power-ups and sub goals.

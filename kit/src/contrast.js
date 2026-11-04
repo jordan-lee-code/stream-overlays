@@ -22,7 +22,8 @@ function parse(c) {
 const over = (p, bd) => [0, 1, 2].map(i => Math.round(p.rgb[i] * p.a + bd[i] * (1 - p.a)));
 
 function measure(x) {
-  const panel = parse(x.panel), text = parse(x.text).rgb, accent = parse(x.accent).rgb;
+  // With no box the words sit on a soft dark halo, so they are measured against that over each backdrop.
+  const panel = x.halo ? { rgb: [0, 0, 0], a: 0.85 } : parse(x.panel), text = parse(x.text).rgb, accent = parse(x.accent).rgb;
   if (x.bgimg) {
     // against the stripes themselves, as the panel is drawn
     const bgs = x.flag.map(K.rgb), scrim = /^linear-gradient\(rgba\((\d+), (\d+), (\d+), ([\d.]+)\)/.exec(x.bgimg);

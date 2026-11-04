@@ -18,7 +18,7 @@ It is one widget with no dependencies and nothing to install. The sub goals are 
 - Lock and pause: pause the clock, or lock it so new time is banked while you decide what to do.
 - Chat control: add, subtract, set, pause, resume, lock, power up and more, from chat, for the broadcaster or moderators.
 - Sub goals underneath: the same goals as `!incentive add 15 chat confessions`, filling as subs, bits and tips land, in the same panel style.
-- Twenty-two style presets: one setting styles the clock and the goals together, and the same twenty-two presets are in every overlay in this set.
+- Twenty-three style presets: one setting styles the clock and the goals together, and the same twenty-three presets are in every overlay in this set.
 - Customisable: over 170 settings cover values, commands, sizes, colours, fonts, sounds and animation.
 - Saved: the clock, the cap, banked time, power-ups and lock all survive a browser-source refresh, and a refresh while running keeps counting through the gap.
 - Tests and a dev harness: a local harness with a time machine and an automated test script, so a 200 hour subathon can be tried in a minute.
@@ -41,13 +41,14 @@ It is one widget with no dependencies and nothing to install. The sub goals are 
 
 ## Style presets
 
-One setting picks the look, for the clock and the goals together. The same twenty-two presets, with the same colours, are in every overlay in this set, so overlays from this set match whichever you choose. This is how each one looks here. The presets are defined once, in the [kit](../../kit), and a test keeps this overlay in step with it.
+One setting picks the look, for the clock and the goals together. The same twenty-three presets, with the same colours, are in every overlay in this set, so overlays from this set match whichever you choose. This is how each one looks here. The presets are defined once, in the [kit](../../kit), and a test keeps this overlay in step with it.
 
-<p><img src="docs/presets.png" alt="A grid of the clock and goals in each of the twenty-two style presets: Soft black, Soft white, Midnight blue, Sunset, Forest, Ocean, Rose, Neon, Cosy cabin, Cosy summer pastel, Celestial, Pastel goth, Pastel pink, Pastel sage, Fae green, Rainbow pride, Trans pride, Bi pride, Pan pride, Non-binary pride, Lesbian pride and Ace pride" width="760"></p>
+<p><img src="docs/presets.png" alt="A grid of the clock and goals in each of the twenty-three style presets: Soft black, Text only, Soft white, Midnight blue, Sunset, Forest, Ocean, Rose, Neon, Cosy cabin, Cosy summer pastel, Celestial, Pastel goth, Pastel pink, Pastel sage, Fae green, Rainbow pride, Trans pride, Bi pride, Pan pride, Non-binary pride, Lesbian pride and Ace pride" width="760"></p>
 
 | Preset | Look |
 | --- | --- |
 | Soft black (default) | See-through black with white text. |
+| Text only (no box) | No box, frame or shadow: just the words, with a soft dark halo so they read over any picture. |
 | Soft white | Frosted white with dark text. |
 | Midnight blue | Deep navy with a periwinkle accent. |
 | Sunset | Deep plum with orange and coral. |
@@ -238,7 +239,7 @@ A StreamElements widget can read chat but cannot write to it, so the clock canno
 
 ## Related overlays
 
-These overlays share the same default look and the same twenty-two style presets, so they sit together on one stream.
+These overlays share the same default look and the same twenty-three style presets, so they sit together on one stream.
 
 - [Sub Goals Overlay](../sub-goals): sub and bits goals that fill as chat reaches them.
 - [Spin Wheel Overlay](../spin-wheel): a wheel for giveaways, raffles and forfeits.

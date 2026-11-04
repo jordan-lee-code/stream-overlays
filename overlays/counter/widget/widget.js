@@ -5,6 +5,7 @@
 
   var PRESETS = {
     glass: { panel: "rgba(0, 0, 0, 0.55)", text: "#FFFFFF", accent: "#FFFFFF", track: "rgba(255, 255, 255, 0.2)", alarm: "#D64545", font: "BioRhyme" },
+    textonly: { panel: "rgba(0, 0, 0, 0)", text: "#FFFFFF", accent: "#FFFFFF", track: "rgba(255, 255, 255, 0.28)", alarm: "#FF6B6B", font: "BioRhyme" },
     frost: { panel: "rgba(255, 255, 255, 0.72)", text: "#1B2130", accent: "#1B2130", track: "rgba(0, 0, 0, 0.14)", alarm: "#C0392B", font: "BioRhyme" },
     midnight: { panel: "rgba(10, 18, 46, 0.72)", text: "#E8EEFF", accent: "#89AFFF", track: "rgba(127, 168, 255, 0.22)", alarm: "#FF6B6B", font: "BioRhyme" },
     sunset: { panel: "rgba(48, 18, 42, 0.72)", text: "#FFF1E6", accent: "#FF9A5A", track: "rgba(255, 154, 90, 0.24)", alarm: "#FF4D4D", font: "BioRhyme" },
@@ -188,6 +189,17 @@
     if (p.bgimg) out.bgimg = fadeImage(p.bgimg, a);
     return out;
   }
+  function clearPanel(t) {
+    if (t.bgimg) return false;
+    var m = /^rgba\(\s*[\d.]+\s*,\s*[\d.]+\s*,\s*[\d.]+\s*,\s*([\d.]+)\s*\)$/.exec(String(t.panel || "").trim());
+    return !!m && parseFloat(m[1]) < 0.05;
+  }
+  function haloFor(color) {
+    var m = /^#?([0-9a-f]{6})$/i.exec(String(color || "").trim()), n = m ? parseInt(m[1], 16) : 0xFFFFFF;
+    var light = (((n >> 16) & 255) * 299 + ((n >> 8) & 255) * 587 + (n & 255) * 114) / 1000 > 140;
+    var h = light ? "0, 0, 0" : "255, 255, 255";
+    return "0 0 0.1em rgba(" + h + ", 0.9), 0 0.04em 0.35em rgba(" + h + ", 0.75)";
+  }
   function themeOf(c) {
     var p = c.themePreset !== "custom" ? PRESETS[c.themePreset] : null;
     if (p) return c.usePanelOpacity ? withOpacity(p, clamp(c.panelOpacity, 0, 1)) : p;
@@ -225,14 +237,20 @@
     s.setProperty("--w-weight", c.weight);
     // The outer frame: a border round the widget in the accent colour, as thick as the Outline setting says, or, left at 0,
     // a default that grows with the box. With the frame off it is the plain outline the settings describe, if there is one.
-    var bw = c.borderWidth > 0 ? c.borderWidth + "px" : (c.outerFrame ? "max(2px, 0.6cqw)" : "0px");
+    // A preset with no box (Text only) has no frame or shadow either, since they would draw the box it is meant to be without,
+    // unless an outline thickness has been set on purpose.
+    var bare = clearPanel(t) && c.themePreset !== "custom", frame = c.outerFrame && !bare;
+    var bw = c.borderWidth > 0 ? c.borderWidth + "px" : (frame ? "max(2px, 0.6cqw)" : "0px");
     // A pride preset draws the frame in its flag's stripes, as a ring on the panel (see the stylesheet), and the border is then
     // only the room it takes.
-    var stripes = c.outerFrame && t.flag;
-    s.setProperty("--w-border", bw + " solid " + (c.outerFrame ? (stripes ? "transparent" : t.accent) : c.borderColor));
+    var stripes = frame && t.flag;
+    s.setProperty("--w-border", bw + " solid " + (frame ? (stripes ? "transparent" : t.accent) : c.borderColor));
     s.setProperty("--w-frame-w", bw);
     s.setProperty("--w-frame-img", stripes ? flagGradient(t.flag) : "none");
-    s.setProperty("--w-shadow", c.shadow ? "0 0.3em 1.2em rgba(0, 0, 0, 0.45)" : "none");
+    s.setProperty("--w-shadow", c.shadow && !bare ? "0 0.3em 1.2em rgba(0, 0, 0, 0.45)" : "none");
+    // With no box behind the words (a clear panel) they get a soft halo, dark round light words and light round dark ones,
+    // so they stay readable over whatever the stream is showing.
+    app.style.textShadow = clearPanel(t) ? haloFor(t.text) : "";
     // In StreamElements the widget is the whole page of a frame the size of its box, but that page is only as tall as its content, so
     // "100% of the box" came out as "as tall as the card": nothing could fill the box, and a card whose text grew went past it
     // without shrinking to fit. The height of the frame's viewport is the box, so inside a frame it is used. A widget that is not in a

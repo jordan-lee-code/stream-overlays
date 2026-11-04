@@ -344,6 +344,7 @@
     "value": "glass",
     "options": {
       "glass": "Soft black (default)",
+      "textonly": "Text only (no box)",
       "frost": "Soft white",
       "midnight": "Midnight blue",
       "sunset": "Sunset",

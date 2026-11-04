@@ -132,6 +132,12 @@
       font: "BioRhyme",
       parts: {"pillBg": "rgba(0, 0, 0, 0.55)", "pill": "#FFFFFF", "toastBg": "rgba(0, 0, 0, 0.7)", "toast": "#FFFFFF", "cardBg": "rgba(0, 0, 0, 0.7)", "card": "#FFFFFF", "eyebrowBg": "#FFFFFF", "eyebrow": "#111111", "idle": "#FFFFFF", "goal": "#FFFFFF", "goalTrack": "rgba(255, 255, 255, 0.2)", "goalFrom": "#D9D9D9", "goalTo": "#FFFFFF", "hub": "rgba(0, 0, 0, 0.7)", "hubRing": "#FFFFFF", "spent": "#D64545", "refused": "#D64545", "labelDark": "#111111", "labelLight": "#FFFFFF", "divider": "rgba(0, 0, 0, 0.22)", "border": "transparent"}
     },
+    textonly: {
+      bg: "rgba(0, 0, 0, 0)", text: "#FFFFFF", accent: "#FFFFFF", pointer: "#FFFFFF",
+      segs: ["#FFFFFF", "#D9D9D9", "#BFBFBF", "#EDEDED", "#A6A6A6", "#CCCCCC"],
+      font: "BioRhyme",
+      parts: {"pillBg": "rgba(0, 0, 0, 0)", "pill": "#FFFFFF", "toastBg": "rgba(0, 0, 0, 0.55)", "toast": "#FFFFFF", "cardBg": "rgba(0, 0, 0, 0.55)", "card": "#FFFFFF", "eyebrowBg": "#FFFFFF", "eyebrow": "#111111", "idle": "#FFFFFF", "goal": "#FFFFFF", "goalTrack": "rgba(255, 255, 255, 0.28)", "goalFrom": "#D9D9D9", "goalTo": "#FFFFFF", "hub": "rgba(0, 0, 0, 0.55)", "hubRing": "#FFFFFF", "spent": "#FF6B6B", "refused": "#FF6B6B", "labelDark": "#111111", "labelLight": "#FFFFFF", "divider": "rgba(0, 0, 0, 0.22)", "border": "transparent"}
+    },
     frost: {
       bg: "rgba(255, 255, 255, 0.72)", text: "#1B2130", accent: "#1B2130", pointer: "#1B2130",
       segs: ["#1B2130", "#3A4256", "#5B6478", "#2A3248", "#7A839A", "#454E64"],

@@ -137,6 +137,12 @@
       segs: ["#FFFFFF", "#D9D9D9", "#BFBFBF", "#EDEDED", "#A6A6A6", "#CCCCCC", "#F5F5F5", "#B3B3B3"],
       font: "BioRhyme"
     },
+    textonly: {
+      bg: "rgba(0, 0, 0, 0)", text: "#FFFFFF", accent: "#FFFFFF", onAccent: "#111111",
+      row: "rgba(255, 255, 255, 0.12)", track: "rgba(255, 255, 255, 0.28)",
+      segs: ["#FFFFFF", "#D9D9D9", "#BFBFBF", "#EDEDED", "#A6A6A6", "#CCCCCC", "#F5F5F5", "#B3B3B3"],
+      font: "BioRhyme"
+    },
     frost: {
       bg: "rgba(255, 255, 255, 0.72)", text: "#1B2130", accent: "#1B2130", onAccent: "#FFFFFF",
       row: "rgba(0, 0, 0, 0.07)", track: "rgba(0, 0, 0, 0.14)",
