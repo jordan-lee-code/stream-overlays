@@ -10,6 +10,7 @@ function preset(key, label, font, panel, strong, text, accent, onAccent, row, tr
   more = more || {};
   const d = { key, label, font, panel, strong, text, accent, onAccent, row, track, glow, fillFrom, fillTo, alarm, segs,
     labelDark: more.labelDark || "#111111", labelLight: more.labelLight || "#FFFFFF", divider: more.divider || "rgba(0, 0, 0, 0.22)" };
+  if (more.halo) d.halo = true;            // no box at all: the words carry a soft dark halo so they read over any picture
   if (more.flag) d.flag = more.flag;       // the stripes of a flag, top to bottom, for bars that can show them
   if (more.bgimg) d.bgimg = more.bgimg;    // a background image for the main panel, with the solid panel colour as its fallback
   return d;
@@ -76,6 +77,7 @@ function pride(key, label, stripes, segs, fillFrom, fillTo) {
 
 const PRESETS = [
   preset("glass", "Soft black (default)", "BioRhyme", "rgba(0, 0, 0, 0.55)", "rgba(0, 0, 0, 0.7)", "#FFFFFF", "#FFFFFF", "#111111", "rgba(255, 255, 255, 0.12)", "rgba(255, 255, 255, 0.2)", "#FFFFFF", "#D9D9D9", "#FFFFFF", "#D64545", ["#FFFFFF", "#D9D9D9", "#BFBFBF", "#EDEDED", "#A6A6A6", "#CCCCCC", "#F5F5F5", "#B3B3B3"]),
+  preset("textonly", "Text only (no box)", "BioRhyme", "rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0.55)", "#FFFFFF", "#FFFFFF", "#111111", "rgba(255, 255, 255, 0.12)", "rgba(255, 255, 255, 0.28)", "#FFFFFF", "#D9D9D9", "#FFFFFF", "#FF6B6B", ["#FFFFFF", "#D9D9D9", "#BFBFBF", "#EDEDED", "#A6A6A6", "#CCCCCC", "#F5F5F5", "#B3B3B3"], { halo: true }),
   preset("frost", "Soft white", "BioRhyme", "rgba(255, 255, 255, 0.72)", "rgba(255, 255, 255, 0.88)", "#1B2130", "#1B2130", "#FFFFFF", "rgba(0, 0, 0, 0.07)", "rgba(0, 0, 0, 0.14)", "#1B2130", "#5B6478", "#1B2130", "#C0392B", ["#1B2130", "#3A4256", "#5B6478", "#2A3248", "#7A839A", "#454E64", "#1F2840", "#69728A"], { divider: "rgba(255, 255, 255, 0.5)" }),
   preset("midnight", "Midnight blue", "BioRhyme", "rgba(10, 18, 46, 0.72)", "rgba(10, 18, 46, 0.88)", "#E8EEFF", "#89AFFF", "#0A122E", "rgba(127, 168, 255, 0.12)", "rgba(127, 168, 255, 0.22)", "#89AFFF", "#4F77D6", "#A9C4FF", "#FF6B6B", ["#7FA8FF", "#4F77D6", "#A9C4FF", "#3A5BB0", "#C9DAFF", "#6A90E8", "#8FB0FF", "#2B4690"], { divider: "rgba(10, 18, 46, 0.35)" }),
   preset("sunset", "Sunset", "BioRhyme", "rgba(48, 18, 42, 0.72)", "rgba(48, 18, 42, 0.88)", "#FFF1E6", "#FF9A5A", "#30122A", "rgba(255, 154, 90, 0.12)", "rgba(255, 154, 90, 0.24)", "#FF9A5A", "#FF6B8A", "#FFB36B", "#FF4D4D", ["#FF9A5A", "#FF6B8A", "#FFC27A", "#E0508F", "#FFD9A0", "#FF7F6B", "#F4A261", "#C44581"], { divider: "rgba(48, 18, 42, 0.35)" }),

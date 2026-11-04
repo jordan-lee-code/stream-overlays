@@ -144,6 +144,11 @@
       fillFrom: "#D9D9D9", fillTo: "#FFFFFF", alarm: "#D64545",
       parts: {"title": "#FFFFFF", "timer": "#FFFFFF", "readout": "#FFFFFF", "note": "#FFFFFF", "border": "#FFFFFF", "track": "rgba(255, 255, 255, 0.2)", "lock": "#FFFFFF", "lockHole": "rgba(0, 0, 0, 0.7)", "float": "#FFFFFF", "floatBg": "rgba(0, 0, 0, 0.7)", "alert": "#FFFFFF", "alertFill": "#FFFFFF", "alertTrack": "rgba(0, 0, 0, 0.22)"}
     },
+    textonly: {
+      bg: "rgba(0, 0, 0, 0)", text: "#FFFFFF", accent: "#FFFFFF", font: "BioRhyme",
+      fillFrom: "#D9D9D9", fillTo: "#FFFFFF", alarm: "#FF6B6B",
+      parts: {"title": "#FFFFFF", "timer": "#FFFFFF", "readout": "#FFFFFF", "note": "#FFFFFF", "border": "#FFFFFF", "track": "rgba(255, 255, 255, 0.28)", "lock": "#FFFFFF", "lockHole": "rgba(0, 0, 0, 0.55)", "float": "#FFFFFF", "floatBg": "rgba(0, 0, 0, 0.55)", "alert": "#FFFFFF", "alertFill": "#FFFFFF", "alertTrack": "rgba(0, 0, 0, 0.22)"}
+    },
     frost: {
       bg: "rgba(255, 255, 255, 0.72)", text: "#1B2130", accent: "#1B2130", font: "BioRhyme",
       fillFrom: "#5B6478", fillTo: "#1B2130", alarm: "#C0392B",

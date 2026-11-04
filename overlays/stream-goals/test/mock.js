@@ -186,9 +186,12 @@ module.exports = function createEnv(root) {
       const DEFAULT = "max(2px, 0.6cqw)";
       let all = true, flags = 0;
       const ring = () => String(env.vars(appId)["--w-frame-img"]);
+      const bare = [];
       for (const key of Object.keys(expectedPresets)) {
         await env.load({ themePreset: key });
         const x = expectedPresets[key];
+        // A preset with no box has no frame to draw, and is checked below.
+        if (x.panel === "rgba(0, 0, 0, 0)") { bare.push(key); continue; }
         // A plain preset's frame is its accent. A pride preset's is its flag's stripes, as a ring, so the border is only the room it takes.
         const want = x.flag ? DEFAULT + " solid transparent" : DEFAULT + " solid " + x.accent;
         const stripesOk = x.flag ? ring().indexOf("linear-gradient(180deg, " + x.flag[0]) === 0 && ring().split(", ").length === x.flag.length + 1 : ring() === "none";
@@ -196,6 +199,13 @@ module.exports = function createEnv(root) {
         if (x.flag) flags++;
       }
       env.ok(all, "by default there is an outer frame in every one of the " + Object.keys(expectedPresets).length + " presets: the accent colour, and for the " + flags + " pride flags their stripes, as thick as a default that grows with the box");
+      for (const key of bare) {
+        await env.load({ themePreset: key, shadow: true });
+        env.ok(border().indexOf("0px solid") === 0 && String(env.vars(appId)["--w-shadow"]) === "none" && E(appId).style.textShadow.indexOf("rgba(0, 0, 0") !== -1,
+          key + " has no box, frame or shadow, and a dark halo round its words (" + border() + ", " + E(appId).style.textShadow.slice(0, 30) + ")");
+        await env.load({ themePreset: key, borderWidth: 4 });
+        env.ok(border().indexOf("4px solid") === 0, key + " still takes an outline you set on purpose (" + border() + ")");
+      }
       await env.load({ outerFrame: false });
       env.ok(border() === "0px solid #FFFFFF", "it can be switched off, which leaves no outline (" + border() + ")");
       await env.load({ outerFrame: false, themePreset: "trans" });

@@ -31,7 +31,7 @@ It started as a raffle and grew into a wheel that also runs forfeit spins, weigh
 
 <p><img src="docs/forfeits.png" alt="A full circle wheel with six forfeits in shades of white and grey" width="420"></p>
 
-**Your own look.** Every part is a setting. This one uses custom slice colours, a thicker rim, white dividers, rounder pills and a pink theme. You can also pick any of the twenty-two [style presets](#style-presets) with one setting.
+**Your own look.** Every part is a setting. This one uses custom slice colours, a thicker rim, white dividers, rounder pills and a pink theme. You can also pick any of the twenty-three [style presets](#style-presets) with one setting.
 
 <p><img src="docs/custom.png" alt="A full circle wheel with pastel slices, a pink rim and pointer" width="420"></p>
 
@@ -41,13 +41,14 @@ It started as a raffle and grew into a wheel that also runs forfeit spins, weigh
 
 ## Style presets
 
-One setting picks the look. The same twenty-two presets, with the same colours, are in every overlay in this set, so overlays from this set match whichever you choose. This is how each one looks in this overlay. The presets are defined once, in the [kit](../../kit), and a test keeps this overlay in step with it.
+One setting picks the look. The same twenty-three presets, with the same colours, are in every overlay in this set, so overlays from this set match whichever you choose. This is how each one looks in this overlay. The presets are defined once, in the [kit](../../kit), and a test keeps this overlay in step with it.
 
-<p><img src="docs/presets.png" alt="A grid of this overlay in each of the twenty-two style presets: Soft black, Soft white, Midnight blue, Sunset, Forest, Ocean, Rose, Neon, Cosy cabin, Cosy summer pastel, Celestial, Pastel goth, Pastel pink, Pastel sage, Fae green, Rainbow pride, Trans pride, Bi pride, Pan pride, Non-binary pride, Lesbian pride and Ace pride" width="760"></p>
+<p><img src="docs/presets.png" alt="A grid of this overlay in each of the twenty-three style presets: Soft black, Text only, Soft white, Midnight blue, Sunset, Forest, Ocean, Rose, Neon, Cosy cabin, Cosy summer pastel, Celestial, Pastel goth, Pastel pink, Pastel sage, Fae green, Rainbow pride, Trans pride, Bi pride, Pan pride, Non-binary pride, Lesbian pride and Ace pride" width="760"></p>
 
 | Preset | Look |
 | --- | --- |
 | Soft black (default) | See-through black with white text. |
+| Text only (no box) | No box, frame or shadow: just the words, with a soft dark halo so they read over any picture. |
 | Soft white | Frosted white with dark text. |
 | Midnight blue | Deep navy with a periwinkle accent. |
 | Sunset | Deep plum with orange and coral. |
@@ -126,7 +127,7 @@ Chat submits questions with `!spin ask`, and the wheel draws one that stays on s
 
 The default look is *Soft black*: see-through black pills and cards, white text in BioRhyme, and slices in shades of white and grey. In the **Look** and **Custom colours** groups you can:
 
-- Pick a **style preset**: one of the twenty-two shared presets (see [Style presets](#style-presets)). A preset sets the whole palette and font at once, and colours every part (pills, toast, winner card, goal bar, hub) from its own tones.
+- Pick a **style preset**: one of the twenty-three shared presets (see [Style presets](#style-presets)). A preset sets the whole palette and font at once, and colours every part (pills, toast, winner card, goal bar, hub) from its own tones.
 - Set the style preset to **Custom** to use your own colours and font. There is a colour picker for the panel (with an opacity), the text, the accent, the pointer, each of the six slices, and every individual part: pills, the joined toast, the winner card and its label, the empty-wheel message, the goal bar, the hub, the outline and the names on light and dark slices.
 - Choose the **wheel shape**: *Semicircle* (the default) shows only the top half so it takes about half the height, which suits tucking it along an edge of a scene, and *Full circle* is the classic wheel. Both spin and draw the same way.
 
@@ -147,7 +148,7 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | Wheel | The shape, idle drift, chat-colour slices, the rim and divider thickness, the size and boldness of the names, the hub ring and a shadow. |
 | Pills and cards | The roundness, padding and tilt of pills, the toast and the winner card, the goal bar's thickness, an outer frame, an outline, tails and shadows. |
 | Text | The size and boldness of the empty-wheel message, toast, pills, goal label, winner label, winner name, line under the winner and lifelines. |
-| Look and Custom colours | One of the twenty-two shared style presets (Soft black by default) or Custom colours and font, with a colour for every part. A checkbox in Custom colours also lets the Panel opacity apply to any preset, not only Custom. |
+| Look and Custom colours | One of the twenty-three shared style presets (Soft black by default) or Custom colours and font, with a colour for every part. A checkbox in Custom colours also lets the Panel opacity apply to any preset, not only Custom. |
 | Decorations | The shape, where they go, how many, how big, how solid (the Decoration opacity, which is its own setting and not the panel's, and 1 is fully solid), their colour, and how they move. |
 | Animation | One switch for all animation, the spin and winner display times, and how long the toast, card, goal bar and countdown pulse take. |
 | Sounds | A sound and volume for someone joining, each tick and the winner, plus a master mute. |
@@ -216,7 +217,7 @@ The widget uses the StreamElements events `onWidgetLoad`, `onEventReceived` (`me
 
 ## Related overlays
 
-These overlays share the same default look and the same twenty-two style presets, so they sit together on one stream.
+These overlays share the same default look and the same twenty-three style presets, so they sit together on one stream.
 
 - [Sub Goals Overlay](../sub-goals): sub and bits goals that fill as chat reaches them.
 - [Subathon Overlay](../subathon): a subathon clock with a cap, power-ups and sub goals.

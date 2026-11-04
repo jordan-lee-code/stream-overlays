@@ -16,7 +16,7 @@ It is a single self-contained widget in plain JavaScript, with no dependencies a
 - Sized by the height of the box: the text is a share of the box's height, so a wide, short box gives a bar with room to spread, and a narrow one a bar that compresses.
 - Stays put in OBS: the panel is always as tall as the box you draw, with its content in the middle, so it does not grow or shrink as entries come and go. Untick Fill the height of the box for a panel as tall as its content.
 - Customisable: around fifty settings cover the handles, rotation, sizes, shape, outline, colours, fonts and animation.
-- All twenty-two style presets, including the seven pride flags.
+- All twenty-three style presets, including the seven pride flags.
 - An outer frame in the accent colour, on by default in every preset, and switched off with one checkbox (the flag's stripes in the pride presets).
 - Decorations: sparkles, hearts, stars, flowers, moons, snowflakes, bubbles, butterflies, clouds, leaves, paw prints, music notes or bows behind the bar, scattered, along the edges, in the corners, a little way in from the corners or on the border, twinkling, drifting or still. Off by default.
 - Tests and a dev harness: a local harness with quick buttons for the rotation, the logo colour and extra sites, and an automated test script.
@@ -37,13 +37,14 @@ With decorations along the edges, in the Celestial preset.
 
 ## Style presets
 
-One setting picks the look. The same twenty-two presets, with the same colours, are in every overlay in this set, so overlays from this set match whichever you choose. This is how each one looks in this overlay. The presets are defined once, in the [kit](../../kit), and a test keeps this overlay in step with it.
+One setting picks the look. The same twenty-three presets, with the same colours, are in every overlay in this set, so overlays from this set match whichever you choose. This is how each one looks in this overlay. The presets are defined once, in the [kit](../../kit), and a test keeps this overlay in step with it.
 
-<p><img src="docs/presets.png" alt="A grid of this overlay in each of the twenty-two style presets: Soft black, Soft white, Midnight blue, Sunset, Forest, Ocean, Rose, Neon, Cosy cabin, Cosy summer pastel, Celestial, Pastel goth, Pastel pink, Pastel sage, Fae green, Rainbow pride, Trans pride, Bi pride, Pan pride, Non-binary pride, Lesbian pride and Ace pride" width="760"></p>
+<p><img src="docs/presets.png" alt="A grid of this overlay in each of the twenty-three style presets: Soft black, Text only, Soft white, Midnight blue, Sunset, Forest, Ocean, Rose, Neon, Cosy cabin, Cosy summer pastel, Celestial, Pastel goth, Pastel pink, Pastel sage, Fae green, Rainbow pride, Trans pride, Bi pride, Pan pride, Non-binary pride, Lesbian pride and Ace pride" width="760"></p>
 
 | Preset | Look |
 | --- | --- |
 | Soft black (default) | See-through black with white text. |
+| Text only (no box) | No box, frame or shadow: just the words, with a soft dark halo so they read over any picture. |
 | Soft white | Frosted white with dark text. |
 | Midnight blue | Deep navy with a periwinkle accent. |
 | Sunset | Deep plum with orange and coral. |
@@ -156,7 +157,7 @@ The JavaScript is plain ES5, so it can be pasted straight into the StreamElement
 
 ## Related overlays
 
-These overlays share the same default look and the same twenty-two style presets, so they sit together on one stream.
+These overlays share the same default look and the same twenty-three style presets, so they sit together on one stream.
 
 - [Sub Goals Overlay](../sub-goals): sub and bits goals that fill as chat reaches them.
 - [Subathon Overlay](../subathon): a subathon clock with a cap, power-ups and sub goals.

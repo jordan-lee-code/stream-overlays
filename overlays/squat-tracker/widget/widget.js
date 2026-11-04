@@ -132,6 +132,7 @@
      black panel with white text. */
   var PRESETS = {
     glass: { panel: "rgba(0, 0, 0, 0.55)", strong: "rgba(0, 0, 0, 0.7)", text: "#FFFFFF", accent: "#FFFFFF", font: "BioRhyme" },
+    textonly: { panel: "rgba(0, 0, 0, 0)", strong: "rgba(0, 0, 0, 0.55)", text: "#FFFFFF", accent: "#FFFFFF", font: "BioRhyme" },
     frost: { panel: "rgba(255, 255, 255, 0.72)", strong: "rgba(255, 255, 255, 0.88)", text: "#1B2130", accent: "#1B2130", font: "BioRhyme" },
     midnight: { panel: "rgba(10, 18, 46, 0.72)", strong: "rgba(10, 18, 46, 0.88)", text: "#E8EEFF", accent: "#89AFFF", font: "BioRhyme" },
     sunset: { panel: "rgba(48, 18, 42, 0.72)", strong: "rgba(48, 18, 42, 0.88)", text: "#FFF1E6", accent: "#FF9A5A", font: "BioRhyme" },

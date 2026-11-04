@@ -43,13 +43,14 @@ It is one self-contained widget in plain JavaScript, with no dependencies and no
 
 ## Style presets
 
-One setting picks the look. The same twenty-two presets, with the same colours, are in every overlay in this set, so overlays from this set match whichever you choose. This is how each one looks in this overlay. The presets are defined once, in the [kit](../../kit), and a test keeps this overlay in step with it.
+One setting picks the look. The same twenty-three presets, with the same colours, are in every overlay in this set, so overlays from this set match whichever you choose. This is how each one looks in this overlay. The presets are defined once, in the [kit](../../kit), and a test keeps this overlay in step with it.
 
-<p><img src="docs/presets.png" alt="A grid of this overlay in each of the twenty-two style presets: Soft black, Soft white, Midnight blue, Sunset, Forest, Ocean, Rose, Neon, Cosy cabin, Cosy summer pastel, Celestial, Pastel goth, Pastel pink, Pastel sage, Fae green, Rainbow pride, Trans pride, Bi pride, Pan pride, Non-binary pride, Lesbian pride and Ace pride" width="760"></p>
+<p><img src="docs/presets.png" alt="A grid of this overlay in each of the twenty-three style presets: Soft black, Text only, Soft white, Midnight blue, Sunset, Forest, Ocean, Rose, Neon, Cosy cabin, Cosy summer pastel, Celestial, Pastel goth, Pastel pink, Pastel sage, Fae green, Rainbow pride, Trans pride, Bi pride, Pan pride, Non-binary pride, Lesbian pride and Ace pride" width="760"></p>
 
 | Preset | Look |
 | --- | --- |
 | Soft black (default) | See-through black with white text. |
+| Text only (no box) | No box, frame or shadow: just the words, with a soft dark halo so they read over any picture. |
 | Soft white | Frosted white with dark text. |
 | Midnight blue | Deep navy with a periwinkle accent. |
 | Sunset | Deep plum with orange and coral. |
@@ -232,7 +233,7 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | Wording | Every word in the line under the bar, the readouts and the floating text. |
 | Card | Corner roundness, padding, spacing, tilt, an outer frame, an outline, shadows, the tail and the bar's thickness. |
 | Text | The size and boldness of the heading, countdown, readout, line and floating text. |
-| Look and Custom colours | One of the twenty-two shared style presets (Soft black by default) or Custom colours and font, with a colour for every part. A checkbox in Custom colours also lets the Panel opacity apply to any preset, not only Custom. |
+| Look and Custom colours | One of the twenty-three shared style presets (Soft black by default) or Custom colours and font, with a colour for every part. A checkbox in Custom colours also lets the Panel opacity apply to any preset, not only Custom. |
 | Decorations | The shape, where they go, how many, how big, how solid (the Decoration opacity, which is its own setting and not the panel's, and 1 is fully solid), their colour, and how they move. |
 | Animation | One switch for all animation, and how long the fill, swell, floating text, glow, save window pulse and shake take. |
 | Sounds | A sound and volume for a contribution, a lock, a lock breaking, the bar filling, a save and a reset, plus a master mute. |
@@ -318,7 +319,7 @@ The widget uses the StreamElements events `onWidgetLoad`, `onEventReceived` (`su
 
 ## Related overlays
 
-These overlays share the same default look and the same twenty-two style presets, so they sit together on one stream.
+These overlays share the same default look and the same twenty-three style presets, so they sit together on one stream.
 
 - [Sub Goals Overlay](../sub-goals): sub and bits goals that fill as chat reaches them.
 - [Subathon Overlay](../subathon): a subathon clock with a cap, power-ups and sub goals.

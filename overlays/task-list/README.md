@@ -80,13 +80,14 @@ Up to ten slots are read, in the order written, and a blank one is left out. A s
 
 ## Style presets
 
-One setting picks the look. The same twenty-two presets, with the same colours, are in every overlay in this set, so overlays from this set match whichever you choose. This is how each one looks in this overlay. The presets are defined once, in the [kit](../../kit), and a test keeps this overlay in step with it.
+One setting picks the look. The same twenty-three presets, with the same colours, are in every overlay in this set, so overlays from this set match whichever you choose. This is how each one looks in this overlay. The presets are defined once, in the [kit](../../kit), and a test keeps this overlay in step with it.
 
-<p><img src="docs/presets.png" alt="A grid of this overlay in each of the twenty-two style presets: Soft black, Soft white, Midnight blue, Sunset, Forest, Ocean, Rose, Neon, Cosy cabin, Cosy summer pastel, Celestial, Pastel goth, Pastel pink, Pastel sage, Fae green, Rainbow pride, Trans pride, Bi pride, Pan pride, Non-binary pride, Lesbian pride and Ace pride" width="760"></p>
+<p><img src="docs/presets.png" alt="A grid of this overlay in each of the twenty-three style presets: Soft black, Text only, Soft white, Midnight blue, Sunset, Forest, Ocean, Rose, Neon, Cosy cabin, Cosy summer pastel, Celestial, Pastel goth, Pastel pink, Pastel sage, Fae green, Rainbow pride, Trans pride, Bi pride, Pan pride, Non-binary pride, Lesbian pride and Ace pride" width="760"></p>
 
 | Preset | Look |
 | --- | --- |
 | Soft black (default) | See-through black with white text. |
+| Text only (no box) | No box, frame or shadow: just the words, with a soft dark halo so they read over any picture. |
 | Soft white | Frosted white with dark text. |
 | Midnight blue | Deep navy with a periwinkle accent. |
 | Sunset | Deep plum with orange and coral. |
@@ -184,7 +185,7 @@ The JavaScript is plain ES5, so it can be pasted straight into the StreamElement
 
 ## Related overlays
 
-These overlays share the same default look and the same twenty-two style presets, so they sit together on one stream.
+These overlays share the same default look and the same twenty-three style presets, so they sit together on one stream.
 
 - [Reminder Overlay](../reminder): reminders you set from chat, which stay on screen until cleared.
 - [Rotating Panel Overlay](../rotating-panel): socials and chat commands that take turns on one panel.
