@@ -387,6 +387,8 @@
     c.decimalComma = bool(f.decimalComma, false);
     c.decimals = str(f.decimals, "auto");
     c.reachedText = txt(f.reachedText, "Goal reached!");
+    c.growth = { subs: clamp(num(f.growthSubs, 1), 0.1, 10), bits: clamp(num(f.growthBits, 1), 0.1, 10), tips: clamp(num(f.growthTips, 1), 0.1, 10), follows: clamp(num(f.growthFollows, 1), 0.1, 10) };
+    c.showLevel = bool(f.showLevel, true); c.levelText = str(f.levelText, "Level {level}");
     c.raiseDelayMs = Math.max(1, num(f.raiseDelay, 6)) * 1000;
     c.textSize = Math.max(2, num(f.textSize, 5.5));
     c.titleScale = Math.max(0.5, num(f.titleScale, 1.2));
@@ -398,7 +400,17 @@
   }
 
   function sound(kind) { playUrl(cfg, cfg.sounds[kind], cfg.volumes[kind]); }
-  function targetOf(k) { return cfg.base[k] + state.stage[k] * cfg.raise[k]; }
+  // Raise number 1 is the amount you set, and each one after is that many times the one before, so with a growth of
+  // 1.5 the raises are 25, 38, 56 and so on. Counts are whole numbers (never less than 1), tips keep their cents.
+  function targetAt(k, stage) {
+    var t = cfg.base[k], step = cfg.raise[k], g = cfg.growth[k], money = k === "tips";
+    for (var i = 0; i < stage; i++) {
+      t += money ? Math.max(0.01, Math.round(step * 100) / 100) : Math.max(1, Math.round(step));
+      step *= g;
+    }
+    return money ? Math.round(t * 100) / 100 : t;
+  }
+  function targetOf(k) { return targetAt(k, state.stage[k]); }
 
   // ---------------------------------------------------------------------------
   // Counting
@@ -439,8 +451,9 @@
     state.reached[kind] = false;
     if (raiseTimers[kind] !== undefined) { clearTimeout(raiseTimers[kind]); delete raiseTimers[kind]; }
     // A correction by hand picks the stage the new number belongs to, without a celebration.
-    var base = cfg.base[kind], by = cfg.raise[kind], c = state.counts[kind];
-    state.stage[kind] = by > 0 && c >= base ? Math.floor((c - base) / by) + 1 : 0;
+    var s = 0;
+    if (cfg.raise[kind] > 0 && state.counts[kind] >= cfg.base[kind]) { s = 1; while (targetAt(kind, s) <= state.counts[kind]) s++; }
+    state.stage[kind] = s;
     checkReached(kind);
     save(); render();
   }
@@ -567,6 +580,8 @@
       var k = KINDS[i], row = el.rows[k], target = targetOf(k), n = state.counts[k];
       row.hidden = !cfg.show[k];
       el.labels[k].textContent = labelOf(k);
+      var lv = cfg.showLevel && cfg.raise[k] > 0 && cfg.levelText ? cfg.levelText.split("{level}").join(state.stage[k] + 1) : "";
+      el.levels[k].textContent = lv; el.levels[k].hidden = !lv;
       var done = state.reached[k];
       el.counts[k].textContent = done && cfg.reachedText ? cfg.reachedText : cfg.format.split("{n}").join(shown(k, n)).split("{target}").join(shown(k, target));
       el.fills[k].style.width = clamp(n / target * 100, 0, 100) + "%";
@@ -585,11 +600,11 @@
   }
   function bind() {
     el.root = byId("sg-root"); el.app = byId("sg-app"); el.title = byId("sg-title"); el.status = byId("sg-status");
-    el.rows = {}; el.labels = {}; el.counts = {}; el.fills = {};
+    el.rows = {}; el.labels = {}; el.levels = {}; el.counts = {}; el.fills = {};
     for (var i = 0; i < KINDS.length; i++) {
       var k = KINDS[i];
       el.rows[k] = byId("sg-row-" + k); el.labels[k] = byId("sg-label-" + k);
-      el.counts[k] = byId("sg-count-" + k); el.fills[k] = byId("sg-fill-" + k);
+      el.levels[k] = byId("sg-level-" + k); el.counts[k] = byId("sg-count-" + k); el.fills[k] = byId("sg-fill-" + k);
     }
   }
 

@@ -69,6 +69,15 @@
     "step": 1,
     "group": "Subs goal"
   },
+  "growthSubs": {
+    "type": "number",
+    "label": "Each raise is this many times the one before (1 for the same amount every time, 1.5 for half as much again)",
+    "value": 1,
+    "min": 0.1,
+    "max": 10,
+    "step": 0.1,
+    "group": "Subs goal"
+  },
   "showBits": {
     "type": "checkbox",
     "label": "Show the bits goal",
@@ -101,6 +110,15 @@
     "value": 2500,
     "min": 0,
     "step": 1,
+    "group": "Bits goal"
+  },
+  "growthBits": {
+    "type": "number",
+    "label": "Each raise is this many times the one before (1 for the same amount every time, 1.5 for half as much again)",
+    "value": 1,
+    "min": 0.1,
+    "max": 10,
+    "step": 0.1,
     "group": "Bits goal"
   },
   "showTips": {
@@ -137,6 +155,15 @@
     "step": 1,
     "group": "Tips goal"
   },
+  "growthTips": {
+    "type": "number",
+    "label": "Each raise is this many times the one before (1 for the same amount every time, 1.5 for half as much again)",
+    "value": 1,
+    "min": 0.1,
+    "max": 10,
+    "step": 0.1,
+    "group": "Tips goal"
+  },
   "showFollows": {
     "type": "checkbox",
     "label": "Show the follow goal",
@@ -169,6 +196,15 @@
     "value": 50,
     "min": 0,
     "step": 1,
+    "group": "Follows goal"
+  },
+  "growthFollows": {
+    "type": "number",
+    "label": "Each raise is this many times the one before (1 for the same amount every time, 1.5 for half as much again)",
+    "value": 1,
+    "min": 0.1,
+    "max": 10,
+    "step": 0.1,
     "group": "Follows goal"
   },
   "subPoints": {
@@ -216,6 +252,18 @@
     "type": "text",
     "label": "Text when a goal is reached",
     "value": "Goal reached!",
+    "group": "Counting"
+  },
+  "showLevel": {
+    "type": "checkbox",
+    "label": "Show the level next to a goal that raises itself",
+    "value": true,
+    "group": "Counting"
+  },
+  "levelText": {
+    "type": "text",
+    "label": "How the level reads ({level})",
+    "value": "Level {level}",
     "group": "Counting"
   },
   "raiseDelay": {
