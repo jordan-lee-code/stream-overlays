@@ -132,7 +132,7 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | Custom colours | Panel, text, accent, bar and alert colours, used when the style preset is Custom. A checkbox there also lets the Panel opacity apply to any preset, not only Custom. |
 | Decorations | The shape, where they go, how many, how big, how solid (the Decoration opacity, which is its own setting and not the panel's, and 1 is fully solid), their colour, and how they move. |
 | Sounds | A sound and volume for progress and for a goal being reached, with Test buttons and a master mute. |
-| Troubleshooting | A debug log of every event to the browser-source console. |
+| Troubleshooting | A debug log of every event to the browser-source console, and a button that shows a snapshot of the settings and counts. |
 
 The **outer frame** is a border round the widget in the preset's accent colour, on by default in every preset. Untick **An outer frame** under Look for none, or set the outline thickness to change how thick it is, since at 0 it has a default thickness that grows with the box. With the frame unticked, the outline is whatever you set, as before, in the outline colour. In a pride preset the frame is the flag's stripes, as a ring that follows the panel's corners.
 
@@ -163,7 +163,7 @@ The harness must be served over http rather than opened as a file, and fonts com
 
 When something looks wrong on stream, you can bring it into the dev page exactly as it was, settings, counts and time included, so it can be looked at calmly and tried again.
 
-1. On the overlay, press **Show a snapshot for troubleshooting** under Manual controls, or type `!goals snapshot` as a moderator. A box of text appears over the widget, already selected. It is also copied to the clipboard where the browser allows it, and written to the browser console, so it can be copied from there as well. In OBS, right-click the source and choose Interact to select and copy it. It hides again by itself after three minutes, or with `!goals snapshot hide`.
+1. On the overlay, press **Show a snapshot for troubleshooting** under Troubleshooting, or type `!goals snapshot` as a moderator. A box of text appears over the widget, already selected. It is also copied to the clipboard where the browser allows it, and written to the browser console, so it can be copied from there as well. In OBS, right-click the source and choose Interact to select and copy it. It hides again by itself after three minutes, or with `!goals snapshot hide`.
 2. On the dev page, paste it into the **Troubleshooting snapshot** panel and press **Load this snapshot**. The settings and the saved counts are put back, and the page's clock is set to when the snapshot was taken, so a goal part way through a stream is not treated as the start of a new one. A whole line copied from the console works as it is.
 
 The same panel copies a snapshot of the dev page itself, to hand to someone else. A snapshot holds your settings, which can include the web address of a sound, and no passwords or tokens.

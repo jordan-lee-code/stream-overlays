@@ -53,7 +53,7 @@
     });
     return el("div", { id: "snapshot-panel" }, [
       el("h2", { text: "Troubleshooting snapshot" }),
-      el("p", { "class": "hint", text: "To look at a problem from your stream here: in StreamElements press Show a snapshot for troubleshooting under Manual controls, or send the snapshot command in chat as a moderator. Copy the text it shows, paste it below, and load it. The settings, the counts and the time come across as they were." }),
+      el("p", { "class": "hint", text: "To look at a problem from your stream here: in StreamElements press Show a snapshot for troubleshooting under Troubleshooting, or send the snapshot command in chat as a moderator. Copy the text it shows, paste it below, and load it. The settings, the counts and the time come across as they were." }),
       box, load, copy, msg
     ]);
   }
