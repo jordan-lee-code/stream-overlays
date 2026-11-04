@@ -150,6 +150,15 @@ function sync(dir, opts) {
   // 5. the copy panel every dev page loads, so people can copy an overlay's files without downloading it
   if (fs.existsSync(path.join(dir, "dev/index.html"))) write("dev/copy-panel.js", read(path.join(__dirname, "..", "shared", "copy-panel.js")), "the shared copy panel");
   if (fs.existsSync(path.join(dir, "dev/index.html"))) write("dev/design-panel.js", read(path.join(__dirname, "..", "shared", "design-panel.js")), "the shared design panel");
+  if (fs.existsSync(path.join(dir, "dev/index.html"))) write("dev/snapshot-panel.js", read(path.join(__dirname, "..", "shared", "snapshot-panel.js")), "the shared troubleshooting import panel");
+  // The dev page has to load it, straight after the design panel.
+  if (fs.existsSync(path.join(dir, "dev/index.html"))) {
+    const html = read(path.join(dir, "dev/index.html")), tag = '<script src="snapshot-panel.js"></script>', after = '<script src="design-panel.js"></script>';
+    if (html.indexOf(tag) === -1 && html.indexOf(after) !== -1) {
+      const indent = (/^([ \t]*)<script src="design-panel\.js">/m.exec(html) || ["", "  "])[1];
+      write("dev/index.html", html.replace(after, after + "\n" + indent + tag), "the troubleshooting import panel's script tag");
+    }
+  }
   if (fs.existsSync(path.join(dir, "dev/index.html"))) write("dev/box-size.js", read(path.join(__dirname, "..", "shared", "box-size.js")), "the shared box-size control");
   if (fs.existsSync(path.join(dir, "dev/index.html"))) write("dev/dev.css", read(path.join(__dirname, "..", "shared", "dev.css")), "the shared dev page stylesheet");
 
