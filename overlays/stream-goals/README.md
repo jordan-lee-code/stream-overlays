@@ -13,7 +13,7 @@ It is a single self-contained widget in plain JavaScript, with no dependencies a
 - Subs and bits: with optional tip and follow goals, each with its own label, goal and bar, and each switched on or off as you need, so only the goals you want take up room on screen.
 - A donation goal: switch on the tip goal and name it for what it is for, such as "Tip goal: new pc". It counts money written your way: the symbol before or after the amount, a comma or a point for the decimal, and cents shown or not. Switch off the others if the donation goal is all you want.
 - Gift bombs counted once: a gift of 10 counts 10, not once per recipient (see [How counting works](#how-counting-works)).
-- Stretch goals: when a goal is reached it celebrates, then raises itself by an amount you choose, and carries on.
+- Stretch goals and levels: when a goal is reached it celebrates, then raises itself by an amount you choose for each goal, and carries on. A small level beside the goal, such as "Level 2", counts the raises, and its wording is a setting. Each goal can also grow its raise by a multiple, so with a raise of 25 and a growth of 1.5 the goal climbs by 25, then 38, then 56, and so on.
 - Sub points: optionally count tier 2 as 2 and tier 3 as 6, as Twitch does.
 - Chat control: set or adjust a count, reset, pause and resume from chat.
 - Wording: the labels, how a count reads and the reached text are settings, and each goal can be named for what it is for, so it reads "Tip goal: new pc".
