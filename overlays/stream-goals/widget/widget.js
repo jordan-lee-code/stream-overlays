@@ -631,6 +631,11 @@
   function applyLook() {
     applyCommonTheme(cfg, el.root, el.app, "sg-font-link");
     var s = el.app.style;
+    // In StreamElements the widget is the whole page of a frame the size of its box, but the page is only as tall as its content,
+    // so "100% of the box" came out as "as tall as the content": nothing could fill the box, and when a goal was reached and its
+    // text grew, the card grew past the box without shrinking to fit. The height of the viewport is the box, so it is used.
+    // The dev page draws the widget in a box of its own inside a bigger page, and marks itself so that it keeps that box.
+    if (!window.__sgDevPage) { el.root.style.height = "100vh"; if (document.body && document.body.style) document.body.style.margin = "0"; }
     s.setProperty("--sg-size", cfg.textSize + "cqw");
     s.setProperty("--sg-title", cfg.titleScale);
     s.setProperty("--sg-bar", cfg.barHeight + "em");
