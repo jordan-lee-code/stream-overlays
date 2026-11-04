@@ -106,6 +106,9 @@ const HOUR = 3600000;
   await load({ whoCanManage: "broadcaster" }); sub({ amount: 1 }); chat("!goals reset", { mod: true }); ok(count("subs") === "1 / 50", "or only the broadcaster, when set");
   await load({ command: "!stream" }); sub({ amount: 1 }); boss("!goals reset"); boss("!stream reset"); ok(count("subs") === "0 / 50", "the command word is a setting");
   await load({ targetSubs: 10, raiseSubs: 5 }); boss("!goals set subs 12"); ok(count("subs") === "12 / 15", "setting a number past the goal lands on the right stage (" + count("subs") + ")");
+  section("the box in StreamElements");
+  await load(); ok(E("sg-root").style.height === "100vh", "in StreamElements the card is as tall as the frame it sits in, so it can fill it and shrink to fit it, not as tall as its content");
+
   section("the troubleshooting snapshot");
   const realLog = console.log; console.log = () => {};   // a snapshot is also written to the console, which would fill the test output
   await load({ targetSubs: 40 }); boss("!goals set subs 12");

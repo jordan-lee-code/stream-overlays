@@ -2,6 +2,7 @@
    localStorage, and lets you fire the same events StreamElements would send. */
 (function () {
   "use strict";
+  window.__sgDevPage = true;
   var CFG = {
   "title": "Stream Goals Overlay",
   "hint": "Fire subs and bits to fill the goals. The time machine skips ahead to see the next stream start fresh.",
