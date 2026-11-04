@@ -323,6 +323,9 @@
 
 .incentive-panel { position: relative; }
 
+/* The Fill the height of the box field: the panel is as tall as the box, with its content in the middle. */
+#incentive-app.fill .incentive-panel { height: 100%; display: flex; flex-direction: column; justify-content: center; }
+
 /* The outer frame in a pride preset: the flag's stripes, as a ring over the panel's edge that follows its corners. A preset with no flag has no ring, and its frame is the outline. */
 .incentive-panel::after {
   content: "";

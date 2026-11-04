@@ -250,6 +250,8 @@
         barH: clamp(num(f.barHeight, 0.7), 0.2, 2),
         rowGap: Math.max(0, num(f.rowGap, 0.9)),
         animate: bool(f.animate, true),
+        fit: bool(f.fit, true),
+        fillBox: bool(f.fillBox, false),
         fillSeconds: clamp(num(f.fillSeconds, 0.9), 0, 10)
       },
       showThanks: bool(f.showThanks, true),
@@ -417,6 +419,20 @@
 
     if (L.animate) root.classList.remove("no-motion");
     else root.classList.add("no-motion");
+    // Inside the StreamElements frame the page has no height of its own, so "100% of the box" came out as "as tall as the card":
+    // nothing could fill the box, and a card whose text grew went past it without shrinking to fit. The frame's viewport is the
+    // box, so inside a frame it is used. Outside one (the dev page, which draws the widget in a box of its own) the box it was
+    // given is kept.
+    var framed = false;
+    try { framed = window.self !== window.top; } catch (e) { framed = true; }
+    if (framed) {
+      root.style.height = "100vh";
+      root.style.minHeight = "100vh";
+      if (document.body && document.body.style) { document.body.style.margin = "0"; document.body.style.overflow = "hidden"; }
+      if (document.documentElement && document.documentElement.style) document.documentElement.style.overflow = "hidden";
+    }
+    if (L.fillBox) root.classList.add("fill");
+    else root.classList.remove("fill");
 
     applyDecor(cfg.decor, byId("incentive-panel"), PRESETS[cfg.themePreset] && PRESETS[cfg.themePreset].flag ? PRESETS[cfg.themePreset].flag : [T.accent], L.animate, T.text);
     document.body.style.background = "transparent";
@@ -500,9 +516,13 @@
   function fitBox() {
     if (!el.app || !el.panel) return;
     el.app.style.setProperty("--fit-h", "1");
-    if (el.panel.hidden) return;
+    if (!cfg.look.fit || el.panel.hidden) return;
     var boxHeight = el.app.clientHeight;
+    // A panel that fills the box is always as tall as the box, so it is measured as tall as its content.
+    var filled = el.app.classList.contains("fill");
+    if (filled) el.app.classList.remove("fill");
     var height = el.panel.offsetHeight;
+    if (filled) el.app.classList.add("fill");
     if (!(boxHeight > 0) || !(height > 0)) return;
     if (el.bits && !el.bits.hidden) {
       var margin = 0;
