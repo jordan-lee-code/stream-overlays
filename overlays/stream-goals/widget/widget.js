@@ -421,11 +421,13 @@
     state = blankState();
     state.lastSeen = now();
   }
-  function count(kind, amount) {
-    if (state.paused || !(amount > 0)) return;
+  // `manual` is an amount added by hand from chat. It counts exactly as a real one does, with the bar filling, the number
+  // popping, the sound and the celebration, but it is not held back by Pause and it never decides that this is a new stream.
+  function count(kind, amount, manual) {
+    if ((state.paused && !manual) || !(amount > 0)) return;
     // The overlay may have been left open between streams, so a long quiet gap before an
     // event means this is a new stream, and it starts the goals afresh first.
-    if (cfg.resetMode === "gap" && state.lastEvent && now() - state.lastEvent > cfg.gapMs) newStream();
+    if (!manual && cfg.resetMode === "gap" && state.lastEvent && now() - state.lastEvent > cfg.gapMs) newStream();
     var wasReached = state.reached[kind];
     state.counts[kind] = Math.round((state.counts[kind] + amount) * 100) / 100;
     state.lastEvent = state.lastSeen = now();
@@ -505,7 +507,11 @@
     switch (verb) {
       case "reset": newStream(); save(); render(); break;
       case "set": if (kind && !isNaN(n)) setCount(kind, n); break;
-      case "add": if (kind && !isNaN(n)) setCount(kind, state.counts[kind] + n); break;
+      case "add":
+        if (!kind || isNaN(n)) break;
+        if (n > 0) count(kind, n, true);                       // adding fills and celebrates like a real event
+        else if (n < 0) setCount(kind, state.counts[kind] + n); // taking some off is a correction
+        break;
       case "pause": state.paused = true; save(); render(); break;
       case "resume": state.paused = false; save(); render(); break;
       case "snapshot": if (kind === "" && (args[0] || "").toLowerCase() === "hide") hideSnapshot(); else showSnapshot(); break;

@@ -108,7 +108,7 @@ The command word is a setting. Viewers can type the bare `!goals` to make the ti
 | Command | What it does |
 | --- | --- |
 | `!goals set subs 30` | Sets a count. Use `subs`, `bits`, `tips` or `follows`. |
-| `!goals add bits 500` | Adds to a count. A negative number takes some off. |
+| `!goals add bits 500` | Adds to a count, with the bar filling, the sound and the celebration, as a real cheer does. A negative number takes some off quietly. |
 | `!goals add tips 5.50` | Adds money to the tip goal. |
 | `!goals reset` | Starts every goal again. |
 | `!goals pause` and `!goals resume` | Stops and starts counting, for example before you go live. |
