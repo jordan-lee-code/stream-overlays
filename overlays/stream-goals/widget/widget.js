@@ -446,6 +446,7 @@
     if (cfg.raise[kind] <= 0) return;
     while (state.counts[kind] >= targetOf(kind)) state.stage[kind]++;
     state.reached[kind] = false;
+    swapAsk[kind] = true;                                   // the words fade out and in on a raise
     save(); render();
   }
   function setCount(kind, n) {
@@ -611,20 +612,60 @@
     if (!el.title || !el.title.classList) return;
     el.title.classList.remove("pop"); void el.title.offsetWidth; el.title.classList.add("pop");
   }
+  // A goal's label and its count share one line. When the count gets wider, as "Goal reached!" does, the label used to wrap onto a
+  // second line, the row grew taller, and in a short box the card ran out of room. So a row stays on one line and its text shrinks
+  // a little until it fits, by no more than a third. Only a label too long even for that is let wrap, and the card then fits the
+  // box as a whole.
+  var MIN_ROW_SCALE = 0.67, rowWatching = false;
+  // Too wide when the label has been squeezed narrower than its own text (it can shrink, so it overflows into the gap) or when
+  // the whole line runs past its row.
+  function tooWide(top) {
+    var name = top.children[0];
+    return top.scrollWidth > top.clientWidth + 1 || (name && name.scrollWidth > name.clientWidth + 1);
+  }
+  function fitRows() {
+    for (var i = 0; i < KINDS.length; i++) {
+      var row = el.rows[KINDS[i]], top = row && row.children && row.children[0];
+      if (!top || !top.style || row.hidden || typeof top.scrollWidth !== "number") continue;
+      var s = 1;
+      top.style.fontSize = ""; top.classList.add("one");
+      while (tooWide(top) && s > MIN_ROW_SCALE) { s = Math.round((s - 0.03) * 100) / 100; top.style.fontSize = (s * 100) + "%"; }
+      if (tooWide(top)) { top.classList.remove("one"); top.style.fontSize = ""; }
+    }
+    if (el.app && el.app.__fitSoon) el.app.__fitSoon();
+  }
+  function watchRows() {
+    if (rowWatching) return;
+    rowWatching = true;
+    if (typeof ResizeObserver === "function" && el.root) new ResizeObserver(function () { fitRows(); }).observe(el.root);
+    if (typeof document !== "undefined" && document.fonts && document.fonts.ready) document.fonts.ready.then(fitRows);
+  }
+  var SWAP_MS = 350, swapTimers = {}, swapAsk = {};
   function render() {
     if (!el.app) return;
     el.title.textContent = cfg.title; el.title.hidden = !cfg.showTitle || !cfg.title;
     for (var i = 0; i < KINDS.length; i++) {
       var k = KINDS[i], row = el.rows[k], target = targetOf(k), n = state.counts[k];
       row.hidden = !cfg.show[k];
-      el.labels[k].textContent = labelOf(k);
       var lv = cfg.showLevel && cfg.raise[k] > 0 && cfg.levelText ? cfg.levelText.split("{level}").join(state.stage[k] + 1) : "";
-      el.levels[k].textContent = lv; el.levels[k].hidden = !lv;
       var done = state.reached[k];
-      el.counts[k].textContent = done && cfg.reachedText ? cfg.reachedText : cfg.format.split("{n}").join(shown(k, n)).split("{target}").join(shown(k, target));
+      // When a reached goal is raised its words fade out, change, and fade back in, instead of snapping. The bar eases on its own.
+      if (swapAsk[k] && row.classList.contains("reached") && !done && cfg.animate) {
+        if (!swapTimers[k]) {
+          row.classList.add("swap");
+          swapTimers[k] = setTimeout(function (kind) { return function () { swapTimers[kind] = 0; swapAsk[kind] = false; render(); }; }(k), SWAP_MS);
+        }
+        continue;
+      }
+      swapAsk[k] = false;
+      el.labels[k].textContent = labelOf(k);
+      el.levels[k].textContent = lv; el.levels[k].hidden = !lv;
+      row.classList.remove("swap");
       el.fills[k].style.width = clamp(n / target * 100, 0, 100) + "%";
+      el.counts[k].textContent = done && cfg.reachedText ? cfg.reachedText : cfg.format.split("{n}").join(shown(k, n)).split("{target}").join(shown(k, target));
       row.classList.toggle("reached", done);
     }
+    fitRows();
     el.app.classList.toggle("paused", state.paused);
     el.status.textContent = state.paused ? "paused" : ""; el.status.hidden = !state.paused;
   }
@@ -632,10 +673,12 @@
     applyCommonTheme(cfg, el.root, el.app, "sg-font-link");
     var s = el.app.style;
     // In StreamElements the widget is the whole page of a frame the size of its box, but the page is only as tall as its content,
-    // so "100% of the box" came out as "as tall as the content": nothing could fill the box, and when a goal was reached and its
-    // text grew, the card grew past the box without shrinking to fit. The height of the viewport is the box, so it is used.
-    // The dev page draws the widget in a box of its own inside a bigger page, and marks itself so that it keeps that box.
-    if (!window.__sgDevPage) { el.root.style.height = "100vh"; if (document.body && document.body.style) document.body.style.margin = "0"; }
+    // so "100% of the box" came out as "as tall as the content": nothing could fill the box. The height of the frame's viewport is
+    // the box, so inside a frame it is used. A widget that is not in a frame (the dev page, which draws it in a box of its own
+    // inside a bigger page) keeps the box it was given.
+    var framed = false;
+    try { framed = window.self !== window.top; } catch (e) { framed = true; }
+    if (framed) { el.root.style.height = "100vh"; if (document.body && document.body.style) document.body.style.margin = "0"; }
     s.setProperty("--sg-size", cfg.textSize + "cqw");
     s.setProperty("--sg-title", cfg.titleScale);
     s.setProperty("--sg-bar", cfg.barHeight + "em");
@@ -662,7 +705,7 @@
     cfg = readConfig(rawFields);
     bind();
     if (!el.app) return;
-    applyLook();
+    applyLook(); watchRows();
     storeLoad(STORE_KEY, function (saved) {
       for (var k in raiseTimers) if (raiseTimers.hasOwnProperty(k)) clearTimeout(raiseTimers[k]);
       raiseTimers = {};

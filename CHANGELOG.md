@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-- Stream Goals no longer grows past its box in StreamElements when a goal is reached. The widget there sits in a page only as tall as its content, so "the height of the box" meant "the height of the card", and nothing could fill the box or shrink to fit it. The card now takes its height from the frame it sits in.
+- Stream Goals no longer grows past its box in StreamElements when a goal is reached. The widget there sits in a page only as tall as its content, so "the height of the box" meant "the height of the card", and nothing could fill the box or shrink to fit it. The card now takes its height from the frame it sits in, and each goal's label and count stay on one line, shrinking their text a little instead of wrapping, so a row never gets taller when "Goal reached!" appears. When a reached goal raises itself, its words now fade out and back in with the new goal, instead of snapping.
 - The dev page's Troubleshooting snapshot panel also takes the Data tab of the StreamElements editor, which loads the overlay's settings without needing the snapshot button.
 - Adding to a goal from chat, such as `!goals add bits 500`, now fills the bar, pops the number, plays the sound and celebrates a reached goal, as a real sub or cheer does, instead of jumping to the new value. It still works while paused, and taking some off stays a quiet correction.
 - Stream Goals can show a snapshot of its settings and saved counts, from a button or the `!goals snapshot` chat command, and the dev page has a Troubleshooting snapshot panel that loads one, with the same settings, counts and time, so a problem seen on stream can be looked at again.
