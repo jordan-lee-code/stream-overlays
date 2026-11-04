@@ -171,7 +171,7 @@
   },
   "scrollSpeed": {
     "type": "number",
-    "label": "How fast a name too long for the card scrolls (1 is a steady read, 2 is twice as fast)",
+    "label": "How fast a name too long for the card scrolls (1 takes about 12 seconds for the whole trip, 2 takes half as long)",
     "value": 1,
     "group": "Size",
     "min": 0.3,

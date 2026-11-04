@@ -595,10 +595,12 @@
     }
     node.hidden = !text;
   }
-  // 45 pixels a second reads comfortably at the usual size; the Scroll speed setting is a multiple of that.
-  var SCROLL_PX_PER_SECOND = 45, SCROLL_MOVING = 0.7, scrollSig = "";
+  // A name that scrolls takes the same time for the whole trip, which includes its pauses at each end, whatever its length, so one that is only
+  // a few pixels too long drifts slowly and calmly instead of zipping back and forth, and the Scroll speed setting is a multiple of it. The
+  // exception is a name so long that it would have to move faster than is comfortable to read, which takes as long as it needs.
+  var SCROLL_SECONDS = 12, SCROLL_MAX_PX_PER_SECOND = 90, SCROLL_MOVING = 0.7, scrollSig = "";
   // Every line that is too long takes the same time for the whole trip, so they all reach the end together and start again together,
-  // which is easier on the eye than lines running to their own clocks. The longest sets the time, and a shorter one moves more slowly.
+  // which is easier on the eye than lines running to their own clocks. A shorter one just moves more slowly.
   function fit() {
     if (!el.app) return;
     var lines = [el.title, el.artist, el.album], extra = [], longest = 0, i;
@@ -611,7 +613,7 @@
       extra.push(e);
       if (e > longest) longest = e;
     }
-    var time = longest ? (longest / (SCROLL_PX_PER_SECOND * cfg.scrollSpeed) / SCROLL_MOVING).toFixed(2) : "0";
+    var time = longest ? Math.max(SCROLL_SECONDS / cfg.scrollSpeed, longest / (SCROLL_MAX_PX_PER_SECOND * cfg.scrollSpeed) / SCROLL_MOVING).toFixed(2) : "0";
     var sig = extra.map(Math.ceil).join("|") + "/" + time + "/" + cfg.scrollStyle, again = sig !== scrollSig;
     for (i = 0; i < lines.length; i++) {
       var r = lines[i] && lines[i].firstChild;
