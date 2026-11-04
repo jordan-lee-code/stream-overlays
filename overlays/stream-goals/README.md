@@ -113,10 +113,11 @@ The command word is a setting. Viewers can type the bare `!goals` to make the ti
 | Command | What it does |
 | --- | --- |
 | `!goals set subs 30` | Sets a count. Use `subs`, `bits`, `tips` or `follows`. |
-| `!goals add bits 500` | Adds to a count. A negative number takes some off. |
+| `!goals add bits 500` | Adds to a count, with the bar filling, the sound and the celebration, as a real cheer does. A negative number takes some off quietly. |
 | `!goals add tips 5.50` | Adds money to the tip goal. |
 | `!goals reset` | Starts every goal again. |
 | `!goals pause` and `!goals resume` | Stops and starts counting, for example before you go live. |
+| `!goals snapshot` and `!goals snapshot hide` | Shows, or hides, a snapshot for troubleshooting (see [Troubleshooting with a snapshot](#troubleshooting-with-a-snapshot)). |
 
 An amount is a number: `500`, `5.50` or `5,50`. For tips it can also have a currency sign in front or behind, such as `$5`, or the symbol you set for tips, such as `5 kr`. Anything else is refused and changes nothing, and is never guessed at. That includes `1,250` (a comma could mean a thousands separator or a decimal, and a wrong guess would add the wrong number), `1e3` and `1k`.
 
@@ -136,7 +137,7 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | Custom colours | Panel, text, accent, bar and alert colours, used when the style preset is Custom. A checkbox there also lets the Panel opacity apply to any preset, not only Custom. |
 | Decorations | The shape, where they go, how many, how big, how solid (the Decoration opacity, which is its own setting and not the panel's, and 1 is fully solid), their colour, and how they move. |
 | Sounds | A sound and volume for progress and for a goal being reached, with Test buttons and a master mute. |
-| Troubleshooting | A debug log of every event to the browser-source console. |
+| Troubleshooting | A debug log of every event to the browser-source console, and a button that shows a snapshot of the settings and counts. |
 
 The **outer frame** is a border round the widget in the preset's accent colour, on by default in every preset. Untick **An outer frame** under Look for none, or set the outline thickness to change how thick it is, since at 0 it has a default thickness that grows with the box. With the frame unticked, the outline is whatever you set, as before, in the outline colour. In a pride preset the frame is the flag's stripes, as a ring that follows the panel's corners.
 
@@ -163,6 +164,17 @@ The **box-size bar** at the bottom of the stage sets the size of the widget's bo
 
 The harness must be served over http rather than opened as a file, and fonts come from Google Fonts. It also shows a Ko-fi support button in the corner. That button belongs to the harness only and is not part of the widget, so it never appears on stream.
 
+## Troubleshooting with a snapshot
+
+When something looks wrong on stream, you can bring it into the dev page exactly as it was, settings, counts and time included, so it can be looked at calmly and tried again.
+
+1. On the overlay, press **Show a snapshot for troubleshooting** under Troubleshooting, or type `!goals snapshot` as a moderator. A box of text appears over the widget, already selected. It is also copied to the clipboard where the browser allows it, and written to the browser console, so it can be copied from there as well. In OBS, right-click the source and choose Interact to select and copy it. It hides again by itself after three minutes, or with `!goals snapshot hide`.
+2. On the dev page, paste it into the **Troubleshooting snapshot** panel and press **Load this snapshot**. The settings and the saved counts are put back, and the page's clock is set to when the snapshot was taken, so a goal part way through a stream is not treated as the start of a new one. A whole line copied from the console works as it is.
+
+If the button shows nothing, or the browser will not let it copy, the **Data** tab of the StreamElements widget editor works too. Copy everything in it and paste it into the same panel. It brings across the settings only, with no counts and no clock, and leaves the counts on the dev page as they were. A Data tab that holds the settings of another widget changes nothing.
+
+The same panel copies a snapshot of the dev page itself, to hand to someone else. A snapshot holds your settings, which can include the web address of a sound, and no passwords or tokens.
+
 ## Testing
 
 ```sh
@@ -175,7 +187,7 @@ This runs the real `widget/widget.js` headlessly against a small mock of the pag
 
 ```
 widget/   the widget: HTML, CSS, JS and the StreamElements fields
-dev/      the local dev harness
+dev/      the local dev harness, with its panels
 test/     the automated tests
 docs/     screenshots used in this README
 ```

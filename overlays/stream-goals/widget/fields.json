@@ -645,5 +645,10 @@
     "label": "Log every event to the browser-source console",
     "value": false,
     "group": "Troubleshooting"
+  },
+  "btnSnapshot": {
+    "type": "button",
+    "label": "Show a snapshot for troubleshooting (the settings and counts as they are now)",
+    "group": "Troubleshooting"
   }
 }
