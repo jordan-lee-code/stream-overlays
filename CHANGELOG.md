@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Now Playing: the Scroll speed setting is now Scroll time, the number of seconds a name takes to scroll, pauses at each end included, 12 by default and between 3 and 60. A name takes exactly that time however long it is.
 - Now Playing: a name scrolls over the same set time however long it is, about 12 seconds for the whole trip at the usual speed, so a name only just too long drifts calmly instead of zipping back and forth. Only a name so long that it would have to move too fast to read takes longer.
 - A new style preset, Text only (no box), for unobtrusive overlays: nothing behind the words, no frame and no shadow, just the text with a soft dark halo so it reads over whatever the stream is showing. It is in the kit and in every overlay, and the same halo applies to any preset or Custom colour set whose panel is fully clear. The overlays that draw their own panel (Chat Poll, Spin Wheel, Squat Tracker, Rage Bar, Subathon and Sub Goals) get the clear panel but not yet the halo or the frame removal.
 - Every overlay's dev page has a Troubleshooting import panel. Copy the Data tab of the StreamElements widget editor, paste it in, and the overlay's settings load as they are on stream, so a problem seen there can be looked at again. Stream Goals also takes its own snapshot, with the counts and the time.
