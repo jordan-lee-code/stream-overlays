@@ -579,6 +579,17 @@
     set("--dread-s", L.dreadMs + "s"); set("--panic-s", L.panicMs + "s"); set("--refuse-s", L.refuseMs + "s");
     if (L.animate) root.classList.remove("no-motion");
     else root.classList.add("no-motion");
+    // Inside the StreamElements frame the page has no height of its own, so "100% of the box" came out as "as tall as the card".
+    // The frame's viewport is the box, so inside a frame it is used. Outside one (the dev page, which draws the widget in a box of
+    // its own) the box it was given is kept.
+    var framed = false;
+    try { framed = window.self !== window.top; } catch (e) { framed = true; }
+    if (framed) {
+      root.style.height = "100vh";
+      root.style.minHeight = "100vh";
+      if (document.body && document.body.style) { document.body.style.margin = "0"; document.body.style.overflow = "hidden"; }
+      if (document.documentElement && document.documentElement.style) document.documentElement.style.overflow = "hidden";
+    }
 
     applyDecor(cfg.decor, el.card, t.flag || [t.accent], L.animate, t.text);
     document.body.style.background = "transparent";

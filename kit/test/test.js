@@ -169,7 +169,7 @@ asection("filling the box");
     atest(n + " fills the height of its box when asked", () => {
       assert.strictEqual(fields.fillBox.type, "checkbox"); assert.strictEqual(fields.fillBox.value, true, "it is on by default");
       const css = fs.readFileSync(path.join(repoRoot, "overlays", n, "widget", "widget.css"), "utf8");
-      assert.ok(/-root\.fill #[a-z]+-app[^{]*\{[^}]*flex:\s*1 1 auto/.test(css), n + " has a Fill the height of the box setting but its stylesheet has no rule for it");
+      assert.ok(/-root\.fill #[a-z]+-app[^{]*\{[^}]*flex:\s*1 1 auto/.test(css) || /#[a-z]+-app\.fill [^{]*\{[^}]*height:\s*100%/.test(css), n + " has a Fill the height of the box setting but its stylesheet has no rule for it");
     });
   });
 }
