@@ -446,6 +446,7 @@
     if (cfg.raise[kind] <= 0) return;
     while (state.counts[kind] >= targetOf(kind)) state.stage[kind]++;
     state.reached[kind] = false;
+    swapAsk[kind] = true;                                   // the words fade out and in on a raise
     save(); render();
   }
   function setCount(kind, n) {
@@ -639,18 +640,29 @@
     if (typeof ResizeObserver === "function" && el.root) new ResizeObserver(function () { fitRows(); }).observe(el.root);
     if (typeof document !== "undefined" && document.fonts && document.fonts.ready) document.fonts.ready.then(fitRows);
   }
+  var SWAP_MS = 350, swapTimers = {}, swapAsk = {};
   function render() {
     if (!el.app) return;
     el.title.textContent = cfg.title; el.title.hidden = !cfg.showTitle || !cfg.title;
     for (var i = 0; i < KINDS.length; i++) {
       var k = KINDS[i], row = el.rows[k], target = targetOf(k), n = state.counts[k];
       row.hidden = !cfg.show[k];
-      el.labels[k].textContent = labelOf(k);
       var lv = cfg.showLevel && cfg.raise[k] > 0 && cfg.levelText ? cfg.levelText.split("{level}").join(state.stage[k] + 1) : "";
-      el.levels[k].textContent = lv; el.levels[k].hidden = !lv;
       var done = state.reached[k];
-      el.counts[k].textContent = done && cfg.reachedText ? cfg.reachedText : cfg.format.split("{n}").join(shown(k, n)).split("{target}").join(shown(k, target));
+      // When a reached goal is raised its words fade out, change, and fade back in, instead of snapping. The bar eases on its own.
+      if (swapAsk[k] && row.classList.contains("reached") && !done && cfg.animate) {
+        if (!swapTimers[k]) {
+          row.classList.add("swap");
+          swapTimers[k] = setTimeout(function (kind) { return function () { swapTimers[kind] = 0; swapAsk[kind] = false; render(); }; }(k), SWAP_MS);
+        }
+        continue;
+      }
+      swapAsk[k] = false;
+      el.labels[k].textContent = labelOf(k);
+      el.levels[k].textContent = lv; el.levels[k].hidden = !lv;
+      row.classList.remove("swap");
       el.fills[k].style.width = clamp(n / target * 100, 0, 100) + "%";
+      el.counts[k].textContent = done && cfg.reachedText ? cfg.reachedText : cfg.format.split("{n}").join(shown(k, n)).split("{target}").join(shown(k, target));
       row.classList.toggle("reached", done);
     }
     fitRows();
