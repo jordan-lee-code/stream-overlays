@@ -152,7 +152,7 @@ const lfTrack = (o) => Object.assign({ name: "Song", artist: { "#text": "Band" }
   ok(scrolls("np-title") && runOf("np-title").style["--np-shift"] === "10px" && Math.abs(parseFloat(runOf("np-title").style["--np-time"]) - 12) < 0.05, "and a name only just too long takes the same time, so it drifts calmly instead of zipping back and forth (" + runOf("np-title").style["--np-time"] + ")");
   fits("np-title", 900, 300); refit();
   fits("np-title", 1500, 300); refit();
-  ok(parseFloat(runOf("np-title").style["--np-time"]) > t1, "a name so long that it would have to move too fast to read takes as long as it needs");
+  ok(Math.abs(parseFloat(runOf("np-title").style["--np-time"]) - t1) < 0.05, "and a much longer name takes the same time, only moving faster (" + runOf("np-title").style["--np-time"] + ")");
   fits("np-title", 200, 300); refit(); ok(!scrolls("np-title"), "and stops scrolling once the line is wide enough");
   fits("np-artist", 700, 300); fits("np-album", 500, 300); refit();
   ok(scrolls("np-artist") && scrolls("np-album"), "the artist and the album scroll as well");
@@ -175,10 +175,12 @@ const lfTrack = (o) => Object.assign({ name: "Song", artist: { "#text": "Band" }
   fits("np-title", 100, 300); fits("np-artist", 100, 300); refit();
   ok(!scrolls("np-title") && !runOf("np-title").classList.contains("bounce"), "a line that fits stands still and loses the bounce");
   await load(cfgLf({ scrollStyle: "nonsense" })); fits("np-title", 900, 300); refit(); ok(!runOf("np-title").classList.contains("bounce") && scrolls("np-title"), "an unknown choice is the jump");
-  await load(cfgLf({ scrollSpeed: 2 })); fits("np-title", 900, 300); refit();
-  ok(Math.abs(parseFloat(runOf("np-title").style["--np-time"]) - t1 / 2) < 0.05, "faster with a higher Scroll speed (" + runOf("np-title").style["--np-time"] + ")");
-  await load(cfgLf({ scrollSpeed: 0 })); fits("np-title", 900, 300); refit();
-  ok(Math.abs(parseFloat(runOf("np-title").style["--np-time"]) - t1 / 0.3 * 1) < 0.1 * (t1 / 0.3), "never slower than a third of the usual pace");
+  await load(cfgLf({ scrollSeconds: 6 })); fits("np-title", 900, 300); refit();
+  ok(Math.abs(parseFloat(runOf("np-title").style["--np-time"]) - 6) < 0.05, "the Scroll time is the time the whole trip takes (" + runOf("np-title").style["--np-time"] + ")");
+  await load(cfgLf({ scrollSeconds: 0 })); fits("np-title", 900, 300); refit();
+  ok(Math.abs(parseFloat(runOf("np-title").style["--np-time"]) - 3) < 0.05, "never quicker than three seconds");
+  await load(cfgLf({ scrollSeconds: 600 })); fits("np-title", 900, 300); refit();
+  ok(Math.abs(parseFloat(runOf("np-title").style["--np-time"]) - 60) < 0.05, "and never slower than a minute");
   await load(cfgLf({ animate: false })); fits("np-title", 900, 300); refit();
   ok(!scrolls("np-title"), "with Animate off it does not scroll, and the card cuts it short with dots instead");
   await load(cfgLf()); fits("np-title", 900, 300); refit(); ok(scrolls("np-title"), "(and does again with it on)");

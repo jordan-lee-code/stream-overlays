@@ -169,14 +169,14 @@
     },
     "group": "Size"
   },
-  "scrollSpeed": {
+  "scrollSeconds": {
     "type": "number",
-    "label": "How fast a name too long for the card scrolls (1 takes about 12 seconds for the whole trip, 2 takes half as long)",
-    "value": 1,
+    "label": "How many seconds a name too long for the card takes to scroll, the pauses at each end included",
+    "value": 12,
     "group": "Size",
-    "min": 0.3,
-    "max": 3,
-    "step": 0.1
+    "min": 3,
+    "max": 60,
+    "step": 1
   },
   "artistScale": {
     "type": "number",
