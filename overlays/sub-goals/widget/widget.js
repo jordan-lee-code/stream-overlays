@@ -251,7 +251,7 @@
         rowGap: Math.max(0, num(f.rowGap, 0.9)),
         animate: bool(f.animate, true),
         fit: bool(f.fit, true),
-        fillBox: bool(f.fillBox, false),
+        fillBox: bool(f.fillBox, true),
         fillSeconds: clamp(num(f.fillSeconds, 0.9), 0, 10)
       },
       showThanks: bool(f.showThanks, true),
