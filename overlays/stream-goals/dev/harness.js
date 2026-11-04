@@ -193,13 +193,16 @@
   };
   window.__applySnapshot = function (snap) {
     var n = 0, f = (snap && snap.fields) || {};
+    // Nothing here to put back (the Data tab of some other widget, say) changes nothing, rather than resetting every setting.
+    if (!Object.keys(fieldDefs).some(function (k) { return fieldDefs[k].type !== "button" && f.hasOwnProperty(k); })) return 0;
     Object.keys(fieldDefs).forEach(function (k) {
       var d = fieldDefs[k];
       if (d.type === "button" || d.type === "sound-input") return;
       if (f.hasOwnProperty(k)) { fieldData[k] = f[k]; n++; } else fieldData[k] = d.value;
     });
+    // A snapshot always carries the counts (or null for none). The Data tab has none, and then the counts here are left alone.
     if (snap && snap.state) localStorage.setItem(PREFIX + CFG.storeKey, JSON.stringify(snap.state));
-    else localStorage.removeItem(PREFIX + CFG.storeKey);
+    else if (snap && snap.hasOwnProperty("state")) localStorage.removeItem(PREFIX + CFG.storeKey);
     if (snap && snap.takenAt > 0) offsetMs = snap.takenAt - realNow();
     rebuildSettings();
     load();
