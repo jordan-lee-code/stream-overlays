@@ -1,7 +1,8 @@
 /* Copyright (c) 2026 Jordan Lee (https://ko-fi.com/journeyingjordan). Released under the MIT licence: this notice must be kept in copies and substantial portions of the code. See LICENSE. */
 /* The panel on every overlay's dev page that brings a problem seen on stream into the dev page, so it can be looked at again.
  *
- * It takes the Data tab of the StreamElements widget editor, which holds every setting as plain values, and loads those settings.
+ * It takes the Data tab of the StreamElements widget editor, which holds every setting as plain values, and loads those settings. The Fields
+ * tab (a fields.json) works too, and so does a snapshot.
  * An overlay whose page can also give and take its saved counts (it offers `window.__getSnapshot()` and `window.__applySnapshot(snapshot)`)
  * takes a full snapshot too, with the counts and the time it was taken, and the panel can copy one of the page itself.
  *
@@ -34,7 +35,12 @@
       if (!snap.fields || typeof snap.fields !== "object") throw new Error("That snapshot has no settings in it.");
       return snap;
     }
-    if (looksLikeFields(snap)) throw new Error("That is a fields.json (the settings with their labels), not the Data tab. Copy the Data tab of the widget editor instead.");
+    // A fields.json, which is what the Fields tab holds: each setting with its label, and its value in `value`. The values are the settings.
+    if (looksLikeFields(snap)) {
+      var values = {};
+      Object.keys(snap).forEach(function (k) { if (snap[k].type !== "button" && snap[k].type !== "section" && "value" in snap[k]) values[k] = snap[k].value; });
+      return { fields: values, dataTab: true, fromFields: true };
+    }
     // The Data tab: the settings as plain values, with no counts and no clock.
     if (Object.keys(snap).length > 3) return { fields: snap, dataTab: true };
     throw new Error("That is not a snapshot or the Data tab: it has no settings in it.");
@@ -49,6 +55,22 @@
   }
   function overlayName() { try { return typeof window.__getSnapshot === "function" ? window.__getSnapshot().overlay : ""; } catch (e) { return ""; } }
 
+  // What happens when something is pasted: it is read and loaded, and what happened is said in a sentence, whether it worked or not.
+  // The Streamer.bot panel at the top of the page uses it too, so a streamer can bring their StreamElements settings across there.
+  function importText(text) {
+    var full = typeof window.__applySnapshot === "function" && typeof window.__getSnapshot === "function";
+    try {
+      var snap = parse(text, overlayName()), n;
+      if (!snap.dataTab && full) {
+        n = window.__applySnapshot(snap);
+        return "Loaded " + n + " settings" + (snap.state ? " and the saved counts" : "") + ", as they were at " + (snap.takenAt ? new Date(snap.takenAt).toLocaleString() : "an unknown time") + ". The page's clock is set to match.";
+      }
+      n = window.__importFields(snap.fields);
+      return n ? "Loaded " + n + " settings" + (snap.fromFields ? " from the Fields tab" : snap.dataTab ? " from the Data tab" : "") + ". Anything not in it stays as it was here, and so do the counts on this page." : "None of those settings belong to this overlay, so nothing changed.";
+    } catch (e) { return e.message; }
+  }
+  window.__importFromStreamElements = importText;
+
   function build() {
     var full = typeof window.__applySnapshot === "function" && typeof window.__getSnapshot === "function";
     var box = el("textarea", { id: "snapshot-text", placeholder: "Paste the Data tab here" });
@@ -61,18 +83,7 @@
         (full ? " A snapshot from the overlay's Troubleshooting group works too, and brings the counts and the time as well." : "") })
     ];
     kids.push(box);
-    kids.push(button("Load this", function () {
-      try {
-        var snap = parse(box.value, overlayName()), n;
-        if (!snap.dataTab && full) {
-          n = window.__applySnapshot(snap);
-          say("Loaded " + n + " settings" + (snap.state ? " and the saved counts" : "") + ", as they were at " + (snap.takenAt ? new Date(snap.takenAt).toLocaleString() : "an unknown time") + ". The page's clock is set to match.");
-          return;
-        }
-        n = window.__importFields(snap.fields);
-        say(n ? "Loaded " + n + " settings" + (snap.dataTab ? " from the Data tab" : "") + ". Anything not in it stays as it was here, and so do the counts on this page." : "None of those settings belong to this overlay, so nothing changed.");
-      } catch (e) { say(e.message); }
-    }, "go"));
+    kids.push(button("Load this", function () { say(importText(box.value)); }, "go"));
     if (full) kids.push(button("Copy a snapshot of this page", function () {
       var text = JSON.stringify(window.__getSnapshot());
       var fallback = function () { box.value = text; box.select(); try { document.execCommand("copy"); say("Copied, and it is in the box too."); } catch (e) { say("Select the text in the box and copy it."); } };

@@ -31,7 +31,7 @@
     "#copy-panel .copy-btn.done { background: #dff5e1; border-color: #7bc58a; }" +
     "#copy-panel .copy-btn.failed { background: #fde3e3; border-color: #e08a8a; }" +
     "#copy-panel #copy-msg { min-height: 1.3em; margin: 8px 0 0; font-size: 12px; }" +
-    "#copy-panel textarea { display: block; width: 100%; height: 90px; margin-top: 8px; font-size: 11px; }" +
+    "#copy-panel textarea { display: block; width: 100%; box-sizing: border-box; height: 90px; margin-top: 8px; font-size: 11px; }" +
     "#copy-panel textarea[hidden] { display: none; }" +
     /* Dark by default, as the landing page is. The choice is kept under one name for the whole site, so the two agree. */
     "html:not([data-theme=\"light\"]) #copy-panel { border-color: #6a4cb8; background: #271f3b; }" +
@@ -233,6 +233,37 @@
       steps.appendChild(li);
     });
     panel.appendChild(steps);
+
+    // Someone moving over from StreamElements already has their settings there: the Data tab of the widget editor holds them as plain
+    // values. They are loaded by the troubleshooting panel's own code, so there is one way of reading what was pasted.
+    var bring = document.createElement("div");
+    bring.id = "bring-over";
+    bring.style.cssText = "margin:0 0 10px";
+    var bringTitle = document.createElement("strong");
+    bringTitle.textContent = "Already set up in StreamElements?";
+    var bringHint = document.createElement("p");
+    bringHint.className = "hint";
+    bringHint.textContent = "In the widget's editor there, open the Data tab, copy everything in it and paste it here. Its settings come across as they are on stream. The Fields tab works too.";
+    var bringBox = document.createElement("textarea");
+    bringBox.id = "bring-text";
+    bringBox.placeholder = "Paste the Data tab here";
+    bringBox.style.cssText = "height:60px";
+    var bringGo = document.createElement("button");
+    bringGo.type = "button";
+    bringGo.textContent = "Bring my settings across";
+    var bringMsg = document.createElement("p");
+    bringMsg.id = "bring-msg";
+    bringMsg.className = "hint";
+    bringGo.addEventListener("click", function () {
+      if (typeof window.__importFromStreamElements !== "function") { bringMsg.textContent = "This page is not ready to load settings yet."; return; }
+      bringMsg.textContent = window.__importFromStreamElements(bringBox.value);
+    });
+    bring.appendChild(bringTitle);
+    bring.appendChild(bringHint);
+    bring.appendChild(bringBox);
+    bring.appendChild(bringGo);
+    bring.appendChild(bringMsg);
+    panel.appendChild(bring);
 
     var conn = connection(), row = document.createElement("div");
     row.className = "copy-grid";

@@ -56,7 +56,10 @@ The website has a switch at the top between StreamElements and Streamer.bot. Cho
 
 1. In Streamer.bot, open **Servers/Clients**, then **WebSocket Server**, tick **Auto Start** and press **Start Server**. It listens on `127.0.0.1` port `8080` unless you change it. Connect your Twitch account under **Platforms**.
 2. Set the overlay up on its page on the website, with the Streamer.bot choice made, and press **Copy the browser source address**.
-3. In OBS, add a **Browser** source, paste the address into **URL**, and give it the width and height of the box you want. Leave **Shutdown source when not visible** unticked, so counts are not lost.
+3. Moving over from StreamElements? In the widget's editor there, open the **Data** tab, copy everything in it, and paste it into **Already set up in StreamElements?** at the top of the overlay's page, then press **Bring my settings across**. Its settings load as they are on stream, and the address you copy has them in it. The Fields tab works too.
+4. In OBS, add a **Browser** source, paste the address into **URL**, and give it the width and height of the box you want. Leave **Shutdown source when not visible** unticked, so counts are not lost.
+
+What does not come across is what an overlay has counted so far, because StreamElements does not show that anywhere a page can copy it from. The overlays start from zero in OBS.
 
 The overlays are not rewritten for this. `streamerbot.js` turns what Streamer.bot says (`Twitch.Cheer`, `Twitch.GiftBomb`, `Twitch.ChatMessage` and so on) into the events StreamElements sends, and keeps what an overlay remembers in the browser source's own storage, so the same code runs in both. Your settings travel in the address after a `#`, so nothing is stored on the website.
 
