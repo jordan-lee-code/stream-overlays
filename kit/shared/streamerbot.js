@@ -15,7 +15,10 @@
 (function (root) {
   "use strict";
 
-  var CLIENT_URL = "https://cdn.jsdelivr.net/npm/@streamerbot/client@2.0.2/dist/streamerbot-client.min.js";
+  // The client that talks to Streamer.bot is kept beside this file, so an overlay that Streamer.bot hosts needs no internet. The copy on
+  // the jsDelivr network is only the second choice, for a page that was put somewhere without it.
+  var CLIENT_FILE = "../streamerbot-client.js";
+  var CLIENT_URL = "https://cdn.jsdelivr.net/npm/@streamerbot/client@2.0.2/dist/streamerbot-client.js";
 
   function num(v, d) { var n = typeof v === "number" ? v : parseFloat(v); return isFinite(n) ? n : d; }
   function str(v, d) { return v === undefined || v === null ? d : String(v); }
@@ -253,7 +256,7 @@
       var data = fieldData(fields, overrides);
       if (debug) data.debug = true;
       fire("onWidgetLoad", { fieldData: data, channel: {}, session: { data: {} }, overlay: { isEditorMode: false } });
-      return loadScript(CLIENT_URL).then(function () {
+      return loadScript(CLIENT_FILE).catch(function () { return loadScript(CLIENT_URL); }).then(function () {
         var Client = root.StreamerbotClient || (root.Streamerbot && root.Streamerbot.Client);
         if (!Client) throw new Error("The Streamer.bot client did not load.");
         var client = new Client({
@@ -277,7 +280,7 @@
     }).catch(function (e) { say(e && e.message ? e.message : "Streamer.bot: could not start", false); });
   }
 
-  var api = { translate: translate, readSettings: readSettings, writeSettings: writeSettings, readQuery: readQuery, fieldData: fieldData, makeStore: makeStore, tierOf: tierOf, badgesOf: badgesOf, emotesOf: emotesOf, events: Object.keys(TRANSLATE), CLIENT_URL: CLIENT_URL, start: start };
+  var api = { translate: translate, readSettings: readSettings, writeSettings: writeSettings, readQuery: readQuery, fieldData: fieldData, makeStore: makeStore, tierOf: tierOf, badgesOf: badgesOf, emotesOf: emotesOf, events: Object.keys(TRANSLATE), CLIENT_URL: CLIENT_URL, CLIENT_FILE: CLIENT_FILE, start: start };
   root.StreamerbotAdapter = api;
   if (typeof module !== "undefined" && module.exports) module.exports = api;
 
