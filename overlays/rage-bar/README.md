@@ -266,6 +266,10 @@ If OBS is closed during the save window and comes back later, the bar returns **
 
 If two copies of the widget run at once, which happens when the StreamElements overlay editor is left open beside OBS, they answer the same events and write to the same saved state. The second to load says so in the browser source console. Close one.
 
+## Using it with Streamer.bot
+
+This overlay runs unchanged with Streamer.bot. Choose Streamer.bot at the top of [the website](https://jordan-lee-code.github.io/stream-overlays/), set the overlay up, and copy its address into an OBS Browser source. The steps, and what differs from StreamElements, are in the [root README](../../README.md#using-an-overlay-with-streamerbot).
+
 ## Local development
 
 There is no build step and no dependencies. Serve this overlay's folder and open the dev harness:

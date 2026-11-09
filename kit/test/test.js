@@ -499,6 +499,135 @@ test("a folder with no widget is refused with a clear message", () => {
   assert.throws(() => sync(fs.mkdtempSync(path.join(os.tmpdir(), "empty-")), { check: true }), /No widget\/widget\.js/);
 });
 
+asection("Streamer.bot");
+{
+  const SB = require("../shared/streamerbot.js");
+  const repoRoot = path.join(__dirname, "..", "..");
+  const names = fs.readdirSync(path.join(repoRoot, "overlays")).filter(n => fs.statSync(path.join(repoRoot, "overlays", n)).isDirectory()).sort();
+  const tr = SB.translate;
+  atest("a cheer becomes the cheer StreamElements sends, and an anonymous one has no name", () => {
+    assert.deepStrictEqual(tr("Twitch.Cheer", { user: { name: "Alice" }, bits: 300, text: "hi", anonymous: false }), { listener: "cheer-latest", event: { type: "cheer", name: "Alice", amount: 300, message: "hi" } });
+    assert.strictEqual(tr("Twitch.Cheer", { user: { name: "Alice" }, bits: 5, anonymous: true }).event.name, "Anonymous");
+  });
+  atest("subs carry the tier StreamElements names it, and prime is its own tier", () => {
+    assert.strictEqual(tr("Twitch.Sub", { user: { name: "A" }, subTier: "Tier 2", durationMonths: 1 }).event.tier, "2000");
+    assert.strictEqual(tr("Twitch.Sub", { user: { name: "A" }, subTier: "1000", isPrime: true }).event.tier, "prime");
+    assert.strictEqual(tr("Twitch.Sub", { user: { name: "A" }, subTier: "3000" }).event.tier, "3000");
+    const r = tr("Twitch.ReSub", { user: { name: "A" }, cumulativeMonths: 7, subTier: "1000", text: "yay" });
+    assert.deepStrictEqual([r.listener, r.event.amount, r.event.gifted, r.event.message], ["subscriber-latest", 7, false, "yay"]);
+  });
+  atest("a gift bomb is counted once, and the gift to each person after it is marked so the overlays skip it", () => {
+    const bomb = tr("Twitch.GiftBomb", { user: { name: "G" }, total: 10, subTier: "1000" }).event;
+    assert.ok(bomb.gifted && bomb.bulkGifted && bomb.amount === 10 && bomb.sender === "G");
+    const each = tr("Twitch.GiftSub", { user: { name: "G" }, recipient: { name: "R" }, fromCommunitySubGift: true, communitySubGiftCumulativeTotal: 170 }).event;
+    assert.ok(each.gifted && each.isCommunityGift && !each.bulkGifted && each.name === "R", "marked as part of a community gift");
+    const lone = tr("Twitch.GiftSub", { user: { name: "G" }, recipient: { name: "R" }, fromCommunitySubGift: false, durationMonths: 1 }).event;
+    assert.ok(lone.gifted && !lone.isCommunityGift && !lone.bulkGifted && lone.amount === 1, "a lone gift is just a gift");
+  });
+  atest("follows, raids, redemptions and tips become the events the overlays listen for", () => {
+    assert.deepStrictEqual(tr("Twitch.Follow", { targetUser: { name: "F" } }), { listener: "follower-latest", event: { type: "follower", name: "F" } });
+    assert.deepStrictEqual(tr("Twitch.Raid", { raider: { name: "R" }, viewers: 12 }), { listener: "raid-latest", event: { type: "raid", name: "R", amount: 12 } });
+    const red = tr("Twitch.RewardRedemption", { user: { name: "U" }, reward: { title: "Hydrate", cost: 100 }, userInput: "now" });
+    assert.ok(red.listener === "redemption-latest" && red.event.title === "Hydrate" && red.event.amount === 100 && red.event.message === "now");
+    ["StreamElements.Tip", "Streamlabs.Donation", "Kofi.Donation", "TipeeeStream.Donation"].forEach(n => {
+      const t = tr(n, { amount: "7.456", username: "T", message: "m" });
+      assert.deepStrictEqual([t.listener, t.event.amount, t.event.name], ["tip-latest", 7.46, "T"], n);
+    });
+  });
+  atest("chat carries who may manage an overlay: the broadcaster, moderators, and their badges", () => {
+    const m = u => tr("Twitch.ChatMessage", { user: Object.assign({ name: "Me", login: "me" }, u), text: "!x" }).event.data;
+    assert.deepStrictEqual(m({ role: 1 }).badges, []);
+    assert.deepStrictEqual(m({ role: 4 }).badges.map(b => b.type), ["broadcaster"]);
+    assert.deepStrictEqual(m({ role: 3 }).badges.map(b => b.type), ["moderator"]);
+    assert.strictEqual(m({ role: 3 }).tags.mod, "1"); assert.strictEqual(m({ role: 1 }).tags.mod, "0");
+    assert.deepStrictEqual(m({ role: 2, subscribed: true }).badges.map(b => b.type), ["vip", "subscriber"]);
+    assert.deepStrictEqual(m({ role: 1, badges: [{ name: "moderator", version: "1", imageUrl: "https://x/m.png" }] }).badges.map(b => b.type), ["moderator"], "a badge by name counts too");
+    const own = tr("Twitch.ChatMessage", { user: { name: "Me", login: "me", role: 1 }, broadcaster: { login: "me" }, text: "x" }).event.data;
+    assert.deepStrictEqual(own.badges.map(b => b.type), ["broadcaster"], "the broadcaster is known by name when the role is not given");
+    const d = m({ role: 1 }); assert.strictEqual(d.nick, "me"); assert.strictEqual(d.displayName, "Me");
+  });
+  atest("emotes arrive as a name and a picture, which is what the chat overlays look for", () => {
+    const e = SB.emotesOf([{ type: "twitch", name: "Kappa", imageUrl: "https://x/k.png", startIndex: 6, endIndex: 10 }, { name: "NoPic" }, null]);
+    assert.strictEqual(e.length, 1); assert.strictEqual(e[0].urls["2"], "https://x/k.png"); assert.deepStrictEqual([e[0].start, e[0].end], [6, 10]);
+  });
+  atest("an event the overlays have no use for, or a broken one, gives nothing and never throws", () => {
+    assert.strictEqual(tr("Twitch.Pyramid", { a: 1 }), null);
+    assert.strictEqual(tr("Twitch.Cheer", null), null);
+    assert.strictEqual(tr("Twitch.Cheer", "text"), null);
+    assert.doesNotThrow(() => tr("Twitch.Follow", {}));
+    assert.deepStrictEqual(SB.events.slice().sort(), ["Kofi.Donation", "StreamElements.Tip", "Streamlabs.Donation", "TipeeeStream.Donation", "Twitch.Cheer", "Twitch.ChatMessage", "Twitch.Follow", "Twitch.GiftBomb", "Twitch.GiftSub", "Twitch.Raid", "Twitch.ReSub", "Twitch.RewardRedemption", "Twitch.Sub"].sort());
+  });
+  atest("settings travel in the address and come back exactly, whatever is in them", () => {
+    const settings = { title: "Café ☕ éè", n: 5, on: false, list: [1, 2], c: "#ff00aa" };
+    const hash = SB.writeSettings(settings);
+    assert.ok(/^#s=[A-Za-z0-9_-]+$/.test(hash), "safe in an address: " + hash);
+    assert.deepStrictEqual(SB.readSettings(hash), settings);
+    assert.deepStrictEqual(SB.readSettings(""), {}); assert.deepStrictEqual(SB.readSettings("#s=!!!"), {}); assert.deepStrictEqual(SB.readSettings("#s=" + Buffer.from("[1,2]").toString("base64")), {});
+    assert.deepStrictEqual(SB.readQuery("?host=a.b&port=9&password=p%40ss+word&debug=1"), { host: "a.b", port: "9", password: "p@ss word", debug: "1" });
+  });
+  atest("the settings start from the defaults in fields.json, with buttons left out, and the address wins", () => {
+    const f = { a: { type: "text", value: "x" }, b: { type: "checkbox", value: true }, go: { type: "button" }, g: { type: "section" } };
+    assert.deepStrictEqual(SB.fieldData(f, { a: "y", extra: 1 }), { a: "y", b: true, extra: 1 });
+  });
+  atest("the store keeps what an overlay remembers, and a store that fails loses nothing it was not given", async () => {
+    const mem = {}; const storage = { getItem: k => (k in mem ? mem[k] : null), setItem: (k, v) => { mem[k] = v; } };
+    const st = SB.makeStore(storage, "p:");
+    assert.strictEqual(await st.get("none"), null);
+    await st.set("k", { a: [1] }); assert.deepStrictEqual(await st.get("k"), { a: [1] }); assert.ok("p:k" in mem);
+    const broken = SB.makeStore({ getItem() { throw new Error("no"); }, setItem() { throw new Error("no"); } }, "p:");
+    assert.strictEqual(await broken.get("k"), null); await broken.set("k", 1);
+  });
+  atest("the dev page's address and the overlay's page agree about settings", () => {
+    const sandbox = { window: {}, localStorage: { getItem: () => null, setItem() {} }, location: { search: "" }, btoa: s => Buffer.from(s, "binary").toString("base64"), unescape, encodeURIComponent,
+      document: { readyState: "complete", getElementById: () => null, documentElement: { setAttribute() {}, removeAttribute() {}, getAttribute: () => null }, querySelectorAll: () => [] } };
+    sandbox.window = sandbox; vm.createContext(sandbox);
+    vm.runInContext(fs.readFileSync(path.join(__dirname, "../shared/copy-panel.js"), "utf8"), sandbox);
+    const changed = { title: "Café ☕", n: 3 };
+    const address = sandbox.__streamerbotAddress("https://example.github.io/stream-overlays/counter/dev/", { host: "127.0.0.1", port: "8080", password: "" }, changed);
+    assert.ok(address.startsWith("https://example.github.io/stream-overlays/counter/streamerbot.html#s="), address);
+    assert.deepStrictEqual(SB.readSettings(address.slice(address.indexOf("#"))), changed);
+    const remote = sandbox.__streamerbotAddress("https://e.io/o/counter/dev/index.html?x=1", { host: "10.0.0.5", port: "9000", password: "p w" }, {});
+    assert.strictEqual(remote, "https://e.io/o/counter/streamerbot.html?host=10.0.0.5&port=9000&password=p%20w");
+    const f = { a: { type: "text", value: "x" }, b: { type: "text", value: "same" }, go: { type: "button" } };
+    assert.deepStrictEqual(JSON.parse(JSON.stringify(sandbox.__streamerbotChanged({ a: { type: "text", value: "y" }, b: { type: "text", value: "same" }, go: { type: "button" }, n: { type: "number", value: 1 } }, f))), { a: "y", n: 1 }, "only what differs, and never a button");
+  });
+  const outDir = fs.mkdtempSync(path.join(os.tmpdir(), "site-sb-"));
+  require("../../scripts/build-site").build(outDir);
+  atest("every overlay has a Streamer.bot page that is its own HTML, CSS and JavaScript with the adapter after them", () => {
+    names.forEach(n => {
+      const page = fs.readFileSync(path.join(outDir, n, "streamerbot.html"), "utf8");
+      const html = fs.readFileSync(path.join(repoRoot, "overlays", n, "widget", "widget.html"), "utf8");
+      assert.ok(page.indexOf(html) !== -1, n + " does not carry its widget.html");
+      assert.ok(page.indexOf('href="widget/widget.css"') !== -1, n + " has no stylesheet");
+      const a = page.indexOf('<script src="widget/widget.js">'), b = page.indexOf('<script src="../streamerbot.js">');
+      assert.ok(a !== -1 && b > a, n + " must load its widget before the adapter");
+      assert.ok(/html, body \{[^}]*height: 100%/.test(page), n + " has no page height: a browser source is not in a frame");
+    });
+    assert.strictEqual(fs.readFileSync(path.join(outDir, "streamerbot.js"), "utf8"), fs.readFileSync(path.join(__dirname, "../shared/streamerbot.js"), "utf8"));
+  });
+  atest("the landing page switches between StreamElements and Streamer.bot at the top, and remembers the choice", () => {
+    const index = fs.readFileSync(path.join(outDir, "index.html"), "utf8");
+    assert.ok(index.indexOf('data-platform="streamelements"') !== -1 && index.indexOf('data-platform="streamerbot"') !== -1, "no switch");
+    assert.ok(index.indexOf('class="platform"') < index.indexOf("<h1>"), "the switch is not at the top");
+    assert.ok(/class="steps se"/.test(index) && /class="steps sb"/.test(index), "both ways of setting up are not given");
+    assert.ok(/stream-overlays-platform/.test(index), "the choice is not kept");
+    assert.ok(/html:not\(\[data-platform="streamerbot"\]\) \.sb/.test(index), "Streamer.bot text is not hidden for StreamElements");
+    assert.ok(/stream-overlays-platform/.test(fs.readFileSync(path.join(__dirname, "../shared/copy-panel.js"), "utf8")), "the dev pages do not share the choice");
+  });
+  atest("no overlay uses anything from StreamElements that the adapter does not provide", () => {
+    const provided = ["message", "subscriber-latest", "cheer-latest", "tip-latest", "follower-latest", "raid-latest", "widget-button", "redemption-latest"];
+    names.forEach(n => {
+      const dir = path.join(repoRoot, "overlays", n, "widget");
+      const src = fs.readFileSync(path.join(dir, "widget.js"), "utf8");
+      (src.match(/SE_API\.[a-zA-Z]+/g) || []).forEach(x => assert.ok(x === "SE_API.store", n + " uses " + x + " which Streamer.bot has no equivalent for"));
+      (src.match(/\b(?:d|obj)\.detail\.[a-zA-Z]+/g) || []).forEach(x => assert.ok(/(fieldData|listener|event)$/.test(x), n + " reads " + x + " from what StreamElements sends"));
+      (src.match(/listener === "([a-z:-]+)"/g) || []).concat(src.match(/case "([a-z:-]+-latest)"/g) || []).forEach(x => {
+        const l = /"([^"]+)"/.exec(x)[1]; assert.ok(provided.indexOf(l) !== -1, n + " listens for " + l);
+      });
+    });
+  });
+}
+
 later.then(() => {
   console.log("\n=== " + pass + " passed, " + fail + " failed ===");
   process.exit(fail ? 1 : 0);
