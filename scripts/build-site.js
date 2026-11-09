@@ -53,7 +53,7 @@ function cardHtml(c) {
           <a class="pic" href="${esc(c.name)}/dev/">${c.picture ? `<img src="${esc(c.name)}/card.png" alt="The ${esc(c.title)} overlay" loading="lazy">` : ""}</a>
           <h3><a href="${esc(c.name)}/dev/">${esc(c.title)}</a></h3>
           <p>${esc(c.description.replace(/^A StreamElements custom widget:\s*/i, "").replace(/^./, ch => ch.toUpperCase()))}</p>
-          <p class="links"><a class="go" href="${esc(c.name)}/dev/">Set it up and copy it</a> <a href="${REPO}/tree/main/overlays/${esc(c.name)}#readme">Read about it</a></p>
+          <p class="links"><a class="go" href="${esc(c.name)}/dev/"><span class="se">Set it up and copy it</span><span class="sb">Set it up and get its link</span></a> <a href="${REPO}/tree/main/overlays/${esc(c.name)}#readme">Read about it</a></p>
         </li>`;
 }
 
@@ -75,9 +75,17 @@ function landing(cards) {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Stream overlays for StreamElements</title>
-  <meta name="description" content="Free StreamElements custom widgets. Set one up in your browser, then copy its files into StreamElements. Nothing to download.">
-  <script>try { if (localStorage.getItem("stream-overlays-theme") === "light") document.documentElement.setAttribute("data-theme", "light"); } catch (e) {}</script>
+  <title>Stream overlays for StreamElements and Streamer.bot</title>
+  <meta name="description" content="Free stream overlays for StreamElements and Streamer.bot. Set one up in your browser, then copy it into StreamElements or add its link to OBS. Nothing to download.">
+  <script>
+    try { if (localStorage.getItem("stream-overlays-theme") === "light") document.documentElement.setAttribute("data-theme", "light"); } catch (e) {}
+    /* Which tool the visitor uses. An address ending in ?platform=streamerbot, or #streamerbot, chooses it, and the choice is kept for the dev pages too. */
+    try {
+      var asked = /[?&]platform=(streamerbot|streamelements)/.exec(location.search) || /^#(streamerbot|streamelements)$/.exec(location.hash);
+      if (asked) localStorage.setItem("stream-overlays-platform", asked[1]);
+      if (localStorage.getItem("stream-overlays-platform") === "streamerbot") document.documentElement.setAttribute("data-platform", "streamerbot");
+    } catch (e) {}
+  </script>
   <style>
     /* Dark by default. A visitor who chooses light keeps it, and the dev pages use the same choice. */
     :root { color-scheme: dark; --bg: #14111c; --text: #e8e3f2; --muted: #b3abc6; --card: #1f1a2c; --shadow: 0 2px 12px rgba(0, 0, 0, 0.4); --link: #c0abff; --chip: #2a2340; --chip-text: #e3d9ff; --btn: #6a4cb8; --btn-hover: #7d60cc; --rule: #332b4a; }
@@ -90,6 +98,12 @@ function landing(cards) {
     .lead { max-width: 640px; font-size: 1.05rem; margin: 0 0 20px; }
     ol.steps { max-width: 640px; margin: 0 0 20px; padding-left: 22px; }
     ol.steps li { margin: 4px 0; }
+    /* Only what belongs to the chosen tool is shown. StreamElements is the default. */
+    html:not([data-platform="streamerbot"]) .sb, html[data-platform="streamerbot"] .se { display: none !important; }
+    .platform { display: inline-flex; margin: 0 0 18px; padding: 3px; border-radius: 999px; background: var(--card); border: 1px solid var(--rule); }
+    .platform button { font: inherit; font-weight: 700; font-size: 0.95rem; padding: 6px 18px; border: 0; border-radius: 999px; background: transparent; color: var(--text); cursor: pointer; }
+    .platform button[aria-pressed="true"] { background: var(--btn); color: #fff; }
+    .platform button:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
     #theme { position: absolute; top: 40px; right: 20px; font: inherit; font-size: 0.85rem; padding: 5px 12px; border-radius: 999px; border: 1px solid var(--rule); background: var(--card); color: var(--text); cursor: pointer; }
     #theme:hover, #theme:focus { border-color: var(--link); }
     nav.jump { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 8px; }
@@ -115,13 +129,22 @@ function landing(cards) {
 </head>
 <body>
   <header>
-    <h1>Stream overlays for StreamElements</h1>
-    <p class="lead">Free custom widgets for your stream: goals, chat, polls, a wheel and more, all in the same style presets so they look right together. You do not need to download anything.</p>
+    <div class="platform" role="group" aria-label="Which tool do you stream with?">
+      <button type="button" data-platform="streamelements" aria-pressed="true">StreamElements</button>
+      <button type="button" data-platform="streamerbot" aria-pressed="false">Streamer.bot</button>
+    </div>
+    <h1>Stream overlays</h1>
+    <p class="lead">Free overlays for your stream: goals, chat, polls, a wheel and more, all in the same style presets so they look right together. You do not need to download anything.</p>
     <button id="theme" type="button" aria-label="Switch between dark and light mode"></button>
-    <ol class="steps">
+    <ol class="steps se">
       <li>Pick an overlay below and set it up. The page shows it live, and you can change every setting.</li>
       <li>Press the copy buttons at the top of its page, one for each file.</li>
       <li>In StreamElements, add a Custom Widget to your overlay, open its editor, and paste each file into the tab it names.</li>
+    </ol>
+    <ol class="steps sb">
+      <li>In Streamer.bot, open Servers/Clients, then WebSocket Server, tick Auto Start and press Start Server. It listens on 127.0.0.1 port 8080 unless you change it.</li>
+      <li>Pick an overlay below and set it up. The page shows it live, and you can change every setting.</li>
+      <li>Press the button at the top of its page to copy its address. In OBS, add a Browser source, paste the address into URL, and give it the size of the box you want.</li>
     </ol>
     <nav class="jump" aria-label="Overlay groups">${jump}</nav>
   </header>
@@ -129,11 +152,26 @@ function landing(cards) {
   </main>
   <footer>
     <p>The code is on <a href="${REPO}">GitHub</a>, under the MIT licence, with a README for each overlay. If these save you time, you can support them on <a href="${KOFI}">Ko-fi</a>.</p>
+    <p class="sb">With Streamer.bot, an overlay is a page on this site that OBS shows, so it needs an internet connection while you stream, and it talks to Streamer.bot on your own computer. Its chat commands work from chat, and the buttons in an overlay's StreamElements settings, such as Manual controls, are not there: use the chat commands instead. Tips arrive through whichever of StreamElements, Streamlabs, Ko-fi or TipeeeStream you have connected to Streamer.bot.</p>
     <p>These pages load fonts from Google Fonts and the Ko-fi button from Ko-fi. Your settings stay in your browser. The Chat Feed overlay, when it is on stream, looks up chatters' profile pictures and pronouns on two outside services, and its README says exactly what is sent.</p>
   </footer>
   <script>
     (function () {
       var root = document.documentElement, b = document.getElementById("theme");
+      var picks = document.querySelectorAll(".platform button");
+      function showPlatform() {
+        var sb = root.getAttribute("data-platform") === "streamerbot";
+        Array.prototype.forEach.call(picks, function (p) { p.setAttribute("aria-pressed", String((p.getAttribute("data-platform") === "streamerbot") === sb)); });
+      }
+      Array.prototype.forEach.call(picks, function (p) {
+        p.addEventListener("click", function () {
+          var sb = p.getAttribute("data-platform") === "streamerbot";
+          if (sb) root.setAttribute("data-platform", "streamerbot"); else root.removeAttribute("data-platform");
+          try { localStorage.setItem("stream-overlays-platform", sb ? "streamerbot" : "streamelements"); } catch (e) {}
+          showPlatform();
+        });
+      });
+      showPlatform();
       function show() { b.textContent = root.getAttribute("data-theme") === "light" ? "Switch to dark mode" : "Switch to light mode"; }
       b.addEventListener("click", function () {
         var light = root.getAttribute("data-theme") !== "light";
@@ -144,6 +182,30 @@ function landing(cards) {
       show();
     })();
   </script>
+</body>
+</html>
+`;
+}
+
+// The page OBS shows for an overlay when it is used with Streamer.bot: the overlay's own HTML, CSS and JavaScript exactly as they are
+// in StreamElements, with streamerbot.js after them to hand the overlay the events it expects. Nothing in the overlay is changed.
+function streamerbotPage(dir, title) {
+  const htmlPath = path.join(dir, "widget", "widget.html");
+  const html = fs.existsSync(htmlPath) ? fs.readFileSync(htmlPath, "utf8") : "";
+  return `<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>${esc(title)}, for Streamer.bot</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- A browser source is a whole page, not a box inside one, so the page is the box. -->
+  <style>html, body { margin: 0; width: 100%; height: 100%; overflow: hidden; background: transparent; }</style>
+  <link rel="stylesheet" href="widget/widget.css">
+</head>
+<body>
+${html}
+<script src="widget/widget.js"></script>
+<script src="../streamerbot.js"></script>
 </body>
 </html>
 `;
@@ -163,14 +225,16 @@ function build(out, root) {
     copyDir(path.join(dir, "widget"), path.join(out, name, "widget"));
     copyDir(path.join(dir, "dev"), path.join(out, name, "dev"));
     if (card.picture) fs.copyFileSync(card.picture, path.join(out, name, "card.png"));
+    fs.writeFileSync(path.join(out, name, "streamerbot.html"), streamerbotPage(dir, card.title));
     cards.push(card);
   });
+  fs.copyFileSync(path.join(__dirname, "..", "kit", "shared", "streamerbot.js"), path.join(out, "streamerbot.js"));
   fs.writeFileSync(path.join(out, "index.html"), landing(cards));
   fs.writeFileSync(path.join(out, ".nojekyll"), "");        // serve the files as they are
   return { out, overlays: cards.map(c => c.name) };
 }
 
-module.exports = { build, landing, describe, esc, CATEGORIES };
+module.exports = { build, landing, describe, esc, streamerbotPage, CATEGORIES };
 
 if (require.main === module) {
   const r = build(process.argv[2]);

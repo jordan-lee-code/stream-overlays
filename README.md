@@ -1,6 +1,6 @@
 # Stream Overlays
 
-A set of StreamElements custom widgets for Twitch streams. Each is plain JavaScript with no dependencies and nothing to install: you paste its four files into a StreamElements custom widget. They share one design, twenty-three style presets including seven pride flags, so they look like one family on a stream.
+A set of overlays for Twitch streams, for StreamElements and for Streamer.bot. Each is plain JavaScript with no dependencies and nothing to install: with StreamElements you paste its four files into a custom widget, and with Streamer.bot you add one link to OBS. They share one design, twenty-three style presets including seven pride flags, so they look like one family on a stream.
 
 **Goals and counters**
 
@@ -49,6 +49,24 @@ A set of StreamElements custom widgets for Twitch streams. Each is plain JavaScr
 1. Open the overlay's folder and read its README.
 2. In StreamElements, add a **Custom Widget** to your overlay, and paste each file from the overlay's `widget/` folder into the matching tab: `widget.html` into HTML, `widget.css` into CSS, `widget.js` into JS and `fields.json` into Fields.
 3. Choose a **Style preset** in the settings.
+
+## Using an overlay with Streamer.bot
+
+The website has a switch at the top between StreamElements and Streamer.bot. Choose Streamer.bot and every overlay's page gives you a link for an OBS browser source instead of files to paste.
+
+1. In Streamer.bot, open **Servers/Clients**, then **WebSocket Server**, tick **Auto Start** and press **Start Server**. It listens on `127.0.0.1` port `8080` unless you change it. Connect your Twitch account under **Platforms**.
+2. Set the overlay up on its page on the website, with the Streamer.bot choice made, and press **Copy the browser source address**.
+3. In OBS, add a **Browser** source, paste the address into **URL**, and give it the width and height of the box you want. Leave **Shutdown source when not visible** unticked, so counts are not lost.
+
+The overlays are not rewritten for this. `streamerbot.js` turns what Streamer.bot says (`Twitch.Cheer`, `Twitch.GiftBomb`, `Twitch.ChatMessage` and so on) into the events StreamElements sends, and keeps what an overlay remembers in the browser source's own storage, so the same code runs in both. Your settings travel in the address after a `#`, so nothing is stored on the website.
+
+What is different from StreamElements:
+
+- **Chat commands work, the editor buttons do not.** The buttons in an overlay's settings, such as Manual controls, belong to the StreamElements editor. Use the overlay's chat commands instead.
+- **Who can use a command** comes from the Twitch role and badges Streamer.bot reports, so the broadcaster and moderators work as they do on StreamElements.
+- **Tips** arrive from whichever of StreamElements, Streamlabs, Ko-fi or TipeeeStream you have connected to Streamer.bot. Streamer.bot's documentation does not list those events' fields, so they are read by the names a tip is likely to use. If a tip does not show, add `?debug=1` to the address to see in the browser source's console what arrived.
+- **It needs internet** while you stream, since the page loads from the website, and it loads Streamer.bot's own client script from jsDelivr.
+- **Streamer.bot on another computer** needs its address and port in the box on the overlay's page, and a browser source on a secure page may refuse an unencrypted connection to another machine; `127.0.0.1` is the case that is known to work.
 
 ## Setting the look once
 

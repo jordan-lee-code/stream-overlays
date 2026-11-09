@@ -131,6 +131,10 @@ The **decorations** are small shapes drawn behind the words: sparkles, hearts, s
 
 The full list, with defaults, is in [`widget/fields.json`](widget/fields.json). The colour and font pickers apply only when the style preset is **Custom**.
 
+## Using it with Streamer.bot
+
+This overlay runs unchanged with Streamer.bot. Choose Streamer.bot at the top of [the website](https://jordan-lee-code.github.io/stream-overlays/), set the overlay up, and copy its address into an OBS Browser source. The steps, and what differs from StreamElements, are in the [root README](../../README.md#using-an-overlay-with-streamerbot).
+
 ## Local development
 
 There is no build step and no dependencies. Serve this overlay's folder and open the dev harness:

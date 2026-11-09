@@ -169,6 +169,10 @@ How to vote - When a poll is on screen, type the letter (A), the number (1), or 
 
 Both quote the default command words, so edit them if you rename any.
 
+## Using it with Streamer.bot
+
+This overlay runs unchanged with Streamer.bot. Choose Streamer.bot at the top of [the website](https://jordan-lee-code.github.io/stream-overlays/), set the overlay up, and copy its address into an OBS Browser source. The steps, and what differs from StreamElements, are in the [root README](../../README.md#using-an-overlay-with-streamerbot).
+
 ## Local development
 
 There is no build step and no dependencies. Serve this overlay's folder and open the dev harness:

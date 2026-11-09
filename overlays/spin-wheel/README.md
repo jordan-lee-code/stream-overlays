@@ -170,6 +170,10 @@ Fonts load from Google Fonts at run time and are chosen by the **Font** setting.
 
 A StreamElements widget can read chat but cannot write to it. When someone uses `!spin` the confirmation is visual: their name lands on the wheel and the entry count rises. If you would like chat to see a reply as well, add a StreamElements **chatbot command** with the same name and a response message. The two sit side by side, both reacting to the same message.
 
+## Using it with Streamer.bot
+
+This overlay runs unchanged with Streamer.bot. Choose Streamer.bot at the top of [the website](https://jordan-lee-code.github.io/stream-overlays/), set the overlay up, and copy its address into an OBS Browser source. The steps, and what differs from StreamElements, are in the [root README](../../README.md#using-an-overlay-with-streamerbot).
+
 ## Local development
 
 There is no build step and no dependencies. Serve this overlay's folder and open the dev harness:
