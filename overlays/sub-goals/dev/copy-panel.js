@@ -63,8 +63,10 @@
   }
   function setPlatform(p) { try { localStorage.setItem(PLATFORM_KEY, p); } catch (e) {} }
   function connection() {
-    var c = { host: "127.0.0.1", port: "8080", password: "" };
-    try { var v = JSON.parse(localStorage.getItem(CONNECTION_KEY) || "{}"); ["host", "port", "password"].forEach(function (k) { if (typeof v[k] === "string") c[k] = v[k]; }); } catch (e) {}
+    // host and port are Streamer.bot's WebSocket server, which the overlay talks to. httpHost, httpPort and mapPath are where Streamer.bot's
+    // HTTP server hosts the overlays, and website is for someone who would rather OBS loaded them from the website.
+    var c = { host: "127.0.0.1", port: "8080", password: "", httpHost: "127.0.0.1", httpPort: "7474", mapPath: "overlays", website: "" };
+    try { var v = JSON.parse(localStorage.getItem(CONNECTION_KEY) || "{}"); Object.keys(c).forEach(function (k) { if (typeof v[k] === "string") c[k] = v[k]; }); } catch (e) {}
     return c;
   }
   function saveConnection(c) { try { localStorage.setItem(CONNECTION_KEY, JSON.stringify(c)); } catch (e) {} }
@@ -81,9 +83,17 @@
     });
     return out;
   }
-  /** The address of this overlay's Streamer.bot page, with the connection and the changed settings in it. */
+  /** The address of this overlay's Streamer.bot page, with the connection and the changed settings in it. The page is the one Streamer.bot
+   *  hosts from the streamer's own computer, unless they asked for the website's copy. */
   function browserSourceAddress(pageUrl, conn, changed) {
-    var u = String(pageUrl).replace(/[?#].*$/, "").replace(/dev\/[^\/]*$/, "") + "streamerbot.html";
+    var site = String(pageUrl).replace(/[?#].*$/, "").replace(/dev\/[^\/]*$/, "");
+    var u;
+    if (conn.website === "1") u = site + "streamerbot.html";
+    else {
+      var name = /([^\/]+)\/dev\/[^\/]*$/.exec(String(pageUrl).replace(/[?#].*$/, ""));
+      var path = String(conn.mapPath || "overlays").replace(/^\/+|\/+$/g, "");
+      u = "http://" + (conn.httpHost || "127.0.0.1") + ":" + (conn.httpPort || "7474") + "/" + (path ? path + "/" : "") + (name ? name[1] + "/" : "") + "streamerbot.html";
+    }
     var q = [];
     if (conn.host && conn.host !== "127.0.0.1") q.push("host=" + encodeURIComponent(conn.host));
     if (conn.port && String(conn.port) !== "8080") q.push("port=" + encodeURIComponent(conn.port));
@@ -224,8 +234,18 @@
     h.textContent = "Use with Streamer.bot";
     panel.appendChild(h);
 
+    // Streamer.bot hosts the overlay pages itself, from a folder on the streamer's computer, so the stream does not depend on this website.
     var steps = document.createElement("ol");
-    ["In Streamer.bot, open Servers/Clients, then WebSocket Server, tick Auto Start and press Start Server. Connect your Twitch account under Platforms.",
+    var first = document.createElement("li");
+    first.appendChild(document.createTextNode("Download the overlays and unzip them somewhere you will keep them: "));
+    var dl = document.createElement("a");
+    dl.href = "../../stream-overlays-streamerbot.zip";
+    dl.textContent = "stream-overlays-streamerbot.zip";
+    first.appendChild(dl);
+    first.appendChild(document.createTextNode(". Once is enough for every overlay."));
+    steps.appendChild(first);
+    ["In Streamer.bot, open Servers/Clients, then HTTP Server. Add a mapping with Path set to the word below and Folder set to the folder you unzipped. Tick Auto Start and press Start Server.",
+     "Open Servers/Clients, then WebSocket Server, tick Auto Start and press Start Server. Connect your Twitch account under Platforms.",
      "Set the overlay up below. Everything on this page, including the style preset, goes into the address.",
      "Press the button to copy the address. In OBS, add a Browser source, paste it into URL, and give it the width and height of the box you want. Leave Shutdown source when not visible unticked."].forEach(function (t) {
       var li = document.createElement("li");
@@ -277,12 +297,25 @@
       l.appendChild(i);
       return l;
     }
-    row.appendChild(field("Streamer.bot address", "host", "text", "127.0.0.1"));
-    row.appendChild(field("Port", "port", "text", "8080"));
+    row.appendChild(field("HTTP Server mapping Path", "mapPath", "text", "overlays"));
+    row.appendChild(field("HTTP Server port", "httpPort", "text", "7474"));
+    row.appendChild(field("WebSocket address", "host", "text", "127.0.0.1"));
+    row.appendChild(field("WebSocket port", "port", "text", "8080"));
     panel.appendChild(row);
     var pw = field("Password (only if you set one in Streamer.bot)", "password", "password", "");
     pw.style.marginTop = "6px";
     panel.appendChild(pw);
+
+    // For someone who would rather not host anything: OBS loads the overlay from this website instead, and needs the internet to.
+    var web = document.createElement("label");
+    web.style.cssText = "display:block;font-size:12px;margin-top:8px";
+    var webBox = document.createElement("input");
+    webBox.type = "checkbox";
+    webBox.checked = conn.website === "1";
+    webBox.addEventListener("change", function () { conn.website = webBox.checked ? "1" : ""; saveConnection(conn); });
+    web.appendChild(webBox);
+    web.appendChild(document.createTextNode(" Load it from the website instead, with no download (needs the internet while you stream)"));
+    panel.appendChild(web);
 
     var msg = document.createElement("p");
     msg.id = "copy-msg";

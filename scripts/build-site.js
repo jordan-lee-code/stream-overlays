@@ -10,6 +10,7 @@
 "use strict";
 const fs = require("fs");
 const path = require("path");
+const { makeZip } = require("./zip");
 
 const REPO = "https://github.com/jordan-lee-code/stream-overlays";
 const KOFI = "https://ko-fi.com/journeyingjordan";
@@ -142,7 +143,8 @@ function landing(cards) {
       <li>In StreamElements, add a Custom Widget to your overlay, open its editor, and paste each file into the tab it names.</li>
     </ol>
     <ol class="steps sb">
-      <li>In Streamer.bot, open Servers/Clients, then WebSocket Server, tick Auto Start and press Start Server. It listens on 127.0.0.1 port 8080 unless you change it.</li>
+      <li><a href="${ZIP_FOLDER}.zip">Download the overlays</a> and unzip them somewhere you will keep them. Once is enough for every overlay.</li>
+      <li>In Streamer.bot, open Servers/Clients, then HTTP Server. Add a mapping with Path <code>overlays</code> and Folder set to the folder you unzipped, tick Auto Start and press Start Server. Do the same for WebSocket Server.</li>
       <li>Pick an overlay below and set it up. The page shows it live, and you can change every setting.</li>
       <li>Press the button at the top of its page to copy its address. In OBS, add a Browser source, paste the address into URL, and give it the size of the box you want.</li>
     </ol>
@@ -152,7 +154,7 @@ function landing(cards) {
   </main>
   <footer>
     <p>The code is on <a href="${REPO}">GitHub</a>, under the MIT licence, with a README for each overlay. If these save you time, you can support them on <a href="${KOFI}">Ko-fi</a>.</p>
-    <p class="sb">With Streamer.bot, an overlay is a page on this site that OBS shows, so it needs an internet connection while you stream, and it talks to Streamer.bot on your own computer. Its chat commands work from chat, and the buttons in an overlay's StreamElements settings, such as Manual controls, are not there: use the chat commands instead. Tips arrive through whichever of StreamElements, Streamlabs, Ko-fi or TipeeeStream you have connected to Streamer.bot.</p>
+    <p class="sb">With Streamer.bot, the overlays are hosted by Streamer.bot itself from the folder you unzipped, so they do not need this website, or the internet, while you stream. (Their fonts still come from Google Fonts.) Its chat commands work from chat, and the buttons in an overlay's StreamElements settings, such as Manual controls, are not there: use the chat commands instead. Tips arrive through whichever of StreamElements, Streamlabs, Ko-fi or TipeeeStream you have connected to Streamer.bot.</p>
     <p>These pages load fonts from Google Fonts and the Ko-fi button from Ko-fi. Your settings stay in your browser. The Chat Feed overlay, when it is on stream, looks up chatters' profile pictures and pronouns on two outside services, and its README says exactly what is sent.</p>
   </footer>
   <script>
@@ -186,6 +188,30 @@ function landing(cards) {
 </html>
 `;
 }
+
+// The same overlay pages as a download, for Streamer.bot to host itself. Streamer.bot's HTTP server can serve a folder from the
+// streamer's own computer, so OBS then shows the overlay from there, with no dependence on this site while they stream. The zip holds
+// only what an overlay page needs: its own files, the adapter and the client it uses. It does not hold the dev pages.
+const ZIP_FOLDER = "stream-overlays-streamerbot";
+const ZIP_README = `Stream overlays for Streamer.bot
+================================
+
+These are the overlay pages, ready for Streamer.bot to host from your own computer, so OBS shows them without needing the internet.
+
+1. Unzip this folder somewhere you will keep it, such as C:\\Overlays\\${ZIP_FOLDER}.
+2. In Streamer.bot, open Servers/Clients, then HTTP Server.
+3. Add a mapping: set Path to  overlays  and Folder to the folder you unzipped. Tick Auto Start, and press Start Server.
+   (Streamer.bot serves on 127.0.0.1 port 7474 unless you change them.)
+4. In Streamer.bot, open Servers/Clients, then WebSocket Server, tick Auto Start and press Start Server.
+5. On the website, choose Streamer.bot, set an overlay up, and press the button to copy its address. It looks like
+   http://127.0.0.1:7474/overlays/counter/streamerbot.html
+6. In OBS, add a Browser source, paste the address into URL, and give it the size you want.
+
+To use a newer version, download this zip again and replace the folder. Your settings are in each overlay's address, so they are not lost.
+
+The Streamer.bot client in this folder is @streamerbot/client, MIT licensed, and its licence is alongside it.
+https://github.com/jordan-lee-code/stream-overlays
+`;
 
 // The page OBS shows for an overlay when it is used with Streamer.bot: the overlay's own HTML, CSS and JavaScript exactly as they are
 // in StreamElements, with streamerbot.js after them to hand the overlay the events it expects. Nothing in the overlay is changed.
@@ -228,13 +254,24 @@ function build(out, root) {
     fs.writeFileSync(path.join(out, name, "streamerbot.html"), streamerbotPage(dir, card.title));
     cards.push(card);
   });
-  fs.copyFileSync(path.join(__dirname, "..", "kit", "shared", "streamerbot.js"), path.join(out, "streamerbot.js"));
+  const shared = path.join(__dirname, "..", "kit", "shared"), vendor = path.join(__dirname, "..", "kit", "vendor");
+  fs.copyFileSync(path.join(shared, "streamerbot.js"), path.join(out, "streamerbot.js"));
+  ["streamerbot-client.js", "streamerbot-client.LICENSE"].forEach(f => fs.copyFileSync(path.join(vendor, f), path.join(out, f)));
+  const files = [{ name: "README.txt", data: ZIP_README.replace(/\n/g, "\r\n") }];
+  ["streamerbot.js"].forEach(f => files.push({ name: f, data: fs.readFileSync(path.join(out, f)) }));
+  ["streamerbot-client.js", "streamerbot-client.LICENSE"].forEach(f => files.push({ name: f, data: fs.readFileSync(path.join(out, f)) }));
+  cards.forEach(c => {
+    files.push({ name: c.name + "/streamerbot.html", data: fs.readFileSync(path.join(out, c.name, "streamerbot.html")) });
+    fs.readdirSync(path.join(out, c.name, "widget")).sort().forEach(f => files.push({ name: c.name + "/widget/" + f, data: fs.readFileSync(path.join(out, c.name, "widget", f)) }));
+  });
+  files.forEach(f => { f.name = ZIP_FOLDER + "/" + f.name; });
+  fs.writeFileSync(path.join(out, ZIP_FOLDER + ".zip"), makeZip(files));
   fs.writeFileSync(path.join(out, "index.html"), landing(cards));
   fs.writeFileSync(path.join(out, ".nojekyll"), "");        // serve the files as they are
   return { out, overlays: cards.map(c => c.name) };
 }
 
-module.exports = { build, landing, describe, esc, streamerbotPage, CATEGORIES };
+module.exports = { build, landing, describe, esc, streamerbotPage, CATEGORIES, ZIP_FOLDER };
 
 if (require.main === module) {
   const r = build(process.argv[2]);
