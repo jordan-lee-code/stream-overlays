@@ -501,162 +501,159 @@ test("a folder with no widget is refused with a clear message", () => {
   assert.throws(() => sync(fs.mkdtempSync(path.join(os.tmpdir(), "empty-")), { check: true }), /No widget\/widget\.js/);
 });
 
-asection("Streamer.bot");
+asection("Mix It Up");
 {
-  const SB = require("../shared/streamerbot.js");
+  const MU = require("../shared/mixitup.js"), PK = require("../shared/mixitup-pack.js");
   const repoRoot = path.join(__dirname, "..", "..");
   const names = fs.readdirSync(path.join(repoRoot, "overlays")).filter(n => fs.statSync(path.join(repoRoot, "overlays", n)).isDirectory()).sort();
-  const tr = SB.translate;
-  atest("a cheer becomes the cheer StreamElements sends, and an anonymous one has no name", () => {
-    assert.deepStrictEqual(tr("Twitch.Cheer", { user: { name: "Alice" }, bits: 300, text: "hi", anonymous: false }), { listener: "cheer-latest", event: { type: "cheer", name: "Alice", amount: 300, message: "hi" } });
-    assert.strictEqual(tr("Twitch.Cheer", { user: { name: "Alice" }, bits: 5, anonymous: true }).event.name, "Anonymous");
+  // A chat message as Mix It Up really sent it, cut down to the fields that matter. It is the broadcaster saying Hi.
+  const real = { MessageID: "207f7eac-498a-4854-98f7-82720f6e9e8a", User: { ID: "05fefeee-40b8-4e98-85f6-bf3805d01c8a", PlatformID: "513147363", Username: "journeyingjordan", DisplayName: "JourneyingJordan", Color: "#E776AC",
+    Roles: [100, 900], RolesString: "User, Streamer", DisplayRolesString: "Streamer", PrimaryRoleString: "Streamer", IsSubscriber: false, IsPlatformSubscriber: false,
+    PlatformModel: { Color: "#E776AC", NewRoleBadge: { title: "Broadcaster", image_url_2x: "https://static-cdn.jtvnw.net/badges/v1/5527c58c-fb7d-422d-b71b-f309dcb85cc1/2" } } },
+    Platform: "Twitch", MessageType: "text", IsHighlightedMessage: false, IsFirstMessage: false, BitsAmount: 0, Message: [{ Type: "Text", Content: "Hi" }] };
+  const tr = MU.translate;
+  atest("a real Mix It Up chat message becomes the message StreamElements sends, with the broadcaster known as one", () => {
+    const e = tr("ChatMessageReceived", real);
+    assert.strictEqual(e.listener, "message");
+    const d = e.event.data;
+    assert.deepStrictEqual([d.text, d.nick, d.displayName, d.userId, d.msgId], ["Hi", "journeyingjordan", "JourneyingJordan", "513147363", "207f7eac-498a-4854-98f7-82720f6e9e8a"]);
+    assert.deepStrictEqual(d.badges.map(b => b.type), ["broadcaster"]);
+    assert.strictEqual(d.badges[0].url, "https://static-cdn.jtvnw.net/badges/v1/5527c58c-fb7d-422d-b71b-f309dcb85cc1/2");
+    assert.strictEqual(d.tags.mod, "1"); assert.strictEqual(d.tags.color, "#E776AC");
   });
-  atest("subs carry the tier StreamElements names it, and prime is its own tier", () => {
-    assert.strictEqual(tr("Twitch.Sub", { user: { name: "A" }, subTier: "Tier 2", durationMonths: 1 }).event.tier, "2000");
-    assert.strictEqual(tr("Twitch.Sub", { user: { name: "A" }, subTier: "1000", isPrime: true }).event.tier, "prime");
-    assert.strictEqual(tr("Twitch.Sub", { user: { name: "A" }, subTier: "3000" }).event.tier, "3000");
-    const r = tr("Twitch.ReSub", { user: { name: "A" }, cumulativeMonths: 7, subTier: "1000", text: "yay" });
-    assert.deepStrictEqual([r.listener, r.event.amount, r.event.gifted, r.event.message], ["subscriber-latest", 7, false, "yay"]);
+  atest("a viewer, a moderator and a subscriber are told apart by their roles", () => {
+    const as = (roles, extra) => tr("ChatMessageReceived", { User: Object.assign({ Username: "x", DisplayName: "X", RolesString: roles, DisplayRolesString: roles, PrimaryRoleString: roles }, extra), Message: [{ Type: "Text", Content: "!x" }] }).event.data;
+    assert.deepStrictEqual(as("User").badges, []); assert.strictEqual(as("User").tags.mod, "0");
+    assert.deepStrictEqual(as("User, Moderator").badges.map(b => b.type), ["moderator"]); assert.strictEqual(as("User, Moderator").tags.mod, "1");
+    assert.deepStrictEqual(as("User, Subscriber").badges.map(b => b.type), ["subscriber"]);
+    assert.deepStrictEqual(as("User", { IsSubscriber: true }).badges.map(b => b.type), ["subscriber"]);
   });
-  atest("a gift bomb is counted once, and the gift to each person after it is marked so the overlays skip it", () => {
-    const bomb = tr("Twitch.GiftBomb", { user: { name: "G" }, total: 10, subTier: "1000" }).event;
-    assert.ok(bomb.gifted && bomb.bulkGifted && bomb.amount === 10 && bomb.sender === "G");
-    const each = tr("Twitch.GiftSub", { user: { name: "G" }, recipient: { name: "R" }, fromCommunitySubGift: true, communitySubGiftCumulativeTotal: 170 }).event;
-    assert.ok(each.gifted && each.isCommunityGift && !each.bulkGifted && each.name === "R", "marked as part of a community gift");
-    const lone = tr("Twitch.GiftSub", { user: { name: "G" }, recipient: { name: "R" }, fromCommunitySubGift: false, durationMonths: 1 }).event;
-    assert.ok(lone.gifted && !lone.isCommunityGift && !lone.bulkGifted && lone.amount === 1, "a lone gift is just a gift");
+  atest("a message in parts is joined, and a part that is a picture becomes an emote the chat overlays find by name", () => {
+    const m = MU.messageOf([{ Type: "Text", Content: "hello " }, { Type: "Emote", Content: "https://x/k.png", Name: "Kappa" }, { Type: "Text", Content: " there" }]);
+    assert.strictEqual(m.text, "hello Kappa there");
+    assert.deepStrictEqual([m.emotes[0].name, m.emotes[0].urls["2"]], ["Kappa", "https://x/k.png"]);
+    assert.strictEqual(MU.messageOf([{ Type: "Text", Content: "a" }, { Type: "Text", Content: "b" }]).text, "ab");
+    assert.strictEqual(MU.messageOf(null).text, "");
   });
-  atest("follows, raids, redemptions and tips become the events the overlays listen for", () => {
-    assert.deepStrictEqual(tr("Twitch.Follow", { targetUser: { name: "F" } }), { listener: "follower-latest", event: { type: "follower", name: "F" } });
-    assert.deepStrictEqual(tr("Twitch.Raid", { raider: { name: "R" }, viewers: 12 }), { listener: "raid-latest", event: { type: "raid", name: "R", amount: 12 } });
-    const red = tr("Twitch.RewardRedemption", { user: { name: "U" }, reward: { title: "Hydrate", cost: 100 }, userInput: "now" });
-    assert.ok(red.listener === "redemption-latest" && red.event.title === "Hydrate" && red.event.amount === 100 && red.event.message === "now");
-    ["StreamElements.Tip", "Streamlabs.Donation", "Kofi.Donation", "TipeeeStream.Donation"].forEach(n => {
-      const t = tr(n, { amount: "7.456", username: "T", message: "m" });
-      assert.deepStrictEqual([t.listener, t.event.amount, t.event.name], ["tip-latest", 7.46, "T"], n);
-    });
+  atest("a follow, a raid, bits and a donation become the events the overlays listen for", () => {
+    assert.deepStrictEqual(tr("Follow", { User: { DisplayName: "F" } }), { listener: "follower-latest", event: { type: "follower", name: "F" } });
+    const r = tr("Raid", { User: { Username: "r" }, ViewerCount: 12 }); assert.deepStrictEqual([r.listener, r.event.name, r.event.amount], ["raid-latest", "r", 12]);
+    const b = tr("TwitchBits", { User: { DisplayName: "B" }, Amount: 250, Message: [{ Type: "Text", Content: "cheer" }] }); assert.deepStrictEqual([b.listener, b.event.amount, b.event.message], ["cheer-latest", 250, "cheer"]);
+    const d = tr("Donation", { User: { DisplayName: "D" }, Amount: 7.456 }); assert.deepStrictEqual([d.listener, d.event.amount, d.event.name], ["tip-latest", 7.46, "D"]);
   });
-  atest("chat carries who may manage an overlay: the broadcaster, moderators, and their badges", () => {
-    const m = u => tr("Twitch.ChatMessage", { user: Object.assign({ name: "Me", login: "me" }, u), text: "!x" }).event.data;
-    assert.deepStrictEqual(m({ role: 1 }).badges, []);
-    assert.deepStrictEqual(m({ role: 4 }).badges.map(b => b.type), ["broadcaster"]);
-    assert.deepStrictEqual(m({ role: 3 }).badges.map(b => b.type), ["moderator"]);
-    assert.strictEqual(m({ role: 3 }).tags.mod, "1"); assert.strictEqual(m({ role: 1 }).tags.mod, "0");
-    assert.deepStrictEqual(m({ role: 2, subscribed: true }).badges.map(b => b.type), ["vip", "subscriber"]);
-    assert.deepStrictEqual(m({ role: 1, badges: [{ name: "moderator", version: "1", imageUrl: "https://x/m.png" }] }).badges.map(b => b.type), ["moderator"], "a badge by name counts too");
-    const own = tr("Twitch.ChatMessage", { user: { name: "Me", login: "me", role: 1 }, broadcaster: { login: "me" }, text: "x" }).event.data;
-    assert.deepStrictEqual(own.badges.map(b => b.type), ["broadcaster"], "the broadcaster is known by name when the role is not given");
-    const d = m({ role: 1 }); assert.strictEqual(d.nick, "me"); assert.strictEqual(d.displayName, "Me");
+  atest("a sub carries its tier, and a gift to a crowd is counted once, as on StreamElements", () => {
+    const s1 = tr("Subscription", { User: { DisplayName: "S" }, Tier: "Tier 2", Months: 4 }).event; assert.deepStrictEqual([s1.tier, s1.amount, s1.gifted], ["2000", 4, false]);
+    assert.strictEqual(tr("Subscription", { User: { DisplayName: "S" }, Tier: 3 }).event.tier, "3000");
+    assert.strictEqual(MU.tierOf("Prime"), "prime"); assert.strictEqual(MU.tierOf(undefined), "1000");
+    const bomb = tr("MassSubscriptionGifted", { User: { DisplayName: "G" }, Amount: 10 }).event; assert.ok(bomb.gifted && bomb.bulkGifted && bomb.amount === 10 && bomb.sender === "G");
+    const lone = tr("SubscriptionGifted", { User: { DisplayName: "G" }, Receiver: { DisplayName: "R" } }).event; assert.ok(lone.gifted && !lone.bulkGifted && lone.sender === "G" && lone.name === "R" && lone.amount === 1);
   });
-  atest("emotes arrive as a name and a picture, which is what the chat overlays look for", () => {
-    const e = SB.emotesOf([{ type: "twitch", name: "Kappa", imageUrl: "https://x/k.png", startIndex: 6, endIndex: 10 }, { name: "NoPic" }, null]);
-    assert.strictEqual(e.length, 1); assert.strictEqual(e[0].urls["2"], "https://x/k.png"); assert.deepStrictEqual([e[0].start, e[0].end], [6, 10]);
+  atest("something that is not an event, or is broken, gives nothing and never throws", () => {
+    assert.strictEqual(tr("UserBanned", { a: 1 }), null); assert.strictEqual(tr("Follow", null), null); assert.strictEqual(tr("Follow", "x"), null);
+    assert.doesNotThrow(() => tr("Raid", {})); assert.doesNotThrow(() => tr("ChatMessageReceived", {}));
+    assert.deepStrictEqual(MU.functions.slice().sort(), ["ChatMessageReceived", "Donation", "Follow", "MassSubscriptionGifted", "Raid", "Subscription", "SubscriptionGifted", "TwitchBits"]);
   });
-  atest("an event the overlays have no use for, or a broken one, gives nothing and never throws", () => {
-    assert.strictEqual(tr("Twitch.Pyramid", { a: 1 }), null);
-    assert.strictEqual(tr("Twitch.Cheer", null), null);
-    assert.strictEqual(tr("Twitch.Cheer", "text"), null);
-    assert.doesNotThrow(() => tr("Twitch.Follow", {}));
-    assert.deepStrictEqual(SB.events.slice().sort(), ["Kofi.Donation", "StreamElements.Tip", "Streamlabs.Donation", "TipeeeStream.Donation", "Twitch.Cheer", "Twitch.ChatMessage", "Twitch.Follow", "Twitch.GiftBomb", "Twitch.GiftSub", "Twitch.Raid", "Twitch.ReSub", "Twitch.RewardRedemption", "Twitch.Sub"].sort());
+  atest("the settings property is read back exactly, and a placeholder that was never replaced means no settings", () => {
+    const text = Buffer.from(JSON.stringify({ title: "Café", n: 3 })).toString("base64").replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+    assert.deepStrictEqual(MU.readSettings(text), { title: "Café", n: 3 });
+    assert.deepStrictEqual(MU.readSettings("{Settings}"), {}); assert.deepStrictEqual(MU.readSettings(""), {}); assert.deepStrictEqual(MU.readSettings("!!!"), {});
+    assert.deepStrictEqual(MU.fieldData({ a: 1, b: 2 }, { b: 3 }), { a: 1, b: 3 });
   });
-  atest("settings travel in the address and come back exactly, whatever is in them", () => {
-    const settings = { title: "Café ☕ éè", n: 5, on: false, list: [1, 2], c: "#ff00aa" };
-    const hash = SB.writeSettings(settings);
-    assert.ok(/^#s=[A-Za-z0-9_-]+$/.test(hash), "safe in an address: " + hash);
-    assert.deepStrictEqual(SB.readSettings(hash), settings);
-    assert.deepStrictEqual(SB.readSettings(""), {}); assert.deepStrictEqual(SB.readSettings("#s=!!!"), {}); assert.deepStrictEqual(SB.readSettings("#s=" + Buffer.from("[1,2]").toString("base64")), {});
-    assert.deepStrictEqual(SB.readQuery("?host=a.b&port=9&password=p%40ss+word&debug=1"), { host: "a.b", port: "9", password: "p@ss word", debug: "1" });
+  atest("a packed widget has the shape Mix It Up gave for a Custom widget, with the overlay's code and the settings in a property", () => {
+    const fields = { a: { type: "text", value: "x" }, go: { type: "button" }, n: { type: "number", value: 5 } };
+    const w = PK.pack({ name: "counter", title: "Chat Counter", html: "<div id=\"r\"></div>", css: ".r{}", js: "var overlay = 1;", adapter: "var adapter = 1;", fields, settings: { a: "y" } });
+    assert.strictEqual(w.$type, "MixItUp.Base.Model.Overlay.Widgets.OverlayWidgetV3Model, MixItUp.Base");
+    assert.strictEqual(w.Item.$type, "MixItUp.Base.Model.Overlay.OverlayCustomV3Model, MixItUp.Base");
+    assert.strictEqual(w.Name, "Chat Counter"); assert.strictEqual(w.Item.Type, 999); assert.strictEqual(w.IsEnabled, true);
+    assert.deepStrictEqual(MU.readSettings(w.Item.Properties.Settings), { a: "y" }, "the changed settings ride in the Settings property");
+    assert.ok(/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-8[0-9a-f]{3}-[0-9a-f]{12}$/.test(w.Item.ID), w.Item.ID);
+    assert.strictEqual(w.Item.ID, PK.pack({ name: "counter", html: "", css: "", js: "", adapter: "", fields: {} }).Item.ID, "the same overlay always has the same id");
+    assert.notStrictEqual(w.Item.ID, PK.pack({ name: "reminder", html: "", css: "", js: "", adapter: "", fields: {} }).Item.ID);
+    assert.ok(w.Item.Javascript.startsWith("window.__miu = ") && w.Item.Javascript.indexOf('"settings":"{Settings}"') !== -1 && w.Item.Javascript.indexOf('"defaults":{"a":"x","n":5}') !== -1, "the defaults travel, the settings are Mix It Up's to fill in, and no button is a setting");
+    assert.ok(w.Item.Javascript.indexOf("var adapter = 1;") < w.Item.Javascript.indexOf("var overlay = 1;"), "the adapter comes before the overlay");
+    assert.ok(w.Item.HTML.indexOf('id="miu-fill"') !== -1 && w.Item.HTML.indexOf('<div id="r"></div>') !== -1 && /^html, body \{ margin: 0/.test(w.Item.CSS) && w.Item.CSS.indexOf(".r{}") !== -1);
+    ["ChatMessages", "Follows", "Raids", "TwitchSubscriptions", "TwitchBits", "Donations"].forEach(k => assert.strictEqual(w.Item[k], true, k + " must be on or Mix It Up never calls it"));
+    assert.doesNotThrow(() => JSON.parse(JSON.stringify(w)));
   });
-  atest("the settings start from the defaults in fields.json, with buttons left out, and the address wins", () => {
-    const f = { a: { type: "text", value: "x" }, b: { type: "checkbox", value: true }, go: { type: "button" }, g: { type: "section" } };
-    assert.deepStrictEqual(SB.fieldData(f, { a: "y", extra: 1 }), { a: "y", b: true, extra: 1 });
+  atest("no overlay's code has one of Mix It Up's own property names in curly brackets, which Mix It Up would replace", () => {
+    names.forEach(n => ["widget.html", "widget.css", "widget.js"].forEach(f => {
+      const bad = PK.clashes(fs.readFileSync(path.join(repoRoot, "overlays", n, "widget", f), "utf8"));
+      assert.deepStrictEqual(bad, [], n + "/" + f + " contains {" + bad.join("}, {") + "}");
+    }));
+    assert.deepStrictEqual(PK.clashes(fs.readFileSync(path.join(__dirname, "../shared/mixitup.js"), "utf8")), [], "and neither has the adapter");
   });
-  atest("the store keeps what an overlay remembers, and a store that fails loses nothing it was not given", async () => {
-    const mem = {}; const storage = { getItem: k => (k in mem ? mem[k] : null), setItem: (k, v) => { mem[k] = v; } };
-    const st = SB.makeStore(storage, "p:");
-    assert.strictEqual(await st.get("none"), null);
-    await st.set("k", { a: [1] }); assert.deepStrictEqual(await st.get("k"), { a: [1] }); assert.ok("p:k" in mem);
-    const broken = SB.makeStore({ getItem() { throw new Error("no"); }, setItem() { throw new Error("no"); } }, "p:");
-    assert.strictEqual(await broken.get("k"), null); await broken.set("k", 1);
-  });
-  atest("the dev page's address and the overlay's page agree about settings", () => {
-    const sandbox = { window: {}, localStorage: { getItem: () => null, setItem() {} }, location: { search: "" }, btoa: s => Buffer.from(s, "binary").toString("base64"), unescape, encodeURIComponent,
-      document: { readyState: "complete", getElementById: () => null, documentElement: { setAttribute() {}, removeAttribute() {}, getAttribute: () => null }, querySelectorAll: () => [] } };
-    sandbox.window = sandbox; vm.createContext(sandbox);
-    vm.runInContext(fs.readFileSync(path.join(__dirname, "../shared/copy-panel.js"), "utf8"), sandbox);
-    const changed = { title: "Caf\u00e9 \u2615", n: 3 };
-    const base = { host: "127.0.0.1", port: "8080", password: "", httpHost: "127.0.0.1", httpPort: "7474", mapPath: "overlays", website: "" };
-    const page = "https://example.github.io/stream-overlays/counter/dev/";
-    const address = sandbox.__streamerbotAddress(page, base, changed);
-    assert.ok(address.startsWith("http://127.0.0.1:7474/overlays/counter/streamerbot.html#s="), "Streamer.bot hosts it by default: " + address);
-    assert.deepStrictEqual(SB.readSettings(address.slice(address.indexOf("#"))), changed);
-    assert.strictEqual(sandbox.__streamerbotAddress("https://e.io/o/chat-feed/dev/index.html?x=1", Object.assign({}, base, { mapPath: "/my/overlays/", httpPort: "9000" }), {}), "http://127.0.0.1:9000/my/overlays/chat-feed/streamerbot.html", "the mapping path and port are the ones given");
-    assert.strictEqual(sandbox.__streamerbotAddress(page, Object.assign({}, base, { website: "1" }), {}), "https://example.github.io/stream-overlays/counter/streamerbot.html", "the website's copy can be asked for");
-    const remote = sandbox.__streamerbotAddress("https://e.io/o/counter/dev/index.html?x=1", Object.assign({}, base, { host: "10.0.0.5", port: "9000", password: "p w" }), {});
-    assert.strictEqual(remote, "http://127.0.0.1:7474/overlays/counter/streamerbot.html?host=10.0.0.5&port=9000&password=p%20w", "a Streamer.bot on another computer is reached by the page, not hosting it");
-    const f = { a: { type: "text", value: "x" }, b: { type: "text", value: "same" }, go: { type: "button" } };
-    assert.deepStrictEqual(JSON.parse(JSON.stringify(sandbox.__streamerbotChanged({ a: { type: "text", value: "y" }, b: { type: "text", value: "same" }, go: { type: "button" }, n: { type: "number", value: 1 } }, f))), { a: "y", n: 1 }, "only what differs, and never a button");
-  });
-  const outDir = fs.mkdtempSync(path.join(os.tmpdir(), "site-sb-"));
-  require("../../scripts/build-site").build(outDir);
-  atest("every overlay has a Streamer.bot page that is its own HTML, CSS and JavaScript with the adapter after them", () => {
+  const outDir2 = fs.mkdtempSync(path.join(os.tmpdir(), "site-miu-"));
+  require("../../scripts/build-site").build(outDir2);
+  atest("the site has every overlay packed for Mix It Up, and the adapter the dev pages pack it with", () => {
     names.forEach(n => {
-      const page = fs.readFileSync(path.join(outDir, n, "streamerbot.html"), "utf8");
-      const html = fs.readFileSync(path.join(repoRoot, "overlays", n, "widget", "widget.html"), "utf8");
-      assert.ok(page.indexOf(html) !== -1, n + " does not carry its widget.html");
-      assert.ok(page.indexOf('href="widget/widget.css"') !== -1, n + " has no stylesheet");
-      const a = page.indexOf('<script src="widget/widget.js">'), b = page.indexOf('<script src="../streamerbot.js">');
-      assert.ok(a !== -1 && b > a, n + " must load its widget before the adapter");
-      assert.ok(/html, body \{[^}]*height: 100%/.test(page), n + " has no page height: a browser source is not in a frame");
+      const w = JSON.parse(fs.readFileSync(path.join(outDir2, n, "mixitup.json"), "utf8"));
+      assert.strictEqual(w.Item.Type, 999, n);
+      assert.strictEqual(w.Item.HTML.indexOf(fs.readFileSync(path.join(repoRoot, "overlays", n, "widget", "widget.html"), "utf8")) !== -1, true, n + " does not carry its HTML");
+      assert.ok(w.Item.Javascript.indexOf(fs.readFileSync(path.join(repoRoot, "overlays", n, "widget", "widget.js"), "utf8")) !== -1, n + " does not carry its JavaScript");
     });
-    assert.strictEqual(fs.readFileSync(path.join(outDir, "streamerbot.js"), "utf8"), fs.readFileSync(path.join(__dirname, "../shared/streamerbot.js"), "utf8"));
-  });
-  atest("the landing page switches between StreamElements and Streamer.bot at the top, and remembers the choice", () => {
-    const index = fs.readFileSync(path.join(outDir, "index.html"), "utf8");
-    assert.ok(index.indexOf('data-platform="streamelements"') !== -1 && index.indexOf('data-platform="streamerbot"') !== -1, "no switch");
-    assert.ok(index.indexOf('class="platform"') < index.indexOf("<h1>"), "the switch is not at the top");
-    assert.ok(/class="steps se"/.test(index) && /class="steps sb"/.test(index), "both ways of setting up are not given");
-    assert.ok(/stream-overlays-platform/.test(index), "the choice is not kept");
-    assert.ok(/html:not\(\[data-platform="streamerbot"\]\) \.sb/.test(index), "Streamer.bot text is not hidden for StreamElements");
-    assert.ok(/stream-overlays-platform/.test(fs.readFileSync(path.join(__dirname, "../shared/copy-panel.js"), "utf8")), "the dev pages do not share the choice");
-  });
-  atest("Streamer.bot can host the overlays: one zip with every page, the adapter and the client, and none of the dev pages", () => {
-    const { readZip } = require("../../scripts/zip");
-    const top = require("../../scripts/build-site").ZIP_FOLDER + "/";
-    const files = readZip(fs.readFileSync(path.join(outDir, top.slice(0, -1) + ".zip")));
-    const get = n => files.find(f => f.name === top + n);
-    ["README.txt", "streamerbot.js", "streamerbot-client.js", "streamerbot-client.LICENSE"].forEach(f => assert.ok(get(f), "the zip has no " + f));
-    names.forEach(n => ["streamerbot.html", "widget/widget.js", "widget/widget.css", "widget/fields.json"].forEach(f => assert.ok(get(n + "/" + f), n + "/" + f + " is not in the zip")));
-    assert.ok(files.every(f => !/\/dev\//.test(f.name) && f.name.startsWith(top)), "only the pages, inside one folder");
-    const page = get("counter/streamerbot.html").data.toString();
-    assert.strictEqual(page, fs.readFileSync(path.join(outDir, "counter", "streamerbot.html"), "utf8"), "the page in the zip is the one on the site");
-    assert.ok(/\.\.\/streamerbot\.js/.test(page), "the page looks for the adapter one folder up, where the zip puts it");
-    assert.strictEqual(SB.CLIENT_FILE, "../streamerbot-client.js", "the adapter looks for the client beside itself first");
-    assert.ok(/MIT License/.test(get("streamerbot-client.LICENSE").data.toString()), "the client's licence travels with it");
-    assert.ok(/StreamerbotClient/.test(get("streamerbot-client.js").data.toString()), "the client is the real one");
-  });
-  atest("a zip is a zip: every file comes back out exactly, including names with accents", () => {
-    const { makeZip, readZip } = require("../../scripts/zip");
-    const files = [{ name: "a/café.txt", data: Buffer.from("héllo") }, { name: "empty.txt", data: Buffer.alloc(0) }, { name: "big.bin", data: Buffer.alloc(100000, 7) }];
-    const back = readZip(makeZip(files));
-    assert.deepStrictEqual(back.map(f => f.name), files.map(f => f.name));
-    back.forEach((f, i) => assert.ok(f.data.equals(files[i].data), f.name));
-    assert.ok(makeZip(files).equals(makeZip(files)), "the same files always make the same zip");
-  });
-  atest("the landing page tells a Streamer.bot streamer to download the zip and map it in the HTTP Server", () => {
-    const index = fs.readFileSync(path.join(outDir, "index.html"), "utf8");
-    assert.ok(/class="steps sb"[\s\S]*stream-overlays-streamerbot\.zip[\s\S]*HTTP Server/.test(index), "the steps do not start with the download and the HTTP Server");
+    assert.strictEqual(fs.readFileSync(path.join(outDir2, "mixitup.js"), "utf8"), fs.readFileSync(path.join(__dirname, "../shared/mixitup.js"), "utf8"));
   });
   atest("no overlay uses anything from StreamElements that the adapter does not provide", () => {
     const provided = ["message", "subscriber-latest", "cheer-latest", "tip-latest", "follower-latest", "raid-latest", "widget-button", "redemption-latest"];
     names.forEach(n => {
-      const dir = path.join(repoRoot, "overlays", n, "widget");
-      const src = fs.readFileSync(path.join(dir, "widget.js"), "utf8");
-      (src.match(/SE_API\.[a-zA-Z]+/g) || []).forEach(x => assert.ok(x === "SE_API.store", n + " uses " + x + " which Streamer.bot has no equivalent for"));
+      const src = fs.readFileSync(path.join(repoRoot, "overlays", n, "widget", "widget.js"), "utf8");
+      (src.match(/SE_API\.[a-zA-Z]+/g) || []).forEach(x => assert.ok(x === "SE_API.store", n + " uses " + x + " which Mix It Up has no equivalent for"));
       (src.match(/\b(?:d|obj)\.detail\.[a-zA-Z]+/g) || []).forEach(x => assert.ok(/(fieldData|listener|event)$/.test(x), n + " reads " + x + " from what StreamElements sends"));
       (src.match(/listener === "([a-z:-]+)"/g) || []).concat(src.match(/case "([a-z:-]+-latest)"/g) || []).forEach(x => {
         const l = /"([^"]+)"/.exec(x)[1]; assert.ok(provided.indexOf(l) !== -1, n + " listens for " + l);
       });
+    });
+  });
+  atest("the editor buttons and channel point rewards can be run from a Mix It Up command, as functions", () => {
+    const fired = [], log = {};
+    const el = { id: "", style: {}, textContent: "" };
+    const win = { __miu: { name: "counter", defaults: { debug: true }, buttons: [{ field: "btnPlus", label: "Add one" }, { field: "btnReset", label: "Reset" }], settings: "" },
+      CustomEvent: class { constructor(t, o) { this.type = t; this.detail = o && o.detail; } }, dispatchEvent(e) { fired.push(e); }, addEventListener() {}, setTimeout(f) { f(); },
+      localStorage: { getItem: () => null, setItem() {} }, console: { log() {} },
+      document: { readyState: "complete", body: { appendChild(e) { log.box = e; } }, getElementById: id => (id === "miu-log" ? log.box : null), createElement: () => el } };
+    win.window = win; vm.createContext(win);
+    vm.runInContext(fs.readFileSync(path.join(__dirname, "../shared/mixitup.js"), "utf8"), win);
+    const events = () => fired.filter(e => e.type === "onEventReceived").map(e => e.detail);
+    win.btnPlus(); win.PressButton("btnReset"); win.PressButton(["btnPlus"]); win.PressButton({ field: "btnReset" }); win.PressButton(); win.PressButton("");
+    assert.deepStrictEqual(events().map(e => e.listener + ":" + e.event.field), ["widget-button:btnPlus", "widget-button:btnReset", "widget-button:btnPlus", "widget-button:btnReset"], "each way of naming a button presses it, and nothing presses nothing");
+    fired.length = 0; win.Redemption("Hydrate"); win.Redemption({ title: "Stretch", name: "Sam", amount: 200 }); win.Redemption("Posture", "Kit", 50, "now"); win.Redemption("");
+    assert.deepStrictEqual(events().map(e => e.listener + ":" + e.event.title), ["redemption-latest:Hydrate", "redemption-latest:Stretch", "redemption-latest:Posture"]);
+    assert.deepStrictEqual([events()[1].event.name, events()[1].event.amount, events()[2].event.message], ["Sam", 200, "now"]);
+    fired.length = 0; win.Follow({ User: { DisplayName: "F" } });
+    assert.ok(log.box && /^Follow: /.test(log.box.textContent), "with debug on, what arrived is shown on the overlay");
+    assert.strictEqual(typeof win.UserBanned, "function", "events nothing uses are still functions Mix It Up can call");
+    assert.ok(MU.redemption("") === null && MU.redemption(null) === null);
+  });
+  atest("a packed widget lists the buttons of the overlay so commands can run them", () => {
+    const fields = { a: { type: "text", value: "x" }, btnOne: { type: "button", label: "Do one" }, btnTwo: { type: "button" } };
+    assert.deepStrictEqual(PK.buttonsOf(fields), [{ field: "btnOne", label: "Do one" }, { field: "btnTwo", label: "btnTwo" }]);
+    const w = PK.pack({ name: "x", html: "", css: "", js: "", adapter: "", fields, settings: {} });
+    assert.ok(w.Item.Javascript.indexOf('"buttons":[{"field":"btnOne","label":"Do one"},{"field":"btnTwo","label":"btnTwo"}]') !== -1);
+    names.forEach(n => {
+      const f = JSON.parse(fs.readFileSync(path.join(repoRoot, "overlays", n, "widget", "fields.json"), "utf8"));
+      const found = PK.buttonsOf(f).map(b => b.field), real = Object.keys(f).filter(k => f[k].type === "button");
+      assert.deepStrictEqual(found, real, n + " does not list every button");
+      found.forEach(b => assert.ok(/^[A-Za-z_][A-Za-z0-9_]*$/.test(b) && ["Follow", "Raid", "Donation", "Subscription", "TwitchBits", "ChatMessageReceived", "PressButton", "Redemption"].indexOf(b) === -1, n + ": " + b + " cannot be a function name of its own"));
+    });
+  });
+  atest("every button an overlay has is handled by it, so running it from Mix It Up does something", () => {
+    names.forEach(n => {
+      const f = JSON.parse(fs.readFileSync(path.join(repoRoot, "overlays", n, "widget", "fields.json"), "utf8"));
+      const src = fs.readFileSync(path.join(repoRoot, "overlays", n, "widget", "widget.js"), "utf8") + (fs.existsSync(path.join(repoRoot, "overlays", n, "src")) ? fs.readdirSync(path.join(repoRoot, "overlays", n, "src")).map(x => fs.readFileSync(path.join(repoRoot, "overlays", n, "src", x), "utf8")).join("") : "");
+      Object.keys(f).filter(k => f[k].type === "button").forEach(k => assert.ok(src.indexOf('"' + k + '"') !== -1 || src.indexOf("'" + k + "'") !== -1 || new RegExp('"' + k.replace(/[A-Z][a-z]+$/, "") ).test(src), n + " has a button " + k + " that its code never mentions"));
+    });
+  });
+  atest("the landing page offers Mix It Up beside StreamElements with its own steps, and every dev page can pack a widget", () => {
+    const index = fs.readFileSync(path.join(outDir2, "index.html"), "utf8");
+    assert.ok(index.indexOf('data-platform="mixitup"') !== -1 && /class="steps miu"/.test(index) && /html:not\(\[data-platform="mixitup"\]\) \.miu/.test(index), "no Mix It Up choice");
+    assert.ok(index.indexOf('class="platform"') < index.indexOf("<h1>"), "the switch is not at the top");
+    assert.ok(/class="steps se"/.test(index) && /stream-overlays-platform/.test(index), "StreamElements steps or the kept choice are missing");
+    assert.ok(/stream-overlays-platform/.test(fs.readFileSync(path.join(__dirname, "../shared/copy-panel.js"), "utf8")), "the dev pages do not share the choice");
+    assert.ok(!/streamer\.?bot/i.test(index), "the landing page still mentions Streamer.bot");
+    names.forEach(n => {
+      const dev = path.join(repoRoot, "overlays", n, "dev");
+      assert.ok(fs.readFileSync(path.join(dev, "index.html"), "utf8").indexOf('<script src="mixitup-pack.js"></script>') !== -1, n + " does not load the packer");
+      assert.strictEqual(fs.readFileSync(path.join(dev, "mixitup-pack.js"), "utf8"), fs.readFileSync(path.join(__dirname, "../shared/mixitup-pack.js"), "utf8"), n + " has a different packer");
     });
   });
 }

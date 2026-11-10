@@ -151,13 +151,20 @@ function sync(dir, opts) {
   if (fs.existsSync(path.join(dir, "dev/index.html"))) write("dev/copy-panel.js", read(path.join(__dirname, "..", "shared", "copy-panel.js")), "the shared copy panel");
   if (fs.existsSync(path.join(dir, "dev/index.html"))) write("dev/design-panel.js", read(path.join(__dirname, "..", "shared", "design-panel.js")), "the shared design panel");
   if (fs.existsSync(path.join(dir, "dev/index.html"))) write("dev/snapshot-panel.js", read(path.join(__dirname, "..", "shared", "snapshot-panel.js")), "the shared troubleshooting import panel");
-  // The dev page has to load it, straight after the design panel.
+  if (fs.existsSync(path.join(dir, "dev/index.html"))) write("dev/mixitup-pack.js", read(path.join(__dirname, "..", "shared", "mixitup-pack.js")), "the shared Mix It Up packer");
+  // The dev page has to load them, straight after the design panel: the troubleshooting import panel, then the Mix It Up packer.
   if (fs.existsSync(path.join(dir, "dev/index.html"))) {
-    const html = read(path.join(dir, "dev/index.html")), tag = '<script src="snapshot-panel.js"></script>', after = '<script src="design-panel.js"></script>';
-    if (html.indexOf(tag) === -1 && html.indexOf(after) !== -1) {
-      const indent = (/^([ \t]*)<script src="design-panel\.js">/m.exec(html) || ["", "  "])[1];
-      write("dev/index.html", html.replace(after, after + "\n" + indent + tag), "the troubleshooting import panel's script tag");
-    }
+    let html = read(path.join(dir, "dev/index.html")), edited = false;
+    [["snapshot-panel.js", "design-panel.js", "the troubleshooting import panel's script tag"], ["mixitup-pack.js", "snapshot-panel.js", "the Mix It Up packer's script tag"]].forEach(([file, afterFile, what]) => {
+      const tag = '<script src="' + file + '"></script>', after = '<script src="' + afterFile + '"></script>';
+      if (html.indexOf(tag) === -1 && html.indexOf(after) !== -1) {
+        const indent = (new RegExp("^([ \\t]*)<script src=\"" + afterFile.replace(".", "\\.") + "\">", "m").exec(html) || ["", "  "])[1];
+        html = html.replace(after, after + "\n" + indent + tag); edited = true;
+        if (!opts.check) { /* written below */ } 
+        changes.push("dev/index.html: " + what);
+      }
+    });
+    if (edited && !opts.check) fs.writeFileSync(path.join(dir, "dev/index.html"), html);
   }
   if (fs.existsSync(path.join(dir, "dev/index.html"))) write("dev/box-size.js", read(path.join(__dirname, "..", "shared", "box-size.js")), "the shared box-size control");
   if (fs.existsSync(path.join(dir, "dev/index.html"))) write("dev/dev.css", read(path.join(__dirname, "..", "shared", "dev.css")), "the shared dev page stylesheet");

@@ -145,9 +145,9 @@ A StreamElements widget can read chat but cannot write to it, so `!squats` shows
 
 A recurring reminder such as "It's time for 20 squats!" also comes from the chatbot, as a **Timer** under Chatbot, Timers, with an interval of 60 minutes. A Timer fires on an interval from when the bot is active, so it lands roughly every hour of stream rather than on the clock hour.
 
-## Using it with Streamer.bot
+## Using it with Mix It Up
 
-This overlay runs unchanged with Streamer.bot. Choose Streamer.bot at the top of [the website](https://jordan-lee-code.github.io/stream-overlays/), set the overlay up, and copy its address into an OBS Browser source. The steps, and what differs from StreamElements, are in the [root README](../../README.md#using-an-overlay-with-streamerbot).
+This overlay runs unchanged with Mix It Up. Choose Mix It Up at the top of [the website](https://jordan-lee-code.github.io/stream-overlays/) and set the overlay up there. The steps, and what differs from StreamElements, are in the [root README](../../README.md#using-an-overlay-with-mix-it-up).
 
 ## Local development
 

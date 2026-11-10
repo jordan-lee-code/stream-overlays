@@ -193,9 +193,9 @@ StreamElements takes one HTML, one CSS, one JavaScript and one fields file per w
 
 The goals' settings keep their names, so a style preset chosen once styles both halves. `widget/` is generated and committed, so you can paste it straight into StreamElements without building anything.
 
-## Using it with Streamer.bot
+## Using it with Mix It Up
 
-This overlay runs unchanged with Streamer.bot. Choose Streamer.bot at the top of [the website](https://jordan-lee-code.github.io/stream-overlays/), set the overlay up, and copy its address into an OBS Browser source. The steps, and what differs from StreamElements, are in the [root README](../../README.md#using-an-overlay-with-streamerbot).
+This overlay runs unchanged with Mix It Up. Choose Mix It Up at the top of [the website](https://jordan-lee-code.github.io/stream-overlays/) and set the overlay up there. The steps, and what differs from StreamElements, are in the [root README](../../README.md#using-an-overlay-with-mix-it-up).
 
 ## Local development
 
