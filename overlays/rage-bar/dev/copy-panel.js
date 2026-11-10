@@ -294,7 +294,7 @@
     }).catch(function () { how.textContent = "The list of buttons could not be loaded."; });
     var red = document.createElement("p");
     red.className = "hint";
-    red.textContent = "A channel point reward, for an overlay that reacts to them: run the function Redemption with the reward's title as its parameter.";
+    red.textContent = "A channel point reward, for an overlay that reacts to them: run the function Redemption with the reward's title as its parameter. Bits spent through Tangia, if a webhook tells Mix It Up the amount: run TangiaBits with the amount as its parameter.";
     buttons.appendChild(red);
     panel.appendChild(buttons);
 

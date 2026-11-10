@@ -623,6 +623,8 @@ asection("Mix It Up");
     assert.ok(log.box && /^Follow: /.test(log.box.textContent), "with debug on, what arrived is shown on the overlay");
     assert.strictEqual(typeof win.UserBanned, "function", "events nothing uses are still functions Mix It Up can call");
     assert.ok(MU.redemption("") === null && MU.redemption(null) === null);
+    fired.length = 0; win.TangiaBits(250); win.TangiaBits("1,000", "Ann"); win.TangiaBits({ bits: 40, name: "Bo" }); win.TangiaBits([75, "Cy"]); win.TangiaBits(0); win.TangiaBits("nope"); win.TangiaBits();
+    assert.deepStrictEqual(events().map(e => e.listener + ":" + e.event.amount + ":" + e.event.name), ["cheer-latest:250:Tangia", "cheer-latest:1000:Ann", "cheer-latest:40:Bo", "cheer-latest:75:Cy"], "bits from Tangia count as bits, in whichever form the amount arrives, and nothing counts nothing");
   });
   atest("a packed widget lists the buttons of the overlay so commands can run them", () => {
     const fields = { a: { type: "text", value: "x" }, btnOne: { type: "button", label: "Do one" }, btnTwo: { type: "button" } };

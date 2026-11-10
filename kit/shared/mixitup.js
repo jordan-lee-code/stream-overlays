@@ -141,6 +141,16 @@
     return { listener: "redemption-latest", event: { type: "redemption", name: str(pick(o, ["name", "Username", "User.DisplayName", "user"]), ""), title: title, item: title, amount: num(pick(o, ["amount", "Amount", "cost", "Cost"]), 0), message: str(pick(o, ["message", "Message", "input", "UserInput"]), "") } };
   }
 
+  // Tangia's bits do not reach any overlay by themselves, and nothing documented sends them. If something does send Mix It Up a webhook
+  // with the amount, a command can run this with it, through the Overlay action's Run Widget Function, and it counts as bits do. The
+  // amount can be a lone value, the first of a list, or in an object, with the name of who spent them alongside.
+  function tangiaBits(a, b) {
+    var o = a && typeof a === "object" && !Array.isArray(a) ? a : { amount: Array.isArray(a) ? a[0] : a, name: Array.isArray(a) ? a[1] : b };
+    var amount = Math.floor(num(String(pick(o, ["amount", "Amount", "bits", "Bits"])).replace(/,/g, ""), 0));
+    if (!(amount > 0)) return null;
+    return { listener: "cheer-latest", event: { type: "cheer", name: str(pick(o, ["name", "Name", "user", "User", "Username"]), "Tangia"), amount: amount, message: "", source: "tangia" } };
+  }
+
   /** The StreamElements event for what a Mix It Up function was called with, as { listener, event }, or null when it has no use. */
   function translate(name, data) {
     var f = TRANSLATE[name];
@@ -185,7 +195,7 @@
     root.dispatchEvent(ev);
   }
 
-  var api = { redemption: redemption, translate: translate, readSettings: readSettings, fieldData: fieldData, makeStore: makeStore, badgesOf: badgesOf, messageOf: messageOf, tierOf: tierOf, functions: Object.keys(TRANSLATE) };
+  var api = { tangiaBits: tangiaBits, redemption: redemption, translate: translate, readSettings: readSettings, fieldData: fieldData, makeStore: makeStore, badgesOf: badgesOf, messageOf: messageOf, tierOf: tierOf, functions: Object.keys(TRANSLATE) };
   root.MixItUpAdapter = api;
   if (typeof module !== "undefined" && module.exports) module.exports = api;
 
@@ -233,6 +243,11 @@
     };
     root.PressButton = function (x) { press(fieldOf(x)); };
     (cfg.buttons || []).forEach(function (b) { root[b.field] = function () { press(b.field); }; });
+    root.TangiaBits = function (a, b) {
+      if (debug && root.console) root.console.log("[mixitup] TangiaBits", a, b);
+      var out = tangiaBits(a, b);
+      if (out) fire("onEventReceived", { listener: out.listener, event: out.event });
+    };
     root.Redemption = function (a, b, c, d) {
       if (debug && root.console) root.console.log("[mixitup] Redemption", a, b, c, d);
       var out = redemption(a, b, c, d);

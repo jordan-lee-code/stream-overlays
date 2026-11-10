@@ -72,12 +72,14 @@ How each part of StreamElements is matched:
 | Subs, gifts, bits, tips, follows and raids | The same events, through the functions Mix It Up calls. |
 | The buttons in the editor, such as Manual controls | Each button is a function a Mix It Up command can run: add an **Overlay** action, choose **Run Widget Function**, pick the widget and give the button's name, such as `btnPlus`. `PressButton` takes the name as a parameter instead. The overlay's page lists every button. |
 | Channel point rewards (Rage Bar) | Run the function `Redemption` from a Mix It Up channel point command, with the reward's title as its parameter. |
+| Bits spent through Tangia | Run the function `TangiaBits` with the amount as its parameter, from a command that Mix It Up's own webhook triggers (see below). It counts as bits do on every overlay that counts bits. StreamElements has no equivalent. |
 | The debug setting, which logs to a console | The same setting shows what Mix It Up sent on the overlay itself, newest first, since a browser source has no console. |
 | What an overlay remembers | Kept in the page's own storage, as in a browser source. |
 
 What is not the same:
 
 - **Only chat is known for certain.** Mix It Up's documentation does not list what is in its other events, so a follow, raid, sub, gift, bits or donation is read by trying the names a field is likely to have. If one does not show, turn on the overlay's debug setting, trigger it, and the overlay will show what Mix It Up sent, so the name can be added.
+- **Tangia's bits** only work if something tells Mix It Up the amount. Mix It Up can receive a webhook (Services, then Webhooks) and turn its JSON into a command, which can run `TangiaBits`. I could not find anything of Tangia's that sends such a webhook or carries the amount, so this is ready for when something does, and not something that works on its own today.
 - **YouTube and Kick events** are not used. The overlays are written around Twitch events.
 - **Whether Mix It Up takes the pasted widget** is not something its documentation says. If it does not, make a Custom widget and paste the three boxes instead.
 
