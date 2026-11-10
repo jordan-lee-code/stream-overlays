@@ -34,6 +34,18 @@ const HOUR = 3600000;
   ok(count("subs") === "10 / 50", "sub points count tier 2 as 2 and tier 3 as 6 (1 + 2 + 6 + 1) (" + count("subs") + ")");
   bomb(5); ok(count("subs") === "15 / 50", "and a bomb counts each gift as a tier 1 sub");
 
+  section("Blerp");
+  await load();
+  const say = (text, nick) => env.ev("message", { data: { text, nick: nick.toLowerCase(), displayName: nick, badges: [] } });
+  say("blerp: Borgdorf shared 33 Max Verstappen for 100 bits (sound)", "blerp"); ok(count("bits") === "100 / 5,000", "a Blerp message counts the bits it names, not the other number in it (" + count("bits") + ")");
+  say("blerp: Borgdorf shared Rick for 1,250 bits", "Blerp"); ok(count("bits") === "1,350 / 5,000", "a comma in the amount is fine, and the name is not case sensitive (" + count("bits") + ")");
+  say("blerp: Borgdorf shared 33 Max Verstappen for 500 bits (sound)", "Borgdorf"); say("blerp: Someone shared a sound for 500 bits", "viewer"); ok(count("bits") === "1,350 / 5,000", "the same words from a viewer count nothing");
+  say("blerp: Borgdorf shared a sound", "blerp"); ok(count("bits") === "1,350 / 5,000", "a Blerp message that names no bits counts nothing");
+  say("TangiaBot: Borgdorf sent \"Dance\" for 200 bits", "TangiaBot"); ok(count("bits") === "1,350 / 5,000", "Tangia is not read from chat: its message counts nothing");
+  await load({ blerpName: "MyBlerp" }); say("blerp: x shared y for 100 bits", "blerp"); say("x for 100 bits", "MyBlerp"); ok(count("bits") === "100 / 5,000", "the account name is a setting (" + count("bits") + ")");
+  await load({ blerpBits: false }); say("blerp: x shared y for 100 bits", "blerp"); ok(count("bits") === "0 / 5,000", "and it can be switched off");
+  await load(); env.boss("!goals pause"); say("blerp: x shared y for 100 bits", "blerp"); ok(count("bits") === "0 / 5,000", "paused, they are not counted, as a real cheer is not");
+
   section("reaching a goal");
   await load({ targetSubs: 3, raiseSubs: 0 });
   sub({ amount: 1 }); sub({ amount: 1 }); sub({ amount: 1 });

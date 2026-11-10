@@ -113,9 +113,9 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | Decorations | The shape, where they go, how many, how big, how solid (the Decoration opacity, which is its own setting and not the panel's, and 1 is fully solid), their colour, and how they move. Twinkling dips a little and drifting fades in and out, so choose Stay still, or turn Animate off, to keep them fully solid. |
 | Troubleshooting | A debug line in the browser-source console saying how many sites are shown. |
 
-## Using it with Streamer.bot
+## Using it with Mix It Up
 
-This overlay runs unchanged with Streamer.bot. Choose Streamer.bot at the top of [the website](https://jordan-lee-code.github.io/stream-overlays/), set the overlay up, and copy its address into an OBS Browser source. The steps, and what differs from StreamElements, are in the [root README](../../README.md#using-an-overlay-with-streamerbot).
+This overlay runs unchanged with Mix It Up. Choose Mix It Up at the top of [the website](https://jordan-lee-code.github.io/stream-overlays/) and set the overlay up there. The steps, and what differs from StreamElements, are in the [root README](../../README.md#using-an-overlay-with-mix-it-up).
 
 ## Local development
 

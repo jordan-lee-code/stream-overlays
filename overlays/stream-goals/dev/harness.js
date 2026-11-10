@@ -74,6 +74,19 @@
           }
         },
         {
+          "label": "Blerp 100 bits",
+          "kind": "se",
+          "listener": "message",
+          "event": {
+            "data": {
+              "text": "blerp: {who} shared 33 Max Verstappen for 100 bits (sound)",
+              "nick": "blerp",
+              "displayName": "blerp",
+              "badges": []
+            }
+          }
+        },
+        {
           "label": "5 tip",
           "kind": "se",
           "listener": "tip-latest",

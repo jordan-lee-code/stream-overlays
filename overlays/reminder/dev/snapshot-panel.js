@@ -56,7 +56,6 @@
   function overlayName() { try { return typeof window.__getSnapshot === "function" ? window.__getSnapshot().overlay : ""; } catch (e) { return ""; } }
 
   // What happens when something is pasted: it is read and loaded, and what happened is said in a sentence, whether it worked or not.
-  // The Streamer.bot panel at the top of the page uses it too, so a streamer can bring their StreamElements settings across there.
   function importText(text) {
     var full = typeof window.__applySnapshot === "function" && typeof window.__getSnapshot === "function";
     try {

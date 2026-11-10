@@ -411,6 +411,8 @@
     c.base = { subs: Math.max(1, num(f.targetSubs, 50)), bits: Math.max(1, num(f.targetBits, 5000)), tips: Math.max(1, num(f.targetTips, 50)), follows: Math.max(1, num(f.targetFollows, 100)) };
     c.raise = { subs: Math.max(0, num(f.raiseSubs, 25)), bits: Math.max(0, num(f.raiseBits, 2500)), tips: Math.max(0, num(f.raiseTips, 0)), follows: Math.max(0, num(f.raiseFollows, 50)) };
     c.subPoints = bool(f.subPoints, false);
+    c.blerpBits = bool(f.blerpBits, true);
+    c.blerpName = txt(f.blerpName, "blerp");
     c.format = str(f.format, "{n} / {target}");
     c.currency = txt(f.currency, "£");
     c.currencyAfter = bool(f.currencyAfter, false);
@@ -502,6 +504,19 @@
     count("subs", each);
   }
   function onCheer(event) { count("bits", Math.floor(num(event && event.amount, 0))); }
+  // Blerp takes bits through a Twitch extension, which StreamElements does not see as a cheer, so the only sign of them is the message
+  // Blerp says in chat, which names the bits ("... for 100 bits (sound)"). A message only counts when it is from Blerp's own account, so a
+  // viewer typing the same words adds nothing.
+  function sameName(a, b) { return String(a || "").replace(/^@/, "").toLowerCase() === String(b || "").replace(/^@/, "").toLowerCase() && String(b || "") !== ""; }
+  function onBlerpMessage(data) {
+    if (!cfg.blerpBits || !data) return;
+    var from = [data.nick, data.displayName, data.username], isBlerp = false;
+    for (var i = 0; i < from.length; i++) if (sameName(from[i], cfg.blerpName)) isBlerp = true;
+    if (!isBlerp) return;
+    var m = /(\d[\d,]*)\s*bits?\b/i.exec(String(data.text || ""));
+    var bits = m ? Math.floor(num(m[1].replace(/,/g, ""), 0)) : 0;
+    if (bits > 0) count("bits", bits);
+  }
   function onTip(event) { count("tips", Math.round(num(event && event.amount, 0) * 100) / 100); }
 
   // ---------------------------------------------------------------------------
@@ -749,7 +764,7 @@
     var ev = d.event || {};
     debugLog(cfg, "stream-goals", d.listener, ev);
     switch (d.listener) {
-      case "message": handleChat(ev.data); break;
+      case "message": onBlerpMessage(ev.data); handleChat(ev.data); break;
       case "subscriber-latest": onSub(ev); break;
       case "cheer-latest": onCheer(ev); break;
       case "tip-latest": onTip(ev); break;

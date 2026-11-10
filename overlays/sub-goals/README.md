@@ -187,9 +187,9 @@ window.addEventListener("subgoals:counted", function (e) {
 
 Nothing is announced while tracking is stopped, for subs or bits the settings do not count, or for manual corrections such as `!incentive subs +5`. The [Subathon Overlay](../subathon) is built this way: it embeds this widget unchanged and adds time to its clock from these announcements.
 
-## Using it with Streamer.bot
+## Using it with Mix It Up
 
-This overlay runs unchanged with Streamer.bot. Choose Streamer.bot at the top of [the website](https://jordan-lee-code.github.io/stream-overlays/), set the overlay up, and copy its address into an OBS Browser source. The steps, and what differs from StreamElements, are in the [root README](../../README.md#using-an-overlay-with-streamerbot).
+This overlay runs unchanged with Mix It Up. Choose Mix It Up at the top of [the website](https://jordan-lee-code.github.io/stream-overlays/) and set the overlay up there. The steps, and what differs from StreamElements, are in the [root README](../../README.md#using-an-overlay-with-mix-it-up).
 
 ## Local development
 

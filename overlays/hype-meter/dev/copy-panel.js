@@ -1,8 +1,7 @@
 /* Copyright (c) 2026 Jordan Lee (https://ko-fi.com/journeyingjordan). Released under the MIT licence: this notice must be kept in copies and substantial portions of the code. See LICENSE. */
 /* The panel at the top of every overlay's dev page that copies the overlay's files, one button for
  * each tab of StreamElements' custom widget editor, so nobody has to download the repository.
- * With Streamer.bot chosen at the top of the site, it instead builds the address of the overlay's
- * browser source for OBS, with the settings from this page in it.
+ * With Mix It Up chosen at the top of the site, it instead packs the overlay into a widget for Mix It Up.
  *
  * The page's own script makes the current settings available as `window.__exportFields()`, which
  * returns fields.json with the starting value of every setting filled in as it is configured here.
@@ -40,7 +39,10 @@
     "html:not([data-theme=\"light\"]) #copy-panel .copy-btn.done { background: #1d3a27; border-color: #3f8a57; }" +
     "html:not([data-theme=\"light\"]) #copy-panel .copy-btn.failed { background: #432326; border-color: #a55a5a; }" +
     "html:not([data-theme=\"light\"]) #copy-panel textarea { background: #15121d; color: inherit; border: 1px solid #443a63; }" +
-    "#theme-toggle, #platform-toggle { float: right; margin: 0 0 6px 8px; padding: 2px 9px; font-size: 11px; }";
+    "#theme-toggle { float: right; margin: 0 0 6px 8px; padding: 2px 9px; font-size: 11px; }" +
+    "#platform-toggle { display: flex; flex-wrap: wrap; gap: 4px; margin: 0 0 8px; }" +
+    "#platform-toggle button { margin: 0; padding: 2px 9px; font-size: 11px; }" +
+    "#platform-toggle button[aria-pressed=\"true\"] { background: #6a4cb8; border-color: #6a4cb8; color: #fff; }";
 
   var THEME_KEY = "stream-overlays-theme";
   function storedTheme() { try { return localStorage.getItem(THEME_KEY) === "light" ? "light" : "dark"; } catch (e) { return "dark"; } }
@@ -53,27 +55,16 @@
   // The dev page's own stylesheet link is cached just as long, so it is pointed at the file again with a changing address.
   Array.prototype.forEach.call(document.querySelectorAll('link[rel="stylesheet"][href$="widget.css"]'), function (l) { l.href = "../widget/widget.css?v=" + Date.now(); });
 
-  var PLATFORM_KEY = "stream-overlays-platform", CONNECTION_KEY = "stream-overlays-streamerbot-connection";
+  var PLATFORM_KEY = "stream-overlays-platform";
   function platform() {
     try {
-      var q = /[?&]platform=(streamerbot|streamelements)/.exec(location.search);
+      var q = /[?&]platform=(streamelements|mixitup)/.exec(location.search);
       if (q) { localStorage.setItem(PLATFORM_KEY, q[1]); return q[1]; }
-      return localStorage.getItem(PLATFORM_KEY) === "streamerbot" ? "streamerbot" : "streamelements";
+      return localStorage.getItem(PLATFORM_KEY) === "mixitup" ? "mixitup" : "streamelements";
     } catch (e) { return "streamelements"; }
   }
   function setPlatform(p) { try { localStorage.setItem(PLATFORM_KEY, p); } catch (e) {} }
-  function connection() {
-    // host and port are Streamer.bot's WebSocket server, which the overlay talks to. httpHost, httpPort and mapPath are where Streamer.bot's
-    // HTTP server hosts the overlays, and website is for someone who would rather OBS loaded them from the website.
-    var c = { host: "127.0.0.1", port: "8080", password: "", httpHost: "127.0.0.1", httpPort: "7474", mapPath: "overlays", website: "" };
-    try { var v = JSON.parse(localStorage.getItem(CONNECTION_KEY) || "{}"); Object.keys(c).forEach(function (k) { if (typeof v[k] === "string") c[k] = v[k]; }); } catch (e) {}
-    return c;
-  }
-  function saveConnection(c) { try { localStorage.setItem(CONNECTION_KEY, JSON.stringify(c)); } catch (e) {} }
-
-  // The settings go in the address after a #, as base64url JSON, and only the ones that differ from the overlay's defaults, so the
-  // address stays as short as it can. streamerbot.js reads them back; the two must agree, and a test checks that they do.
-  function textToB64url(t) { return btoa(unescape(encodeURIComponent(t))).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, ""); }
+  // Only the settings that differ from the overlay's defaults are packed, so what travels stays as short as it can.
   function changedSettings(current, defaults) {
     var out = {};
     Object.keys(current || {}).forEach(function (k) {
@@ -83,25 +74,7 @@
     });
     return out;
   }
-  /** The address of this overlay's Streamer.bot page, with the connection and the changed settings in it. The page is the one Streamer.bot
-   *  hosts from the streamer's own computer, unless they asked for the website's copy. */
-  function browserSourceAddress(pageUrl, conn, changed) {
-    var site = String(pageUrl).replace(/[?#].*$/, "").replace(/dev\/[^\/]*$/, "");
-    var u;
-    if (conn.website === "1") u = site + "streamerbot.html";
-    else {
-      var name = /([^\/]+)\/dev\/[^\/]*$/.exec(String(pageUrl).replace(/[?#].*$/, ""));
-      var path = String(conn.mapPath || "overlays").replace(/^\/+|\/+$/g, "");
-      u = "http://" + (conn.httpHost || "127.0.0.1") + ":" + (conn.httpPort || "7474") + "/" + (path ? path + "/" : "") + (name ? name[1] + "/" : "") + "streamerbot.html";
-    }
-    var q = [];
-    if (conn.host && conn.host !== "127.0.0.1") q.push("host=" + encodeURIComponent(conn.host));
-    if (conn.port && String(conn.port) !== "8080") q.push("port=" + encodeURIComponent(conn.port));
-    if (conn.password) q.push("password=" + encodeURIComponent(conn.password));
-    return u + (q.length ? "?" + q.join("&") : "") + (Object.keys(changed || {}).length ? "#s=" + textToB64url(JSON.stringify(changed)) : "");
-  }
-  window.__streamerbotAddress = browserSourceAddress;
-  window.__streamerbotChanged = changedSettings;
+  window.__changedSettings = changedSettings;
 
   function fetchText(url) {
     // Asked afresh each time, since a browser may otherwise hand back a widget.js from hours ago, and the copy that goes into StreamElements
@@ -209,45 +182,57 @@
 
 
   // The same choice as at the top of the landing page, so a visitor can change their mind here.
+  var PLATFORMS = [["streamelements", "StreamElements"], ["mixitup", "Mix It Up"]];
   function platformSwitch() {
-    var b = document.createElement("button");
-    b.id = "platform-toggle";
-    b.type = "button";
-    b.textContent = platform() === "streamerbot" ? "Use StreamElements instead" : "Use Streamer.bot instead";
-    b.addEventListener("click", function () {
-      setPlatform(platform() === "streamerbot" ? "streamelements" : "streamerbot");
-      var old = document.getElementById("copy-panel");
-      if (old && old.parentNode) old.parentNode.removeChild(old);
-      place();
+    var wrap = document.createElement("div");
+    wrap.id = "platform-toggle";
+    wrap.setAttribute("role", "group");
+    wrap.setAttribute("aria-label", "Which tool do you stream with?");
+    PLATFORMS.forEach(function (p) {
+      var b = document.createElement("button");
+      b.type = "button";
+      b.textContent = p[1];
+      b.setAttribute("aria-pressed", String(platform() === p[0]));
+      b.addEventListener("click", function () {
+        setPlatform(p[0]);
+        var old = document.getElementById("copy-panel");
+        if (old && old.parentNode) old.parentNode.removeChild(old);
+        place();
+      });
+      wrap.appendChild(b);
     });
-    return b;
+    return wrap;
   }
 
-  function buildStreamerbot() {
+  // ---- Mix It Up ---------------------------------------------------------------------------------------------------------
+
+  // The widget is packed here, in the page, from the overlay's own files and the settings as they are set up below, and never leaves the
+  // computer until it is pasted into Mix It Up.
+  function mixItUpWidget() {
+    if (!window.MixItUpPack) return Promise.reject(new Error("The packer did not load."));
+    var name = (/([^\/]+)\/dev\/[^\/]*$/.exec(location.pathname) || [])[1] || "overlay";
+    var h = document.querySelector("#controls h1");
+    return Promise.all([fetchText("../widget/widget.html"), fetchText("../widget/widget.css"), fetchText("../widget/widget.js"), fetchText("../../mixitup.js"),
+      fetch("../widget/fields.json", { cache: "no-cache" }).then(function (r) { return r.json(); })]).then(function (p) {
+      var current = JSON.parse(window.__exportFields());
+      return window.MixItUpPack.pack({ name: name, title: h ? h.textContent.replace(/\s+Overlay$/, "") : name, html: p[0], css: p[1], js: p[2], adapter: p[3], fields: p[4], settings: changedSettings(current, p[4]) });
+    });
+  }
+
+  function buildMixItUp() {
     var panel = document.createElement("div");
     panel.id = "copy-panel";
     var style = document.createElement("style");
     style.textContent = STYLE;
     panel.appendChild(style);
-
     var h = document.createElement("h2");
-    h.textContent = "Use with Streamer.bot";
+    h.textContent = "Use with Mix It Up";
     panel.appendChild(h);
-
-    // Streamer.bot hosts the overlay pages itself, from a folder on the streamer's computer, so the stream does not depend on this website.
     var steps = document.createElement("ol");
-    var first = document.createElement("li");
-    first.appendChild(document.createTextNode("Download the overlays and unzip them somewhere you will keep them: "));
-    var dl = document.createElement("a");
-    dl.href = "../../stream-overlays-streamerbot.zip";
-    dl.textContent = "stream-overlays-streamerbot.zip";
-    first.appendChild(dl);
-    first.appendChild(document.createTextNode(". Once is enough for every overlay."));
-    steps.appendChild(first);
-    ["In Streamer.bot, open Servers/Clients, then HTTP Server. Add a mapping with Path set to the word below and Folder set to the folder you unzipped. Tick Auto Start and press Start Server.",
-     "Open Servers/Clients, then WebSocket Server, tick Auto Start and press Start Server. Connect your Twitch account under Platforms.",
-     "Set the overlay up below. Everything on this page, including the style preset, goes into the address.",
-     "Press the button to copy the address. In OBS, add a Browser source, paste it into URL, and give it the width and height of the box you want. Leave Shutdown source when not visible unticked."].forEach(function (t) {
+    ["Set the overlay up below. Everything on this page, including the style preset, goes into the widget.",
+     "Press Copy the widget. In Mix It Up, open Overlay Widgets and bring it in with the same paste or import you would use for a widget you had copied out of Mix It Up. Or make a new Custom widget and paste the three code boxes below into its HTML, CSS and JavaScript.",
+     "Edit the widget and set Display Option to Single Widget URL, save it, then click the link icon on the widget to get its address. Use one address for each overlay.",
+     "In OBS, add a Browser source, paste that address into URL, and give it the width and height of the box you want."].forEach(function (t) {
       var li = document.createElement("li");
       li.textContent = t;
       steps.appendChild(li);
@@ -278,81 +263,72 @@
       if (typeof window.__importFromStreamElements !== "function") { bringMsg.textContent = "This page is not ready to load settings yet."; return; }
       bringMsg.textContent = window.__importFromStreamElements(bringBox.value);
     });
-    bring.appendChild(bringTitle);
-    bring.appendChild(bringHint);
-    bring.appendChild(bringBox);
-    bring.appendChild(bringGo);
-    bring.appendChild(bringMsg);
+    [bringTitle, bringHint, bringBox, bringGo, bringMsg].forEach(function (e) { bring.appendChild(e); });
     panel.appendChild(bring);
 
-    var conn = connection(), row = document.createElement("div");
-    row.className = "copy-grid";
-    function field(label, key, type, hint) {
-      var l = document.createElement("label"), i = document.createElement("input");
-      l.textContent = label;
-      l.style.cssText = "display:block;font-size:12px";
-      i.type = type; i.value = conn[key]; i.placeholder = hint || "";
-      i.style.cssText = "display:block;width:100%;box-sizing:border-box";
-      i.addEventListener("input", function () { conn[key] = i.value; saveConnection(conn); });
-      l.appendChild(i);
-      return l;
-    }
-    row.appendChild(field("HTTP Server mapping Path", "mapPath", "text", "overlays"));
-    row.appendChild(field("HTTP Server port", "httpPort", "text", "7474"));
-    row.appendChild(field("WebSocket address", "host", "text", "127.0.0.1"));
-    row.appendChild(field("WebSocket port", "port", "text", "8080"));
-    panel.appendChild(row);
-    var pw = field("Password (only if you set one in Streamer.bot)", "password", "password", "");
-    pw.style.marginTop = "6px";
-    panel.appendChild(pw);
+    // StreamElements has buttons in a widget's editor, and Mix It Up has none, so each is a function a Mix It Up command can run: an
+    // Overlay action with Run Widget Function set to the function's name. They are listed here, with what each does.
+    var buttons = document.createElement("details");
+    buttons.id = "miu-buttons";
+    buttons.style.cssText = "margin:0 0 10px;font-size:12px";
+    var sum = document.createElement("summary");
+    sum.textContent = "Buttons and channel point rewards: run them from a Mix It Up command";
+    buttons.appendChild(sum);
+    var how = document.createElement("p");
+    how.className = "hint";
+    how.textContent = "In a Mix It Up command add an Overlay action, choose Run Widget Function, pick this widget, and give it one of these function names. PressButton also takes the name as a parameter.";
+    buttons.appendChild(how);
+    var list = document.createElement("ul");
+    list.style.cssText = "margin:4px 0;padding-left:18px";
+    buttons.appendChild(list);
+    fetch("../widget/fields.json", { cache: "no-cache" }).then(function (r) { return r.json(); }).then(function (fields) {
+      Object.keys(fields).forEach(function (k) {
+        if (!fields[k] || fields[k].type !== "button") return;
+        var li = document.createElement("li"), code = document.createElement("code");
+        code.textContent = k + "()";
+        li.appendChild(code);
+        li.appendChild(document.createTextNode(" " + String(fields[k].label || "")));
+        list.appendChild(li);
+      });
+      if (!list.children.length) { how.textContent = "This overlay has no buttons."; list.hidden = true; }
+    }).catch(function () { how.textContent = "The list of buttons could not be loaded."; });
+    var red = document.createElement("p");
+    red.className = "hint";
+    red.textContent = "A channel point reward, for an overlay that reacts to them: run the function Redemption with the reward's title as its parameter. Bits spent through Tangia, if a webhook tells Mix It Up the amount: run TangiaBits with the amount as its parameter.";
+    buttons.appendChild(red);
+    panel.appendChild(buttons);
 
-    // For someone who would rather not host anything: OBS loads the overlay from this website instead, and needs the internet to.
-    var web = document.createElement("label");
-    web.style.cssText = "display:block;font-size:12px;margin-top:8px";
-    var webBox = document.createElement("input");
-    webBox.type = "checkbox";
-    webBox.checked = conn.website === "1";
-    webBox.addEventListener("change", function () { conn.website = webBox.checked ? "1" : ""; saveConnection(conn); });
-    web.appendChild(webBox);
-    web.appendChild(document.createTextNode(" Load it from the website instead, with no download (needs the internet while you stream)"));
-    panel.appendChild(web);
-
+    var grid = document.createElement("div");
+    grid.className = "copy-grid";
     var msg = document.createElement("p");
     msg.id = "copy-msg";
     msg.className = "hint";
     var box = document.createElement("textarea");
     box.hidden = true;
     box.readOnly = true;
-    var go = document.createElement("button");
-    go.type = "button";
-    go.className = "copy-btn";
-    go.style.marginTop = "8px";
-    var label = document.createElement("span");
-    label.textContent = "Copy the browser source address";
-    var small = document.createElement("small");
-    small.textContent = "paste it into the URL box of an OBS Browser source";
-    go.appendChild(label);
-    go.appendChild(small);
-    go.addEventListener("click", function () {
-      go.classList.remove("done", "failed");
-      Promise.all([fetch("../widget/fields.json", { cache: "no-cache" }).then(function (r) { return r.json(); }), Promise.resolve(JSON.parse(window.__exportFields()))]).then(function (both) {
-        var address = browserSourceAddress(location.href, conn, changedSettings(both[1], both[0]));
-        return copyText(address, box).then(function (ok) {
-          if (ok) {
-            go.classList.add("done");
-            label.textContent = "Copied the address";
-            msg.textContent = "Copied (" + address.length + " characters). Paste it into the URL of an OBS Browser source." + (conn.password ? " It has your Streamer.bot password in it, so keep it to yourself." : "");
-            setTimeout(function () { go.classList.remove("done"); label.textContent = "Copy the browser source address"; }, 2500);
-          } else {
-            go.classList.add("failed");
-            msg.textContent = "The browser would not copy it. It is in the box below: press Ctrl+C (or Cmd+C) to copy it.";
-          }
-        });
-      }).catch(function (e) {
-        go.classList.add("failed");
-        msg.textContent = e && e.message ? e.message : "Could not make the address.";
+    function button(label, note, get) {
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "copy-btn";
+      var l = document.createElement("span"), sm = document.createElement("small");
+      l.textContent = label; sm.textContent = note;
+      b.appendChild(l); b.appendChild(sm);
+      b.addEventListener("click", function () {
+        b.classList.remove("done", "failed");
+        mixItUpWidget().then(function (w) {
+          var text = get(w);
+          return copyText(text, box).then(function (ok) {
+            if (ok) { b.classList.add("done"); msg.textContent = "Copied " + label.replace(/^Copy /, "") + " (" + kb(text) + ")."; setTimeout(function () { b.classList.remove("done"); }, 2500); }
+            else { b.classList.add("failed"); msg.textContent = "The browser would not copy it. It is in the box below: press Ctrl+C (or Cmd+C) to copy it."; }
+          });
+        }).catch(function (e) { b.classList.add("failed"); msg.textContent = e && e.message ? e.message : "Could not make the widget."; });
       });
-    });
+      return b;
+    }
+    grid.appendChild(button("Copy the widget", "the whole widget, to paste or import", function (w) { return JSON.stringify(w); }));
+    grid.appendChild(button("Copy the HTML", "the HTML box", function (w) { return w.Item.HTML; }));
+    grid.appendChild(button("Copy the CSS", "the CSS box", function (w) { return w.Item.CSS; }));
+    grid.appendChild(button("Copy the JavaScript", "the JavaScript box", function (w) { return w.Item.Javascript; }));
     var theme = document.createElement("button");
     theme.id = "theme-toggle";
     theme.type = "button";
@@ -361,13 +337,13 @@
     labelTheme();
     panel.insertBefore(platformSwitch(), panel.firstChild);
     panel.insertBefore(theme, panel.firstChild);
-    panel.appendChild(go);
+    panel.appendChild(grid);
     panel.appendChild(msg);
     panel.appendChild(box);
     return panel;
   }
 
-  function build() { return platform() === "streamerbot" ? buildStreamerbot() : buildStreamElements(); }
+  function build() { return platform() === "mixitup" ? buildMixItUp() : buildStreamElements(); }
 
   // The page builds its controls after it has fetched the widget, so wait for them, and put the
   // panel back if the page ever rebuilds them.

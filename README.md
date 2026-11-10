@@ -1,6 +1,6 @@
 # Stream Overlays
 
-A set of overlays for Twitch streams, for StreamElements and for Streamer.bot. Each is plain JavaScript with no dependencies and nothing to install: with StreamElements you paste its four files into a custom widget, and with Streamer.bot you add one link to OBS. They share one design, twenty-three style presets including seven pride flags, so they look like one family on a stream.
+A set of overlays for Twitch streams, for StreamElements and Mix It Up. Each is plain JavaScript with no dependencies and nothing to install: with StreamElements you paste its four files into a custom widget, and with Mix It Up you bring in one widget. They share one design, twenty-three style presets including seven pride flags, so they look like one family on a stream.
 
 **Goals and counters**
 
@@ -50,30 +50,38 @@ A set of overlays for Twitch streams, for StreamElements and for Streamer.bot. E
 2. In StreamElements, add a **Custom Widget** to your overlay, and paste each file from the overlay's `widget/` folder into the matching tab: `widget.html` into HTML, `widget.css` into CSS, `widget.js` into JS and `fields.json` into Fields.
 3. Choose a **Style preset** in the settings.
 
-## Using an overlay with Streamer.bot
+## Using an overlay with Mix It Up
 
-The website has a switch at the top between StreamElements and Streamer.bot. Choose Streamer.bot and every overlay's page gives you a link for an OBS browser source instead of files to paste.
+Choose Mix It Up at the top of the website and each overlay's page gives you a widget to bring into Mix It Up, in the form Mix It Up itself uses for a Custom widget.
 
-1. Download [`stream-overlays-streamerbot.zip`](https://jordan-lee-code.github.io/stream-overlays/stream-overlays-streamerbot.zip) from the website and unzip it somewhere you will keep it. It holds every overlay's page, ready for Streamer.bot to host, and the Streamer.bot client script the pages use, so nothing is fetched from the internet while you stream.
-2. In Streamer.bot, open **Servers/Clients**, then **HTTP Server**. Add a mapping with **Path** `overlays` and **Folder** set to the folder you unzipped, tick **Auto Start** and press **Start Server**. It serves on `127.0.0.1` port `7474` unless you change them.
-3. Open **Servers/Clients**, then **WebSocket Server**, tick **Auto Start** and press **Start Server**. It listens on `127.0.0.1` port `8080` unless you change it. Connect your Twitch account under **Platforms**.
-4. Set the overlay up on its page on the website, with the Streamer.bot choice made, and press **Copy the browser source address**. It looks like `http://127.0.0.1:7474/overlays/counter/streamerbot.html`.
-5. Moving over from StreamElements? In the widget's editor there, open the **Data** tab, copy everything in it, and paste it into **Already set up in StreamElements?** at the top of the overlay's page, then press **Bring my settings across**. Its settings load as they are on stream, and the address you copy has them in it. The Fields tab works too.
-6. In OBS, add a **Browser** source, paste the address into **URL**, and give it the width and height of the box you want. Leave **Shutdown source when not visible** unticked, so counts are not lost.
+1. Set the overlay up on its page and press **Copy the widget**. It is the overlay's own HTML, CSS and JavaScript with your settings in one custom property, packed in the same JSON Mix It Up shows for a widget. **Copy the HTML**, **Copy the CSS** and **Copy the JavaScript** are there too, to paste into a new Custom widget's three boxes by hand.
+2. In Mix It Up, open **Overlay Widgets** and bring the widget in, the way you would one you had copied out of Mix It Up. Mix It Up's documentation does not describe importing a widget, so if it will not take the pasted JSON, make a Custom widget and paste the three boxes instead.
+3. Edit the widget, set **Display Option** to **Single Widget URL**, save it, and click the link icon on the widget to get its address. Use one address for each overlay, because widgets sharing the default overlay page share one page and their functions would meet.
+4. In OBS, add a **Browser** source, paste the address into **URL**, and give it the width and height of the box you want.
 
-Nothing is imported into Streamer.bot itself: it serves the folder and sends the events, and OBS shows the page. If you would rather not host anything, tick **Load it from the website instead** on the overlay's page and the address points at the website, which needs the internet while you stream.
+An overlay is not rewritten for this. `mixitup.js` goes in front of the overlay's JavaScript and defines the functions Mix It Up calls (`ChatMessageReceived`, `Follow`, `Raid`, `Subscription`, `SubscriptionGifted`, `MassSubscriptionGifted`, `TwitchBits` and `Donation`), turning each call into the event StreamElements sends. What an overlay remembers is kept in the page's own storage.
 
-What does not come across is what an overlay has counted so far, because StreamElements does not show that anywhere a page can copy it from. The overlays start from zero in OBS.
+Moving over from StreamElements? On the overlay's page there is a box for the Data tab of the widget editor there: paste it in and the settings come across as they are on stream. The Fields tab works too.
 
-The overlays are not rewritten for this. `streamerbot.js` turns what Streamer.bot says (`Twitch.Cheer`, `Twitch.GiftBomb`, `Twitch.ChatMessage` and so on) into the events StreamElements sends, and keeps what an overlay remembers in the browser source's own storage, so the same code runs in both. Your settings travel in the address after a `#`, so nothing is stored on the website.
+How each part of StreamElements is matched:
 
-What is different from StreamElements:
+| In StreamElements | In Mix It Up |
+| --- | --- |
+| The settings in the widget editor | The settings are packed into the widget from the overlay's page, and **Bring my settings across** loads them from a Data tab. |
+| Chat commands, and who may use them | The same. Chat is read from the fields of a real Mix It Up chat message, so the streamer, moderators and subscribers are known. |
+| Subs, gifts, bits, tips, follows and raids | The same events, through the functions Mix It Up calls. |
+| The buttons in the editor, such as Manual controls | Each button is a function a Mix It Up command can run: add an **Overlay** action, choose **Run Widget Function**, pick the widget and give the button's name, such as `btnPlus`. `PressButton` takes the name as a parameter instead. The overlay's page lists every button. |
+| Channel point rewards (Rage Bar) | Run the function `Redemption` from a Mix It Up channel point command, with the reward's title as its parameter. |
+| Bits spent through Tangia | Run the function `TangiaBits` with the amount as its parameter, from a command that Mix It Up's own webhook triggers (see below). It counts as bits do on every overlay that counts bits. StreamElements has no equivalent. |
+| The debug setting, which logs to a console | The same setting shows what Mix It Up sent on the overlay itself, newest first, since a browser source has no console. |
+| What an overlay remembers | Kept in the page's own storage, as in a browser source. |
 
-- **Chat commands work, the editor buttons do not.** The buttons in an overlay's settings, such as Manual controls, belong to the StreamElements editor. Use the overlay's chat commands instead.
-- **Who can use a command** comes from the Twitch role and badges Streamer.bot reports, so the broadcaster and moderators work as they do on StreamElements.
-- **Tips** arrive from whichever of StreamElements, Streamlabs, Ko-fi or TipeeeStream you have connected to Streamer.bot. Streamer.bot's documentation does not list those events' fields, so they are read by the names a tip is likely to use. If a tip does not show, add `?debug=1` to the address to see in the browser source's console what arrived.
-- **It does not need the internet** when Streamer.bot hosts the overlays, apart from the fonts, which come from Google Fonts. Streamer.bot's own documentation for serving files is thin, so the address form above is the one its mapping is expected to give, and I could not test it against a real install.
-- **Streamer.bot on another computer** needs its addresses and ports in the boxes on the overlay's page.
+What is not the same:
+
+- **Only chat is known for certain.** Mix It Up's documentation does not list what is in its other events, so a follow, raid, sub, gift, bits or donation is read by trying the names a field is likely to have. If one does not show, turn on the overlay's debug setting, trigger it, and the overlay will show what Mix It Up sent, so the name can be added.
+- **Tangia's bits** only work if something tells Mix It Up the amount. Mix It Up can receive a webhook (Services, then Webhooks) and turn its JSON into a command, which can run `TangiaBits`. I could not find anything of Tangia's that sends such a webhook or carries the amount, so this is ready for when something does, and not something that works on its own today.
+- **YouTube and Kick events** are not used. The overlays are written around Twitch events.
+- **Whether Mix It Up takes the pasted widget** is not something its documentation says. If it does not, make a Custom widget and paste the three boxes instead.
 
 ## Setting the look once
 
