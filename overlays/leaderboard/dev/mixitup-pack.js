@@ -50,6 +50,43 @@
     return out;
   }
 
+  function b64urlToText(s) {
+    s = String(s).replace(/-/g, "+").replace(/_/g, "/");
+    while (s.length % 4) s += "=";
+    var bin = atob(s), pct = "";
+    for (var i = 0; i < bin.length; i++) pct += "%" + ("00" + bin.charCodeAt(i).toString(16)).slice(-2);
+    return decodeURIComponent(pct);
+  }
+
+  /** The settings a packed widget carries, read back out of its Settings property. */
+  function settingsOf(widget) {
+    var v = widget && widget.Item && widget.Item.Properties && widget.Item.Properties.Settings;
+    if (!v) return {};
+    try { return JSON.parse(b64urlToText(v)); } catch (e) { return null; }
+  }
+
+  /**
+   * Checks a packed widget against what it was packed from, so a problem shows when the widget is made and not when it is on stream.
+   * parts is what was given to pack. Returns [{ ok, what }], one for each thing checked, in the order they are listed in the panel.
+   */
+  function check(widget, parts) {
+    var out = [], it = widget && widget.Item || {}, changed = parts.settings || {}, back = settingsOf(widget);
+    function add(ok, what) { out.push({ ok: !!ok, what: what }); }
+    var n = Object.keys(changed).length;
+    add(back && JSON.stringify(back) === JSON.stringify(changed), "your " + n + " changed setting" + (n === 1 ? " is" : "s are") + " in the widget, and read" + (n === 1 ? "s" : "") + " back the same");
+    var defaults = defaultsOf(parts.fields), m = /^window\.__miu = (\{.*\});\n/.exec(String(it.Javascript || "").split("\n").slice(0, 2).join("\n") + "\n"), head = null;
+    try { head = m ? JSON.parse(m[1]) : null; } catch (e) { head = null; }
+    add(head && Object.keys(defaults).every(function (k) { return JSON.stringify(head.defaults[k]) === JSON.stringify(defaults[k]); }) && head.settings === "{Settings}", "every setting's starting value is there, and the Settings property is where the code looks for it");
+    add(String(it.Javascript || "").indexOf(parts.adapter) !== -1 && String(it.Javascript || "").indexOf(parts.js) !== -1, "the Mix It Up adapter and the overlay's own JavaScript are both in, unchanged");
+    add(String(it.HTML || "").indexOf(parts.html) !== -1 && String(it.CSS || "").indexOf(parts.css) !== -1, "the overlay's own HTML and CSS are in, unchanged");
+    add(clashes(it.HTML + it.CSS + String(it.Javascript || "").replace('"settings":"{Settings}"', "")).length === 0, "nothing in the code is a name Mix It Up would replace");
+    add(it.ChatMessages === true && it.Follows === true && it.TwitchBits === true && it.TwitchSubscriptions === true && it.Donations === true && it.Raids === true, "every event Mix It Up can call is switched on");
+    var again = null;
+    try { again = JSON.parse(JSON.stringify(widget)); } catch (e) { again = null; }
+    add(again && JSON.stringify(again) === JSON.stringify(widget), "it writes out as JSON and reads back the same");
+    return out;
+  }
+
   /** Which of Mix It Up's reserved property names, in curly brackets, a piece of code contains. */
   function clashes(code) {
     return BUILT_IN.concat(OWN).filter(function (n) { return String(code).indexOf("{" + n + "}") !== -1; });
@@ -89,7 +126,7 @@
     };
   }
 
-  var api = { pack: pack, idFor: idFor, defaultsOf: defaultsOf, buttonsOf: buttonsOf, clashes: clashes, BUILT_IN: BUILT_IN };
+  var api = { check: check, settingsOf: settingsOf, pack: pack, idFor: idFor, defaultsOf: defaultsOf, buttonsOf: buttonsOf, clashes: clashes, BUILT_IN: BUILT_IN };
   root.MixItUpPack = api;
   if (typeof module !== "undefined" && module.exports) module.exports = api;
 }(typeof window !== "undefined" ? window : this));

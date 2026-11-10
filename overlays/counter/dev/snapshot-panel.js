@@ -69,6 +69,7 @@
     } catch (e) { return e.message; }
   }
   window.__importFromStreamElements = importText;
+  window.__parseSnapshot = parse;
 
   function build() {
     var full = typeof window.__applySnapshot === "function" && typeof window.__getSnapshot === "function";

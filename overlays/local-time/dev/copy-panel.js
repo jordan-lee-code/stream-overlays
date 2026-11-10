@@ -215,7 +215,9 @@
     return Promise.all([fetchText("../widget/widget.html"), fetchText("../widget/widget.css"), fetchText("../widget/widget.js"), fetchText("../../mixitup.js"),
       fetch("../widget/fields.json", { cache: "no-cache" }).then(function (r) { return r.json(); })]).then(function (p) {
       var current = JSON.parse(window.__exportFields());
-      return window.MixItUpPack.pack({ name: name, title: h ? h.textContent.replace(/\s+Overlay$/, "") : name, html: p[0], css: p[1], js: p[2], adapter: p[3], fields: p[4], settings: changedSettings(current, p[4]) });
+      var parts = { name: name, title: h ? h.textContent.replace(/\s+Overlay$/, "") : name, html: p[0], css: p[1], js: p[2], adapter: p[3], fields: p[4], settings: changedSettings(current, p[4]) };
+      var widget = window.MixItUpPack.pack(parts);
+      return { widget: widget, parts: parts, checks: window.MixItUpPack.check(widget, parts), name: name };
     });
   }
 
@@ -230,7 +232,7 @@
     panel.appendChild(h);
     var steps = document.createElement("ol");
     ["Set the overlay up below. Everything on this page, including the style preset, goes into the widget.",
-     "Press Copy the widget. In Mix It Up, open Overlay Widgets and bring it in with the same paste or import you would use for a widget you had copied out of Mix It Up. Or make a new Custom widget and paste the three code boxes below into its HTML, CSS and JavaScript.",
+     "Press Download the .miuoverlay file. In Mix It Up, open Overlay Widgets and use its import overlay button on that file. If you would rather not use a file, Copy the widget gives the same thing to paste, and the three code buttons fill a Custom widget made by hand.",
      "Edit the widget and set Display Option to Single Widget URL, save it, then click the link icon on the widget to get its address. Use one address for each overlay.",
      "In OBS, add a Browser source, paste that address into URL, and give it the width and height of the box you want."].forEach(function (t) {
       var li = document.createElement("li");
@@ -260,8 +262,16 @@
     bringMsg.id = "bring-msg";
     bringMsg.className = "hint";
     bringGo.addEventListener("click", function () {
-      if (typeof window.__importFromStreamElements !== "function") { bringMsg.textContent = "This page is not ready to load settings yet."; return; }
-      bringMsg.textContent = window.__importFromStreamElements(bringBox.value);
+      if (typeof window.__importFromStreamElements !== "function" || typeof window.__parseSnapshot !== "function") { bringMsg.textContent = "This page is not ready to load settings yet."; return; }
+      var text = bringBox.value, snap = null;
+      try { snap = window.__parseSnapshot(text, ""); } catch (e) { bringMsg.textContent = e.message; return; }
+      // The settings this overlay has are loaded, and the ones it does not have are named, so nothing is dropped without a word.
+      fetch("../widget/fields.json", { cache: "no-cache" }).then(function (r) { return r.json(); }).then(function (fields) {
+        var said = window.__importFromStreamElements(text);
+        var values = snap.fields || {}, ignored = Object.keys(values).filter(function (k) { return !fields[k] || fields[k].type === "button" || fields[k].type === "section"; });
+        bringMsg.textContent = said + (ignored.length ? " " + ignored.length + " in what you pasted " + (ignored.length === 1 ? "is" : "are") + " not a setting of this overlay, so " + (ignored.length === 1 ? "it was" : "they were") + " left out: " + ignored.join(", ") + "." : " Every setting in it was used.");
+        refreshSummary();
+      }).catch(function () { bringMsg.textContent = window.__importFromStreamElements(text); refreshSummary(); });
     });
     [bringTitle, bringHint, bringBox, bringGo, bringMsg].forEach(function (e) { bring.appendChild(e); });
     panel.appendChild(bring);
@@ -294,19 +304,69 @@
     }).catch(function () { how.textContent = "The list of buttons could not be loaded."; });
     var red = document.createElement("p");
     red.className = "hint";
-    red.textContent = "A channel point reward, for an overlay that reacts to them: run the function Redemption with the reward's title as its parameter. Bits spent through Tangia, if a webhook tells Mix It Up the amount: run TangiaBits with the amount as its parameter.";
+    red.textContent = "A channel point reward, for an overlay that reacts to them: run the function Redemption with the reward's title as its parameter. Bits spent through Tangia: see Counting Tangia bits in Mix It Up in the README. It runs TangiaBits from a webhook command, with a parameter whose value is $webhookpayload.";
     buttons.appendChild(red);
     panel.appendChild(buttons);
 
+    // What is in the widget, in words, so a transfer can be checked by eye: every setting that is not the overlay's starting value.
+    var summary = document.createElement("details");
+    summary.id = "miu-summary";
+    summary.style.cssText = "margin:0 0 10px;font-size:12px";
+    var sumTitle = document.createElement("summary");
+    sumTitle.textContent = "What is in the widget";
+    var sumList = document.createElement("ul");
+    sumList.style.cssText = "margin:4px 0;padding-left:18px";
+    summary.appendChild(sumTitle);
+    summary.appendChild(sumList);
+    panel.appendChild(summary);
+    function refreshSummary() {
+      return mixItUpWidget().then(function (r) {
+        var keys = Object.keys(r.parts.settings);
+        sumTitle.textContent = "What is in the widget: " + keys.length + " setting" + (keys.length === 1 ? "" : "s") + " that differ" + (keys.length === 1 ? "s" : "") + " from the starting values";
+        sumList.textContent = "";
+        keys.forEach(function (k) {
+          var li = document.createElement("li"), code = document.createElement("code");
+          code.textContent = k;
+          li.appendChild(code);
+          li.appendChild(document.createTextNode(" = " + JSON.stringify(r.parts.settings[k])));
+          sumList.appendChild(li);
+        });
+        if (!keys.length) { var li = document.createElement("li"); li.textContent = "None: it is the overlay with its starting settings."; sumList.appendChild(li); }
+      }).catch(function () { sumTitle.textContent = "What is in the widget"; });
+    }
+    refreshSummary();
+    // The settings are packed again whenever the page's settings change, which the page signals by rebuilding its controls.
+    // Changes inside this panel itself are not settings changing, and are left out, or listing the settings would set it off again.
+    var again = null;
+    if (typeof MutationObserver === "function" && document.getElementById("controls")) new MutationObserver(function (records) {
+      if (!records.some(function (r) { return !panel.contains(r.target); })) return;
+      clearTimeout(again);
+      again = setTimeout(refreshSummary, 300);
+    }).observe(document.getElementById("controls"), { subtree: true, attributes: true, childList: true });
+
     var grid = document.createElement("div");
     grid.className = "copy-grid";
+    var checks = document.createElement("ul");
+    checks.id = "miu-checks";
+    checks.style.cssText = "list-style:none;margin:8px 0 0;padding:0;font-size:12px";
     var msg = document.createElement("p");
     msg.id = "copy-msg";
     msg.className = "hint";
     var box = document.createElement("textarea");
     box.hidden = true;
     box.readOnly = true;
-    function button(label, note, get) {
+    // Every widget is checked as it is made, and one that fails a check is not handed over, so a bad widget is never what reaches Mix It Up.
+    function showChecks(r) {
+      checks.textContent = "";
+      r.checks.forEach(function (c) {
+        var li = document.createElement("li");
+        li.textContent = (c.ok ? "\u2713 " : "\u2717 ") + c.what;
+        li.style.color = c.ok ? "" : "#e08a8a";
+        checks.appendChild(li);
+      });
+      return r.checks.every(function (c) { return c.ok; });
+    }
+    function button(label, note, get, deliver) {
       var b = document.createElement("button");
       b.type = "button";
       b.className = "copy-btn";
@@ -315,20 +375,34 @@
       b.appendChild(l); b.appendChild(sm);
       b.addEventListener("click", function () {
         b.classList.remove("done", "failed");
-        mixItUpWidget().then(function (w) {
-          var text = get(w);
+        mixItUpWidget().then(function (r) {
+          if (!showChecks(r)) { b.classList.add("failed"); msg.textContent = "Not handed over: a check on the widget failed, listed below. Tell me which one."; return; }
+          var text = get(r);
+          if (text === "") { msg.textContent = "Nothing to put here: no setting differs from the starting values, so the Settings property is left empty."; return; }
+          if (deliver) return deliver(text, r, b);
           return copyText(text, box).then(function (ok) {
-            if (ok) { b.classList.add("done"); msg.textContent = "Copied " + label.replace(/^Copy /, "") + " (" + kb(text) + ")."; setTimeout(function () { b.classList.remove("done"); }, 2500); }
-            else { b.classList.add("failed"); msg.textContent = "The browser would not copy it. It is in the box below: press Ctrl+C (or Cmd+C) to copy it."; }
+            if (ok) { b.classList.add("done"); msg.textContent = "Copied " + label.replace(/^Copy (the )?/, "") + " (" + kb(text) + ")."; setTimeout(function () { b.classList.remove("done"); }, 2500); }
+            else { b.classList.add("failed"); msg.textContent = "The browser would not copy it. It is in the box below: press Ctrl+C (or Cmd+C) to copy it, or use Download the .miuoverlay file."; }
           });
         }).catch(function (e) { b.classList.add("failed"); msg.textContent = e && e.message ? e.message : "Could not make the widget."; });
       });
       return b;
     }
-    grid.appendChild(button("Copy the widget", "the whole widget, to paste or import", function (w) { return JSON.stringify(w); }));
-    grid.appendChild(button("Copy the HTML", "the HTML box", function (w) { return w.Item.HTML; }));
-    grid.appendChild(button("Copy the CSS", "the CSS box", function (w) { return w.Item.CSS; }));
-    grid.appendChild(button("Copy the JavaScript", "the JavaScript box", function (w) { return w.Item.Javascript; }));
+    // A file does not depend on the clipboard, which some browsers keep from a page.
+    function download(text, r, b) {
+      var url = URL.createObjectURL(new Blob([text], { type: "application/json" })), a = document.createElement("a");
+      a.href = url; a.download = r.name + ".miuoverlay";
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+      b.classList.add("done"); msg.textContent = "Saved " + a.download + " (" + kb(text) + "). In Mix It Up, open Overlay Widgets and use its import overlay button on that file.";
+      setTimeout(function () { b.classList.remove("done"); }, 2500);
+    }
+    grid.appendChild(button("Copy the widget", "the whole widget, to paste or import", function (r) { return JSON.stringify(r.widget); }));
+    grid.appendChild(button("Download the .miuoverlay file", "for Mix It Up's import overlay button", function (r) { return JSON.stringify(r.widget); }, download));
+    grid.appendChild(button("Copy the HTML", "the HTML box", function (r) { return r.widget.Item.HTML; }));
+    grid.appendChild(button("Copy the CSS", "the CSS box", function (r) { return r.widget.Item.CSS; }));
+    grid.appendChild(button("Copy the JavaScript", "the JavaScript box", function (r) { return r.widget.Item.Javascript; }));
+    grid.appendChild(button("Copy the Settings property", "for a Custom widget made by hand: a property called Settings", function (r) { return r.widget.Item.Properties.Settings; }));
     var theme = document.createElement("button");
     theme.id = "theme-toggle";
     theme.type = "button";
@@ -339,6 +413,7 @@
     panel.insertBefore(theme, panel.firstChild);
     panel.appendChild(grid);
     panel.appendChild(msg);
+    panel.appendChild(checks);
     panel.appendChild(box);
     return panel;
   }
