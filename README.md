@@ -111,7 +111,7 @@ curl -X POST -H "Content-Type: application/json" -d '{"amount":250,"user":"Test"
 4. For its address, paste the one below, with your webhook URL from step 1 on the end. Paste the URL exactly as Mix It Up gave it:
 
    ```
-   https://jordan-lee-code.github.io/stream-overlays/tangia-relay.html#hook=PASTE-THE-WEBHOOK-URL-HERE
+   https://lee-it.co.uk/stream-overlays/tangia-relay.html#hook=PASTE-THE-WEBHOOK-URL-HERE
    ```
 
 5. Make the iFrame as small as Tangia allows, and give it a duration of at least 5 seconds. The page needs a moment to send, and nothing on it is visible.
