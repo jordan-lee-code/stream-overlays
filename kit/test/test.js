@@ -584,9 +584,9 @@ asection("Mix It Up");
   });
   const outDir2 = fs.mkdtempSync(path.join(os.tmpdir(), "site-miu-"));
   require("../../scripts/build-site").build(outDir2);
-  atest("the site has every overlay packed for Mix It Up, and the adapter the dev pages pack it with", () => {
+  atest("the site has every overlay packed as a .miuoverlay file for Mix It Up, and the adapter the dev pages pack it with", () => {
     names.forEach(n => {
-      const w = JSON.parse(fs.readFileSync(path.join(outDir2, n, "mixitup.json"), "utf8"));
+      const w = JSON.parse(fs.readFileSync(path.join(outDir2, n, n + ".miuoverlay"), "utf8"));
       assert.strictEqual(w.Item.Type, 999, n);
       assert.strictEqual(w.Item.HTML.indexOf(fs.readFileSync(path.join(repoRoot, "overlays", n, "widget", "widget.html"), "utf8")) !== -1, true, n + " does not carry its HTML");
       assert.ok(w.Item.Javascript.indexOf(fs.readFileSync(path.join(repoRoot, "overlays", n, "widget", "widget.js"), "utf8")) !== -1, n + " does not carry its JavaScript");
@@ -625,6 +625,10 @@ asection("Mix It Up");
     assert.ok(MU.redemption("") === null && MU.redemption(null) === null);
     fired.length = 0; win.TangiaBits(250); win.TangiaBits("1,000", "Ann"); win.TangiaBits({ bits: 40, name: "Bo" }); win.TangiaBits([75, "Cy"]); win.TangiaBits(0); win.TangiaBits("nope"); win.TangiaBits();
     assert.deepStrictEqual(events().map(e => e.listener + ":" + e.event.amount + ":" + e.event.name), ["cheer-latest:250:Tangia", "cheer-latest:1000:Ann", "cheer-latest:40:Bo", "cheer-latest:75:Cy"], "bits from Tangia count as bits, in whichever form the amount arrives, and nothing counts nothing");
+    fired.length = 0; win.TangiaBits('{"amount":250,"user":"Test"}'); win.TangiaBits(' {"Amount":"1,500","name":"Ann"} '); win.TangiaBits('{"amount":90,"user":"Cut off'); win.TangiaBits("payload={\"amount\":60}"); win.TangiaBits("$webhookpayload"); win.TangiaBits("$tangiabits"); win.TangiaBits("{}");
+    assert.deepStrictEqual(events().map(e => e.event.amount + ":" + e.event.name), ["250:Test", "1500:Ann", "90:Tangia"], "the whole webhook payload, as text, is read, even when it is cut short, and an identifier that was never filled in counts nothing");
+    fired.length = 0; win.TangiaBits({ payload: '{"amount":300,"user":"Pat"}' }); win.TangiaBits({ data: "x", json: '{"bits":20}' }); win.TangiaBits({ payload: "$webhookpayload" });
+    assert.deepStrictEqual(events().map(e => e.event.amount + ":" + e.event.name), ["300:Pat", "20:Tangia"], "a name and value pair whose value is the payload works too");
   });
   atest("a packed widget lists the buttons of the overlay so commands can run them", () => {
     const fields = { a: { type: "text", value: "x" }, btnOne: { type: "button", label: "Do one" }, btnTwo: { type: "button" } };
@@ -644,6 +648,73 @@ asection("Mix It Up");
       const src = fs.readFileSync(path.join(repoRoot, "overlays", n, "widget", "widget.js"), "utf8") + (fs.existsSync(path.join(repoRoot, "overlays", n, "src")) ? fs.readdirSync(path.join(repoRoot, "overlays", n, "src")).map(x => fs.readFileSync(path.join(repoRoot, "overlays", n, "src", x), "utf8")).join("") : "");
       Object.keys(f).filter(k => f[k].type === "button").forEach(k => assert.ok(src.indexOf('"' + k + '"') !== -1 || src.indexOf("'" + k + "'") !== -1 || new RegExp('"' + k.replace(/[A-Z][a-z]+$/, "") ).test(src), n + " has a button " + k + " that its code never mentions"));
     });
+  });
+  atest("a Data tab from StreamElements goes all the way to a checked widget: used, named when ignored, and read back the same", () => {
+    const P = require("../shared/snapshot-panel.js");
+    const dir = path.join(repoRoot, "overlays", "stream-goals", "widget"), rd = f => fs.readFileSync(path.join(dir, f), "utf8");
+    const fields = JSON.parse(rd("fields.json")), defaults = PK.defaultsOf(fields);
+    // A Data tab as StreamElements shows it: this overlay's settings, and some that belong to a different template.
+    const data = { eventsLimit: 5, includeFollowers: "yes", fontColor: "rgb(255, 255, 255)", command: "!goals", targetSubs: 10, labelSubs: "Daily Subs", showTitle: false, textSize: 7.25, decoration: "sparkles", decorationCount: 5, usePanelOpacity: true, panelOpacity: 0.7, mute: false };
+    const snap = P.parse(JSON.stringify(data, null, 2), "stream-goals");
+    assert.ok(snap.dataTab);
+    const ignored = Object.keys(snap.fields).filter(k => !fields[k]);
+    assert.deepStrictEqual(ignored, ["eventsLimit", "includeFollowers", "fontColor"], "what the overlay does not have is named");
+    const sandbox = { window: {}, localStorage: { getItem: () => null, setItem() {} }, location: { search: "" }, btoa: x => Buffer.from(x, "binary").toString("base64"), unescape, encodeURIComponent,
+      document: { readyState: "complete", getElementById: () => null, documentElement: { setAttribute() {}, removeAttribute() {}, getAttribute: () => null }, querySelectorAll: () => [] } };
+    sandbox.window = sandbox; vm.createContext(sandbox);
+    vm.runInContext(fs.readFileSync(path.join(__dirname, "../shared/copy-panel.js"), "utf8"), sandbox);
+    // The page's settings after the import: the starting values, with the Data tab's on top, in the shape the page exports.
+    const current = {}; Object.keys(fields).forEach(k => { current[k] = Object.assign({}, fields[k]); if (k in snap.fields && fields[k].type !== "button") current[k].value = snap.fields[k]; });
+    const changed = JSON.parse(JSON.stringify(sandbox.__changedSettings(current, fields)));
+    assert.deepStrictEqual(changed, { labelSubs: "Daily Subs", targetSubs: 10, showTitle: false, textSize: 7.25, decoration: "sparkles", decorationCount: 5, usePanelOpacity: true, panelOpacity: 0.7 }, "only what differs from the starting values travels (" + Object.keys(changed).join(", ") + ")");
+    const parts = { name: "stream-goals", title: "Stream Goals", html: rd("widget.html"), css: rd("widget.css"), js: rd("widget.js"), adapter: fs.readFileSync(path.join(__dirname, "../shared/mixitup.js"), "utf8"), fields, settings: changed };
+    const widget = PK.pack(parts), checks = PK.check(widget, parts);
+    assert.strictEqual(checks.length, 7); checks.forEach(c => assert.ok(c.ok, "check failed: " + c.what));
+    assert.deepStrictEqual(PK.settingsOf(widget), changed, "read back from the widget's own property");
+    assert.deepStrictEqual(MU.fieldData(defaults, MU.readSettings(widget.Item.Properties.Settings)).targetSubs, 10, "and what the adapter reads is what was set");
+  });
+  atest("a widget that has lost something is caught by the checks, and nothing is handed over unchecked", () => {
+    const fields = { a: { type: "text", value: "x" } };
+    const parts = { name: "t", html: "<i></i>", css: ".a{}", js: "var o=1;", adapter: "var ad=1;", fields, settings: { a: "y" } };
+    const good = () => PK.pack(parts), failing = w => PK.check(w, parts).filter(c => !c.ok).length;
+    assert.strictEqual(failing(good()), 0);
+    let w = good(); w.Item.Properties.Settings = ""; assert.ok(failing(w) >= 1, "settings dropped");
+    w = good(); w.Item.Properties.Settings = "###"; assert.ok(failing(w) >= 1, "settings garbled");
+    w = good(); w.Item.Javascript = w.Item.Javascript.replace("var o=1;", ""); assert.ok(failing(w) >= 1, "overlay code missing");
+    w = good(); w.Item.Javascript = w.Item.Javascript.replace("var ad=1;", ""); assert.ok(failing(w) >= 1, "adapter missing");
+    w = good(); w.Item.Javascript = w.Item.Javascript.replace('"a":"x"', '"a":"z"'); assert.ok(failing(w) >= 1, "a starting value changed");
+    w = good(); w.Item.HTML = ""; assert.ok(failing(w) >= 1, "HTML missing");
+    w = good(); w.Item.CSS += " {Width}"; assert.ok(failing(w) >= 1, "a name Mix It Up would replace");
+    w = good(); w.Item.ChatMessages = false; assert.ok(failing(w) >= 1, "an event switched off");
+    const src = fs.readFileSync(path.join(__dirname, "../shared/copy-panel.js"), "utf8");
+    assert.ok(/not handed over/i.test(src) && /\.miuoverlay/.test(src) && /showChecks\(r\)/.test(src), "the panel refuses a widget that fails a check, and downloads a .miuoverlay file");
+  });
+  atest("the Tangia relay page takes what Tangia passes, finds the amount, and only ever posts to a Mix It Up webhook", () => {
+    const R = require("../shared/tangia-relay.js");
+    const hook = "https://desktop.api.mixitup.bot/api/webhook/00000000-0000-4000-8000-000000000000?secret=0123456789ABCDEF0123456789ABCDEF";
+    const enc = encodeURIComponent(hook);
+    const p = R.paramsOf("?bits=250&username=Ann%20B&extra=1", "#hook=" + enc);
+    assert.deepStrictEqual([p.bits, p.username, p.extra, R.hookOf(p)], ["250", "Ann B", "1", hook], "parameters from the query and the hash are both read");
+    const sent = R.bodyOf(p);
+    assert.deepStrictEqual([sent.amount, sent.user, sent.bits, "hook" in sent], ["250", "Ann B", "250", false], "an amount and a user are found, the original fields are kept, and the address is never sent on");
+    assert.strictEqual(R.bodyOf({ "Trigger.Price": "1,200", Name: "Bo" }).amount, "1200", "a price with a comma, and a dotted name");
+    assert.strictEqual(R.bodyOf({ amount: "40", bits: "999" }).amount, "40", "an amount already given is left as it is");
+    assert.strictEqual(R.bodyOf({ nothing: "here" }).amount, undefined, "no amount is made up");
+    const late = R.paramsOf("", "#hook=" + enc + "?Trigger.Price=100&Name=Bo");
+    assert.deepStrictEqual([R.hookOf(late), late["Trigger.Price"], late.Name], [hook, "100", "Bo"], "parameters added after the hash by something else are still found");
+    // Pasted straight in, unencoded, which is how it will be pasted: the ? in the address must not split it.
+    const raw = R.paramsOf("?bits=250&username=Test&debug=1", "#hook=" + hook);
+    assert.deepStrictEqual([R.hookOf(raw), raw.bits, raw.username, "secret" in raw], [hook, "250", "Test", false], "an unencoded address after #hook= is kept whole");
+    const rawQuery = R.paramsOf("?hook=" + hook + "&bits=40", "");
+    assert.deepStrictEqual([R.hookOf(rawQuery), rawQuery.bits, "secret" in rawQuery], [hook, "40", false], "and so is one in the query");
+    const rawThenMore = R.paramsOf("", "#hook=" + hook + "&Trigger.Price=100&Name=Bo");
+    assert.deepStrictEqual([R.hookOf(rawThenMore), rawThenMore["Trigger.Price"], rawThenMore.Name], [hook, "100", "Bo"], "with more parameters added after it");
+    ["https://evil.example/api/webhook/x?secret=y", "http://desktop.api.mixitup.bot/api/webhook/x?secret=y", "https://desktop.api.mixitup.bot.evil.example/api/webhook/x?secret=y", "https://desktop.api.mixitup.bot/api/other/x?secret=y", "", undefined].forEach(h =>
+      assert.strictEqual(R.hookOf({ hook: h }), "", "refused: " + h));
+    const src = fs.readFileSync(path.join(__dirname, "../shared/tangia-relay.js"), "utf8");
+    assert.ok(/if \(!debug\) return;/.test(src), "it shows nothing unless asked, because it sits on stream");
+    assert.ok(fs.existsSync(path.join(outDir2, "tangia-relay.html")) && fs.existsSync(path.join(outDir2, "tangia-relay.js")), "the site serves it");
+    assert.ok(/<script src="tangia-relay\.js">/.test(fs.readFileSync(path.join(outDir2, "tangia-relay.html"), "utf8")));
   });
   atest("the landing page offers Mix It Up beside StreamElements with its own steps, and every dev page can pack a widget", () => {
     const index = fs.readFileSync(path.join(outDir2, "index.html"), "utf8");

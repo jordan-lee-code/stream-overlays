@@ -145,8 +145,28 @@
   // with the amount, a command can run this with it, through the Overlay action's Run Widget Function, and it counts as bits do. The
   // amount can be a lone value, the first of a list, or in an object, with the name of who spent them alongside.
   function tangiaBits(a, b) {
-    var o = a && typeof a === "object" && !Array.isArray(a) ? a : { amount: Array.isArray(a) ? a[0] : a, name: Array.isArray(a) ? a[1] : b };
+    var o = a;
+    // The whole payload can arrive as text, which is what $webhookpayload is, so it is read as JSON, and failing that the amount is looked
+    // for in it by name. That way the command does not need Mix It Up's JSON mapping, which fills an identifier in only when it is set up
+    // just so.
+    if (typeof o === "string") {
+      var t = o.replace(/^\s+|\s+$/g, "");
+      if (/^[\[{]/.test(t)) {
+        try { o = JSON.parse(t); } catch (e) {
+          var m = /["']?(?:amount|bits)["']?\s*[:=]\s*["']?([\d][\d,.]*)/i.exec(t), w = /["']?(?:name|user|username)["']?\s*[:=]\s*["']([^"']+)["']/i.exec(t);
+          o = { amount: m ? m[1] : "", name: w ? w[1] : "" };
+        }
+      }
+    }
+    o = o && typeof o === "object" && !Array.isArray(o) ? o : { amount: Array.isArray(o) ? o[0] : o, name: Array.isArray(o) ? o[1] : b };
     var amount = Math.floor(num(String(pick(o, ["amount", "Amount", "bits", "Bits"])).replace(/,/g, ""), 0));
+    if (!(amount > 0) && o && typeof o === "object") {
+      // A pair such as payload = $webhookpayload arrives as an object whose one value is the payload as text, so each text value is tried.
+      var keys = Object.keys(o);
+      for (var i = 0; i < keys.length; i++) {
+        if (typeof o[keys[i]] === "string" && /^\s*[\[{]/.test(o[keys[i]])) { var inner = tangiaBits(o[keys[i]], b); if (inner) return inner; }
+      }
+    }
     if (!(amount > 0)) return null;
     return { listener: "cheer-latest", event: { type: "cheer", name: str(pick(o, ["name", "Name", "user", "User", "Username"]), "Tangia"), amount: amount, message: "", source: "tangia" } };
   }
@@ -238,18 +258,18 @@
     };
     var press = function (field) {
       if (!field) return;
-      if (debug && root.console) root.console.log("[mixitup] button", field);
+      if (debug) show("button", field);
       fire("onEventReceived", { listener: "widget-button", event: { field: field } });
     };
     root.PressButton = function (x) { press(fieldOf(x)); };
     (cfg.buttons || []).forEach(function (b) { root[b.field] = function () { press(b.field); }; });
     root.TangiaBits = function (a, b) {
-      if (debug && root.console) root.console.log("[mixitup] TangiaBits", a, b);
+      if (debug) show("TangiaBits", [a, b]);
       var out = tangiaBits(a, b);
       if (out) fire("onEventReceived", { listener: out.listener, event: out.event });
     };
     root.Redemption = function (a, b, c, d) {
-      if (debug && root.console) root.console.log("[mixitup] Redemption", a, b, c, d);
+      if (debug) show("Redemption", [a, b, c, d]);
       var out = redemption(a, b, c, d);
       if (out) fire("onEventReceived", { listener: out.listener, event: out.event });
     };

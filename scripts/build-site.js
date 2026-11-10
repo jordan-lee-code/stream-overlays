@@ -206,12 +206,28 @@ function build(out, root) {
   const shared = path.join(__dirname, "..", "kit", "shared");
   // Mix It Up: the adapter the dev pages put in front of an overlay when they pack it, and each overlay packed with its defaults.
   fs.copyFileSync(path.join(shared, "mixitup.js"), path.join(out, "mixitup.js"));
+  // The page Tangia's Better Alerts can show in a custom iFrame, which sends what Tangia passes it to a Mix It Up webhook.
+  fs.copyFileSync(path.join(shared, "tangia-relay.js"), path.join(out, "tangia-relay.js"));
+  fs.writeFileSync(path.join(out, "tangia-relay.html"), `<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Tangia to Mix It Up</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <style>html, body { margin: 0; background: transparent; }</style>
+</head>
+<body>
+<script src="tangia-relay.js"></script>
+</body>
+</html>
+`);
   const pack = require("../kit/shared/mixitup-pack.js"), adapter = fs.readFileSync(path.join(shared, "mixitup.js"), "utf8");
   cards.forEach(c => {
     const w = path.join(root, "overlays", c.name, "widget"), read = f => fs.readFileSync(path.join(w, f), "utf8");
     if (!["widget.html", "widget.css", "fields.json"].every(f => fs.existsSync(path.join(w, f)))) return;
     const widget = pack.pack({ name: c.name, title: c.title, html: read("widget.html"), css: read("widget.css"), js: read("widget.js"), adapter, fields: JSON.parse(read("fields.json")), settings: {} });
-    fs.writeFileSync(path.join(out, c.name, "mixitup.json"), JSON.stringify(widget));
+    fs.writeFileSync(path.join(out, c.name, c.name + ".miuoverlay"), JSON.stringify(widget));
   });
   fs.writeFileSync(path.join(out, "index.html"), landing(cards));
   fs.writeFileSync(path.join(out, ".nojekyll"), "");        // serve the files as they are
