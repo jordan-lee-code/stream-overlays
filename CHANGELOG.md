@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Stream Goals counts bits spent through Blerp. Blerp does not reach StreamElements as a cheer, so the goal reads the message Blerp says in chat, which names the bits ("for 100 bits"). Only Blerp's own account counts, its account name is a setting, and it can be switched off.
 - Mix It Up can count bits spent through Tangia, where Tangia's amount can reach it. Running the function `TangiaBits` from a command, with the amount as its parameter (or in an object with a name), counts as bits on every overlay that counts them. Nothing of Tangia's is documented to send that amount, so it needs a webhook into Mix It Up from somewhere, and it is for Mix It Up only: StreamElements has no way to receive it.
 - Mix It Up now matches StreamElements more closely. Every editor button is a function a Mix It Up command can run (the Overlay action's Run Widget Function), named as its setting is, with `PressButton` taking the name as a parameter, and the overlay's page lists them. A channel point reward, as Rage Bar reads them, can be sent by running `Redemption` with the reward's title. The overlay's debug setting now shows what Mix It Up sent on the overlay itself, newest first, since a browser source has no console to read. The Mix It Up panel also has the box to paste a StreamElements Data tab into, so the settings come across.
 - The troubleshooting import on every dev page now also reads the Fields tab of the StreamElements widget editor (a fields.json), taking each setting's value, where it used to turn one away.

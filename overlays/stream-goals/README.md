@@ -87,7 +87,7 @@ The widget reads Twitch chat and events through StreamElements, so it works as s
 
 - **Subs.** A new sub, a resub and a gifted sub each count one. A resub counts once however many months it was for. Tick **Count Twitch sub points** if you would rather tier 2 counted 2 and tier 3 counted 6.
 - **Gift bombs.** StreamElements reports a gift bomb as one announcement where `amount` is the real number of subs, then one follow-up per recipient where `amount` is a streak or lifetime figure (for example 170). The widget counts only the announcement, so a gift of 10 counts 10.
-- **Bits.** Every cheer adds its bits.
+- **Bits.** Every cheer adds its bits. Bits spent through Blerp are counted too (see below).
 - **Tips and follows.** Tips add their amount, in the currency of your StreamElements account, and each follow adds one. Both are switched off until you show their goals. Tips are kept to the cent, so a run of small ones adds up to exactly what was given, and there is no conversion between currencies: a tip in another one counts at the amount StreamElements reports. Bits, subs, follows and raids never count towards the tip goal.
 
 Tick **debug** in Troubleshooting to log every event to the browser-source console.
@@ -117,6 +117,16 @@ The command word is a setting. Viewers can type the bare `!goals` to make the ti
 
 An amount is a number: `500`, `5.50` or `5,50`. For tips it can also have a currency sign in front or behind, such as `$5`, or the symbol you set for tips, such as `5 kr`. Anything else is refused and changes nothing, and is never guessed at. That includes `1,250` (a comma could mean a thousands separator or a decimal, and a wrong guess would add the wrong number), `1e3` and `1k`.
 
+## Blerp
+
+Bits spent through the Blerp extension do not reach StreamElements as cheers, so nothing counts them by itself. What does show is the message Blerp says in chat, so the goal reads that instead.
+
+Blerp says something like `blerp: Borgdorf shared 33 Max Verstappen for 100 bits (sound)`. The bits it names (100, not the 33) are added to the bits goal. Only a message from Blerp's own account counts, so a viewer typing the same words adds nothing. The account name is a setting (`blerp` to start), and **Count bits spent through Blerp** switches it off. They count like a cheer does, so the bar fills and a reached goal celebrates, and they are not counted while the goals are paused.
+
+If your channel already shows Blerp's bits as cheers in StreamElements, switch the setting off so they are not counted twice.
+
+Tangia is not read from chat. Its message does not say what an interaction cost, and I could not find any way to get that amount out of Tangia for StreamElements.
+
 ## Configuration
 
 Every setting has a plain label in StreamElements, grouped as follows.
@@ -126,7 +136,7 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | Commands | The command word and who may use it. |
 | Resetting | When the goals start again, and how many quiet hours mean a new stream. |
 | Subs goal, Bits goal, Tips goal, Follows goal | Whether to show it, its label, what it is for (shown after the label), its goal and its raise amount. |
-| Counting | Sub points, how a count reads, the currency symbol and where it goes, the decimal and whether cents show, the reached text and how long it shows before a raise. |
+| Counting | Whether Blerp bits count and Blerp's chat account name, sub points, how a count reads, the currency symbol and where it goes, the decimal and whether cents show, the reached text and how long it shows before a raise. |
 | Sizes | Text, title and bar sizes, and the space between goals. |
 | Manual controls | Buttons to start again, pause and resume. |
 | Look | Title, the style preset, font, boldness, corners, padding, outer frame, outline, shadow, Animate and whether it fills the height of the box and whether it shrinks to fit it. |

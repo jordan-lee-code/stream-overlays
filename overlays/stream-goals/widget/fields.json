@@ -213,6 +213,18 @@
     "value": false,
     "group": "Counting"
   },
+  "blerpBits": {
+    "type": "checkbox",
+    "label": "Count bits spent through Blerp: they do not arrive as cheers, so the bits are read from the message Blerp says in chat",
+    "value": true,
+    "group": "Counting"
+  },
+  "blerpName": {
+    "type": "text",
+    "label": "Blerp's chat account name (its messages look like: blerp: Name shared 33 Sound for 100 bits)",
+    "value": "blerp",
+    "group": "Counting"
+  },
   "format": {
     "type": "text",
     "label": "How a count reads ({n} and {target})",
