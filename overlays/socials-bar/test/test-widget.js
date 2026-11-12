@@ -56,6 +56,20 @@ const nameOf = (n) => (n.children[1] ? n.children[1].textContent : "");
   ok(/\.sb-left\.rotating \.sb-item\s*\{[^}]*opacity:\s*0[^}]*transition:\s*opacity/.test(css), "the others are faded out by a transition on opacity, so it is a fade and not a jump");
   ok(/\.sb-left\.rotating\s*\{[^}]*display:\s*grid/.test(css) && /grid-area:\s*1 \/ 1/.test(css), "all the sites share one cell, so the bar does not change width as they change");
 
+  section("decorations while rotating");
+  {
+    const deco = () => E("sb-app").children.find(c => String(c.className).indexOf("w-deco") === 0);
+    const still = () => deco().className.split(" ").indexOf("still") !== -1;
+    await load({ decoration: "sparkles", decorationMotion: "drift" });
+    ok(deco() && still(), "while the sites take turns the sparkles stay still, as drifting ones made Chrome stop redrawing the text");
+    await load({ decoration: "sparkles", decorationMotion: "drift", rotate: false });
+    ok(deco() && !still(), "and drift as asked when nothing is fading (Rotate off)");
+    await load({ decoration: "sparkles", decorationMotion: "drift", instagram: "", youtube: "", tiktok: "", twitter: "" });
+    ok(deco() && !still(), "or when only one site is on the left, which does not rotate");
+    await load({ decoration: "sparkles", decorationMotion: "drift", animate: false, rotate: false });
+    ok(deco() && still(), "Animate off still keeps them still");
+  }
+
   section("turning the right side off");
   await load({ showRight: false });
   ok(right().length === 0, "with the right side off, ko-fi is not shown (" + right().length + ")");
@@ -119,7 +133,8 @@ const nameOf = (n) => (n.children[1] ? n.children[1].textContent : "");
   await env.checkPresets("sb-app");
   await env.checkFrame("sb-app");
   await env.checkFill("sb-root");
-  await env.checkDecor("sb-app");
+  // The shared checks expect the decorations to move as they are set, which they do whenever the bar is not rotating.
+  { const realLoad = env.load; env.load = (f) => realLoad(Object.assign({ rotate: false }, f)); await env.checkDecor("sb-app"); env.load = realLoad; }
 
   section("every setting is wired up");
   env.checkWired();
