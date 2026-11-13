@@ -95,6 +95,8 @@ By default the left side shows one site at a time. Each stays for **Seconds each
 
 Untick **Rotate the left side** to show every site side by side. They spread across the width of the box you draw in StreamElements, with **Smallest space between the sites** as the least there can be. Untick **Spread the sites across the width of the box** to keep them close together on the left instead. With only one site on the left there is nothing to rotate, so it just stays. **Animate** off stops the fade, and the sites then change without it.
 
+While the sites are rotating, any decorations you have chosen stay still, whatever their motion is set to. Moving shapes behind a fade made Chrome, and so OBS, stop redrawing the text on some computers, which left the bar showing its first site on stream when it was rotating perfectly well in the StreamElements editor and in Firefox. With Rotate off, or only one site on the left, the decorations move as you set them.
+
 The logos are the sites' own marks, drawn from [Simple Icons](https://simpleicons.org), which are released into the public domain (CC0). The logos belong to the sites they stand for, and are here only to point to your own pages.
 
 ## Configuration

@@ -373,7 +373,7 @@
   },
   "decorationMotion": {
     "type": "dropdown",
-    "label": "How decorations move (with Animate off they stay still)",
+    "label": "How decorations move (with Animate off, or while the sites are rotating, they stay still)",
     "value": "twinkle",
     "options": {
       "twinkle": "Twinkle in place",
