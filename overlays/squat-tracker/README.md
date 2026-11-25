@@ -141,9 +141,9 @@ The full list, with defaults, is in [`widget/fields.json`](widget/fields.json). 
 
 ## Chat replies and reminders
 
-A StreamElements widget can read chat but cannot write to it, so `!squats` shows a pop on the sticker rather than replying. If you would like chat to see the number, add a StreamElements **chatbot command** with the same name that reads it out.
+A StreamElements widget can read chat but cannot write to it, so `!squats` only shows a pop on the sticker, with no reply. If you would like chat to see the number, add a StreamElements **chatbot command** with the same name that reads it out.
 
-A recurring reminder such as "It's time for 20 squats!" also comes from the chatbot, as a **Timer** under Chatbot, Timers, with an interval of 60 minutes. A Timer fires on an interval from when the bot is active, so it lands roughly every hour of stream rather than on the clock hour.
+A recurring reminder such as "It's time for 20 squats!" also comes from the chatbot, as a **Timer** under Chatbot, Timers, with an interval of 60 minutes. A Timer fires on an interval from when the bot is active, so it lands roughly every hour of stream, not on the clock hour.
 
 ## Using it with Mix It Up
 
@@ -158,7 +158,7 @@ npm run dev
 # then open http://localhost:8000/dev/
 ```
 
-The harness stands in for StreamElements. It can gift bombs of any size and send chat commands as a viewer, moderator or broadcaster. Its **Every setting** section is generated from `widget/fields.json`, so it offers exactly what StreamElements will, and each sound setting has a **Use a test beep** button. It must be served over http rather than opened as a file, and fonts come from Google Fonts. The local dev page also shows a Ko-fi support button in the corner. That button belongs to the harness only and is not part of the widget, so it never appears on stream.
+The harness stands in for StreamElements. It can gift bombs of any size and send chat commands as a viewer, moderator or broadcaster. Its **Every setting** section is generated from `widget/fields.json`, so it offers exactly what StreamElements will, and each sound setting has a **Use a test beep** button. It must be served over http (opening it as a file will not work), and fonts come from Google Fonts. The local dev page also shows a Ko-fi support button in the corner. That button belongs to the harness only and is not part of the widget, so it never appears on stream.
 
 At the top of the harness, **Look and export** switches the style preset on the live widget, and can download or copy a `fields.json` with your current settings as its defaults. Paste that into the Fields tab of a new custom widget in StreamElements and it starts out looking the way it does here.
 

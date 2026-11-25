@@ -224,7 +224,7 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   ok(readout() === "10 / 100", "1000 bits adds 10 (" + readout() + ")");
   await load();
   cheer({ amount: 50, name: "GenerousViewer" });
-  ok(width() === "0.5%", "50 bits is worth half a point rather than nothing (" + width() + ")");
+  ok(width() === "0.5%", "50 bits is worth half a point, not nothing (" + width() + ")");
   ok(readout() === "0 / 100", "and the readout floors it until it adds up (" + readout() + ")");
 
   // D. the fill reward
@@ -332,7 +332,7 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   ok(timerText() === "5:00", "and runs for five minutes (" + timerText() + ")");
   ok(elements["rage-lock"].hidden === false, "the padlock shows");
   redeem("Lock the Bar (5 min)", 10000, "Rowan");
-  ok(timerText() === "10:00", "a second lock extends rather than replaces (" + timerText() + ")");
+  ok(timerText() === "10:00", "a second lock extends the first without replacing it (" + timerText() + ")");
   await load();
   redeem("Lock the Bar", 100000, "GenerousViewer");
   ok(timerText() === "15:00", "a single lock is capped at the per-lock maximum (" + timerText() + ")");
@@ -392,7 +392,7 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   ok(has("is-pending"), "a lock is not a thing worth buying now, so it is ignored");
   ok(readout() === "0 / 50 points", "and it did not move the save bar (" + readout() + ")");
   sub({ tier: "1000", name: "GenerousViewer" });
-  ok(has("is-pending"), "one sub chips in rather than saving outright");
+  ok(has("is-pending"), "one sub chips in without saving outright");
   ok(readout() === "10 / 50 points" && width() === "20%", "and the save bar fills by the same share (" + readout() + ", " + width() + ")");
   ok(note() === "4 subs / 4,000 bits / £200.00 to save", "and the line under the bar says what is left in subs, bits and money (" + note() + ")");
   sub({ tier: "3000", name: "Rowan" });
@@ -409,12 +409,12 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
 
   // J. nobody saved it
   // If nobody saves a bar that was overfilled, the banner shows the big bar clamped
-  // at its capacity rather than 125 of 100.
+  // at its capacity, not 125 of 100.
   await load();
   for (let i = 0; i < 4; i++) sub({ tier: "3000", name: "GenerousViewer" });
   advance(61 * 1000);
   ok(has("is-reset") && readout() === "100 / 100" && width() === "100%",
-     "the banner shows the big bar clamped at the capacity rather than 125 (" + readout() + ", " + width() + ")");
+     "the banner shows the big bar clamped at the capacity, not 125 (" + readout() + ", " + width() + ")");
 
   console.log("\n[nobody saved it]");
   await load();
@@ -424,7 +424,7 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   ok(titleText() === "Time to reset!", "saying so plainly (" + titleText() + ")");
   ok(readout() === "100 / 100", "with the bar still full while it is up (" + readout() + ")");
   advance(5 * 1000);
-  ok(has("is-reset"), "it holds for a moment rather than blinking past");
+  ok(has("is-reset"), "it holds for a moment instead of blinking past");
   advance(6 * 1000);
   ok(!has("is-reset"), "then clears itself");
   ok(readout() === "0 / 100", "back to an empty bar (" + readout() + ")");
@@ -451,7 +451,7 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   advance(20 * 1000);
   await reload();
   ok(has("is-pending"), "a refresh during the nope window comes back in the window");
-  ok(timerText() === "40s", "with the clock resumed rather than restarted (" + timerText() + ")");
+  ok(timerText() === "40s", "with the clock resumed, not restarted (" + timerText() + ")");
   redeem("Save the Run", 500000, "GenerousViewer");
   ok(!has("is-pending") && readout() === "0 / 100", "and it can still be saved (" + readout() + ")");
 
@@ -615,7 +615,7 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   redeem("Lock the Bar", 10000, "Sage");
   ok(has("is-locked"), "locked near the top");
 
-  console.log("\n[float toasts queue rather than clobber]");
+  console.log("\n[float toasts queue without clobbering]");
   await load();
   button("btnFillBar");
   ["GenerousViewer", "Rowan", "Sage", "Juniper"].forEach(who => sub({ tier: "1000", name: who }));
@@ -729,7 +729,7 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   storeData[KEY] = { fill: 100, phase: "pending", lockUntil: 0, nopeUntil: vnow - 30 * 60 * 1000,
                      resetUntil: 0, nopePool: 20, lockBreakPool: 0, resetBank: 0, overkill: false, ender: "" };
   await reload();
-  ok(has("is-pending"), "a window missed entirely comes back rather than vanishing");
+  ok(has("is-pending"), "a window missed entirely comes back instead of vanishing");
   ok(readout() === "20 / 50 points", "with what chat had already chipped in still on the save bar (" + readout() + ")");
   ok(note() === "3 subs / 3,000 bits / £150.00 to save", "and still counted (" + note() + ")");
   ok(timerText() === "60s", "on a fresh clock, so they get their chance (" + timerText() + ")");
@@ -757,8 +757,8 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   sub({ tier: "1000", name: "GenerousViewer" });
   ok(readout() === "20 / 100", "and it counts again (" + readout() + ")");
 
-  // The clock stands still while it is off, which is the point of pausing rather
-  // than just ignoring: a stream that ends mid-lock resumes mid-lock.
+  // The clock stands still while it is off, which is the point of pausing instead
+  // of just ignoring: a stream that ends mid-lock resumes mid-lock.
   await load();
   redeem("Lock the Bar", 10000, "Sage");
   advance(2 * 60 * 1000);
@@ -841,7 +841,7 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   await load({ lockBreakSubs: 50 });
   redeem("Lock the Bar", 10000, "Sage");
   chat("!bar sub", { mod: true });
-  ok(has("is-locked") && note() === "4 subs / 4,000 bits / £200.00 to break", "against a lock it piles up rather than filling (" + note() + ")");
+  ok(has("is-locked") && note() === "4 subs / 4,000 bits / £200.00 to break", "against a lock it piles up without filling (" + note() + ")");
   chat("!bar sub 4", { mod: true });
   ok(!has("is-locked"), "and enough of them break it");
 
@@ -855,7 +855,7 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   chat("!bar sub lots", { mod: true });
   chat("!bar sub 0", { mod: true });
   chat("!bar sub 3 t9", { mod: true });
-  ok(readout() === "0 / 100", "and nonsense does nothing rather than guessing (" + readout() + ")");
+  ok(readout() === "0 / 100", "and nonsense does nothing, with no guessing (" + readout() + ")");
   chat("!bar off", { mod: true });
   chat("!bar sub 5", { mod: true });
   ok(readout() === "0 / 100", "while switched off it is ignored, the same as real subs (" + readout() + ")");
@@ -1032,7 +1032,7 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   redeem("Lock the Bar", 10000, "Sage");
   ok(has("is-locked"), "locked");
   bomb(20);
-  ok(has("is-reset"), "an outright reset goes straight through a lock rather than being eaten by it");
+  ok(has("is-reset"), "an outright reset goes straight through a lock instead of being eaten by it");
 
   /* The one place it deliberately does not apply. A hundred subs arriving during
      the sixty seconds is somebody saving the run in the most emphatic way available,
@@ -1041,7 +1041,7 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   button("btnFillBar");
   bomb(20);
   ok(!has("is-reset") && !has("is-pending") && readout() === "0 / 100",
-     "a huge gift during the window saves the run rather than ending it (" + readout() + ")");
+     "a huge gift during the window saves the run instead of ending it (" + readout() + ")");
 
   await load({ overkillSubs: 0 });
   bomb(20);
@@ -1236,7 +1236,7 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
 
   // The outright amount, shown as the same full-card banner but as a joke, with the
   // bar picking up afterwards exactly where it had been.
-  console.log("\n[cosplay mode replaces the banner rather than the ending]");
+  console.log("\n[cosplay mode replaces the banner, not the ending]");
   await load({ overkillCosplay: true });
   sub({ tier: "1000", name: "GenerousViewer" });
   ok(readout() === "10 / 100", "one sub in before the big gift arrives (" + readout() + ")");
@@ -1351,7 +1351,7 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
      5, so the first bar of 100 is twenty of them, and it is also 5,000 bits or 50 in
      donations, each of which fills it on their own. Every bar after the first is
      bigger, and saving a run costs proportionally more with it. These assertions are here so
-     that retuning stays a deliberate edit rather than something that drifts. */
+     that retuning stays a deliberate edit, not something that drifts. */
   console.log("\n[the tuning it ships with]");
   const F = shipped();
   ok(F.capacity === 100, "the first bar holds a hundred points (" + F.capacity + ")");
@@ -1452,7 +1452,7 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   ok(has("is-pending") && readout() === "5 / 25 points" && note() === "4 subs / 1,000 bits / £10.00 to save",
      "one sub does not undo the whole bar on its own (" + note() + ")");
   /* The nope reward is matched by title, not by price, so the price it costs lives
-     on Twitch rather than here. This asserts the title still works at the price the
+     on Twitch, not here. This asserts the title still works at the price the
      rewards list tells the streamer to set, which is the thing that would silently break if
      somebody renamed the reward while editing its cost. */
   await loadShipped();

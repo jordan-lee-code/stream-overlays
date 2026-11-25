@@ -14,7 +14,7 @@ Goals are added live from chat with `!incentive add 15 chat confessions`. The wi
 - Tips: tips from StreamElements convert at a rate you choose in your channel's currency (5 to a sub by default), with leftovers carried over and the same strip as bits, so a direct donation moves the goals too.
 - Sounds: optional sounds for a sub, for bits and for a goal being reached.
 - Pause and resume: stop counting before a stream starts and start it when you go live.
-- Scales to its box: text scales with the space the widget is given in StreamElements, and long goal names shrink to fit rather than wrapping or being cut off.
+- Scales to its box: text scales with the space the widget is given in StreamElements, and long goal names shrink to fit, so they never wrap or get cut off.
 - Customisable: more than 80 settings cover wording, colours, fonts, sizes, spacing, sounds and the chat command words.
 - Testable offline: a local dev harness and an automated test script, no live stream needed.
 - An outer frame in the accent colour, on by default in every preset, and switched off with one checkbox (the flag's stripes in the pride presets).
@@ -210,7 +210,7 @@ The **Troubleshooting import** panel brings a problem seen on stream into the de
 
 The **box-size bar** at the bottom of the stage sets the size of the widget's box in pixels, from two number boxes or a list of common sizes, and remembers it for next time. A StreamElements widget fills whatever box you draw for it, so drawing it in different boxes is the quickest way to see how it behaves. It is the same bar on every overlay's dev page.
 
-The harness must be served over http rather than opened as a file. Fonts come from Google Fonts, so an internet connection is needed for the right look. The local dev page also shows a Ko-fi support button in the corner. That button belongs to the harness only and is not part of the widget, so it never appears on stream.
+The harness must be served over http (opening it as a file will not work). Fonts come from Google Fonts, so an internet connection is needed for the right look. The local dev page also shows a Ko-fi support button in the corner. That button belongs to the harness only and is not part of the widget, so it never appears on stream.
 
 ## Testing
 

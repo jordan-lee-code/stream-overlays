@@ -29,11 +29,11 @@ Object.keys(fields).forEach((k) => {
   if (fields[k] && fields[k].type !== "button") data[k] = fields[k].value;
 });
 
-// A stable id so re-importing replaces rather than duplicates where SE allows.
+// A stable id so re-importing replaces instead of duplicating where SE allows.
 const WIDGET_ID = "chat-poll-overlay-0001";
 
 /* The widget box is the full 1080p canvas, so the poll renders at the largest
- * size it will ever need and gets scaled down in OBS rather than up. Shrinking a
+ * size it will ever need and gets scaled down in OBS, never up. Shrinking a
  * large render stays sharp; stretching a small one is what looked blurry. */
 const CANVAS = { width: 1920, height: 1080 };
 const SIZE = { width: CANVAS.width, height: CANVAS.height };

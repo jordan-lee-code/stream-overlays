@@ -56,7 +56,7 @@
   --locked-opacity: 0.6;
 
   /* Fill the StreamElements widget box and become the sizing reference for the
-     card, so everything scales to whatever box the streamer draws rather than
+     card, so everything scales to whatever box the streamer draws, without
      assuming the full overlay canvas. */
   position: relative;
   box-sizing: border-box;
@@ -118,7 +118,7 @@
 /* The bar's width is a percentage of the track below, so anything that resizes
    the card resolves that percentage to a new number and restarts the width
    transition. Nothing in these rows is allowed to do that: the head reserves the
-   tallest state's height, the text truncates rather than pushing the card wider,
+   tallest state's height, the text truncates instead of pushing the card wider,
    and min-width: 0 stops a flex item growing past its share. The headline and the
    note both come from Fields, so "nobody would type something that long" is not a
    thing this widget gets to assume. */
@@ -201,12 +201,12 @@
 
 /* ---- Locked ---- */
 
-/* While the bar is locked the fill goes quiet rather than disappearing, so chat
+/* While the bar is locked the fill goes quiet without disappearing, so chat
    can still see how close it had got before the lock went up. */
 .rage-card.is-locked .rage-fill { filter: saturate(0.45); opacity: var(--locked-opacity); }
 
 /* A small padlock in the corner while the bar is locked, drawn in CSS so it
-   picks up the card's own colours rather than relying on an emoji font being
+   picks up the card's own colours instead of relying on an emoji font being
    present in the browser source. */
 .rage-lock {
   position: absolute;

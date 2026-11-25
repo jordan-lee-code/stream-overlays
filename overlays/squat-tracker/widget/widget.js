@@ -234,7 +234,7 @@
 
   // A sound is a file uploaded into the widget settings. Each play makes a fresh
   // Audio so quick gifts can overlap, and a browser that refuses to autoplay stays
-  // quiet rather than erroring.
+  // quiet instead of erroring.
   function playSound(kind) {
     var s = cfg.sounds;
     if (!s || !s.enabled || !s[kind] || !s[kind].url) return;
@@ -470,7 +470,7 @@
     event = event || {};
     if (cfg.debug && typeof console !== "undefined" && console.log) {
       // So a surprising payload on a real stream can be read straight from the
-      // browser-source console, rather than guessed at from the outside.
+      // browser-source console, instead of being guessed at from the outside.
       try { console.log("[squat-tracker] subscriber-latest", JSON.stringify(event)); }
       catch (e) { console.log("[squat-tracker] subscriber-latest", event); }
     }

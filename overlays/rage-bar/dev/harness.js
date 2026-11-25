@@ -182,7 +182,7 @@
   }
 
   /* A channel point redemption. StreamElements carries these on the event itself
-     rather than through a listener of their own, so the type is what marks it.
+     not through a listener of their own, so the type is what marks it.
      With "raw only" ticked the flat title/cost/username are dropped and only the
      Twitch payload is left, which is the shape the widget's fallbacks are for. */
   function sendRedeem(title, cost, user) {
@@ -502,7 +502,7 @@
     };
   }
 
-  /* The readout comes back out of the store rather than out of the widget, so
+  /* The readout comes back out of the store, not out of the widget, so
      what you are looking at is what would actually survive a refresh. A bar that
      looks right on screen and wrong here is a bar that will lose its place the
      moment OBS reloads the browser source, which is the failure worth catching. */

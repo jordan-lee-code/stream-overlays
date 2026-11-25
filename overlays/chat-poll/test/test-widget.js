@@ -331,7 +331,7 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   ok(eyebrow() === "Chat says", "and tagged the result");
   chat("!vote undo", boss); await wait(5);
   ok(winners() === 0 && timer() > 0 && timer() <= 15,
-    "undoing a poll that genuinely ran out reopens it on the grace window (" + timer() + ")");
+    "undoing a poll that ran out reopens it on the grace window (" + timer() + ")");
   ok(votes().join(",") === "1,0", "with the votes it already had (" + votes().join(",") + ")");
 
   // Q. option text is escaped, because it comes from chat
@@ -474,7 +474,7 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   ok(total() === "2000 votes", "the total agrees (" + total() + ")");
   ok(elapsed < 3000, "2000 votes stay comfortably fast (" + elapsed + "ms)");
   chat("2", { nick: "voter0" });
-  ok(total() === "2000 votes", "a returning voter moves their vote rather than adding one");
+  ok(total() === "2000 votes", "a returning voter moves their vote without adding one");
 
 
   // ---- the default look matches the rest of the set

@@ -13,7 +13,7 @@
  * StreamElements events.
  *
  * Time that cannot go on the clock (because of the cap, a lock, or the clock having
- * ended) is banked rather than thrown away, so nobody's money ever vanishes quietly.
+ * ended) is banked, not thrown away, so nobody's money ever vanishes.
  */
 (function () {
   "use strict";
@@ -256,7 +256,7 @@
 
   // The day number. By default each calendar day the clock runs is a new day, so a
   // subathon streamed a few hours at a time over a week reads Day 1 to Day 7, and a day with
-  // no streaming does not count. The new day starts at the rollover hour rather than at
+  // no streaming does not count. The new day starts at the rollover hour not at
   // midnight, so a stream that runs past midnight is still the same day.
   function dayStamp(t) {
     var d = new Date(t - cfg.dayRollover * 3600000);

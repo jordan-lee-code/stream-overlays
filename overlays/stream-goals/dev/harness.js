@@ -206,7 +206,7 @@
   };
   window.__applySnapshot = function (snap) {
     var n = 0, f = (snap && snap.fields) || {};
-    // Nothing here to put back (the Data tab of some other widget, say) changes nothing, rather than resetting every setting.
+    // Nothing here to put back (the Data tab of some other widget, say) changes nothing, instead of resetting every setting.
     if (!Object.keys(fieldDefs).some(function (k) { return fieldDefs[k].type !== "button" && f.hasOwnProperty(k); })) return 0;
     Object.keys(fieldDefs).forEach(function (k) {
       var d = fieldDefs[k];

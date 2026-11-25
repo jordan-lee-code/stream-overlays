@@ -184,7 +184,7 @@ The **Troubleshooting import** panel brings a problem seen on stream into the de
 
 The **box-size bar** at the bottom of the stage sets the size of the widget's box in pixels, from two number boxes or a list of common sizes, and remembers it for next time. A StreamElements widget fills whatever box you draw for it, so drawing it in different boxes is the quickest way to see how it behaves. It is the same bar on every overlay's dev page.
 
-The harness must be served over http rather than opened as a file, fonts come from Google Fonts, and the lookups need a network connection. It also shows a Ko-fi support button in the corner. That button belongs to the harness only and is not part of the widget, so it never appears on stream.
+The harness must be served over http (opening it as a file will not work), fonts come from Google Fonts, and the lookups need a network connection. It also shows a Ko-fi support button in the corner. That button belongs to the harness only and is not part of the widget, so it never appears on stream.
 
 ## Testing
 
@@ -209,7 +209,7 @@ The widget uses the StreamElements events `onWidgetLoad` and `onEventReceived` w
 
 The pronoun record and the picture lookup were checked against the live services. The shape of a message, its badges and emotes, and the events for deleted messages match the sample message and chat widget that StreamElements publishes, but the widget has not been run on a live stream. I do not know which non-Twitch emotes StreamElements includes in a message, whether an animated Twitch emote arrives with an animated picture, or whether StreamElements passes Twitch's newer `gifs` tag along with the rest of a message's tags. The widget reads it from the message's `tags` (or from a `gifs` list on the message, if StreamElements adds one), so a GIF appears only if it is there, and otherwise you see the placeholder text. Tick **debug** in Troubleshooting for your first stream to log each event, and please open an issue if something differs.
 
-It shows messages as they arrive while it is running and does not read earlier chat, so a freshly added widget starts empty. It is not a chat box for typing in, and a widget cannot write to chat, so `!chatfeed` makes the panel pop rather than replying.
+It shows messages as they arrive while it is running and does not read earlier chat, so a freshly added widget starts empty. It is not a chat box for typing in, and a widget cannot write to chat, so `!chatfeed` makes the panel pop instead of replying.
 
 Picture and pronoun lookups depend on two services that are not part of this project. If one changes or goes away, the widget carries on without it.
 

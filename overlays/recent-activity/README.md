@@ -1,6 +1,6 @@
 # Recent Activity Overlay
 
-A StreamElements custom widget that shows the latest events on your stream: new subs and resubs, gifted subs, bits, tips, follows and raids, with running totals for the stream underneath. It is a small, calm list rather than a pop-up alert.
+A StreamElements custom widget that shows the latest events on your stream: new subs and resubs, gifted subs, bits, tips, follows and raids, with running totals for the stream underneath. It is a small, calm list, not a pop-up alert.
 
 <p align="center"><img src="docs/default.png" alt="A soft black rounded card titled Recent activity with five events, each with a small tag, and a totals line" width="380"></p>
 
@@ -161,7 +161,7 @@ The **Troubleshooting import** panel brings a problem seen on stream into the de
 
 The **box-size bar** at the bottom of the stage sets the size of the widget's box in pixels, from two number boxes or a list of common sizes, and remembers it for next time. A StreamElements widget fills whatever box you draw for it, so drawing it in different boxes is the quickest way to see how it behaves. It is the same bar on every overlay's dev page.
 
-The harness must be served over http rather than opened as a file, and fonts come from Google Fonts. It also shows a Ko-fi support button in the corner. That button belongs to the harness only and is not part of the widget, so it never appears on stream.
+The harness must be served over http (opening it as a file will not work), and fonts come from Google Fonts. It also shows a Ko-fi support button in the corner. That button belongs to the harness only and is not part of the widget, so it never appears on stream.
 
 ## Testing
 
@@ -188,7 +188,7 @@ It shows events as they arrive while it is running. It does not read the stream'
 
 It is a list, not an alert: there is no pop-up, media or text-to-speech. If you want those, use the alerts that StreamElements and Streamlabs already provide.
 
-A StreamElements widget can read chat but cannot write to it, so `!activity` makes the title pop rather than replying.
+A StreamElements widget can read chat but cannot write to it, so `!activity` makes the title pop instead of replying.
 
 The JavaScript is plain ES5, so it can be pasted straight into the StreamElements editor.
 

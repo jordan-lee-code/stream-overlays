@@ -1,7 +1,7 @@
 # Assets
 
 I bundled no binary assets in here on purpose. The fonts and sounds on your stream should be
-yours, chosen and licensed by you, rather than something you quietly inherit from my repo.
+yours, chosen and licensed by you, not something you inherit from my repo without noticing.
 
 ## Fonts
 

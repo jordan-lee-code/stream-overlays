@@ -98,7 +98,7 @@ const cls = c => E("sc-app").classList.contains(c);
   ok(cls("live") && audioLog.length === 0, "one that ran out while it was closed shows live, without a sound");
   await load(); await reload(); ok(cls("idle"), "an empty one stays empty");
   storeData.start_countdown_v1 = { target: "soon", from: [] }; await reload(); ok(cls("idle"), "a damaged save is ignored");
-  storeData.start_countdown_v1 = { target: env.fake + 5 * MIN, from: env.fake + 9 * MIN }; await reload(); ok(cls("count") && E("sc-fill").style.width === "100%", "a start after the end counts as no progress rather than breaking (" + E("sc-fill").style.width + ")");
+  storeData.start_countdown_v1 = { target: env.fake + 5 * MIN, from: env.fake + 9 * MIN }; await reload(); ok(cls("count") && E("sc-fill").style.width === "100%", "a start after the end counts as no progress and breaks nothing (" + E("sc-fill").style.width + ")");
 
   section("the rotating lines");
   await load({ messageSeconds: 5 });

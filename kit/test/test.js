@@ -412,7 +412,7 @@ asection("the pretend clock");
     assert.strictEqual(new c.Date(2026, 0, 1).getFullYear(), 2026);
     assert.ok(new c.Date() instanceof Date);
   });
-  atest("a timer that always schedules another is stopped rather than run for ever", async () => {
+  atest("a timer that always schedules another is stopped before it can run for ever", async () => {
     const c = createClock(); const again = () => c.setTimeout(again, 0); again();
     await assert.rejects(() => c.advance(10), /keeps scheduling timers/);
   });
