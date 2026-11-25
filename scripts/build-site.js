@@ -1,7 +1,7 @@
 /* Copyright (c) 2026 Jordan Lee (https://ko-fi.com/journeyingjordan). Released under the MIT licence: this notice must be kept in copies and substantial portions of the code. See LICENSE. */
 /* Builds the website that GitHub Pages serves: a landing page with a card for each overlay, and for
  * each overlay its dev page and its widget files, so someone can set an overlay up in the browser and
- * copy its files into StreamElements without downloading the repository.
+ * copy its files into StreamElements without downloading anything else.
  *
  *   node scripts/build-site.js [folder]        (the folder is _site by default)
  *
@@ -11,7 +11,6 @@
 const fs = require("fs");
 const path = require("path");
 
-const REPO = "https://github.com/jordan-lee-code/stream-overlays";
 const KOFI = "https://ko-fi.com/journeyingjordan";
 
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -53,7 +52,7 @@ function cardHtml(c) {
           <a class="pic" href="${esc(c.name)}/dev/">${c.picture ? `<img src="${esc(c.name)}/card.png" alt="The ${esc(c.title)} overlay" loading="lazy">` : ""}</a>
           <h3><a href="${esc(c.name)}/dev/">${esc(c.title)}</a></h3>
           <p>${esc(c.description.replace(/^A StreamElements custom widget:\s*/i, "").replace(/^./, ch => ch.toUpperCase()))}</p>
-          <p class="links"><a class="go" href="${esc(c.name)}/dev/"><span class="se">Set it up and copy it</span><span class="miu">Set it up and copy the widget</span></a> <a href="${REPO}/tree/main/overlays/${esc(c.name)}#readme">Read about it</a></p>
+          <p class="links"><a class="go" href="${esc(c.name)}/dev/"><span class="se">Set it up and copy it</span><span class="miu">Set it up and copy the widget</span></a></p>
         </li>`;
 }
 
@@ -151,7 +150,7 @@ function landing(cards) {
   <main>${sections}
   </main>
   <footer>
-    <p>The code is on <a href="${REPO}">GitHub</a>, under the MIT licence, with a README for each overlay. If these save you time, you can support them on <a href="${KOFI}">Ko-fi</a>.</p>
+    <p>The overlays are free to use under the MIT licence. If these save you time, you can support them on <a href="${KOFI}">Ko-fi</a>.</p>
     <p class="miu">With Mix It Up, each overlay is a Custom widget that Mix It Up shows from its own overlay server, so it needs nothing from this website while you stream. Mix It Up tells a widget about each event by calling a function, and what is in a chat message is known; the other events are read by the names they are likely to have, so a follow, raid, sub, bits or donation that does not show may need one more name added. Its chat commands work from chat, and the buttons in an overlay's StreamElements settings are not there.</p>
     <p>These pages load fonts from Google Fonts and the Ko-fi button from Ko-fi. Your settings stay in your browser. The Chat Feed overlay, when it is on stream, looks up chatters' profile pictures and pronouns on two outside services, and its README says exactly what is sent.</p>
   </footer>

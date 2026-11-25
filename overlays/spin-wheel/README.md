@@ -172,7 +172,7 @@ A StreamElements widget can read chat but cannot write to it. When someone uses 
 
 ## Using it with Mix It Up
 
-This overlay runs unchanged with Mix It Up. Choose Mix It Up at the top of [the website](https://jordan-lee-code.github.io/stream-overlays/) and set the overlay up there. The steps, and what differs from StreamElements, are in the [root README](../../README.md#using-an-overlay-with-mix-it-up).
+This overlay runs unchanged with Mix It Up. Choose Mix It Up at the top of [the website](https://lee-it.co.uk/stream-overlays/) and set the overlay up there. The steps, and what differs from StreamElements, are in the [root README](../../README.md#using-an-overlay-with-mix-it-up).
 
 ## Local development
 
