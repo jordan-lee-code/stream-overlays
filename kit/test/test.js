@@ -213,6 +213,11 @@ asection("the website");
     assert.ok(names.every(n => index.split('href="' + n + '/dev/"').length > 1), "an overlay is missing");
     names.forEach(n => { const row = new RegExp("\\(overlays/" + n + "\\) \\|"); assert.ok(row.test(fs.readFileSync(path.join(repoRoot, "README.md"), "utf8")), n + " is not in the root README"); });
   });
+  atest("nothing the website serves links back to where its code is kept", () => {
+    const walk = d => fs.readdirSync(d, { withFileTypes: true }).reduce((all, e) => all.concat(e.isDirectory() ? walk(path.join(d, e.name)) : [path.join(d, e.name)]), []);
+    walk(outDir).filter(f => !/\.png$/.test(f)).forEach(f =>
+      assert.ok(!/github\.(com|io)|jordan-lee-code/i.test(fs.readFileSync(f, "utf8")), path.relative(outDir, f) + " links to the code"));
+  });
   atest("the website is dark by default, and the choice is kept for the dev pages", () => {
     assert.ok(/:root \{ color-scheme: dark;/.test(index) && /html\[data-theme="light"\]/.test(index), "the landing page is not dark by default");
     assert.ok(/id="theme"/.test(index) && /stream-overlays-theme/.test(index), "no switch to light");
