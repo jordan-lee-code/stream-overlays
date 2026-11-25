@@ -137,7 +137,7 @@
   },
   "hideWhenOff": {
     "type": "checkbox",
-    "label": "Hide the bar entirely while it is switched off, rather than showing it faded",
+    "label": "Hide the bar entirely while it is switched off, instead of showing it faded",
     "value": false,
     "group": "Copy"
   },

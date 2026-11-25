@@ -69,7 +69,7 @@
   --c-foot: var(--text);
 
   /* Fill the StreamElements widget box and become the sizing reference, so the
-     card scales to whatever box the streamer draws rather than assuming the full
+     card scales to whatever box the streamer draws, without assuming the full
      overlay canvas. */
   position: relative;
   box-sizing: border-box;
@@ -88,7 +88,7 @@
 
   /* Room for the card's drop shadow, which reaches about an em and a half past
      its edges and was being sliced flat against the side of the widget box.
-     Sized from the box rather than the type so it holds its proportion whether
+     Sized from the box, not the type, so it holds its proportion whether
      the poll is large or small. */
   padding: 3cqmin;
   font-family: var(--font);
@@ -112,8 +112,8 @@
 .vote-card {
   font-size: calc(clamp(11px, 4.4cqmin, 120px) * var(--scale, 1) * var(--fit, 1));
 
-  /* Sized to its content rather than to the box that was drawn, so a two-option poll
-     is a small card and only a genuinely long statement pushes it out to the
+  /* Sized to its content, not to the box that was drawn, so a two-option poll
+     is a small card and only a long statement pushes it out to the
      full width. The minimum stops a Yes/No poll collapsing into a sliver. */
   width: fit-content;
   min-width: min(100%, 14em);
@@ -146,8 +146,8 @@
 
 /* Applied for a single frame while widget.js measures how much room the card
    would want if nothing were in its way. Every constraint comes off and the
-   statements go to one line, so the measurement is the card's true appetite
-   rather than whatever it has already been squeezed into. */
+   statements go to one line, so the measurement is the card's true appetite,
+   not whatever it has already been squeezed into. */
 .vote-card.measuring {
   width: max-content;
   min-width: 0;
@@ -157,7 +157,7 @@
   /* Without this the card is still a flex item while being measured, and flex
      shrinks it back to the container. It would then report wanting exactly the
      room it already has, however much it really needed, and the fit would come
-     out as "no change required" while the rows quietly overflowed. */
+     out as "no change required" while the rows overflowed unnoticed. */
   flex: none;
 }
 /* `overflow: visible` matters as much as the nowrap here, and its absence was a
@@ -284,8 +284,8 @@
 }
 
 /* The statement is never trimmed. The card is sized by its contents, so the
-   honest thing is to let the widest option decide how wide the card gets rather
-   than cutting a word in half to protect a width nobody chose.
+   honest thing is to let the widest option decide how wide the card gets, instead
+   of cutting a word in half to protect a width nobody chose.
 
    No `min-width: 0` here, deliberately. That flag lets a flex item shrink below
    its own content, which is what was squeezing `spaghetti` into a column narrow
@@ -308,7 +308,7 @@
   overflow-wrap: break-word;
 }
 
-/* A fixed width rather than a percentage, because a percentage would be resolving
+/* A fixed width, not a percentage, because a percentage would be resolving
    against a card that is itself being sized by its contents. */
 .vote-bar {
   flex: 0 0 var(--bar-w);
@@ -361,7 +361,7 @@
    properly and for every case, not just the one the threshold happened to catch,
    and it does it by shrinking only as far as it must. Measured against eight
    options, dropping dense mode left the type larger in every box tried: 47.5px
-   rather than 38.9px on a 1080p canvas, 30.8 rather than 25.2 in a narrow one.
+   against 38.9px on a 1080p canvas, 30.8 against 25.2 in a narrow one.
    Its clamp was also what made the card mismeasure itself, since a clipped label
    reports needing almost no room at all. */
 

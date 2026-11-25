@@ -1271,7 +1271,7 @@
   }
 
   // Scale the winner name down so long usernames fit on one line, and if even the
-  // smallest size still will not fit, let it wrap rather than spill out of the card.
+  // smallest size still will not fit, let it wrap instead of spilling out of the card.
   function fitWinnerName() {
     var node = el.winnerName;
     var MAX = 56, MIN = 16;
@@ -1357,7 +1357,7 @@
   // ---------------------------------------------------------------------------
   // A sound is a file uploaded into the widget settings. Each play makes a fresh
   // Audio so quick sounds can overlap, and a browser that refuses to autoplay stays
-  // quiet rather than erroring.
+  // quiet instead of erroring.
   function playSound(kind) {
     var snd = cfg.sounds && cfg.sounds[kind];
     if (!cfg.enableSounds || !snd || !snd.url) return;

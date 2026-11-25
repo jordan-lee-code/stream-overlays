@@ -29,7 +29,7 @@ Object.keys(fields).forEach((k) => {
   if (fields[k] && fields[k].type !== "button") data[k] = fields[k].value;
 });
 
-// A stable id so re-importing replaces rather than duplicates where SE allows.
+// A stable id so re-importing replaces instead of duplicating where SE allows.
 const WIDGET_ID = "squat-tracker-overlay-0001";
 
 // A small sticker box, sat up near the top of a 1920x1080 canvas by default. It

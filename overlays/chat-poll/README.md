@@ -192,7 +192,7 @@ The **Troubleshooting import** panel brings a problem seen on stream into the de
 
 The **box-size bar** at the bottom of the stage sets the size of the widget's box in pixels, from two number boxes or a list of common sizes, and remembers it for next time. A StreamElements widget fills whatever box you draw for it, so drawing it in different boxes is the quickest way to see how it behaves. It is the same bar on every overlay's dev page.
 
-The harness must be served over http rather than opened as a file, and fonts come from Google Fonts.
+The harness must be served over http (opening it as a file will not work), and fonts come from Google Fonts.
 
 ## Testing
 
@@ -219,7 +219,7 @@ docs/     screenshots used in this README
 ## Compatibility and limitations
 
 - Votes are counted per chat username. Someone determined to vote twice from a second account can, and no overlay widget can see enough to stop that, so it suits a game round among friends better than a decision that matters.
-- Option text is never trimmed. The card grows wider to fit the longest option, and if it runs out of room the whole card is made smaller rather than cutting a statement in half.
+- Option text is never trimmed. The card grows wider to fit the longest option, and if it runs out of room the whole card is made smaller so that no statement is cut in half.
 - Eight options is the cap, because the letters run A to H.
 - The poll and its undo history are saved to the StreamElements widget store, so a browser-source refresh mid-poll loses nothing. The saved payload grows with the number of voters (roughly 26 KB for two thousand), which has not been tested against a real store at much larger sizes.
 - Built for Twitch.

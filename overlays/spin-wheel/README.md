@@ -193,7 +193,7 @@ The **Troubleshooting import** panel brings a problem seen on stream into the de
 
 The **box-size bar** at the bottom of the stage sets the size of the widget's box in pixels, from two number boxes or a list of common sizes, and remembers it for next time. A StreamElements widget fills whatever box you draw for it, so drawing it in different boxes is the quickest way to see how it behaves. It is the same bar on every overlay's dev page.
 
-The harness must be served over http rather than opened as a file, and fonts come from Google Fonts.
+The harness must be served over http (opening it as a file will not work), and fonts come from Google Fonts.
 
 ## Testing
 
@@ -216,7 +216,7 @@ docs/     screenshots used in this README
 ## Compatibility and limitations
 
 - Built for Twitch. The event handling is platform-neutral, so other platforms would be a small addition.
-- With a very large entry list the names on the wheel thin out and some labels are hidden to stay readable. The winner is always shown clearly in the reveal card, so this is cosmetic rather than a fairness issue.
+- With a very large entry list the names on the wheel thin out and some labels are hidden to stay readable. The winner is always shown clearly in the reveal card, so this is cosmetic and does not affect fairness.
 - Entrants, mode, recent winners, lifelines and a running countdown are saved to the StreamElements widget store, so a browser-source refresh mid-giveaway loses nothing.
 
 The widget uses the StreamElements events `onWidgetLoad`, `onEventReceived` (`message`, `subscriber-latest`, `follower-latest`, `cheer-latest`, `tip-latest`, `widget-button`) and `SE_API.store`. The JavaScript is plain ES5, so it can be pasted straight into the StreamElements editor.

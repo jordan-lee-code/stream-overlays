@@ -349,7 +349,7 @@
       '<p class="hint">The quick buttons send as the broadcaster. Untick broadcaster and tick mod (or neither) to feel the permissions.</p>' +
       '<p class="hint">While the count is locked a padlock sits on the sticker and gift bombs ' +
       'add nothing, but !squats -5 and the reset still work, which is the shape of a stream ' +
-      'where the squats are being worked off rather than piling up.</p>' +
+      'where the squats are being worked off instead of piling up.</p>' +
       '<h2>Every setting (re-applies on change)</h2>' +
       '<p class="hint">Generated from <code>fields.json</code>, so it is exactly what StreamElements will offer. Buttons here are the Manual controls.</p>' +
       '<div id="all-settings"></div>' +

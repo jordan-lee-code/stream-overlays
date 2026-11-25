@@ -275,7 +275,7 @@
   }
 
   // A sound is just a file the streamer uploaded into the widget settings. Each
-  // play makes a fresh Audio, so quick-fire subs can overlap rather than cut each
+  // play makes a fresh Audio, so quick-fire subs can overlap instead of cutting each
   // other off, and a browser that refuses to autoplay simply stays quiet.
   function playSound(kind) {
     var s = cfg.sounds;
@@ -442,7 +442,7 @@
   }
 
   // BioRhyme is a variable font, so ask for its whole weight range: every
-  // boldness the settings offer is then drawn for real rather than faked by the
+  // boldness the settings offer is then drawn for real, not faked by the
   // browser. Other families are requested plainly because single-weight ones
   // reject a weight axis.
   var FONT_WEIGHTS = { "BioRhyme": ":wght@200..800" };
@@ -485,7 +485,7 @@
   function fitHeading() {
     if (!el.title || !el.header) return;
     // Shrinking goes through a multiplier on the heading's own size, not a font-size
-    // of its own, which would replace that size rather than scale it.
+    // of its own, which would replace that size, not scale it.
     el.header.style.setProperty("--heading-fit", "1");
     if (el.title.hidden) return;
     var natural = el.title.scrollWidth;
@@ -564,7 +564,7 @@
     if (saveTimer) clearTimeout(saveTimer);
     saveTimer = setTimeout(function () {
       // A goal that is mid-celebration is already earned, so it is saved as
-      // unlocked and comes back settled rather than celebrating a second time.
+      // unlocked and comes back settled without celebrating a second time.
       var keep = [];
       for (var i = 0; i < incentives.length; i++) {
         var inc = incentives[i];
@@ -687,7 +687,7 @@
     event = event || {};
     if (cfg.debug && typeof console !== "undefined" && console.log) {
       // So a surprising payload on a real stream can be read straight from the
-      // browser-source console, rather than guessed at from the outside.
+      // browser-source console, instead of being guessed at from the outside.
       try { console.log("[incentives] subscriber-latest", JSON.stringify(event)); }
       catch (e) { console.log("[incentives] subscriber-latest", event); }
     }
@@ -949,7 +949,7 @@
       inc.timer = setTimeout(finishUnlock.bind(null, inc), Math.round(cfg.unlockSeconds * 1000) + inc.delay);
     }
     // One sound for the whole batch, so a gift bomb that clears three goals is a
-    // single moment rather than three on top of each other.
+    // single moment, not three on top of each other.
     if (batch > 0) playSound("goal");
     return batch;
   }
@@ -1109,7 +1109,7 @@
       row.countText = countText;
     }
     // Reading offsetWidth first means a brand new bar is painted empty before it
-    // is told its real width, so it fills in rather than appearing already full.
+    // is told its real width, so it fills in instead of appearing already full.
     if (fresh) void row.fill.offsetWidth;
     row.fill.style.width = pct + "%";
   }
@@ -1208,7 +1208,7 @@
     el.thanks.classList.remove("enter");
     void el.thanks.offsetWidth;
     el.thanks.classList.add("enter");
-    // Reading the width first paints the bar empty, so it fills in rather than
+    // Reading the width first paints the bar empty, so it fills in instead of
     // appearing already full.
     el.thanksFill.style.transition = "none";
     el.thanksFill.style.width = "0%";

@@ -390,7 +390,7 @@
 
   // A sound is a file uploaded into the widget settings. Each play makes a fresh
   // Audio so quick votes can overlap, and a browser that refuses to autoplay stays
-  // quiet rather than erroring.
+  // quiet instead of erroring.
   function playSound(kind) {
     var snd = cfg.sounds;
     if (!snd || !snd.enabled || !snd[kind] || !snd[kind].url) return;
@@ -566,7 +566,7 @@
      only as good as the font in use at the time. Chicle arrives asynchronously
      from Google Fonts and is a good deal wider than the fallback it replaces, so
      a poll opened before it lands gets measured against narrow text, and then
-     every statement quietly grows past the room it was given.
+     every statement grows past the room it was given.
 
      So the fit is recomputed once the fonts have settled. This is the difference
      between a widget that looks right in a test where the font is already there
@@ -625,7 +625,7 @@
       catch (e) { /* store is best-effort */ }
     }, 300);
   }
-  /* Hands the saved data back rather than installing it, so the caller can decide
+  /* Hands the saved data back without installing it, so the caller can decide
      whether it is still wanted. Reading the store is asynchronous, and a poll can
      be opened in the gap before it answers. */
   function restoreState(done) {
@@ -775,7 +775,7 @@
   /* Rollback. Every destructive step snapshots first, so this walks back through
      ending, cancelling, restarting, or being replaced by a newer poll. A poll
      that comes back already past its clock is reopened for a short grace window
-     rather than instantly re-ending. */
+     so that it does not instantly re-end. */
   function undo() {
     if (!undoStack.length) return;
     poll = undoStack.pop();
@@ -800,7 +800,7 @@
 
   /* A vote can be the option itself, its number, or its letter. The letters are
      what the running-order sheet prints, and the numbers are what chat reaches
-     for anyway, so all three are accepted rather than made into a rule people
+     for anyway, so all three are accepted instead of being made into a rule people
      have to remember. */
   function matchVote(text) {
     var t = normalise(text);
@@ -809,7 +809,7 @@
     /* In a letters-only poll the labels are not shown and the chips are what
        chat is reading, so matching on label text would send a vote to the wrong
        row: `!vote B, A, C` displays as A, B, C, and someone typing B means the
-       second row rather than the one that happens to be labelled B. Position is
+       second row, not the one that happens to be labelled B. Position is
        the only thing that can be trusted here. */
     var byPositionOnly = keysOnlyPoll();
 
@@ -955,9 +955,9 @@
        wider than that. Without this the column keeps the width it was measured
        at and the percentages get cut off as soon as the votes arrive.
 
-       It is the text's *length* rather than its value, so this refits when a
+       It is the text's *length*, not its value, so this refits when a
        count gains a digit and not on every single vote. Three or four times in a
-       busy poll rather than two thousand. */
+       busy poll, not two thousand. */
     var fitKey = poll.options.map(function (o) { return o.label; }).join("|") +
       "|" + poll.status + "|" + cfg.scale + "|" + cfg.grow + "|" + (poll.title || "") +
       "|" + widestCountLength(total, best, blind);
@@ -968,7 +968,7 @@
   }
 
   /* Kept short on purpose. This line is the widest thing in the card, so a long
-     one quietly sets the card's whole width and a two-option poll ends up in a
+     one ends up setting the card's whole width and a two-option poll ends up in a
      box built for a sentence nobody needed. */
   function hintText() {
     var keys = poll.options.map(function (o, i) { return LETTERS[i]; });
@@ -983,11 +983,11 @@
      `!vote A, B, C` or `!vote 1, 2, 3`. Order does not matter, so `!vote B, A, C`
      counts too and simply shows as A, B, C.
 
-     It asks whether the labels are the complete set of keys rather than checking
+     It asks whether the labels are the complete set of keys, instead of checking
      them one position at a time. Options are deduplicated on the way in, so a
      poll of three whose labels contain all of A, B and C can only be those three
      in some order. `!vote A, B, Z` is not the set, so it keeps its labels and Z
-     stays visible rather than quietly vanishing behind a chip reading C. */
+     stays visible. Otherwise it would vanish behind a chip reading C. */
   function keysOnlyPoll() {
     if (!poll || !poll.options.length) return false;
 
@@ -1091,7 +1091,7 @@
      too ambitious for what is in the poll, something has to give. Wrapping was
      the old answer, and it is a poor one: `Pizza` broken into `Piz` and `za`
      helps nobody, and a statement pushed onto a third line disappears entirely.
-     So the size setting is treated as a ceiling rather than a fixed value.
+     So the size setting is treated as a ceiling, not a fixed value.
 
      Everything in the card is sized in em from one font-size, so its appetite
      for space is exactly proportional to that number. That means one
@@ -1127,7 +1127,7 @@
 
   /* The widest statement, expressed in em of the label's own font size. Called
      while the card is being measured, so every label is on one line at its
-     natural width and the widest is a real answer rather than whatever the
+     natural width and the widest is a real answer, not whatever the
      current column happens to allow. Returns 0 when there is nothing to measure,
      which leaves the column at `auto` and the old behaviour. */
   function widestInEm(selector) {
@@ -1147,8 +1147,8 @@
     /* Rounded up, and not a hair more. There used to be an extra 0.05em of
        slack here "to be safe", and it was the opposite of safe: the card's width
        comes from a measurement taken without it, so every row ended up wider
-       than the card by the slack on its two columns. That overflow is a ratio
-       rather than a fixed amount, so shrinking the card scaled the gap down with
+       than the card by the slack on its two columns. That overflow is a ratio,
+       not a fixed amount, so shrinking the card scaled the gap down with
        everything else and never closed it. The corrective loop ran its full
        eight passes on every poll and left the type at 72% of the size it should
        have been. Rounding up to the nearest thousandth is enough. */
@@ -1218,7 +1218,7 @@
 
     /* A floor, because past a point shrinking stops being a kindness and just
        produces a poll nobody can read from the sofa. It is measured against the
-       card's natural size rather than the requested one: half of natural, never
+       card's natural size, not the requested one: half of natural, never
        half of whatever multiplier happens to be set. A floor tied to the setting
        would mean asking for 400% left the card stuck at an effective 140%, too
        big for a small box, still wrapping, and mystifying. */
@@ -1229,7 +1229,7 @@
     apply(fit);
     lastFit = { wantsW: wantsW, wantsH: wantsH, hasW: hasW, hasH: hasH, fit: fit };
 
-    /* The width is set outright rather than left to `width: fit-content`.
+    /* The width is set outright instead of being left to `width: fit-content`.
        Asking the browser to size the card from its own contents works here and
        does not work in StreamElements, where the card was settling at 639px
        while reporting that it wanted 758px and had 1920px of room, and the rows
@@ -1240,7 +1240,7 @@
     function apply(f) {
       el.card.style.setProperty("--fit", String(Math.floor(f * 1000) / 1000));
       el.card.style.width = Math.min(hasW, Math.ceil(wantsW * f) + extraW) + "px";
-      // In em, so it follows the type rather than needing recomputing per pass.
+      // In em, so it follows the type without needing recomputing per pass.
       if (labelEm) el.card.style.setProperty("--label-w", labelEm + "em");
       if (countEm) el.card.style.setProperty("--count-w", countEm + "em");
     }
@@ -1248,7 +1248,7 @@
     /* The ratio gets it right to within a percent or so, but line boxes round to
        whole pixels and seven of those add up, so the card can still sit a hair
        over the edge. A few corrective nudges settle it. This asks the elements
-       whether they are actually overflowing rather than trusting the arithmetic,
+       whether they are actually overflowing instead of trusting the arithmetic,
        which is the only question that matters. */
     /* Correcting what the arithmetic did not quite get right.
 
@@ -1446,12 +1446,12 @@
 
     /* A browser-source refresh mid-poll is the moment this matters most: the
        clock is stored as a wall-clock time, so the poll picks up exactly where
-       it was rather than restarting or dying.
+       it was, without restarting or dying.
 
        Two guards on the way back. The token drops a stale read if the settings
        panel fires another load while this one is still waiting. And a poll that
        opened while the store was being read is newer than anything saved, so it
-       is left alone rather than being overwritten by the older copy. */
+       is left alone instead of being overwritten by the older copy. */
     var token = ++loadToken;
 
     restoreState(function (saved) {

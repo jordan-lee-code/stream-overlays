@@ -129,7 +129,7 @@
   /* Every copy of this widget that loads gets its own id. Two of them running at
      once, which is what happens when the StreamElements overlay editor is left
      open beside OBS, both answer the same events and both write to the same saved
-     state, and they will quietly tread on each other. The id is here so that at
+     state, and they will tread on each other. The id is here so that at
      least the second one can say so in the console instead of everybody wondering
      later why the bar went backwards. */
   var INSTANCE = Math.random().toString(36).slice(2, 10);
@@ -308,7 +308,7 @@
   /* The clock the bar lives by. While the bar is switched off, time stands still
      at the moment it went off, so a lock or a nope window left running when the
      stream ended is still exactly where it was when the next one starts. Real
-     time is only used for things that genuinely are about real time, like
+     time is only used for things that are about real time, like
      spotting a second copy of the widget. */
   function clockNow() {
     return pausedAt || nowMs();
@@ -377,7 +377,7 @@
       resetHoldSeconds: Math.max(1, num(f.resetHoldSeconds, 10)),
       // Zero switches the extra time off.
       saveExtendSeconds: Math.max(0, num(f.saveExtendSeconds, 5)),
-      // Zero switches the outright reset off entirely, rather than making every
+      // Zero switches the outright reset off entirely, so it does not make every
       // contribution an outright reset.
       overkillSubs: Math.max(0, num(f.overkillSubs, 500)),
 
@@ -463,8 +463,8 @@
       lockSound: str(f.lockSound, ""), lockVolume: clamp(num(f.lockVolume, 60), 0, 100) / 100,
       breakSound: str(f.breakSound, ""), breakVolume: clamp(num(f.breakVolume, 60), 0, 100) / 100
     };
-    // A maximum lock shorter than the minimum would quietly swallow every lock
-    // chat bought, so the larger of the two wins rather than the field order.
+    // A maximum lock shorter than the minimum would swallow every lock
+    // chat bought, so the larger of the two wins, whatever order the fields are in.
     if (cfg.lockMaxMinutes < cfg.lockMinMinutes) cfg.lockMaxMinutes = cfg.lockMinMinutes;
     if (cfg.lockMaxTotalMinutes < cfg.lockMaxMinutes) cfg.lockMaxTotalMinutes = cfg.lockMaxMinutes;
   }
@@ -472,7 +472,7 @@
   function debugLog(what, payload) {
     if (!cfg.debug || typeof console === "undefined" || !console.log) return;
     // So a surprising payload on a real stream can be read straight from the
-    // browser-source console, rather than guessed at from the outside. This
+    // browser-source console, instead of being guessed at from the outside. This
     // matters most for channel points, whose shape is not documented anywhere.
     try { console.log("[rage-bar] " + what, JSON.stringify(payload)); }
     catch (e) { console.log("[rage-bar] " + what, payload); }
@@ -660,7 +660,7 @@
     }, 300);
   }
 
-  /* Handed back rather than installed, the way the voting widget does it, so the
+  /* Handed back, not installed, the way the voting widget does it, so the
      caller can decide whether a save that was in flight is older than what is
      already on screen. The deadlines are absolute wall-clock times on purpose:
      that is what lets a browser source refresh in the middle of the panic pick up
@@ -716,8 +716,8 @@
         resetUntil = n + (cfg.resetHoldSeconds * 1000 - missedBy);
       } else {
         /* Shut for longer than that, so the ninety seconds went by with nobody
-           watching. The bar was full and full means something, so rather than
-           quietly emptying it and handing the streamer a run nobody paid for, it comes
+           watching. The bar was full and full means something, so instead of
+           emptying it and handing the streamer a run nobody paid for, it comes
            back full with a fresh window and whatever had already been chipped in.
            Chat gets their chance and the run gets resolved on stream, where it was
            always supposed to happen. A mod can wave it away with !bar reset. */
@@ -904,7 +904,7 @@
 
   /* Each successful reset makes the next bar bigger, and what it costs to save a
      run grows by the same factor, so nobody's money feels wasted on a larger bar.
-     The rounding is done once, on the exact compounded value, rather than on the
+     The rounding is done once, on the exact compounded value, not on the
      previous bar, so it never builds up: 100, 150, 225, 338, 506 and not 100, 150,
      225, 338, 507. Whole numbers all the way, because a bar that asks for 337.5
      points is not one anybody can keep count of. */
@@ -938,14 +938,14 @@
     /* One person arriving with a hundred gifted subs' worth in a single go ends the
        run outright, with no window for anyone to save it, and it goes straight
        through a lock on the way. The lock part is deliberate: a gift of a hundred
-       subs being quietly eaten by a five minute lock would be the worst thing this
-       widget could do to anybody, and "unstoppable" is not much of a moment if a
+       subs being eaten by a five minute lock would be badly unfair to the person
+       giving them, and "unstoppable" is not much of a moment if a
        lock stops it.
 
        It only applies while the bar is filling, though. Somebody dropping a
        hundred subs during the ninety seconds is trying to save the run, because
        that is what subs do in that window, and ending it on them for being too
-       generous would be a genuinely horrible thing to do. */
+       generous would be unfair to them. */
     var outright = overkillAt();
     if (phase === "filling" && outright > 0 && amount >= outright) {
       if (cfg.overkillCosplay) enterCosplay(who);
@@ -1027,7 +1027,7 @@
      same way the cost of a save does, so it stays worth its price on a big one. It
      only works while the bar is filling, because once it is full the only thing
      that matters is whether it gets saved, and pulling it below the top from under
-     the countdown would quietly cancel the whole window. A redeem it cannot use
+     the countdown would cancel the whole window. A redeem it cannot use
      gives the card the same little shake a turned-away lock does. */
   function pushBack(who) {
     var amount = scaled(cfg.pushBackAmount);
@@ -1057,7 +1057,7 @@
     if (cfg.showFloat) floatToast(who ? tpl(cfg.words.savedBy, { who: who }) : cfg.words.saved);
   }
 
-  /* Everything chips in together rather than any one person having to carry it.
+  /* Everything chips in together, so no one person has to carry it.
      Subs, bits and channel points all pay into the same pot, counted in the same
      units as the bar, so five subs' worth of anything at all saves the run. On a
      small channel one person with fifty thousand points to spare is rare, but ten
@@ -1164,7 +1164,7 @@
   }
 
   /* Clears the bar but keeps how far the escalation has got, so a mod waving away
-     a stale bar with !bar reset does not quietly hand chat a smaller one. */
+     a stale bar with !bar reset does not hand chat a smaller one. */
   function clearAll() {
     phase = "filling";
     fill = 0;
@@ -1185,7 +1185,7 @@
     render();
   }
 
-  /* Locks extend rather than replace, so a second lock bought while the first is
+  /* Locks extend instead of replacing, so a second lock bought while the first is
      running adds to it instead of throwing away whatever was left. The running
      total is capped, because a bar chat can keep locked indefinitely stops being
      a bar and starts being a way to switch the whole bit off. */
@@ -1207,7 +1207,7 @@
 
   function lockMinutesForCost(cost) {
     // A cost of zero is what an unreadable payload looks like, and the clamp
-    // turns it into the shortest lock rather than a lock of no time at all.
+    // turns it into the shortest lock, not a lock of no time at all.
     return clamp(cost / cfg.pointsPerLockedMinute, cfg.lockMinMinutes, cfg.lockMaxMinutes);
   }
 
@@ -1243,7 +1243,7 @@
   // The clock
   // ---------------------------------------------------------------------------
   /* One interval drives all three deadlines. It runs only while something is
-     actually counting down, so a bar sat quietly at 30 out of 100 is not waking
+     actually counting down, so a bar sitting at 30 out of 100 is not waking
      the browser source up four times a second for no reason. */
   function needsTicking() {
     if (pausedAt) return false;
@@ -1282,7 +1282,7 @@
     if (phase === "pending") {
       /* Subs that land in the moments after the bar fills were almost certainly meant
          for the bar, from people who hit subscribe before it was full. They are left
-         to lapse rather than quietly saving a run somebody was trying to end. */
+         to lapse, so that they do not save a run somebody was trying to end. */
       if (clockNow() < subGraceUntil) {
         debugLog("sub ignored in the grace period after the bar filled", { who: nameOf(event) });
         return;
@@ -1311,7 +1311,7 @@
     debugLog("cheer-latest", event);
     var bits = num(event.amount, 0);
     if (bits <= 0) return;
-    // Kept fractional on purpose, so a small cheer is worth a little rather than
+    // Kept fractional on purpose, so a small cheer is worth a little instead of
     // being silently worth nothing at all.
     var units = bits / 100 * cfg.bitsPer100;
     if (phase === "pending") {
@@ -1393,7 +1393,7 @@
   }
 
   /* Mod commands, for the times a redeem misfires or the streamer needs the bar out of
-     the way right now. They are a hand on the wheel rather than part of the game,
+     the way right now. They are a hand on the wheel, not part of the game,
      so they skip the pooling and the caps that chat plays by. */
   function setFill(next) {
     var cap = capacityNow();
@@ -1402,7 +1402,7 @@
     /* Correcting the number while the clock is running is overruling the panic,
        not restarting it. Nudging a bar that is still full leaves the window and
        everything chat has chipped into it exactly where they were, because a mod
-       typing "!bar +1" should not quietly hand back the ninety seconds and throw
+       typing "!bar +1" should not hand back the ninety seconds and throw
        away four people's subs. Dropping it below the top is what actually calls
        the whole thing off. */
     if (phase !== "filling") {
@@ -1596,12 +1596,12 @@
   }
 
   /* The fill warms towards the alarm colour as the bar approaches the top, which
-     is done here rather than with CSS color-mix() because the browser source
+     is done here, not with CSS color-mix() because the browser source
      inside OBS can be several CEF versions behind and a colour that silently
      fails to parse is a bar that silently stops warning anybody.
 
      StreamElements hands colour Fields back in whatever format it likes, usually
-     rgba rather than the hex we ship, so this reads both and gives up gracefully
+     rgba instead of the hex we ship, so this reads both and gives up gracefully
      on anything it does not recognise. */
   function parseColor(v) {
     var t = String(v || "").trim();
@@ -1773,9 +1773,9 @@
     el.card.classList.add("refused");
   }
 
-  /* Queued rather than overwritten. Five people chipping in to save a run fire
+  /* Queued, not overwritten. Five people chipping in to save a run fire
      five of these inside a second, and those are exactly the moments somebody
-     wants to see their own name on the overlay rather than whoever happened to
+     wants to see their own name on the overlay, not that of whoever happened to
      click last. Capped at five deep so a busy minute cannot back up a queue that
      is still playing out long after the thing it described. */
   function floatToast(txt) {

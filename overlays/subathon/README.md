@@ -6,7 +6,7 @@ A StreamElements custom widget that runs a whole subathon: a countdown clock tha
 
 A subathon runs for days, and the clock is what everyone watches. Time that cannot go on the clock is banked and shown instead of being dropped, a gift bomb is counted once, and anything you might need to change mid-stream is a setting or a chat command.
 
-It is one widget with no dependencies and nothing to install. The sub goals are the [Sub Goals Overlay](../sub-goals), included as it is rather than copied, so the clock and the goals count subs the same way.
+It is one widget with no dependencies and nothing to install. The sub goals are the [Sub Goals Overlay](../sub-goals), included as it is, with no second copy, so the clock and the goals count subs the same way.
 
 ## Features
 
@@ -134,7 +134,7 @@ Elapsed time is how long the clock has actually been running. Time while it was 
 
 **The day number.** Tick **Show the day number in the status line** for a `Day 3` beside the status. What a day means differs from one subathon to the next, so **How the day number counts** has four choices:
 
-- *Each calendar day the clock runs* (the default) is for a subathon streamed a few hours at a time over several days. The first day the clock runs is Day 1, and the next day it runs is Day 2. A day when the clock does not run does not count, so skipping a Tuesday does not make Wednesday Day 4. A new day starts at the **rollover hour** (4 by default, meaning 4am) rather than at midnight, so a stream that runs past midnight is still the same day. The date comes from the computer running the overlay.
+- *Each calendar day the clock runs* (the default) is for a subathon streamed a few hours at a time over several days. The first day the clock runs is Day 1, and the next day it runs is Day 2. A day when the clock does not run does not count, so skipping a Tuesday does not make Wednesday Day 4. A new day starts at the **rollover hour** (4 by default, meaning 4am), not at midnight, so a stream that runs past midnight is still the same day. The date comes from the computer running the overlay.
 - *Calendar days since the first day* counts dates instead, so days off count. The first day the clock runs is Day 1, and from then on the number is how many calendar days it has been, whether or not you streamed. Skipping a Tuesday makes Wednesday Day 4 if Monday was Day 2. It uses the same rollover hour, and it keeps counting while the clock is paused.
 - *Every 24 hours of running time* is for one long continuous stream, where Day 2 starts after 24 hours elapsed.
 - *Only when I change it* never changes by itself.
@@ -204,7 +204,7 @@ npm run dev
 # then open http://localhost:8000/dev/
 ```
 
-The harness stands in for StreamElements. It can fire subs, gift bombs of any size, bits, tips, follows and raids, send chat commands as a viewer, moderator or broadcaster, and show the saved state. It has a **time machine** that skips the clock forward by a minute, ten minutes, an hour or ten hours, so you can watch a cap or a power-up run out without waiting. Its **Every setting** section is generated from `widget/fields.json`, so it offers exactly what StreamElements will. It must be served over http rather than opened as a file, and fonts come from Google Fonts. The local dev page also shows a Ko-fi support button in the corner. That button belongs to the harness only and is not part of the widget, so it never appears on stream.
+The harness stands in for StreamElements. It can fire subs, gift bombs of any size, bits, tips, follows and raids, send chat commands as a viewer, moderator or broadcaster, and show the saved state. It has a **time machine** that skips the clock forward by a minute, ten minutes, an hour or ten hours, so you can watch a cap or a power-up run out without waiting. Its **Every setting** section is generated from `widget/fields.json`, so it offers exactly what StreamElements will. It must be served over http (opening it as a file will not work), and fonts come from Google Fonts. The local dev page also shows a Ko-fi support button in the corner. That button belongs to the harness only and is not part of the widget, so it never appears on stream.
 
 At the top of the harness, **Look and export** switches the style preset on the live widget, and can download or copy a `fields.json` with your current settings as its defaults. Paste that into the Fields tab of a new custom widget in StreamElements and it starts out looking the way it does here.
 

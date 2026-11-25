@@ -40,7 +40,7 @@
   --float-s: 1.5s;
 
   /* Fill the StreamElements widget box and become the sizing reference for the
-     sticker, so the number scales to whatever box the streamer draws rather than
+     sticker, so the number scales to whatever box the streamer draws, without
      assuming the full overlay canvas. */
   position: relative;
   box-sizing: border-box;
@@ -124,8 +124,8 @@
 }
 
 /* A small padlock in the corner while the count is locked, drawn in CSS so it
-   picks up the sticker's own colours rather than relying on an emoji font being
-   present in the browser source. It says, quietly, that gifted subs are not
+   picks up the sticker's own colours instead of relying on an emoji font being
+   present in the browser source. It is a small sign that gifted subs are not
    adding to the pile right now. */
 .squat-lock {
   position: absolute;

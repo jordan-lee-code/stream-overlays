@@ -269,7 +269,7 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   button("tmSleep"); sub({ amount: 1 }); await settled();
   ok(clock() === "10:00:00", "a sleep multiplier of 0 pauses earning altogether");
 
-  console.log("\n[the cap, and time that is banked rather than lost]");
+  console.log("\n[the cap, and time that is banked, not lost]");
   await load({ tmStart: "10:00:00", tmCapEnabled: true, tmCap: "12:00:00" });
   ok(/room 2:00:00/.test(status()), "the status shows how much can still be earned (" + status() + ")");
   bomb(30); sub({ gifted: true, isCommunityGift: true, amount: 170 }); await settled();
@@ -277,7 +277,7 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   ok(/banked 30:00/.test(status()), "the 30:00 that did not fit is banked, not lost (" + status() + ")");
   ok(/30:00 banked/.test(feed()), "and the feed says so (" + feed() + ")");
   sub({ amount: 1 }); await settled();
-  ok(clock() === "12:00:00" && /banked 35:00/.test(status()), "later subs bank too, rather than locking the whole clock (" + status() + ")");
+  ok(clock() === "12:00:00" && /banked 35:00/.test(status()), "later subs bank too, without locking the whole clock (" + status() + ")");
   ok(!has("ended"), "and the clock keeps running (not locked out)");
   boss("!subathon subtract 1h"); await settled();
   ok(clock() === "11:00:00" && /room 1:00:00/.test(status()), "subtracting hands the allowance back (" + clock() + ", " + status() + ")");
@@ -294,7 +294,7 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   ok(/room 2:30:00/.test(status()), "capreset counts the cap from the clock as it is now (" + status() + ")");
   await load({ tmStart: "10:00:00", tmCapEnabled: true, tmCap: "garbage" });
   sub({ amount: 1 }); await settled();
-  ok(clock() === "10:05:00", "an unreadable cap is ignored rather than blocking everything");
+  ok(clock() === "10:05:00", "an unreadable cap is ignored instead of blocking everything");
   await load({ tmStart: "10:00:00", tmCapEnabled: true, tmCap: "200:00:00", tmShowCap: false });
   ok(!/room/.test(status()), "the room line can be hidden");
   await load({ tmStart: "10:00:00", tmCapEnabled: true, tmCap: "10:10:00" });

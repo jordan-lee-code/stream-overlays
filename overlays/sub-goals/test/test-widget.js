@@ -413,7 +413,7 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   ok(live().length === 1 && elements["incentive-list"].children[0] && find(elements["incentive-list"].children[0], "incentive-name").style.fontSize === "75%",
     "a name wider than its room shrinks to fit (" + find(elements["incentive-list"].children[0], "incentive-name").style.fontSize + ")");
   const fitVar = () => elements["incentive-header"].style["--heading-fit"];
-  ok(fitVar() === "0.75", "so does a long heading, scaled rather than replaced (" + fitVar() + ")");
+  ok(fitVar() === "0.75", "so does a long heading, scaled, not replaced (" + fitVar() + ")");
   ok(!elements["incentive-title"].style.fontSize && !elements["incentive-total"].style.fontSize, "through one shared multiplier, so the title and the sub count stay the same size");
   await wait(350);
   mockScroll = 300; reload(); await wait(10);

@@ -92,7 +92,7 @@
 #wheel-app * { box-sizing: border-box; }
 
 /* The design unit. container query units resolve against #wheel-app, so they have
-   to be read on its children rather than on itself. */
+   to be read on its children, not on itself. */
 #wheel-app > * {
   --d: clamp(160px, min(92cqw, 82cqh), 620px);
   --u: calc(var(--d) / 620);

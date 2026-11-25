@@ -24,8 +24,8 @@
   var fieldData = {};
   var fieldDefs = {};
 
-  // A little crowd to vote with, so a simulated chat looks like people rather
-  // than viewer1 through viewer40.
+  // A little crowd to vote with, so a simulated chat looks like people instead of
+  // viewer1 through viewer40.
   var CROWD = ("alder ember sable juniper marlow bramble wren fennel hazel " +
     "otter peregrine sorrel thistle rowan clover magpie birch heather linnet " +
     "quill saffron tansy vesper yarrow bracken").split(" ");
@@ -34,8 +34,8 @@
 
   /* Once the named crowd runs out, keep going with alder2, ember2 and so on.
      Every voter still needs a distinct name, because the widget counts one vote
-     per person and a repeated name would quietly overwrite an earlier vote
-     rather than adding to the total. */
+     per person and a repeated name would overwrite an earlier vote
+     without adding to the total. */
   function voterName(i) {
     var base = CROWD[i % CROWD.length];
     var round = Math.floor(i / CROWD.length);
@@ -169,11 +169,11 @@
 
   function asBoss() { return { nick: "Streamer", broadcaster: true }; }
 
-  /* Fake a rush of chat voting. Votes trickle in over a couple of seconds rather
-     than landing all at once, because watching the bars move is the whole point
+  /* Fake a rush of chat voting. Votes trickle in over a couple of seconds
+     instead of landing all at once, because watching the bars move is the whole point
      of looking at this locally.
 
-     They go out in small batches on one repeating timer rather than one timer
+     They go out in small batches on one repeating timer, not one timer
      per voter, so a rush of a few thousand stays smooth instead of asking the
      browser to hold thousands of pending timeouts. */
   var simTimer = null;
@@ -189,7 +189,7 @@
     options = Math.min(8, Math.max(2, options || 3));
     spreadMs = spreadMs || 2500;
 
-    // Give one option a gentle lead, so the bars tell a story rather than
+    // Give one option a gentle lead, so the bars tell a story instead of
     // landing in a dead heat every single time.
     var favourite = Math.floor(Math.random() * options);
     var step = 40;
@@ -213,7 +213,7 @@
 
   /* Shows how many the harness has actually sent, so it can be read against the
      card's own total. If those two ever disagree, the discrepancy is the thing
-     worth looking at rather than a guess about whether it "felt right". */
+     worth looking at, not a guess about whether it "felt right". */
   function reportSim(count) {
     var out = document.getElementById("sim-status");
     if (out) out.textContent = "sent " + simSent + " of " + count;
@@ -387,7 +387,7 @@
       '</div>' +
       '<div class="row"><button id="send-chat" class="alt">Send one message</button></div>' +
       '<p class="hint">Chat can vote with the option text, its number, or its letter. Send the ' +
-      'same name twice to watch a vote move rather than double.</p>' +
+      'same name twice to watch a vote move without doubling.</p>' +
 
       '<h2>Running the poll</h2>' +
       '<div class="row">' +
