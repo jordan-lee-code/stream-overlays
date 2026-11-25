@@ -1,6 +1,6 @@
 /* Copyright (c) 2026 Jordan Lee (https://ko-fi.com/journeyingjordan). Released under the MIT licence: this notice must be kept in copies and substantial portions of the code. See LICENSE. */
 /* The panel at the top of every overlay's dev page that copies the overlay's files, one button for
- * each tab of StreamElements' custom widget editor, so there is nothing to download first.
+ * each tab of StreamElements' custom widget editor, so nobody has to download the repository.
  * With Mix It Up chosen at the top of the site, it instead packs the overlay into a widget for Mix It Up.
  *
  * The page's own script makes the current settings available as `window.__exportFields()`, which

@@ -1,7 +1,7 @@
 /* Copyright (c) 2026 Jordan Lee (https://ko-fi.com/journeyingjordan). Released under the MIT licence: this notice must be kept in copies and substantial portions of the code. See LICENSE. */
 /* Builds the website that GitHub Pages serves: a landing page with a card for each overlay, and for
  * each overlay its dev page and its widget files, so someone can set an overlay up in the browser and
- * copy its files into StreamElements without downloading anything else.
+ * copy its files into StreamElements without downloading the repository.
  *
  *   node scripts/build-site.js [folder]        (the folder is _site by default)
  *
