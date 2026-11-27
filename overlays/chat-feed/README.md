@@ -133,8 +133,8 @@ The command word is a setting. Viewers can type the bare `!chatfeed` to make the
 | Command | What it does |
 | --- | --- |
 | `!chatfeed clear` | Empties the screen. |
-| `!chatfeed hide name` | Removes that person's messages from the screen and keeps them off it. This is remembered when the browser source refreshes. |
-| `!chatfeed unhide name` | Lets them back. |
+| `!chatfeed hide NoisyBot` | Removes that person's messages from the screen and keeps them off it. This is remembered when the browser source refreshes. |
+| `!chatfeed unhide NoisyBot` | Lets them back. |
 
 ## Configuration
 

@@ -61,6 +61,8 @@ The command word is a setting. Viewers can type the bare `!brb` to make the head
 | `!brb add 5m` | Pushes your return back by five minutes. Adding to a break with no set time gives it one, counted from now. |
 | `!brb less 2m` | Brings your return forward by two minutes. |
 | `!brb back` | You are back: clears the break and hides the overlay. `stop`, `clear` and `done` do the same. |
+| `!brb meeting 30m` | Starts a break for a meeting, with its own headline. It takes the same times as `!brb`, or none. See [Meetings](#meetings). |
+| `!brb custom "Popping to the shop!"` | Starts a break with your own headline. See [A custom headline](#a-custom-headline). |
 
 **Writing a length of time.** `90s`, `10m`, `1h30m`, `1d`, `1.5h`, `1:30:00` (hours, minutes, seconds), `5:00` (minutes and seconds), or a bare number, which is minutes. A break can be set up to two days ahead, and anything longer or unreadable is ignored.
 

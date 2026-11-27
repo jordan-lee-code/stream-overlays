@@ -1,7 +1,7 @@
 /* Copyright (c) 2026 Jordan Lee (https://ko-fi.com/journeyingjordan). Released under the MIT licence: this notice must be kept in copies and substantial portions of the code. See LICENSE. */
 /* Builds the website that GitHub Pages serves: a landing page with a card for each overlay, and for
  * each overlay its dev page and its widget files, so someone can set an overlay up in the browser and
- * copy its files into StreamElements without downloading the repository.
+ * copy its files into StreamElements without downloading the repository. One more page lists every chat command.
  *
  *   node scripts/build-site.js [folder]        (the folder is _site by default)
  *
@@ -12,6 +12,7 @@
 const fs = require("fs");
 const path = require("path");
 const { writeHosting } = require("./hosting-page");
+const { commandsPage, commandsOf } = require("./commands-page");
 
 const KOFI = "https://ko-fi.com/journeyingjordan";
 
@@ -148,6 +149,7 @@ function landing(cards) {
       <li>Press <strong>Copy the widget</strong> at the top of its page. In Mix It Up, open Overlay Widgets and bring the widget in, or make a Custom widget and paste the HTML, CSS and JavaScript into it.</li>
       <li>Edit the widget, set Display Option to Single Widget URL, save, and click its link icon to get its address. Put that address in an OBS Browser source, with the size of the box you want.</li>
     </ol>
+    <p><a href="commands.html">Every chat command, with examples</a></p>
     <nav class="jump" aria-label="Overlay groups">${jump}</nav>
   </header>
   <main>${sections}
@@ -233,6 +235,10 @@ function build(out, root) {
     fs.writeFileSync(path.join(out, c.name, c.name + ".miuoverlay"), JSON.stringify(widget));
   });
   fs.writeFileSync(path.join(out, "index.html"), landing(cards));
+  // The commands page keeps the overlays in the same order as the groups on the landing page.
+  const place = c => { const at = CATEGORIES.findIndex(g => g.id === c.category); return at === -1 ? CATEGORIES.length : at; };
+  fs.writeFileSync(path.join(out, "commands.html"), commandsPage(cards.slice().sort((a, b) => place(a) - place(b))
+    .map(c => Object.assign({ name: c.name, title: c.title }, commandsOf(path.join(root, "overlays", c.name))))));
   fs.writeFileSync(path.join(out, ".nojekyll"), "");        // serve the files as they are
   return { out, overlays: cards.map(c => c.name) };
 }

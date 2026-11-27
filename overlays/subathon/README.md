@@ -154,11 +154,13 @@ The base word is a setting. The defaults are below, and every command needs the 
 | `!subathon lock` and `!subathon unlock` | New time is banked while locked. |
 | `!subathon release` | Moves banked time onto the clock, as far as the cap allows. |
 | `!subathon capreset` | Counts the cap from the clock as it is now. |
-| `!subathon powerup 2 30m [events]` | Starts a power-up. |
+| `!subathon powerup 2 30m` | Starts a power-up: double time for half an hour. |
+| `!subathon powerup 3 0 10` | Starts one that lasts for events and not minutes: triple time for the next ten. |
 | `!subathon powerup off` | Ends it. |
 | `!subathon sleep` and `!subathon wake` | Sleep mode on and off. |
 | `!subathon day 3`, `day +1`, `day -1` | Sets the day number, or moves it by one. |
 | `!subathon reset` | Puts the clock back on the start time. Broadcaster only. |
+| `!incentive add 15 chat confessions` | Adds a sub goal underneath the clock. The goals take all of the Sub Goals commands. |
 
 The goals have their own commands, such as `!incentive add 15 chat confessions` and `!incentive stop`. They are listed in the [Sub Goals Overlay](../sub-goals#chat-commands) README.
 
