@@ -44,6 +44,14 @@ A set of overlays for Twitch streams, for StreamElements and Mix It Up. Each is 
 | [Be Right Back](overlays/be-right-back) | A break screen with a clock that counts down to your return, or up the time you have been away. |
 | [End Credits](overlays/end-credits) | A thank-you that collects your followers, subscribers, gifters, cheerers, tippers, raiders and chatters through the stream and rolls them as credits. |
 
+**Needs your own service**
+
+These work alongside a separate service that you run yourself, so they take more setting up than the rest.
+
+| Overlay | What it does |
+| --- | --- |
+| [Two Truths and a Lie](overlays/two-truths) | Chat votes on the lie, and an [answer server you host](overlays/two-truths/server/README.md) reveals it. Without the server, you can reveal it by hand. |
+
 ## Using an overlay
 
 1. Open the overlay's folder and read its README.

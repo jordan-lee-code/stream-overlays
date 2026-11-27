@@ -6,10 +6,12 @@
  *   node scripts/build-site.js [folder]        (the folder is _site by default)
  *
  * Only what a visitor needs is copied: widget/ and dev/ from each overlay, and one picture for its
- * card. The tests, the docs and the build tooling are left out. */
+ * card. The tests, the docs and the build tooling are left out. An overlay that works alongside a
+ * service you run yourself also gets that service's files to download and a page on hosting it. */
 "use strict";
 const fs = require("fs");
 const path = require("path");
+const { writeHosting } = require("./hosting-page");
 
 const KOFI = "https://ko-fi.com/journeyingjordan";
 
@@ -34,7 +36,7 @@ function describe(root, name) {
     if (m) title = m[1].replace(/\s+Overlay$/, "");
   }
   const pic = ["docs/card.png"].find(p => fs.existsSync(path.join(dir, p)));
-  return { name, title, category: pkg.category || "", description: pkg.description || "", picture: pic ? path.join(dir, pic) : null };
+  return { name, title, category: pkg.category || "", description: pkg.description || "", hosting: pkg.hosting || null, picture: pic ? path.join(dir, pic) : null };
 }
 
 // The groups the landing page sorts the overlays into, in the order they are shown. Each overlay names its group in its
@@ -43,7 +45,8 @@ const CATEGORIES = [
   { id: "goals", title: "Goals and counters", blurb: "Bars and counters that move as chat subscribes, cheers and tips." },
   { id: "chat", title: "Chat and viewers", blurb: "Things your viewers see, and things they can take part in." },
   { id: "info", title: "On-screen info", blurb: "Small panels for your scene: what is playing, the time, your socials, your camera." },
-  { id: "start-end", title: "Stream start and end", blurb: "For the first and the last minutes of a stream." }
+  { id: "start-end", title: "Stream start and end", blurb: "For the first and the last minutes of a stream." },
+  { id: "hosted", title: "Needs your own service", blurb: "These work alongside a separate service that you run yourself, on a computer such as a Raspberry Pi, so they take more setting up than the rest. Automatic reveals also need a public https address for your service." }
 ];
 
 function cardHtml(c) {
@@ -52,7 +55,7 @@ function cardHtml(c) {
           <a class="pic" href="${esc(c.name)}/dev/">${c.picture ? `<img src="${esc(c.name)}/card.png" alt="The ${esc(c.title)} overlay" loading="lazy">` : ""}</a>
           <h3><a href="${esc(c.name)}/dev/">${esc(c.title)}</a></h3>
           <p>${esc(c.description.replace(/^A StreamElements custom widget:\s*/i, "").replace(/^./, ch => ch.toUpperCase()))}</p>
-          <p class="links"><a class="go" href="${esc(c.name)}/dev/"><span class="se">Set it up and copy it</span><span class="miu">Set it up and copy the widget</span></a></p>
+          <p class="links"><a class="go" href="${esc(c.name)}/dev/"><span class="se">Set it up and copy it</span><span class="miu">Set it up and copy the widget</span></a>${c.hosting ? ` <a href="${esc(c.name)}/hosting.html">Host the service</a>` : ""}</p>
         </li>`;
 }
 
@@ -200,6 +203,7 @@ function build(out, root) {
     copyDir(path.join(dir, "widget"), path.join(out, name, "widget"));
     copyDir(path.join(dir, "dev"), path.join(out, name, "dev"));
     if (card.picture) fs.copyFileSync(card.picture, path.join(out, name, "card.png"));
+    if (card.hosting) writeHosting(dir, path.join(out, name), card.title, card.hosting);
     cards.push(card);
   });
   const shared = path.join(__dirname, "..", "kit", "shared");

@@ -13,6 +13,7 @@ const KINDS = {
   "sub-goals": { kind: "goals" },
   "spin-wheel": { kind: "wheel" },
   "chat-poll": { kind: "poll" },
+  "two-truths": { kind: "poll" },
   "squat-tracker": { kind: "squat" },
   "rage-bar": { kind: "rage" },
   "subathon": { kind: "clock", file: "src/clock.js" }

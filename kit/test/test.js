@@ -343,6 +343,48 @@ asection("the website");
   atest("no harness has a stage-size control of its own, because the box-size bar is the one way to resize the box", () => {
     names.forEach(n => assert.ok(!/stage\.style\.(width|height)\s*=/.test(fs.readFileSync(path.join(repoRoot, "overlays", n, "dev", "harness.js"), "utf8")), n + " resizes its own stage"));
   });
+  atest("an overlay with a service to host has a page of steps and a download, linked from its card", () => {
+    names.forEach(n => {
+      const hosting = JSON.parse(fs.readFileSync(path.join(repoRoot, "overlays", n, "package.json"), "utf8")).hosting;
+      if (!hosting) return assert.ok(!fs.existsSync(path.join(outDir, n, "hosting.html")), n + " has a hosting page it did not ask for");
+      const page = fs.readFileSync(path.join(outDir, n, "hosting.html"), "utf8");
+      assert.ok(index.indexOf('href="' + n + '/hosting.html"') !== -1, n + "'s card does not link to it");
+      assert.ok(page.indexOf('href="' + hosting.zip + '"') !== -1 && page.indexOf('href="dev/"') !== -1, "the page lacks the download or the way back");
+      const archive = fs.readFileSync(path.join(outDir, n, hosting.zip));
+      // Read the zip back by its own listing: each name, and the bytes it points to.
+      const end = archive.length - 22, found = {};
+      assert.strictEqual(archive.readUInt32LE(end), 0x06054b50, "not a zip");
+      let at = archive.readUInt32LE(end + 16);
+      for (let i = 0; i < archive.readUInt16LE(end + 10); i++) {
+        const size = archive.readUInt32LE(at + 24), length = archive.readUInt16LE(at + 28), start = archive.readUInt32LE(at + 42);
+        const name = archive.slice(at + 46, at + 46 + length).toString();
+        const data = archive.slice(start + 30 + length, start + 30 + length + size);
+        assert.strictEqual(require("../../scripts/hosting-page").crc32(data), archive.readUInt32LE(at + 16), name + " has a wrong checksum");
+        found[name] = data;
+        at += 46 + length;
+      }
+      const wanted = hosting.files.concat([hosting.guide]);
+      assert.deepStrictEqual(Object.keys(found).sort(), wanted.map(f => hosting.unzipsTo + "/" + f).sort());
+      wanted.forEach(f => assert.ok(found[hosting.unzipsTo + "/" + f].equals(fs.readFileSync(path.join(repoRoot, "overlays", n, hosting.folder, f))), f + " differs from the repository"));
+    });
+  });
+  atest("answers or a key left beside the service's files are never published", () => {
+    const fake = fs.mkdtempSync(path.join(os.tmpdir(), "host-root-")), dir = path.join(fake, "overlays", "svc");
+    ["widget", "dev", "server"].forEach(d => fs.mkdirSync(path.join(dir, d), { recursive: true }));
+    fs.writeFileSync(path.join(dir, "widget", "widget.js"), "");
+    fs.writeFileSync(path.join(dir, "dev", "index.html"), "");
+    fs.writeFileSync(path.join(dir, "package.json"), JSON.stringify({ category: "hosted", hosting: { folder: "server", guide: "README.md", zip: "svc.zip", unzipsTo: "svc", files: ["run.js"] } }));
+    fs.writeFileSync(path.join(dir, "server", "run.js"), "// the service");
+    fs.writeFileSync(path.join(dir, "server", "README.md"), "# Hosting\n\n## Steps\n\nA <img src=x onerror=alert(1)> [bad](javascript:alert(1)) [away](../private) [good](https://example.com) `<b>`\n");
+    ["running-order.json", "state.json", "truth.env"].forEach(f => fs.writeFileSync(path.join(dir, "server", f), "PRIVATE-ANSWER"));
+    const out = fs.mkdtempSync(path.join(os.tmpdir(), "host-out-"));
+    site.build(out, fake);
+    const walk = d => fs.readdirSync(d, { withFileTypes: true }).reduce((all, e) => all.concat(e.isDirectory() ? walk(path.join(d, e.name)) : [path.join(d, e.name)]), []);
+    walk(out).forEach(f => assert.ok(fs.readFileSync(f).indexOf("PRIVATE-ANSWER") === -1, path.relative(out, f) + " carries something private"));
+    const html = fs.readFileSync(path.join(out, "svc", "hosting.html"), "utf8");
+    assert.ok(html.indexOf("<img src=x") === -1 && html.indexOf('href="javascript:') === -1 && html.indexOf('href="../private"') === -1, "markup or an unsafe link got through");
+    assert.ok(html.indexOf('<a href="https://example.com">good</a>') !== -1 && html.indexOf("<code>&lt;b&gt;</code>") !== -1);
+  });
   atest("text from an overlay's package or README is escaped, never run as markup", () => {
     const fake = fs.mkdtempSync(path.join(os.tmpdir(), "site-root-"));
     const dir = path.join(fake, "overlays", "evil");

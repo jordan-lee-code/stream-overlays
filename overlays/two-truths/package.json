@@ -1,0 +1,42 @@
+{
+  "name": "two-truths-overlay",
+  "version": "1.0.0",
+  "description": "A StreamElements custom widget for Two Truths and a Lie: chat votes, and an answer server you run reveals the lie. Without the server, you can reveal it by hand.",
+  "category": "hosted",
+  "hosting": {
+    "folder": "server",
+    "guide": "README.md",
+    "zip": "two-truths-server.zip",
+    "unzipsTo": "truth-server",
+    "files": ["truth-server.js", "running-order.example.json", "truth-server.service", "truth.env.example"]
+  },
+  "private": true,
+  "license": "MIT",
+  "author": "Jordan Lee",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jordan-lee-code/stream-overlays.git",
+    "directory": "overlays/two-truths"
+  },
+  "bugs": {
+    "url": "https://github.com/jordan-lee-code/stream-overlays/issues"
+  },
+  "homepage": "https://github.com/jordan-lee-code/stream-overlays/tree/main/overlays/two-truths",
+  "keywords": [
+    "streamelements",
+    "twitch",
+    "overlay",
+    "stream-overlay",
+    "two-truths-and-a-lie",
+    "widget"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "funding": "https://ko-fi.com/journeyingjordan",
+  "scripts": {
+    "test": "node test/test-widget.js && node test/test-server.js && node test/test-layout.js",
+    "build": "node build/build-overlay.js",
+    "dev": "python3 -m http.server 8000"
+  }
+}
