@@ -4,9 +4,9 @@
 const fs = require("fs"), os = require("os"), path = require("path"), http = require("http");
 const { spawn, spawnSync } = require("child_process");
 
-const SERVER = path.join(__dirname, "..", "server", "truth-server.js");
+const SERVER = path.join(__dirname, "..", "server", "lie-server.js");
 const KEY = "a-test-key-of-good-length";
-const dir = fs.mkdtempSync(path.join(os.tmpdir(), "truths-"));
+const dir = fs.mkdtempSync(path.join(os.tmpdir(), "lie-"));
 const ORDER = [
   { number: 2, username: "Second", letter: "C", lie: "second lie" },
   { number: 1, username: "First", letter: "B", lie: "first lie" }
@@ -18,7 +18,7 @@ const ok = (cond, msg) => { if (cond) { pass++; console.log("  PASS " + msg); } 
 
 function start(extra) {
   return new Promise((resolve, reject) => {
-    const child = spawn(process.execPath, [SERVER], { env: Object.assign({}, process.env, { TRUTH_SECRET: KEY, TRUTH_PORT: "0", TRUTH_HOST: "127.0.0.1", TRUTH_DATA: dir, TRUTH_SOURCE_URL: "" }, extra) });
+    const child = spawn(process.execPath, [SERVER], { env: Object.assign({}, process.env, { LIE_SECRET: KEY, LIE_PORT: "0", LIE_HOST: "127.0.0.1", LIE_DATA: dir, LIE_SOURCE_URL: "" }, extra) });
     let out = "";
     child.stdout.on("data", (d) => { out += d; const m = /:(\d+)\s+\(/.exec(out); if (m) resolve({ child, base: "http://127.0.0.1:" + m[1] }); });
     child.on("exit", (code) => reject(new Error("server stopped with " + code)));
@@ -28,8 +28,8 @@ function start(extra) {
 (async () => {
   console.log("\n[the key]");
   ["", "short"].forEach((secret) => {
-    const r = spawnSync(process.execPath, [SERVER], { env: Object.assign({}, process.env, { TRUTH_SECRET: secret, TRUTH_PORT: "0", TRUTH_DATA: dir }), timeout: 5000 });
-    ok(r.status === 1 && /TRUTH_SECRET/.test(String(r.stderr)), "it will not start with " + (secret ? "a short key" : "no key"));
+    const r = spawnSync(process.execPath, [SERVER], { env: Object.assign({}, process.env, { LIE_SECRET: secret, LIE_PORT: "0", LIE_DATA: dir }), timeout: 5000 });
+    ok(r.status === 1 && /LIE_SECRET/.test(String(r.stderr)), "it will not start with " + (secret ? "a short key" : "no key"));
   });
 
   writeOrder(ORDER);
@@ -79,24 +79,24 @@ function start(extra) {
   await run("reset");
   await run("step"); await run("step");
   let reply = await run("prev");
-  ok(reply === "Went back one. Next !truth says #1's lie.", "prev undoes a lie (" + reply + ")");
+  ok(reply === "Went back one. Next !lie says #1's lie.", "prev undoes a lie (" + reply + ")");
   now = await state();
   ok(now.who === "First" && now.letter === "" && now.lie === "" && now.back === true && now.undone.part === "lie" && now.undone.number === 1, "/state takes the lie back and says what was undone");
   reply = await run("prev");
-  ok(reply === "Went back one. Next !truth says who #1 was." && (await state()).who === "", "and then the name");
+  ok(reply === "Went back one. Next !lie says who #1 was." && (await state()).who === "", "and then the name");
   ok((await run("step")) === "#1 was First." && (await state()).back === false, "stepping forward again reads it out again");
   reply = await run("next");
-  ok(reply === "Skipped the rest of #1. Next !truth says who #2 was.", "next skips the rest of a person (" + reply + ")");
+  ok(reply === "Skipped the rest of #1. Next !lie says who #2 was.", "next skips the rest of a person (" + reply + ")");
   ok((await state()).who === "" && !/second|Second/.test((await get("/state")).text), "without revealing anything");
   reply = await run("next");
-  ok(reply === "Skipped #2. Next !truth says who #3 was.", "or a whole person (" + reply + ")");
-  ok((await run("prev")) === "Went back one. Next !truth says who #2 was.", "prev undoes a skip");
+  ok(reply === "Skipped #2. Next !lie says who #3 was.", "or a whole person (" + reply + ")");
+  ok((await run("prev")) === "Went back one. Next !lie says who #2 was.", "prev undoes a skip");
   await run("step");
   await run("reset");
-  ok((await run("prev")) === "Went back one. Next !truth says #2's lie." && (await state()).who === "Second", "prev even undoes a reset");
+  ok((await run("prev")) === "Went back one. Next !lie says #2's lie." && (await state()).who === "Second", "prev even undoes a reset");
   await run("next"); await run("next");
   ok((await run("next")) === "There is nobody left to skip.", "skipping stops at the end");
-  ok((await run("prev")) === "Went back one. Next !truth says who #3 was.", "and you can come back from the end");
+  ok((await run("prev")) === "Went back one. Next !lie says who #3 was.", "and you can come back from the end");
   for (let i = 0; i < 20; i++) await run("prev");
   ok((await run("prev")) === "There is nothing to go back to.", "prev stops when there is nothing left");
   const quiet = (await state()).rev;
@@ -125,7 +125,7 @@ function start(extra) {
   writeOrder([{ number: 1, username: "First", letter: "b", a: "one a", b: "one b", c: "one c" }, { number: 2, username: "Second", letter: "A", a: "two a", b: "", c: "two c", lie: "two lie" }]);
   ok((await run("refresh")) === "Reread the running order: 2 people. 1 without all three answers.", "a refresh says when an entry is missing an answer");
   await run("reset");
-  ok(!/one a|one b|one c/.test((await get("/state")).text), "no answer is public before !truth");
+  ok(!/one a|one b|one c/.test((await get("/state")).text), "no answer is public before !lie");
   await run("step");
   let three = await state();
   ok(three.answers.join("|") === "one a|one b|one c" && three.letter === "" && three.lie === "" && !/two/.test(JSON.stringify(three)), "the first press shows all three, without saying which is the lie");
@@ -154,7 +154,7 @@ function start(extra) {
   await new Promise((done) => source.listen(0, "127.0.0.1", done));
   writeOrder(ORDER);
   s.child.removeAllListeners("exit"); s.child.kill();
-  s = await start({ TRUTH_SOURCE_URL: "http://127.0.0.1:" + source.address().port + "/" });
+  s = await start({ LIE_SOURCE_URL: "http://127.0.0.1:" + source.address().port + "/" });
   ok(/Kept the old copy/.test(await run("refresh")) && /2 people/.test((await get("/health")).text), "an empty reply keeps the old answers");
   reply = JSON.stringify([{ number: 1, username: "Pulled", letter: "A", lie: "pulled lie" }]);
   ok((await run("refresh")) === "Pulled a fresh running order: 1 people.", "a good reply replaces them");

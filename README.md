@@ -50,7 +50,7 @@ These work alongside a separate service that you run yourself, so they take more
 
 | Overlay | What it does |
 | --- | --- |
-| [Two Truths and a Lie](overlays/two-truths) | Chat votes on the lie, and an [answer server you host](overlays/two-truths/server/README.md) reveals it. Without the server, you can reveal it by hand. |
+| [Two Truths and a Lie](overlays/spot-the-lie) | Chat votes on the lie, and an [answer server you host](overlays/spot-the-lie/server/README.md) reveals it. Without the server, you can reveal it by hand. |
 
 ## Using an overlay
 

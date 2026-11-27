@@ -31,7 +31,7 @@ function makeEl(id) {
   e.classList._s = e._cls; return e;
 }
 const ids = ["vote-app", "vote-card", "vote-title", "vote-timer", "vote-eyebrow",
-  "vote-options", "vote-lie", "vote-notice", "vote-total", "vote-hint", "vote-font-link"];
+  "vote-options", "vote-lie", "vote-notice", "vote-praise", "vote-praise-title", "vote-praise-window", "vote-praise-names", "vote-board", "vote-board-title", "vote-board-list", "vote-total", "vote-hint", "vote-font-link"];
 const elements = {}; ids.forEach(id => elements[id] = makeEl(id));
 const document = {
   getElementById: id => elements[id] || null,
@@ -77,7 +77,7 @@ const sandbox = {
 };
 sandbox.global = sandbox; vm.createContext(sandbox); vm.runInContext(src, sandbox);
 
-const KEY = "two_truths_v1";
+const KEY = "spot_the_lie_v1";
 function fieldData(ov) {
   const fd = {}; Object.keys(fields).forEach(k => { if (fields[k].type !== "button") fd[k] = fields[k].value; });
   return Object.assign(fd, ov || {});
@@ -126,9 +126,9 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   console.log("\n[starting a poll]");
   load(); await wait(5);
   ok(!shown(), "nothing on screen until a poll opens");
-  chat("!vote Truth A, Truth B, The lie", boss); await wait(5);
+  chat("!vote Fact A, Fact B, The lie", boss); await wait(5);
   ok(shown(), "the card appears when a poll opens");
-  ok(labels().join("|") === "Truth A|Truth B|The lie", "options parsed in order (" + labels().join("|") + ")");
+  ok(labels().join("|") === "Fact A|Fact B|The lie", "options parsed in order (" + labels().join("|") + ")");
   ok(timer() === 45, "default 45 second clock (" + timer() + ")");
   ok(html().indexOf(">A<") > -1 && html().indexOf(">C<") > -1, "options are keyed A, B, C");
 
@@ -148,7 +148,7 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   // C. how a vote is recognised
   console.log("\n[casting votes]");
   load(); await wait(5);
-  chat("!vote Truth A, Truth B, The lie", boss); await wait(5);
+  chat("!vote Fact A, Fact B, The lie", boss); await wait(5);
   chat("2", { nick: "ann" });
   ok(votes().join(",") === "0,1,0", "a bare number votes (" + votes().join(",") + ")");
   chat("C", { nick: "ben" });
@@ -177,9 +177,9 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   // E. inline duration
   console.log("\n[inline duration]");
   load(); await wait(5);
-  chat("!vote 60s Truth A, Truth B, The lie", boss); await wait(5);
+  chat("!vote 60s Fact A, Fact B, The lie", boss); await wait(5);
   ok(timer() === 60, "a leading 60s overrides the 45 second default (" + timer() + ")");
-  ok(labels()[0] === "Truth A", "the duration token is not treated as an option");
+  ok(labels()[0] === "Fact A", "the duration token is not treated as an option");
 
   // F. parsing edges
   console.log("\n[parsing edges]");
@@ -194,7 +194,7 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   // G. declaring a winner
   console.log("\n[declaring a winner]");
   load(); await wait(5);
-  chat("!vote Truth A, Truth B, The lie", boss); await wait(5);
+  chat("!vote Fact A, Fact B, The lie", boss); await wait(5);
   chat("3", { nick: "ann" }); chat("3", { nick: "ben" }); chat("1", { nick: "cat" });
   chat("!vote end", boss); await wait(5);
   ok(winners() === 1, "one winner is highlighted (" + winners() + ")");
@@ -205,18 +205,18 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   // H. ties and empty polls
   console.log("\n[ties and empty polls]");
   load(); await wait(5);
-  chat("!vote Truth A, Truth B", boss); await wait(5);
+  chat("!vote Fact A, Fact B", boss); await wait(5);
   chat("1", { nick: "ann" }); chat("2", { nick: "ben" });
   chat("!vote end", boss); await wait(5);
   ok(winners() === 2, "a tie highlights both options (" + winners() + ")");
   ok(eyebrow() === "It's a tie", "the tie tag shows (" + eyebrow() + ")");
   load({ tieBreak: "random" }); await wait(5);
-  chat("!vote Truth A, Truth B", boss); await wait(5);
+  chat("!vote Fact A, Fact B", boss); await wait(5);
   chat("1", { nick: "ann" }); chat("2", { nick: "ben" });
   chat("!vote end", boss); await wait(5);
   ok(winners() === 1, "random tiebreak picks exactly one (" + winners() + ")");
   load(); await wait(5);
-  chat("!vote Truth A, Truth B", boss); await wait(5);
+  chat("!vote Fact A, Fact B", boss); await wait(5);
   chat("!vote end", boss); await wait(5);
   ok(winners() === 0 && eyebrow() === "Nobody voted", "an empty poll declares nobody, not a false winner");
 
@@ -241,7 +241,7 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   // I. cancel: chat was not ready, bin it entirely
   console.log("\n[cancel]");
   load(); await wait(5);
-  chat("!vote Truth A, Truth B", boss); await wait(5);
+  chat("!vote Fact A, Fact B", boss); await wait(5);
   chat("1", { nick: "ann" });
   chat("!vote cancel", boss); await wait(5);
   ok(!shown(), "cancelling takes the card off screen with nothing declared");
@@ -249,12 +249,12 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   // J. restart: same options, clean slate
   console.log("\n[restart]");
   load(); await wait(5);
-  chat("!vote 60s Truth A, Truth B, The lie", boss); await wait(5);
+  chat("!vote 60s Fact A, Fact B, The lie", boss); await wait(5);
   chat("1", { nick: "ann" }); chat("2", { nick: "ben" });
   chat("!vote restart", boss); await wait(5);
   ok(shown(), "the card stays up after a restart");
   ok(votes().join(",") === "0,0,0", "restart wipes the votes (" + votes().join(",") + ")");
-  ok(labels().join("|") === "Truth A|Truth B|The lie", "restart keeps the same options");
+  ok(labels().join("|") === "Fact A|Fact B|The lie", "restart keeps the same options");
   ok(timer() === 60, "restart gives the full clock back (" + timer() + ")");
   chat("1", { nick: "ann" });
   ok(votes().join(",") === "1,0,0", "someone who voted before can vote again after a restart");
@@ -262,7 +262,7 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   // K. extend
   console.log("\n[extend]");
   load(); await wait(5);
-  chat("!vote Truth A, Truth B", boss); await wait(5);
+  chat("!vote Fact A, Fact B", boss); await wait(5);
   chat("!vote extend 20", boss); await wait(5);
   ok(timer() === 65, "20 seconds are added to the clock (" + timer() + ")");
   chat("!vote extend", boss); await wait(5);
@@ -271,7 +271,7 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   // L. undo, the actual rollback
   console.log("\n[undo]");
   load(); await wait(5);
-  chat("!vote Truth A, Truth B, The lie", boss); await wait(5);
+  chat("!vote Fact A, Fact B, The lie", boss); await wait(5);
   chat("3", { nick: "ann" }); chat("3", { nick: "ben" });
   chat("!vote end", boss); await wait(5);
   ok(winners() === 1, "poll ended and declared");
@@ -284,7 +284,7 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
 
   console.log("\n[undo a cancel]");
   load(); await wait(5);
-  chat("!vote Truth A, Truth B", boss); await wait(5);
+  chat("!vote Fact A, Fact B", boss); await wait(5);
   chat("1", { nick: "ann" });
   chat("!vote cancel", boss); await wait(5);
   ok(!shown(), "cancelled");
@@ -303,7 +303,7 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   // M. blind polls
   console.log("\n[blind polls]");
   load({ liveResults: false }); await wait(5);
-  chat("!vote Truth A, Truth B", boss); await wait(5);
+  chat("!vote Fact A, Fact B", boss); await wait(5);
   chat("1", { nick: "ann" });
   ok(elements["vote-card"].classList.contains("blind"), "a blind poll hides its counts while running");
   ok(html().indexOf("50%") === -1, "no percentages leak into the row while blind");
@@ -315,7 +315,7 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   // N. hide and re-show
   console.log("\n[hide and re-show]");
   load(); await wait(5);
-  chat("!vote Truth A, Truth B", boss); await wait(5);
+  chat("!vote Fact A, Fact B", boss); await wait(5);
   chat("1", { nick: "ann" });
   chat("!vote end", boss); await wait(5);
   chat("!vote hide", boss); await wait(5);
@@ -326,7 +326,7 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   // O. a browser-source refresh mid-poll
   console.log("\n[surviving a refresh]");
   load(); await wait(5);
-  chat("!vote 60s Truth A, Truth B, The lie", boss); await wait(5);
+  chat("!vote 60s Fact A, Fact B, The lie", boss); await wait(5);
   chat("3", { nick: "ann" }); chat("3", { nick: "ben" });
   await wait(350);
   elements["vote-options"].innerHTML = "";
@@ -340,7 +340,7 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   // P. the clock running out on its own
   console.log("\n[the clock running out]");
   load(); await wait(5);
-  chat("!vote 5s Truth A, Truth B", boss); await wait(5);
+  chat("!vote 5s Fact A, Fact B", boss); await wait(5);
   chat("1", { nick: "ann" });
   ok(winners() === 0, "still running at the start");
   await wait(5400);
@@ -412,7 +412,7 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   delete storeData[KEY];
   lastFD = fieldData();
   window.dispatchEvent(new CustomEvent("onWidgetLoad", { detail: { fieldData: lastFD } }));
-  chat("!vote Truth A, Truth B, The lie", boss);   // no await: the store read is still in flight
+  chat("!vote Fact A, Fact B, The lie", boss);   // no await: the store read is still in flight
   ok(shown(), "the poll opens straight away");
   await wait(30);
   ok(shown(), "and survives the store answering with nothing");
@@ -450,9 +450,9 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   ok(!keysOnly() && labels().join("|") === "A|B|Z",
     "a letter outside the set keeps every label, so Z does not vanish behind a chip reading C");
 
-  chat("!vote Truth A, Truth B", boss); await wait(5);
+  chat("!vote Fact A, Fact B", boss); await wait(5);
   ok(!keysOnly() && labels().length === 2, "an ordinary poll is unaffected");
-  chat("truth b", { nick: "cat" });
+  chat("fact b", { nick: "cat" });
   ok(votes().join(",") === "0,1", "and still matches on its label text (" + votes().join(",") + ")");
 
   console.log("\n[blank wording stays blank]");
@@ -477,7 +477,7 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   // V. a big chat: every distinct voter counted exactly once
   console.log("\n[a rush of two thousand]");
   load({ duration: 600 }); await wait(5);
-  chat("!vote 600s Truth A, Truth B, The lie", boss); await wait(5);
+  chat("!vote 600s Fact A, Fact B, The lie", boss); await wait(5);
   const expected = [0, 0, 0];
   const t0 = Date.now();
   for (let i = 0; i < 2000; i++) {
@@ -762,8 +762,8 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   load(); await wait(5000);
   ok(asked.length === 0, "with no address it asks nothing");
   served = { rev: 4, number: 9, who: "Earlier", letter: "A", lie: "an old lie" };
-  load({ serverUrl: " https://truths.example.com/state/ ", resultSeconds: 5 }); await wait(5);
-  ok(asked.length === 1 && asked[0] === "https://truths.example.com/state", "it asks /state, however the address was typed (" + asked[0] + ")");
+  load({ serverUrl: " https://lie.example.com/state/ ", resultSeconds: 5, praise: false, leaderboard: false }); await wait(5);
+  ok(asked.length === 1 && asked[0] === "https://lie.example.com/state", "it asks /state, however the address was typed (" + asked[0] + ")");
   chat("!vote", boss); await wait(2100);
   ok(winners() === 0 && heading() === "Which one is the lie?", "what had been revealed before it loaded is not replayed");
   chat("a", { nick: "ann" }); chat("c", { nick: "ben" });
@@ -792,7 +792,7 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   ok(eyebrow() === "The lie was A", "and it carries on when the server returns");
   console.log("\n[the server going back and skipping]");
   const say = async (st) => { served = Object.assign({ number: 0, who: "", letter: "", lie: "", back: false, undone: null }, st); await wait(2100); };
-  load({ serverUrl: "https://truths.example.com", resultSeconds: 0 }); await say({ rev: 20 });
+  load({ serverUrl: "https://lie.example.com", resultSeconds: 0 }); await say({ rev: 20 });
   chat("!vote", boss); chat("a", { nick: "ann" });
   await say({ rev: 21, number: 3, who: "Kit" });
   await say({ rev: 22, number: 3, who: "Kit", letter: "A", lie: "too soon" });
@@ -830,11 +830,11 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
     const asked1 = { rev: 2, number: 1, who: "Alex", letter: "", lie: "", answers: A };
     const told1 = { rev: 3, number: 1, who: "Alex", letter: "B", lie: A[1], answers: A };
     const say = async (s) => { served = s; await wait(2100); };
-    const url = { serverUrl: "https://truths.example.com", resultSeconds: 5, duration: 20 };
+    const url = { serverUrl: "https://lie.example.com", resultSeconds: 5, duration: 20, praise: false, leaderboard: false };
     served = quiet; load(url); await wait(5);
-    ok(!shown(), "nothing is on screen before !truth");
+    ok(!shown(), "nothing is on screen before !lie");
     await say(asked1);
-    ok(shown() && heading() === "Alex's Answers" && eyebrow() === "Spot the lie..", "the first !truth shows whose answers they are, and asks chat to spot the lie (" + heading() + " / " + eyebrow() + ")");
+    ok(shown() && heading() === "Alex's Answers" && eyebrow() === "Spot the lie..", "the first !lie shows whose answers they are, and asks chat to spot the lie (" + heading() + " / " + eyebrow() + ")");
     ok(labels().join("|") === "I own &lt;3&gt; boats|I met a penguin|I can juggle", "with an answer on each of A, B and C, as plain text (" + labels().join("|") + ")");
     ok(cardIs("answers") && !cardIs("keys-only") && timer() > 0 && winners() === 0, "and voting is open");
     chat("b", { nick: "ann" }); chat("2", { nick: "ben" }); chat("c", { nick: "cat" });
@@ -842,7 +842,7 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
     await wait(60000);
     ok(shown() && eyebrow() === "Spot the lie..", "when the clock runs out the answers stay up for the reveal");
     await say(told1);
-    ok(heading() === "Alex's Answers" && eyebrow() === "The lie was B" && lit() === "1" && labels().length === 3, "the second !truth lights the lie, with the answers still there");
+    ok(heading() === "Alex's Answers" && eyebrow() === "The lie was B" && lit() === "1" && labels().length === 3, "the second !lie lights the lie, with the answers still there");
     ok(lieText() === "" && total() === "2 / 3 spotted it", "without repeating it underneath, and says who spotted it");
     await say({ rev: 4, number: 1, who: "Alex", letter: "", lie: "", answers: A, back: true, undone: { number: 1, part: "lie" } });
     ok(shown() && eyebrow() === "Spot the lie.." && winners() === 0 && votes().join() === "0,2,1", "undoing the lie takes it off and keeps the answers and votes");
@@ -874,48 +874,258 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
     served = null;
   }
 
+  console.log("\n[leaving after the reveal]");
+  {
+    const A = ["one", "two", "three"];
+    const asked = { rev: 2, number: 1, who: "Alex", letter: "", lie: "", answers: A };
+    const told = { rev: 3, number: 1, who: "Alex", letter: "B", lie: "two", answers: A };
+    const url = { serverUrl: "https://lie.example.com", leaderboard: false };
+    const reveal = async () => { served = { rev: 1, number: 0, who: "" }; load(url); await wait(2100); served = asked; await wait(2100); served = told; await wait(2000); };
+    await reveal();
+    ok(shown() && /The lie was/.test(eyebrow()), "the reveal is on screen");
+    await wait(7900);
+    ok(shown(), "and is still there just short of ten seconds");
+    await wait(2200);
+    ok(!shown(), "after ten quiet seconds it is gone");
+    served = { rev: 4, number: 2, who: "Sam", letter: "", lie: "", answers: A }; await wait(2100);
+    ok(shown() && heading() === "Sam's Answers", "and the next round brings it back");
+
+    await reveal(); await wait(3000); reload(); await wait(5);
+    ok(shown(), "a refresh while the reveal is up shows it again");
+    await wait(11000);
+    ok(!shown(), "and it still leaves");
+    reload(); await wait(5);
+    ok(!shown(), "and stays gone after another refresh");
+    load(Object.assign({ resultSeconds: 0 }, url)); served = { rev: 1, number: 0, who: "" }; await wait(2100); served = asked; await wait(2100); served = told; await wait(2100);
+    reload(); await wait(60000);
+    ok(shown(), "set to 0, it stays until you hide it");
+    served = null;
+  }
+
+  console.log("\n[well done]");
+  {
+    const praising = () => shown() && !elements["vote-praise"].hidden && elements["vote-card"].classList.contains("praising");
+    const lines = () => elements["vote-praise-names"].children.map(c => c.textContent);
+    const listed = () => lines().join(", ");
+    const round = async (settings) => {
+      served = null; load(Object.assign({ leaderboard: false }, settings)); await wait(5);
+      chat("!vote", boss); await wait(5);
+      chat("b", { nick: "UserX" }); chat("a", { nick: "Wrong" }); chat("b", { nick: "UserY" }); chat("c", { nick: "Changed" }); chat("b", { nick: "Changed" }); chat("b", { nick: "UserZ" }); chat("b", { nick: "Left" }); chat("a", { nick: "Left" });
+      chat("!vote reveal b", boss); await wait(5);
+    };
+    await round();
+    ok(shown() && !praising() && /The lie was/.test(eyebrow()), "the lie shows on its own first");
+    await wait(4900);
+    ok(!praising(), "for five seconds");
+    await wait(300);
+    ok(praising() && elements["vote-praise-title"].textContent === "Well Done", "then the card says Well Done");
+    ok(listed() === "UserX, UserY, Changed, UserZ", "to everyone whose last vote was on the lie, with names as chat shows them (" + listed() + ")");
+    ok(lines().length === 4 && elements["vote-praise-names"].classList.contains("scroll") && !elements["vote-praise-names"].classList.contains("again"), "one name to a line, rolling like credits, once");
+    await wait(9500);
+    ok(praising(), "for ten seconds");
+    await wait(800);
+    ok(!shown(), "and then the card leaves");
+    chat("!vote", boss); await wait(5);
+    ok(shown() && !praising() && elements["vote-praise"].hidden, "the next round starts clean");
+
+    await round(); await wait(6000);
+    chat("!vote undo", boss); await wait(5);
+    ok(shown() && !praising() && winners() === 0, "undoing the reveal takes the names away too");
+    await round(); await wait(6000);
+    chat("!vote Fresh, Poll", boss); await wait(20000);
+    ok(shown() && !praising(), "a new vote during the names is not interrupted by them");
+    await round(); await wait(6000); reload(); await wait(5);
+    ok(praising() && listed().indexOf("UserZ") !== -1, "a refresh during the names shows them again");
+    await wait(10500);
+    ok(!shown(), "and the card still leaves");
+
+    served = null; load({ leaderboard: false }); await wait(5); chat("!vote", boss); await wait(5); chat("a", { nick: "Wrong" }); chat("!vote reveal b", boss); await wait(5500);
+    ok(shown() && !praising(), "if nobody spotted it there is no Well Done");
+    await wait(5000);
+    ok(!shown(), "and the card leaves after ten seconds");
+    await round({ praise: false }); await wait(6000);
+    ok(shown() && !praising(), "it can be switched off");
+    await wait(4500);
+    ok(!shown(), "leaving after ten seconds as before");
+    await round({ praiseTitle: "Nice one", praiseAfter: 2, praiseSeconds: 4 }); await wait(2100);
+    ok(praising() && elements["vote-praise-title"].textContent === "Nice one", "the heading and the timings are settings");
+    await wait(4100);
+    ok(!shown(), "both of them");
+    const roll = () => elements["vote-praise-names"].style;
+    await round(); await wait(5200);
+    ok(roll()["--praise-for"] === "9.6s", "a few names take the whole time, less a moment (" + roll()["--praise-for"] + ")");
+    served = null; load({ leaderboard: false }); await wait(5); chat("!vote", boss); await wait(5);
+    for (let i = 0; i < 100; i++) chat("a", { nick: "w" + i });
+    chat("!vote reveal a", boss); await wait(5200);
+    ok(roll()["--praise-for"] === "9.6s", "and so do a hundred, which simply roll faster");
+    await wait(9500);
+    ok(praising(), "a long list does not keep the card any longer");
+    await wait(500);
+    ok(!shown(), "which leaves on time");
+    await round({ praiseSeconds: 20 }); await wait(5200);
+    ok(roll()["--praise-for"] === "19.6s", "a longer time means a slower roll");
+    await wait(6000);
+    elements["vote-praise-window"].clientHeight = 300; button("btnExtend"); chat("!vote results", boss); await wait(5);
+    const resumed = parseFloat(roll()["--praise-from-time"]);
+    ok(resumed < -5.9 && resumed > -7, "drawn again part way through, the roll carries on and does not start over (" + roll()["--praise-from-time"] + ")");
+    elements["vote-praise-window"].clientHeight = 0;
+    await round(); await wait(9000); reload(); await wait(5);
+    ok(parseFloat(roll()["--praise-from-time"]) > -0.1, "after a refresh it starts over, along with the card's time");
+
+    await round({ resultSeconds: 0 }); await wait(60000);
+    ok(praising() && elements["vote-praise-names"].classList.contains("again"), "with the result set to stay, the names stay and roll round again");
+    served = null; load({}); await wait(5); chat("!vote", boss); await wait(5);
+    for (let i = 0; i < 130; i++) chat("a", { nick: "v" + i });
+    chat("!vote reveal a", boss); await wait(5200);
+    ok(lines().length === 101 && lines()[99] === "v99" && lines()[100] === "and 30 more", "a very long list is cut short and counted");
+
+    const A = ["one", "two", "three"];
+    served = { rev: 1, number: 0, who: "" }; load({ serverUrl: "https://lie.example.com" }); await wait(2100);
+    served = { rev: 2, number: 1, who: "Alex", letter: "", lie: "", answers: A }; await wait(2100);
+    chat("c", { nick: "UserX" });
+    served = { rev: 3, number: 1, who: "Alex", letter: "C", lie: "three", answers: A }; await wait(2100);
+    await wait(5000);
+    ok(praising() && listed() === "UserX", "a reveal from the server praises too");
+    await wait(12000);
+    served = { rev: 4, number: 1, who: "Alex", letter: "", lie: "", answers: A, back: true, undone: { number: 1, part: "lie" } }; await wait(2100);
+    ok(shown() && !praising() && eyebrow() === "Spot the lie..", "going back after the card has left brings the answers back");
+    served = null;
+  }
+
+  console.log("\n[leaderboard]");
+  {
+    const board = () => shown() && !elements["vote-board"].hidden && elements["vote-card"].classList.contains("ranking");
+    const table = () => elements["vote-board-list"].children.map(r => r.children.map(c => c.textContent).join(" ")).join(" | ");
+    const play = async (right, wrong) => {
+      chat("!vote", boss); await wait(5);
+      right.forEach(n => chat("b", { nick: n })); (wrong || []).forEach(n => chat("a", { nick: n }));
+      chat("!vote reveal b", boss); await wait(5);
+    };
+    const toBoard = async () => { await wait(5200); await wait(10200); };
+    served = null; load({}); await wait(5);
+    await play(["Ann", "Ben"], ["Cat"]);
+    ok(!board(), "the reveal shows first");
+    await wait(5200);
+    ok(!board() && !elements["vote-praise"].hidden, "then Well Done");
+    await wait(10200);
+    ok(board() && elements["vote-praise"].hidden && elements["vote-board-title"].textContent === "Leaderboard", "and then the card rests on the leaderboard");
+    ok(table() === "1. Ann 1 | 1. Ben 1", "with a point for each correct answer, and level scores sharing a place (" + table() + ")");
+    await wait(600000);
+    ok(board(), "where it stays until the next round");
+    chat("c", { nick: "Dee" });
+    ok(table() === "1. Ann 1 | 1. Ben 1", "chat does not change it");
+    chat("!vote", boss); await wait(5);
+    ok(shown() && !board() && elements["vote-board"].hidden, "the next round takes its place");
+    chat("!vote cancel", boss);
+    await play(["Ben", "Cat"]); await toBoard();
+    ok(table() === "1. Ben 2 | 2. Ann 1 | 2. Cat 1", "points add up across rounds (" + table() + ")");
+    await play([], ["Ann"]); await wait(5200);
+    ok(!board(), "a round nobody got shows its result");
+    await wait(5200);
+    ok(board() && table() === "1. Ben 2 | 2. Ann 1 | 2. Cat 1", "and goes back to the leaderboard with the scores unchanged");
+    await play(["Ann", "Dee", "Eve", "Fay", "Gus"]); await toBoard();
+    ok(elements["vote-board-list"].children.length === 5 && table().indexOf("1. Ben 2 | 1. Ann 2") === 0, "it lists the top five, whoever got there first ahead (" + table() + ")");
+
+    chat("!vote undo", boss); await wait(5);
+    ok(!board(), "undo steps back to the card before the leaderboard");
+    load({}); await wait(5);
+    await play(["Ann"]); await toBoard(); chat("!vote undo", boss); await wait(5);
+    chat("!vote undo", boss); await wait(5);
+    await play(["Zed"]); await toBoard();
+    ok(table() === "1. Zed 1", "a reveal that is undone takes its points with it (" + table() + ")");
+    chat("!vote scores clear", { nick: "Randomer" });
+    ok(board(), "a viewer cannot clear it");
+    chat("!vote scores clear", boss);
+    ok(!shown(), "!vote scores clear starts it again and takes it off");
+    chat("!vote scores", boss);
+    ok(!shown(), "and with no points there is nothing to show");
+
+    await play(["Ann"]); await toBoard(); chat("!vote hide", boss);
+    ok(!shown(), "!vote hide takes it off the screen");
+    chat("!vote scores", boss);
+    ok(board() && table() === "1. Ann 1", "!vote scores brings it back");
+    chat("!vote results", boss);
+    ok(!board() && /The lie was/.test(eyebrow()), "!vote results replays the reveal");
+    await toBoard();
+    await wait(1000); reload(); await wait(5);
+    ok(board() && table() === "1. Ann 1", "it survives a refresh");
+    button("btnClearScores"); await wait(1000); reload(); await wait(5);
+    ok(!shown(), "and the editor button clears it for good");
+
+    load({ praise: false }); await wait(5); await play(["Ann"]); await wait(10200);
+    ok(board(), "without Well Done, the result gives way to it");
+    load({ leaderboard: false }); await wait(5); await play(["Ann"]); await toBoard();
+    ok(!shown(), "switched off, the card leaves as before");
+    load({ leaderboardTitle: "Top spotters", leaderboardSize: 3 }); await wait(5); await play(["A1", "B1", "C1", "D1"]); await toBoard();
+    ok(elements["vote-board-title"].textContent === "Top spotters" && elements["vote-board-list"].children.length === 3, "its heading and length are settings");
+
+    const A = ["one", "two", "three"];
+    const url = { serverUrl: "https://lie.example.com" };
+    let rev = 1;
+    const say = async (s) => { served = Object.assign({ rev: ++rev, number: 0, who: "", letter: "", lie: "", answers: [] }, s); await wait(2100); };
+    const asked1 = { number: 1, who: "Alex", answers: A }, told1 = { number: 1, who: "Alex", letter: "C", lie: "three", answers: A };
+    served = { rev: 1, number: 0, who: "" }; load(url); await wait(2100);
+    await say(asked1); chat("c", { nick: "Ann" }); await say(told1); await wait(16000);
+    ok(board() && table() === "1. Ann 1", "a reveal from the server scores too");
+    await say(Object.assign({ back: true, undone: { number: 1, part: "lie" } }, asked1));
+    ok(shown() && !board() && eyebrow() === "Spot the lie..", "!lieprev from the leaderboard goes back to the answers");
+    await say(told1); await wait(16000);
+    ok(board() && table() === "1. Ann 1", "and revealing again does not count it twice (" + table() + ")");
+    await say({});
+    ok(board(), "a server reset leaves the leaderboard as it is");
+    await say({ number: 2, who: "Sam", answers: A });
+    ok(shown() && !board() && heading() === "Sam's Answers", "and the next answers take its place");
+    chat("c", { nick: "Ann" }); chat("c", { nick: "Ben" }); await say({ number: 2, who: "Sam", letter: "C", lie: "three", answers: A }); await wait(16000);
+    ok(table() === "1. Ann 2 | 2. Ben 1", "adding to the scores (" + table() + ")");
+    await say(Object.assign({ number: 3, who: "Kit", answers: A }));
+    await say({ number: 2, who: "Sam", letter: "C", lie: "three", answers: A, back: true, undone: { number: 3, part: "who" } });
+    await say({ number: 2, who: "Sam", answers: A, back: true, undone: { number: 2, part: "lie" } });
+    chat("!vote scores clear", boss);
+    served = null;
+  }
+
   console.log("\n[running the server from chat]");
   const note = () => elements["vote-notice"].hidden ? "" : elements["vote-notice"].textContent;
-  const server = { serverUrl: "https://truths.example.com/", serverKey: "  a-key&with=odd+chars  ", followSeconds: 30 };
+  const server = { serverUrl: "https://lie.example.com/", serverKey: "  a-key&with=odd+chars  ", followSeconds: 30 };
   const quietState = { rev: 1, number: 0, who: "", letter: "", lie: "" };
   const mod = (o) => Object.assign({ mod: true, nick: "Marlow" }, o || {});
 
   sent.length = 0; reply = "#1 was Alex."; served = quietState;
   load({ serverUrl: server.serverUrl }); await wait(5);
-  chat("!truth", boss); chat("!truthreset", boss); await wait(5);
+  chat("!lie", boss); chat("!liereset", boss); await wait(5);
   ok(sent.length === 0, "with no key the commands are left to a chatbot");
   load({ serverKey: server.serverKey }); await wait(5);
-  chat("!truth", boss); await wait(5);
+  chat("!lie", boss); await wait(5);
   ok(sent.length === 0, "and with a key but no address nothing is sent");
 
   load(server); await wait(5);
-  chat("!truth", { nick: "Randomer" }); await wait(5);
+  chat("!lie", { nick: "Randomer" }); await wait(5);
   ok(sent.length === 0, "a viewer cannot run them");
-  chat("!truth please", boss); chat("!truthful", boss); chat("!truth 2", boss); await wait(5);
+  chat("!lie please", boss); chat("!lieful", boss); chat("!lie 2", boss); await wait(5);
   ok(sent.length === 0, "nor does a line that only starts like one");
   load(Object.assign({ whoCanManage: "broadcaster" }, server)); await wait(5);
-  chat("!truth", mod()); await wait(5);
+  chat("!lie", mod()); await wait(5);
   ok(sent.length === 0, "in broadcaster-only mode a moderator cannot either");
 
   served = quietState; load(server); await wait(5);
   chat("!vote", boss); await wait(5);
   chat("a", { nick: "ann" }); chat("c", { nick: "ben" });
   after = { rev: 2, number: 1, who: "Alex", letter: "", lie: "" };
-  chat("!TRUTH", mod({ id: "abc 1" })); await wait(5);
-  ok(sent.length === 1 && sent[0] === "https://truths.example.com/?q=step&key=a-key%26with%3Dodd%2Bchars&id=abc%201", "a moderator's !truth is sent with the key and the message id (" + sent[0].replace(/key=[^&]+/, "key=...") + ")");
+  chat("!LIE", mod({ id: "abc 1" })); await wait(5);
+  ok(sent.length === 1 && sent[0] === "https://lie.example.com/?q=step&key=a-key%26with%3Dodd%2Bchars&id=abc%201", "a moderator's !lie is sent with the key and the message id (" + sent[0].replace(/key=[^&]+/, "key=...") + ")");
   ok(heading() === "#1 was Alex" && note() === "", "the name is on the card at once, with no extra message");
   ok(votes().join() === "1,0,1", "and the command is not counted as a vote");
   reply = "#1 - the lie was C: sharks"; after = { rev: 3, number: 1, who: "Alex", letter: "C", lie: "sharks" };
-  chat("!truth", boss); await wait(5);
-  ok(eyebrow() === "The lie was C" && lieText() === "sharks" && note() === "", "the second !truth reveals the lie at once");
+  chat("!lie", boss); await wait(5);
+  ok(eyebrow() === "The lie was C" && lieText() === "sharks" && note() === "", "the second !lie reveals the lie at once");
   ok(sent[1].indexOf("&id=") === -1, "a message with no id is sent without one");
 
-  reply = "Went back one. Next !truth says #1's lie."; after = { rev: 4, number: 1, who: "Alex", letter: "", lie: "", back: true, undone: { number: 1, part: "lie" } };
-  chat("!truthprev", boss); await wait(5);
-  ok(sent[2].indexOf("?q=prev&") !== -1 && lieText() === "" && !/The lie was/.test(eyebrow()) && note() === reply, "!truthprev takes the lie off and says what happened");
+  reply = "Went back one. Next !lie says #1's lie."; after = { rev: 4, number: 1, who: "Alex", letter: "", lie: "", back: true, undone: { number: 1, part: "lie" } };
+  chat("!lieprev", boss); await wait(5);
+  ok(sent[2].indexOf("?q=prev&") !== -1 && lieText() === "" && !/The lie was/.test(eyebrow()) && note() === reply, "!lieprev takes the lie off and says what happened");
   await wait(8100);
   ok(note() === "", "the message goes after a few seconds");
-  const others = [["!truthnext", "next"], ["!truthreset", "reset"], ["!truthrefresh", "refresh"]];
+  const others = [["!lienext", "next"], ["!liereset", "reset"], ["!lierefresh", "refresh"]];
   after = null;
   for (const [command, q] of others) {
     reply = "Done " + q + ".";
@@ -926,38 +1136,38 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   chat("!vote cancel", boss);
   served = { rev: 10, number: 0, who: "", letter: "", lie: "" }; await wait(30100);
   reply = "#2 was Sam."; after = { rev: 11, number: 2, who: "Sam", letter: "", lie: "" };
-  chat("!truth", boss); await wait(5);
-  ok(!shown() && note() === "#2 was Sam.", "with no poll on screen, !truth still shows what it read out");
+  chat("!lie", boss); await wait(5);
+  ok(!shown() && note() === "#2 was Sam.", "with no poll on screen, !lie still shows what it read out");
   chat("!vote", boss); await wait(5);
   ok(heading() === "#2 was Sam", "and the name is waiting for the next poll");
-  reply = "That is everyone in the running order. !truthreset starts again."; after = null;
-  chat("!truth", boss); await wait(5);
+  reply = "That is everyone in the running order. !liereset starts again."; after = null;
+  chat("!lie", boss); await wait(5);
   ok(note() === reply, "the end of the running order is said on screen");
 
   reply = "Sorry, that link is missing its key.";
-  chat("!truth", boss); await wait(5);
+  chat("!lie", boss); await wait(5);
   ok(/refused the key/.test(note()), "a wrong key says to check the setting");
   reply = "<!doctype html><p>another site</p>";
-  chat("!truth", boss); await wait(5);
+  chat("!lie", boss); await wait(5);
   ok(/did not reply like the answer server/.test(note()), "a web page is not shown as a reply");
   reply = "x".repeat(900);
-  chat("!truthnext", boss); await wait(5);
+  chat("!lienext", boss); await wait(5);
   ok(note().length === 200, "a long reply is cut short");
   const count = sent.length;
   reply = null;
-  chat("!truth", boss); await wait(20000);
+  chat("!lie", boss); await wait(20000);
   ok(sent.length === count + 1, "a command with no answer is never sent again by itself");
   reply = null;
-  chat("!truth", boss); await wait(5);
+  chat("!lie", boss); await wait(5);
   ok(/Check the card/.test(note()) && note().indexOf("a-key") === -1, "and it says to check the card, without the key");
   status = 502; reply = "Bad gateway";
-  chat("!truthreset", boss); await wait(5);
+  chat("!liereset", boss); await wait(5);
   ok(/Check the card/.test(note()), "so does an error from the tunnel");
   status = 200;
   const logged = [], realLog = console.log;
   load(Object.assign({ debug: true }, server)); await wait(5);
   reply = null; console.log = (...a) => logged.push(a.join(" "));
-  chat("!truth", boss); await wait(5);
+  chat("!lie", boss); await wait(5);
   console.log = realLog;
   ok(logged.join(" ").indexOf("a-key") === -1, "the key is never logged, even with troubleshooting on");
   reload(); await wait(5);

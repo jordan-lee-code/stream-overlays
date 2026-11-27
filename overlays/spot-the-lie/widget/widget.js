@@ -112,7 +112,7 @@
   }
   // ---- end of the shared primitives ----
 
-  var STORE_KEY = "two_truths_v1";
+  var STORE_KEY = "spot_the_lie_v1";
 
   /* Style presets. The same twenty-two, with the same colours, in every overlay in this
      set, generated from one table so they cannot drift apart, so any preset looks
@@ -294,7 +294,12 @@
   var followSeq = 0;      // only the newest answer from the server is used
   var noticeTimer = null;
   var NOTICE_MS = 8000;
-  var SERVER_COMMANDS = { "!truth": "step", "!truthprev": "prev", "!truthnext": "next", "!truthreset": "reset", "!truthrefresh": "refresh" };
+  var PRAISE_NAMES = 100;                 // more than this are counted instead of listed
+  var PRAISE_MARGIN = 0.4;                // seconds the roll finishes ahead of the card leaving
+  var praiseShown = "";                   // the list on screen, so drawing again does not restart its scroll
+  var rounds = [];                        // who spotted each revealed lie, which is what the leaderboard adds up
+  var ROUNDS_KEPT = 500;
+  var SERVER_COMMANDS = { "!lie": "step", "!lieprev": "prev", "!lienext": "next", "!liereset": "reset", "!lierefresh": "refresh" };
 
   function cmd(v, dflt) {
     return str(v, dflt).toLowerCase().trim();
@@ -312,12 +317,19 @@
       liveResults: bool(f.liveResults, true),
       tieBreak: str(f.tieBreak, "show"),
       reopenSeconds: clamp(Math.round(num(f.reopenSeconds, 15)), 5, 300),
-      resultSeconds: clamp(Math.round(num(f.resultSeconds, 12)), 0, 600),
+      resultSeconds: clamp(Math.round(num(f.resultSeconds, 10)), 0, 600),
       title: str(f.title, "Which one is the lie?"),
       serverUrl: str(f.serverUrl, "").trim().replace(/\/+$/, "").replace(/\/state$/, ""),
       followSeconds: clamp(num(f.followSeconds, 2), 1, 30),
       serverKey: str(f.serverKey, "").trim(),
       lieLabel: str(f.lieLabel, "The lie was"),
+      praise: bool(f.praise, true),
+      leaderboard: bool(f.leaderboard, true),
+      leaderboardTitle: str(f.leaderboardTitle, "Leaderboard"),
+      leaderboardSize: clamp(Math.round(num(f.leaderboardSize, 5)), 3, 10),
+      praiseTitle: str(f.praiseTitle, "Well Done"),
+      praiseAfter: clamp(Math.round(num(f.praiseAfter, 5)), 1, 60),
+      praiseSeconds: clamp(Math.round(num(f.praiseSeconds, 10)), 3, 60),
       answersTitle: str(f.answersTitle, "{name}'s Answers"),
       spotLabel: str(f.spotLabel, "Spot the lie.."),
       resultLabel: str(f.resultLabel, "Chat says"),
@@ -606,7 +618,7 @@
     if (!hasStore()) return;
     if (saveTimer) clearTimeout(saveTimer);
     saveTimer = setTimeout(function () {
-      try { SE_API.store.set(STORE_KEY, { poll: poll, undoStack: undoStack }); }
+      try { SE_API.store.set(STORE_KEY, { poll: poll, undoStack: undoStack, rounds: rounds }); }
       catch (e) { /* store is best-effort */ }
     }, 300);
   }
@@ -615,7 +627,7 @@
     if (!hasStore() || typeof SE_API.store.get !== "function") { done(null); return; }
     try {
       Promise.resolve(SE_API.store.get(STORE_KEY)).then(function (saved) {
-        done(saved && typeof saved === "object" && saved.poll ? saved : null);
+        done(saved && typeof saved === "object" && (saved.poll || saved.rounds) ? saved : null);
       }).catch(function () { done(null); });
     } catch (e) { done(null); }
   }
@@ -630,6 +642,7 @@
   // ---------------------------------------------------------------------------
   function newPoll(labels, duration) {
     return {
+      id: Date.now().toString(36) + "-" + Math.random().toString(36).slice(2, 8),
       status: "running",
       title: cfg.title,
       options: labels.map(function (label) { return { label: label, votes: 0 }; }),
@@ -752,6 +765,7 @@
     poll.lie = { index: index, text: String(text || ""), number: number || 0 };
     if (who) { poll.who = who; poll.whoNumber = number; }
     waitingWho = null;
+    recordRound();
     saveState();
     render();
     scheduleHide();
@@ -760,7 +774,7 @@
   }
 
   function showWho(who, number) {
-    if (poll && poll.status !== "cancelled" && !poll.lie && poll.status !== "hidden") {
+    if (poll && poll.status !== "cancelled" && !poll.lie && poll.status !== "hidden" && poll.status !== "board") {
       poll.who = who;
       poll.whoNumber = number;
       saveState();
@@ -805,8 +819,12 @@
   /* Takes off whatever the undone step put on the card. Voting stays closed, and a reveal typed by hand is never taken back. */
   function takeBack(undone) {
     if (!poll || !undone) return;
+    if (undone.part === "lie") { forgetNumber(undone.number); saveState(); }
     if (poll.lie && poll.lie.number === undone.number) {
       delete poll.lie;
+      delete poll.praising;
+      // If the card had already moved on, a vote that is back in play returns to it.
+      if (poll.status === "board" || (poll.answers && poll.status === "hidden")) poll.status = "ended";
       if (undone.part === "who") { delete poll.who; delete poll.whoNumber; }
       saveState();
       render();
@@ -852,7 +870,7 @@
       if (seq !== followSeq || token !== loadToken) return;
       followBusy = 0;
       if (state) applyState(state);
-      if (problem && cfg.debug && typeof console !== "undefined") console.log("[two truths] " + problem);
+      if (problem && cfg.debug && typeof console !== "undefined") console.log("[spot the lie] " + problem);
       if (done) done();
     };
     fetch(cfg.serverUrl + "/state", { cache: "no-store" }).then(function (r) {
@@ -878,7 +896,7 @@
     noticeTimer = setTimeout(hideNotice, NOTICE_MS);
   }
 
-  // True when the card on screen already shows what a !truth reply read out.
+  // True when the card on screen already shows what a !lie reply read out.
   function onCard(reply) {
     var read = /^#(\d+) (- the lie was|was )/.exec(reply);
     if (!read || !poll || el.card.hidden) return false;
@@ -952,7 +970,10 @@
   /* Undo. A poll that comes back past its clock reopens for a short grace window. */
   function undo() {
     if (!undoStack.length) return;
+    // The points follow the reveal: undoing one takes them away, and undoing back to one returns them.
+    if (poll && poll.lie) forgetRound(poll.id);
     poll = undoStack.pop();
+    recordRound();
     if (poll.status === "running" && poll.endsAt <= Date.now()) {
       poll.endsAt = Date.now() + cfg.reopenSeconds * 1000;
     }
@@ -997,7 +1018,7 @@
     return -1;
   }
 
-  function castVote(nick, text) {
+  function castVote(nick, text, shownAs) {
     if (!poll || poll.status !== "running") return;
     if (Date.now() >= poll.endsAt) return;
 
@@ -1015,6 +1036,8 @@
     }
 
     poll.voters[voter] = index;
+    if (!poll.names) poll.names = {};
+    poll.names[voter] = String(shownAs || nick);
     poll.options[index].votes += 1;
     saveState();
     render();
@@ -1038,11 +1061,158 @@
   }
   function scheduleHide() {
     if (hideTimer) { clearTimeout(hideTimer); hideTimer = null; }
-    if (!cfg.resultSeconds) return;   // 0 means leave the result up until told otherwise
     if (poll && poll.answers && !poll.lie) return;   // the answers stay up until the lie is revealed
+    // First the lie on its own, then the people who spotted it, and only then does the card leave.
+    if (cfg.praise && poll && poll.lie && !poll.praising && spotters().length) {
+      hideTimer = setTimeout(startPraise, cfg.praiseAfter * 1000);
+      return;
+    }
+    var seconds = poll && poll.praising ? cfg.praiseSeconds : cfg.resultSeconds;
+    if (!cfg.resultSeconds) return;   // 0 means leave the result up until told otherwise
     hideTimer = setTimeout(function () {
-      if (poll && poll.status === "ended") { poll.status = "hidden"; saveState(); render(); }
-    }, cfg.resultSeconds * 1000);
+      if (poll && poll.status === "ended") { poll.status = restingStatus(); saveState(); render(); }
+    }, seconds * 1000);
+  }
+
+  // The display names of everyone whose vote is on the lie.
+  function spotters() {
+    if (!poll || !poll.lie) return [];
+    var names = poll.names || {};
+    return Object.keys(poll.voters).filter(function (voter) { return poll.voters[voter] === poll.lie.index; })
+      .map(function (voter) { return Object.prototype.hasOwnProperty.call(names, voter) ? names[voter] : voter; });
+  }
+
+  // ---------------------------------------------------------------------------
+  // Leaderboard
+  // ---------------------------------------------------------------------------
+  function forgetRound(id) {
+    rounds = rounds.filter(function (r) { return r.id !== id; });
+  }
+
+  // Notes who spotted the lie in this poll. Noting the same poll again replaces it, so nothing counts twice.
+  function recordRound() {
+    if (!poll || !poll.lie) return;
+    forgetRound(poll.id);
+    var names = poll.names || {};
+    var right = Object.keys(poll.voters).filter(function (voter) { return poll.voters[voter] === poll.lie.index; })
+      .map(function (voter) { return [voter, Object.prototype.hasOwnProperty.call(names, voter) ? names[voter] : voter]; });
+    rounds.push({ id: poll.id, number: poll.lie.number, right: right });
+    while (rounds.length > ROUNDS_KEPT) rounds.shift();
+  }
+
+  // The server taking a lie back takes the points from the latest round of that number.
+  function forgetNumber(number) {
+    for (var i = rounds.length - 1; i >= 0; i--) {
+      if (rounds[i].number === number) { rounds.splice(i, 1); return; }
+    }
+  }
+
+  // A point for each correct answer, most first. Level scores share a place, in the order they were reached.
+  function standings() {
+    var totals = Object.create(null);
+    rounds.forEach(function (r, at) {
+      r.right.forEach(function (pair) {
+        var t = totals[pair[0]] || (totals[pair[0]] = { points: 0 });
+        t.points++;
+        t.name = pair[1];
+        t.at = at;
+      });
+    });
+    var list = Object.keys(totals).map(function (k) { return totals[k]; })
+      .sort(function (a, b) { return b.points - a.points || a.at - b.at; });
+    list.forEach(function (t, i) { t.place = i && list[i - 1].points === t.points ? list[i - 1].place : i + 1; });
+    return list;
+  }
+
+  // Between rounds a revealed card rests on the leaderboard. Anything else just leaves.
+  function restingStatus() {
+    return cfg.leaderboard && poll.lie && standings().length ? "board" : "hidden";
+  }
+
+  function showScores() {
+    if (!poll || poll.status === "running" || (poll.answers && !poll.lie) || !standings().length) return;
+    if (hideTimer) { clearTimeout(hideTimer); hideTimer = null; }
+    poll.status = "board";
+    saveState();
+    render();
+  }
+
+  function clearScores() {
+    rounds = [];
+    if (poll && poll.status === "board") poll.status = "hidden";
+    saveState();
+    render();
+  }
+
+  function renderBoard() {
+    var on = poll.status === "board";
+    setClass(el.card, "ranking", on);
+    if (!el.board) return;
+    el.board.hidden = !on;
+    if (!on) return;
+    el.boardTitle.textContent = cfg.leaderboardTitle;
+    while (el.boardList.firstChild) el.boardList.removeChild(el.boardList.firstChild);
+    standings().slice(0, cfg.leaderboardSize).forEach(function (t) {
+      var row = document.createElement("li");
+      row.className = "vote-board-row";
+      [["vote-board-place", t.place + "."], ["vote-board-name", t.name], ["vote-board-points", String(t.points)]].forEach(function (part) {
+        var cell = document.createElement("span");
+        cell.className = part[0];
+        cell.textContent = part[1];
+        row.appendChild(cell);
+      });
+      el.boardList.appendChild(row);
+    });
+    fitText("--board-fit", [el.boardList], spills);
+  }
+
+  function startPraise() {
+    if (!poll || poll.status !== "ended" || !poll.lie) return;
+    poll.praising = true;
+    poll.praisedAt = Date.now();
+    saveState();
+    render();
+    scheduleHide();
+  }
+
+  function renderPraise() {
+    var on = cfg.praise && !!poll.praising && !!poll.lie && poll.status !== "board";
+    setClass(el.card, "praising", on);
+    if (!el.praise) return;
+    el.praise.hidden = !on;
+    if (!on) { praiseShown = ""; return; }
+
+    var all = spotters();
+    var lines = all.slice(0, PRAISE_NAMES);
+    if (all.length > PRAISE_NAMES) lines.push("and " + (all.length - PRAISE_NAMES) + " more");
+    el.praiseTitle.textContent = cfg.praiseTitle;
+    var key = JSON.stringify(lines) + (el.praiseWindow.clientWidth || 0) + "x" + (el.praiseWindow.clientHeight || 0) + (el.praiseNames.offsetHeight || 0);
+    if (praiseShown === key) return;
+
+    setClass(el.praiseNames, "scroll", false);
+    while (el.praiseNames.firstChild) el.praiseNames.removeChild(el.praiseNames.firstChild);
+    lines.forEach(function (name) {
+      var line = document.createElement("div");
+      line.className = "vote-praise-name";
+      line.textContent = name;
+      el.praiseNames.appendChild(line);
+    });
+
+    // Like end credits: up from below the window until the last name has left the top of it.
+    var from = el.praiseWindow.clientHeight || 0;
+    var to = el.praiseNames.offsetHeight || 0;
+    el.praiseNames.style.setProperty("--praise-from", from + "px");
+    el.praiseNames.style.setProperty("--praise-to", "-" + to + "px");
+    // However long the list, the roll takes the time the card has, so the speed is what changes. Drawn again part
+    // way through, it carries on from where it had got to.
+    el.praiseNames.style.setProperty("--praise-for", (cfg.praiseSeconds - PRAISE_MARGIN) + "s");
+    var gone = Math.max(0, (Date.now() - (poll.praisedAt || Date.now())) / 1000);
+    el.praiseNames.style.setProperty("--praise-from-time", "-" + gone.toFixed(2) + "s");
+    // A card that is set to stay rolls the names round again, so it is never left empty.
+    setClass(el.praiseNames, "again", !cfg.resultSeconds);
+    void el.praiseNames.offsetWidth;
+    setClass(el.praiseNames, "scroll", true);
+    praiseShown = JSON.stringify(lines) + (el.praiseWindow.clientWidth || 0) + "x" + from + to;
   }
   function secondsLeft() {
     if (!poll || poll.status !== "running") return 0;
@@ -1059,7 +1229,7 @@
   }
 
   function visible() {
-    return !!poll && (poll.status === "running" || poll.status === "ended");
+    return !!poll && (poll.status === "running" || poll.status === "ended" || (poll.status === "board" && cfg.leaderboard && rounds.length > 0));
   }
 
   function render() {
@@ -1132,8 +1302,12 @@
       "|" + el.total.textContent.length + "|" + widestCountLength(total, best, blind);
     if (fitKey !== lastFitKey) {
       lastFitKey = fitKey;
+      setClass(el.card, "praising", false);
+      setClass(el.card, "ranking", false);
       fitToBox();
     }
+    renderPraise();
+    renderBoard();
   }
 
   /* Kept short, because this line can set the card's width. */
@@ -1378,7 +1552,14 @@
       else if (verb === "undo") undo();
       else if (ext) extendPoll(ext[1] ? num(ext[1], 15) : 15);
       else if (verb === "results") {
-        if (poll && poll.result) { poll.status = "ended"; render(); scheduleHide(); }
+        if (poll && poll.result) {
+          if (poll.status === "board") delete poll.praising;   // from the leaderboard, the reveal plays again
+          poll.status = "ended"; render(); scheduleHide();
+        }
+      } else if (verb === "scores") {
+        showScores();
+      } else if (verb === "scores clear") {
+        clearScores();
       } else if (verb === "hide") {
         if (poll) { poll.status = "hidden"; stopTicking(); saveState(); render(); }
       } else {
@@ -1388,7 +1569,7 @@
       return;
     }
 
-    castVote(data.nick || data.displayName, text);
+    castVote(data.nick || data.displayName, text, data.displayName);
   }
 
   function handleButton(field) {
@@ -1400,6 +1581,7 @@
       case "btnRestart": restartPoll(); break;
       case "btnCancel": cancelPoll(); break;
       case "btnUndo": undo(); break;
+      case "btnClearScores": clearScores(); break;
       case "btnExtend": extendPoll(15); break;
       case "btnSoundOpen": playSound("open"); break;
       case "btnSoundVote": playSound("vote"); break;
@@ -1507,6 +1689,14 @@
     el.eyebrow = document.getElementById("vote-eyebrow");
     el.lie = document.getElementById("vote-lie");
     el.notice = document.getElementById("vote-notice");
+    el.praise = document.getElementById("vote-praise");
+    el.praiseTitle = document.getElementById("vote-praise-title");
+    el.praiseWindow = document.getElementById("vote-praise-window");
+    el.praiseNames = document.getElementById("vote-praise-names");
+    el.board = document.getElementById("vote-board");
+    el.boardTitle = document.getElementById("vote-board-title");
+    el.boardList = document.getElementById("vote-board-list");
+    praiseShown = "";
     el.options = document.getElementById("vote-options");
     el.total = document.getElementById("vote-total");
     el.hint = document.getElementById("vote-hint");
@@ -1515,9 +1705,11 @@
     applyTheme();
     watchResize();
     stopTicking();
+    if (hideTimer) { clearTimeout(hideTimer); hideTimer = null; }
     hideNotice();
     poll = null;
     undoStack = [];
+    rounds = [];
     lastFitKey = null;   // the box or the settings may have changed, so measure afresh
 
     /* The clock is stored as wall-clock time, so a refresh picks the poll up where it was.
@@ -1528,8 +1720,13 @@
     restoreState(function (saved) {
       if (token !== loadToken) return;
 
+      // The scores are kept even when a newer poll has opened while the store was being read.
+      if (saved && Array.isArray(saved.rounds)) {
+        rounds = saved.rounds.filter(function (r) { return r && Array.isArray(r.right) && !rounds.some(function (mine) { return mine.id === r.id; }); }).concat(rounds);
+      }
+
       if (saved && !poll) {
-        poll = saved.poll;
+        poll = saved.poll || null;
         undoStack = Array.isArray(saved.undoStack) ? saved.undoStack : [];
       }
 
@@ -1538,7 +1735,11 @@
         else startTicking();
       }
 
+      // After a refresh the names get their whole time again, so the roll starts over with it.
+      if (poll && poll.praising) poll.praisedAt = Date.now();
       render();
+      // A result restored after a refresh still has to leave.
+      if (poll && poll.status === "ended") scheduleHide();
     });
   });
 })();

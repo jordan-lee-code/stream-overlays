@@ -3,7 +3,7 @@
  * widget, generated straight from the files in ../widget so the overlay never
  * drifts from the source. Run: `node build/build-overlay.js`.
  *
- * Output: dist/two-truths.overlay.json
+ * Output: dist/spot-the-lie.overlay.json
  *
  * Note: the StreamElements overlay-export envelope is not publicly documented, so
  * this mirrors the well-established structure (a top-level overlay with a
@@ -30,7 +30,7 @@ Object.keys(fields).forEach((k) => {
 });
 
 // A stable id so re-importing replaces instead of duplicating where SE allows.
-const WIDGET_ID = "two-truths-overlay-0001";
+const WIDGET_ID = "spot-the-lie-overlay-0001";
 
 /* The widget box is the full 1080p canvas, so the poll renders at the largest
  * size it will ever need and gets scaled down in OBS, never up. Shrinking a
@@ -69,7 +69,7 @@ const overlay = {
 
 const outDir = path.join(ROOT, "dist");
 fs.mkdirSync(outDir, { recursive: true });
-const outFile = path.join(outDir, "two-truths.overlay.json");
+const outFile = path.join(outDir, "spot-the-lie.overlay.json");
 fs.writeFileSync(outFile, JSON.stringify(overlay, null, 2));
 
 const kb = (fs.statSync(outFile).size / 1024).toFixed(1);

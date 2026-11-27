@@ -13,6 +13,20 @@
     <!-- The lie itself, in words, once the answer server has revealed it. -->
     <div id="vote-lie" class="vote-lie" hidden></div>
 
+    <!-- Takes the card over after the reveal, to name everyone who spotted the lie. -->
+    <div id="vote-praise" class="vote-praise" hidden>
+      <div id="vote-praise-title" class="vote-praise-title">Well Done</div>
+      <div id="vote-praise-window" class="vote-praise-window">
+        <div id="vote-praise-names" class="vote-praise-names"></div>
+      </div>
+    </div>
+
+    <!-- Where the card rests between rounds. -->
+    <div id="vote-board" class="vote-board" hidden>
+      <div id="vote-board-title" class="vote-board-title">Leaderboard</div>
+      <ol id="vote-board-list" class="vote-board-list"></ol>
+    </div>
+
     <div class="vote-foot">
       <span id="vote-total" class="vote-total">0 votes</span>
       <span id="vote-hint" class="vote-hint"></span>

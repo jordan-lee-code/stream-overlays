@@ -347,7 +347,7 @@
         '<button class="alt" data-poll="!vote 10s Quick A, Quick B">10s poll</button>' +
       '</div>' +
       '<div class="row">' +
-        '<button class="alt" data-poll="!vote Truth A, Truth B, The lie">3 options</button>' +
+        '<button class="alt" data-poll="!vote Fact A, Fact B, The lie">3 options</button>' +
         '<button class="alt" data-poll="!vote A, B, C, D, E, F">6 options</button>' +
       '</div>' +
       '<p class="hint">A leading <code>60s</code> sets the length for that poll. Options are ' +
@@ -472,7 +472,7 @@
     buildLook(document.getElementById("look-panel"));
 
     document.getElementById("reset-store").onclick = function () {
-      try { localStorage.removeItem("se_two_truths_v1"); } catch (e) {}
+      try { localStorage.removeItem("se_spot_the_lie_v1"); } catch (e) {}
       location.reload();
     };
   }

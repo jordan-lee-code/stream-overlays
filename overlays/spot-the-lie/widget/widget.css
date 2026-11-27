@@ -477,6 +477,106 @@
 .vote-card.answers.measuring .vote-option { height: calc(var(--em, 1em) * 4); }
 #vote-app .vote-card.answers .vote-lie { display: none !important; }
 
+/* The praise and the leaderboard take the whole card, which stays the size it was. */
+#vote-app .vote-card.praising > .vote-head,
+#vote-app .vote-card.praising > .vote-eyebrow,
+#vote-app .vote-card.praising > .vote-options,
+#vote-app .vote-card.praising > .vote-lie,
+#vote-app .vote-card.praising > .vote-foot,
+#vote-app .vote-card.ranking > .vote-head,
+#vote-app .vote-card.ranking > .vote-eyebrow,
+#vote-app .vote-card.ranking > .vote-options,
+#vote-app .vote-card.ranking > .vote-lie,
+#vote-app .vote-card.ranking > .vote-foot { display: none !important; }
+.vote-praise {
+  flex: 1 1 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4em;
+  text-align: center;
+}
+.vote-praise-title {
+  flex: none;
+  font-size: calc(var(--title-scale) * 1.4em);
+  font-weight: var(--title-w);
+  line-height: 1.2;
+  color: var(--c-title);
+  font-family: var(--title-font);
+}
+.vote-praise-window {
+  flex: 1 1 0;
+  min-height: 0;
+  overflow: hidden;
+  position: relative;
+}
+/* Out of the flow, so a long list cannot stretch the card. */
+.vote-praise-names {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  font-size: 1.15em;
+  font-weight: var(--label-weight);
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+  color: var(--c-label);
+}
+.vote-praise-names.scroll { animation: vote-credits var(--praise-for, 10s) linear var(--praise-from-time, 0s) both; }
+.vote-praise-names.scroll.again { animation-iteration-count: infinite; }
+/* Credits that do not move would not show every name, so they still roll with Animate off. */
+#vote-app.no-motion .vote-praise-names.scroll { animation: vote-credits var(--praise-for, 10s) linear var(--praise-from-time, 0s) both !important; }
+#vote-app.no-motion .vote-praise-names.scroll.again { animation-iteration-count: infinite !important; }
+@keyframes vote-credits {
+  from { transform: translateY(var(--praise-from, 100%)); }
+  to { transform: translateY(var(--praise-to, -100%)); }
+}
+
+.vote-board {
+  flex: 1 1 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4em;
+}
+.vote-board-title {
+  flex: none;
+  text-align: center;
+  font-size: calc(var(--title-scale) * 1.4em);
+  font-weight: var(--title-w);
+  line-height: 1.2;
+  color: var(--c-title);
+  font-family: var(--title-font);
+}
+.vote-board-list {
+  flex: 1 1 0;
+  min-height: 0;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: safe center;
+  gap: 0.2em;
+  font-size: calc(1.15em * var(--board-fit, 1));
+}
+.vote-board-row {
+  flex: none;
+  display: flex;
+  align-items: baseline;
+  gap: 0.6em;
+  padding: 0.15em 0.7em;
+  border-radius: 0.5em;
+  background: var(--c-row);
+  font-weight: var(--label-weight);
+  line-height: 1.3;
+  color: var(--c-label);
+}
+.vote-board-place { flex: 0 0 1.8em; text-align: right; }
+.vote-board-name { flex: 1 1 0; min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.vote-board-points { flex: none; font-variant-numeric: tabular-nums; }
+
 .vote-notice {
   position: absolute;
   left: 3cqmin;
