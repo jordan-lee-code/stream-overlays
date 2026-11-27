@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Be Right Back now vanishes when you type `!brb back`, instead of showing its "Be right back" screen again. It also stays hidden until your first break starts, so if you relied on that screen as a standing card, type `!brb` to show it.
 - Be Right Back can hide the clock during a meeting. Untick Show the clock during a meeting to leave just the headline and the rotating lines. It is on by default, and ordinary breaks are not affected.
 - Two Truths and a Lie puts the three answers on the card. The first `!truth` shows the heading "Name's Answers" over "Spot the lie..", with a statement on each of A, B and C, and opens the vote. They stay up until the second `!truth` lights the lie. Both lines are settings. **Your running order needs `a`, `b` and `c` for each person**, and `truth-server.js` needs updating on your server. An entry without all three behaves as before.
 - The Two Truths and a Lie card now stays one size. It always fills the widget box, and the heading, result tag, rows, lie and footer each keep their place, even while empty, so nothing jumps when a name or a lie appears. Long text shrinks to fit its own space. **Set the card's size with the widget box.** The Grow to fill the box setting is gone, and Size of everything is now Text size, which can only make the text smaller.

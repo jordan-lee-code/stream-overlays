@@ -15,9 +15,9 @@ const cls = c => E("br-app").classList.contains(c);
 (async () => {
   section("before anything is set");
   await load();
-  ok(cls("idle") && title() === "Be right back" && shown("br-title"), "the headline shows with no break set (" + title() + ")");
+  ok(cls("idle") && !shown("br-app"), "the overlay is hidden with no break set");
   ok(!shown("br-clock") && !shown("br-bar") && !shown("br-at") && !shown("br-label"), "and there is no clock, bar, time or label yet");
-  ok(shown("br-msg") && E("br-msg").textContent === "Grab a drink and stretch your legs", "the first rotating line shows (" + E("br-msg").textContent + ")");
+  ok(shown("br-msg") && E("br-msg").textContent === "Grab a drink and stretch your legs", "the first rotating line is ready for when a break starts (" + E("br-msg").textContent + ")");
 
   section("a break with no set time");
   boss("!brb");
@@ -26,7 +26,7 @@ const cls = c => E("br-app").classList.contains(c);
   await skip(61 * SEC); ok(clock() === "01:01", "it counts the time away (" + clock() + ")");
   await skip(HOUR); ok(clock() === "1:01:01", "into hours (" + clock() + ")");
   await reload(); ok(cls("away") && clock() === "1:01:01", "and carries on through a refresh (" + clock() + ")");
-  boss("!brb back"); ok(cls("idle") && !stored().since, "!brb back ends it, and it is the headline again");
+  boss("!brb back"); ok(cls("idle") && !stored().since && !shown("br-app"), "!brb back ends it, and the overlay vanishes");
   await load({ startMinutes: 0 }); boss("!brb start"); ok(cls("away"), "!brb start does the same");
 
   section("a break with a time");
@@ -40,7 +40,8 @@ const cls = c => E("br-app").classList.contains(c);
   ok(cls("late") && title() === "Back any moment now" && !shown("br-clock") && !shown("br-bar") && !shown("br-at") && !shown("br-label"), "at zero the headline changes and the clock goes, since you are not back yet (" + title() + ")");
   await skip(3 * HOUR); ok(cls("late"), "and it stays that way until you are back");
   await reload(); ok(cls("late"), "even after a refresh");
-  boss("!brb back"); ok(cls("idle") && title() === "Be right back" && !stored().since, "!brb back puts it back to the headline");
+  boss("!brb back"); ok(cls("idle") && !stored().since && !shown("br-app"), "!brb back hides it after running late too");
+  boss("!brb 5m"); ok(shown("br-app"), "and the next break brings it back"); boss("!brb back"); await reload(); ok(!shown("br-app"), "it stays hidden after a refresh");
   await load({ lateTitle: "" }); boss("!brb 1m"); await skip(61 * SEC); ok(E("br-title").hidden, "a blank late headline leaves none");
   await load({ lateTitle: "Nearly!" }); boss("!brb 1m"); await skip(61 * SEC); ok(title() === "Nearly!", "and it is a setting");
 
