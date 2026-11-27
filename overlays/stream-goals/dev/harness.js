@@ -74,6 +74,38 @@
           }
         },
         {
+          "label": "RIPCheer15 in chat only",
+          "kind": "se",
+          "listener": "message",
+          "event": {
+            "data": {
+              "text": "RIPCheer15 thank you",
+              "nick": "viewer",
+              "displayName": "Viewer",
+              "badges": [],
+              "tags": {
+                "bits": "15"
+              }
+            }
+          }
+        },
+        {
+          "label": "Gigantify an Emote in chat",
+          "kind": "se",
+          "listener": "message",
+          "event": {
+            "data": {
+              "text": "Kappa",
+              "nick": "viewer",
+              "displayName": "Viewer",
+              "badges": [],
+              "tags": {
+                "msg-id": "gigantified-emote-message"
+              }
+            }
+          }
+        },
+        {
           "label": "Blerp 100 bits",
           "kind": "se",
           "listener": "message",
