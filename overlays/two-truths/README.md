@@ -4,7 +4,7 @@ A StreamElements custom widget for a round of Two Truths and a Lie. You read out
 
 <p align="center"><img src="docs/poll-open.png" alt="A soft black card with the options A, B and C, a countdown and vote bars" width="340"></p>
 
-It has two parts. The **overlay** is a self-contained widget that works on its own. The **answer server** in [`server/`](server) is optional: it keeps your running order, answers your chatbot one reveal at a time, and lets the overlay reveal the lie by itself. It is built from the [Chat Poll](../chat-poll) overlay, so voting, undo, sounds and style settings work the same way.
+It has two parts. The **overlay** is a self-contained widget that works on its own. The **answer server** in [`server/`](server) is optional, and the website has it as a download with its [hosting steps](https://lee-it.co.uk/stream-overlays/two-truths/hosting.html): it keeps your running order, answers your chatbot one reveal at a time, and lets the overlay reveal the lie by itself. It is built from the [Chat Poll](../chat-poll) overlay, so voting, undo, sounds and style settings work the same way.
 
 <p><img src="docs/result.png" alt="A finished vote with option C lit under the label The lie was C" width="340"></p>
 

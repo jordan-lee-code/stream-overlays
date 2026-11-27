@@ -372,9 +372,9 @@
         '<button class="alt" data-cmd="!vote reveal B">B</button>' +
         '<button class="alt" data-cmd="!vote reveal C">C</button>' +
       '</div>' +
-      '<p class="hint">To try the answer server, run it on this computer (see <code>server/README.md</code>), ' +
-      'put <code>http://localhost:8099</code> in the Answer server address setting under Reveals below, ' +
-      'and send its commands with <code>curl</code>.</p>' +
+      '<p class="hint">These work with no server. To have the lie revealed for you, host the answer server and put ' +
+      'its address in the Answer server address setting under Reveals below. ' +
+      '<span id="hosting-link">The hosting steps are in <code>server/README.md</code>.</span></p>' +
 
       '<h2>Chat votes</h2>' +
       '<div class="row">' +
@@ -472,6 +472,11 @@
         sendChat(command, asBoss());
       };
     });
+
+    // The website has a page for the hosting steps. A copy of the repository has the file named above instead.
+    fetch("../hosting.html", { method: "HEAD" }).then(function (r) {
+      if (r.ok) document.getElementById("hosting-link").innerHTML = '<a href="../hosting.html">Download the server and read how to host it</a>.';
+    }).catch(function () {});
 
     buildSettings(document.getElementById("all-settings"));
     buildLook(document.getElementById("look-panel"));

@@ -8,11 +8,11 @@ You will need:
 - a way to give it a public `https` address. These steps use [Cloudflare Tunnel](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/), which opens no ports on your router. A permanent address needs a domain on your Cloudflare account;
 - a chatbot that can show the reply from a web address. The commands below are for the StreamElements chatbot.
 
-The server has automated tests. The hosting steps below have not been run from start to finish on a fresh machine, so if one does not match what you see, trust the tool's own documentation and please open an issue.
+The server has automated tests. The hosting steps below have not been run from start to finish on a fresh machine, so if one does not match what you see, trust the tool's own documentation.
 
 ## 1. Copy the files across
 
-From the `server` folder on your computer, replacing `YOURNAME@raspberrypi.local` with your own login:
+On your computer, open a terminal in the folder with these files: `truth-server` if you unzipped the download, or `server` if you have the whole repository. Then run these, replacing `YOURNAME@raspberrypi.local` with your own login:
 
 ```sh
 ssh YOURNAME@raspberrypi.local 'mkdir -p ~/truth-server'
@@ -39,7 +39,7 @@ It is a list with one entry for each person:
 | `letter` | Which statement is the lie: `A`, `B` or `C`. It has to match the order you read them out. |
 | `lie` | The lie, in words. |
 
-This file is the answers, so keep it out of public repositories and off your stream. The `.gitignore` here already leaves it out.
+This file is the answers, so keep it off your stream and out of anything public.
 
 ## 3. Make a secret key
 
