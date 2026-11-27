@@ -225,7 +225,13 @@ function look(name){
   var board={shown:!document.getElementById("vote-board").hidden,w:Math.round(bc.width),h:Math.round(bc.height),count:list.children.length,
     rows:[].every.call(list.children,function(r){var b=r.getBoundingClientRect();return b.top>=lr.top-1&&b.bottom<=lr.bottom+1&&b.left>=lr.left-1&&b.right<=lr.right+1&&b.height>8}),
     points:[].every.call(list.querySelectorAll(".vote-board-points"),function(p){var b=p.getBoundingClientRect();return b.width>0&&b.right<=lr.right+1}),
-    inside:lr.bottom<=bc.bottom+1};
+    inside:lr.bottom<=bc.bottom+1,
+    top:list.children.length?list.children[0].getBoundingClientRect().top-lr.top:99};
+  // With only one person listed, first place is in the same spot, not floating in the middle.
+  var kept=[].slice.call(list.children,1); kept.forEach(function(r){list.removeChild(r)});
+  board.alone=list.children[0].getBoundingClientRect().top-lr.top;
+  board.under=list.children[0].getBoundingClientRect().top-document.getElementById("vote-board-title").getBoundingClientRect().bottom;
+  board.text=parseFloat(getComputedStyle(document.getElementById("vote-card")).fontSize);
   document.title=JSON.stringify({steps:steps,praise:steps.praise,board:board});
 })();
 <\/script></body></html>`.replace("<\\/script>", "<\/script>");
@@ -299,6 +305,7 @@ return Promise.all(plans.map((p, i) => round(p.box, i, p.answers))).then((rounds
     ok(praise.titleIn && praise.viewIn && !praise.wide, "with its heading and the names inside it");
     ok(board.shown && board.w === first.w && board.h === first.h, "the leaderboard keeps the card the same size");
     ok(board.count === 5 && board.rows && board.points && board.inside, "with all five rows and their points inside it");
+    ok(Math.abs(board.top) <= 1 && Math.abs(board.alone) <= 1 && board.under >= 0 && board.under <= board.text, "first place sits just under the heading, with five listed or only one (" + Math.round(board.under) + "px below it)");
     ok(praise.ends > 0 && praise.ends < 10, "ending before the card leaves at ten seconds (" + praise.ends.toFixed(2) + "s)");
     ok(praise.count > 1 && praise.perLine, "with each name on its own line (" + praise.count + " lines)");
     ok(praise.scrolls && Math.abs(praise.from - praise.viewH) <= 2 && Math.abs(praise.to + praise.listH) <= 2, "rolling from below the window until the last has left the top (" + praise.from + " to " + praise.to + ")");

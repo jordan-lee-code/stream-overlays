@@ -944,7 +944,7 @@
   },
   "enterSeconds": {
     "type": "number",
-    "label": "Seconds the card takes to appear",
+    "label": "Seconds each fade takes: the card arriving and leaving, and one screen giving way to the next",
     "value": 0.42,
     "min": 0,
     "max": 5,

@@ -113,7 +113,8 @@ function labels() {
   return (html().match(/class="vote-label">([^<]*)</g) || []).map(m => m.replace(/^[^>]*>/, "").replace(/<$/, ""));
 }
 const winners = () => (html().match(/class="vote-option win"/g) || []).length;
-const shown = () => elements["vote-card"].hidden === false;
+// A card that is fading out has already gone, as far as the round is concerned.
+const shown = () => elements["vote-card"].hidden === false && !elements["vote-card"].classList.contains("leaving");
 const eyebrow = () => elements["vote-eyebrow"].hidden ? "" : elements["vote-eyebrow"].textContent;
 const timer = () => parseInt(elements["vote-timer"].textContent, 10);
 const total = () => elements["vote-total"].textContent;
@@ -1084,6 +1085,40 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
     served = null;
   }
 
+  console.log("\n[fades]");
+  {
+    const has = (id, name) => elements[id].classList.contains(name);
+    const onPage = () => elements["vote-card"].hidden === false;
+    served = null; load({ praise: false, leaderboard: false, resultSeconds: 5 }); await wait(5);
+    chat("!vote", boss); await wait(5); chat("!vote cancel", boss);
+    ok(onPage() && has("vote-card", "leaving"), "a card that is taken down fades before it goes");
+    await wait(300); ok(onPage(), "staying on the page while it does");
+    await wait(200); ok(!onPage() && !has("vote-card", "leaving"), "and then it is gone");
+    chat("!vote", boss); await wait(5); chat("!vote cancel", boss); await wait(100); chat("!vote", boss);
+    await wait(1000);
+    ok(shown(), "a new vote during the fade keeps the card, and the old fade does not take it away");
+    chat("a", { nick: "ann" }); chat("!vote reveal a", boss); await wait(5400);
+    ok(has("vote-card", "leaving"), "after a result it fades away by itself");
+
+    load({}); await wait(5); chat("!vote", boss); await wait(5); chat("b", { nick: "Ann" }); chat("!vote reveal b", boss);
+    await wait(4400); ok(!has("vote-card", "changing"), "the reveal holds");
+    await wait(300); ok(has("vote-card", "changing") && elements["vote-praise"].hidden !== false, "then fades out just before Well Done");
+    await wait(400); ok(!has("vote-card", "changing") && !elements["vote-praise"].hidden, "which takes its place on time");
+    await wait(9600); ok(has("vote-card", "changing") && !has("vote-card", "leaving"), "its words fade before the leaderboard, while the card stays");
+    await wait(500); ok(!has("vote-card", "changing") && !elements["vote-board"].hidden && shown(), "and the leaderboard arrives");
+    chat("!vote", boss); await wait(5); chat("b", { nick: "Ann" }); chat("!vote reveal b", boss); await wait(4800);
+    chat("!vote Fresh, Poll", boss); await wait(5);
+    ok(!has("vote-card", "changing"), "a new vote in the middle of a fade is shown in full");
+
+    load({ animate: false, praise: false, leaderboard: false }); await wait(5); chat("!vote", boss); await wait(5); chat("!vote cancel", boss);
+    ok(!onPage(), "with Animate off the card goes at once");
+    load({ enterSeconds: 0, praise: false, leaderboard: false }); await wait(5); chat("!vote", boss); await wait(5); chat("!vote cancel", boss);
+    ok(!onPage(), "as it does with the fade set to nothing");
+    load({ enterSeconds: 1, praise: false, leaderboard: false }); await wait(5); chat("!vote", boss); await wait(5); chat("!vote cancel", boss);
+    await wait(900); const during = onPage(); await wait(200);
+    ok(during && !onPage(), "and the length of a fade is the setting");
+  }
+
   console.log("\n[running the server from chat]");
   const note = () => elements["vote-notice"].hidden ? "" : elements["vote-notice"].textContent;
   const server = { serverUrl: "https://lie.example.com/", serverKey: "  a-key&with=odd+chars  ", followSeconds: 30 };
@@ -1123,7 +1158,7 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   reply = "Went back one. Next !lie says #1's lie."; after = { rev: 4, number: 1, who: "Alex", letter: "", lie: "", back: true, undone: { number: 1, part: "lie" } };
   chat("!lieprev", boss); await wait(5);
   ok(sent[2].indexOf("?q=prev&") !== -1 && lieText() === "" && !/The lie was/.test(eyebrow()) && note() === reply, "!lieprev takes the lie off and says what happened");
-  await wait(8100);
+  await wait(8600);
   ok(note() === "", "the message goes after a few seconds");
   const others = [["!lienext", "next"], ["!liereset", "reset"], ["!lierefresh", "refresh"]];
   after = null;
