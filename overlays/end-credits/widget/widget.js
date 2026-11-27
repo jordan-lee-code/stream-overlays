@@ -428,6 +428,7 @@
     c.speed = clamp(num(f.speed, 10), 1, 100);
     c.columns = clamp(Math.floor(num(f.columns, 2)), 1, 4);
     c.clearAfter = bool(f.clearAfter, false);
+    c.waitCard = bool(f.waitCard, true);
     c.titleSize = Math.max(1, num(f.titleSize, 6));
     c.headingSize = Math.max(1, num(f.headingSize, 2.4));
     c.nameSize = Math.max(1, num(f.nameSize, 3.2));
@@ -511,6 +512,7 @@
     if (!el.app) return;
     finish(false);
     sampleRoll = !!sample;
+    el.roll.classList.remove("wait");
     build(sample);
     rolling = true;
     el.root.hidden = false;
@@ -523,13 +525,23 @@
     el.roll.classList.add("go");
     rollTimer = setTimeout(function () { rollTimer = null; finish(true); }, Math.round(seconds * 1000) + 300);
   }
+  // Between rolls: the card with its title held still in the middle, or nothing at all if the card is switched off.
+  function rest() {
+    if (!el.app) return;
+    el.roll.classList.remove("go");
+    el.roll.classList.remove("wait");
+    clear(el.roll);
+    el.root.hidden = !cfg.waitCard;
+    if (!cfg.waitCard) return;
+    if (cfg.showTitle && cfg.title) el.roll.appendChild(div("ec-title", cfg.title));
+    el.roll.classList.add("wait");
+  }
   // Ends the roll. `done` is true when it ran to the end, which is when a list is cleared if it is set to be.
   function finish(done) {
     if (rollTimer) { clearTimeout(rollTimer); rollTimer = null; }
     var was = rolling;
     rolling = false;
-    if (el.root) el.root.hidden = true;
-    if (el.roll) el.roll.classList.remove("go");
+    rest();
     if (was && done && cfg.clearAfter && !sampleRoll) reset();
   }
   function reset() { state = blankState(); save(); }
@@ -598,8 +610,8 @@
     cfg = readConfig((obj && obj.detail && obj.detail.fieldData) || {});
     bind();
     if (!el.app) return;
-    el.root.hidden = true;
     applyLook();
+    rest();
     storeLoad(STORE_KEY, function (saved) {
       state = restore(saved);
       loaded = true;

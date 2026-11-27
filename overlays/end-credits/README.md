@@ -4,14 +4,14 @@ A StreamElements custom widget that says thank you at the end of a stream, prope
 
 <p align="center"><img src="docs/default.png" alt="A soft black card with the title Thank you for watching in large capitals, and under it the heading Subscribers with a list of names in two columns" width="640"></p>
 
-It is a single self-contained widget in plain JavaScript, with no dependencies and nothing to install. It is designed around a full 1920 by 1080 scene and stretches to any box. Nothing shows on screen until you roll the credits, so it can sit in your ending scene all the time.
+It is a single self-contained widget in plain JavaScript, with no dependencies and nothing to install. It is designed around a full 1920 by 1080 scene and stretches to any box. Until you roll the credits it shows the card with your title held still in the middle, ready for the end of the stream. If you would rather nothing showed until the roll, untick **Show the card with its title while waiting for the roll**.
 
 ## Features
 
 - Names collected as you stream: followers, subscribers and resubscribers, gifters, cheerers, tippers, raiders and anyone who chats, each kept once however often they appear.
 - Gifters counted properly: a gift bomb counts once at its real size, for the person who gave it, and the follow-ups StreamElements sends for each recipient are ignored. A gifter shows with their count, as in Hazel x12, biggest first.
 - Special thanks of your own: names you always want in, such as the people who help you, ahead of everyone else.
-- Rolled when you ask: `!credits roll` from you or a moderator, or a button in the editor. The roll scrolls up from the bottom of the box and the widget disappears when it has gone.
+- Rolled when you ask: `!credits roll` from you or a moderator, or a button in the editor. The roll scrolls up from the bottom of the box, and when it has gone past the card goes back to waiting.
 - A sample to set it up by: `!credits sample` rolls made-up names and keeps nothing, so you can try the look before anyone has followed.
 - Yours to shape: a heading for each list, which lists to include, columns of names, the title, a last line, the speed and the sizes.
 - Made for a full screen, and happy in any box: every size is a share of the box's width at 16 by 9, or of its height if the box is short for its width.
@@ -43,7 +43,7 @@ It is a single self-contained widget in plain JavaScript, with no dependencies a
 3. Click **Done**. The settings are grouped into Commands, Credits, Roll, Size, Manual controls, Look, Custom colours and Troubleshooting.
 4. Make the widget as big as your scene, 1920 by 1080 for a full screen, and put it at the front of your ending scene. Press **Roll a sample** to see it.
 
-The widget reads Twitch chat and events through StreamElements, so it works as soon as it is on an active overlay. It can only collect names while it is loaded, so keep it in a scene that is always part of your overlay, even though nothing shows until you roll.
+The widget reads Twitch chat and events through StreamElements, so it works as soon as it is on an active overlay. It can only collect names while it is loaded, so keep it somewhere that stays loaded for the whole stream. The waiting card covers the whole of its box, so if the widget shares an overlay with the things you show while you are live, switch the waiting card off and it stays invisible until you roll.
 
 ## Chat commands
 
@@ -75,7 +75,7 @@ A list with nobody in it is left out, and any list can be switched off. Anonymou
 
 ## The roll
 
-The credits start below the bottom of the box and scroll up until they have gone past the top, then the widget disappears. The speed is a share of the box height per second, and a longer list of names simply takes longer, so every name is on screen for the same time however many there are.
+The credits start below the bottom of the box and scroll up until they have gone past the top, then the widget goes back to the waiting card, or disappears if that card is switched off. The speed is a share of the box height per second, and a longer list of names simply takes longer, so every name is on screen for the same time however many there are.
 
 The small motions, such as a pop, follow the **Animate** setting. The roll itself always scrolls, since a roll that stood still would not be one.
 
@@ -127,7 +127,7 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | --- | --- |
 | Commands | The command word and who may use it. |
 | Credits | Special thanks, which lists to include, each list's heading, whether a gifter shows their count, the longest list, who to leave out and the last line. |
-| Roll | The speed, the columns of names, and whether the lists start again after a full roll. |
+| Roll | Whether the card waits on screen before the roll, the speed, the columns of names, and whether the lists start again after a full roll. |
 | Size | The title, list heading and name sizes, and the space between the lists, in units of the box. |
 | Manual controls | Buttons to roll, roll a sample, stop and start the lists again. |
 | Look | Title, the style preset, font, boldness, corners, outer frame, outline, shadow and Animate. |
