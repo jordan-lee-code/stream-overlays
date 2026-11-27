@@ -176,6 +176,9 @@ ${css}
 *:not(.vote-praise-names),*::before,*::after{animation:none !important;transition:none !important;}
 </style></head><body><div id="box">${html}</div><script>
 window.SE_API={store:{set:()=>Promise.resolve(),get:()=>Promise.resolve(null)}};
+// When fonts started and finished loading, to explain any text that does not fit.
+var fontEvents=[];
+["loading","loadingdone","loadingerror"].forEach(function(n){document.fonts.addEventListener(n,function(){fontEvents.push(n+"@"+Math.round(performance.now()))})});
 var served={rev:1,number:0,who:"",letter:"",lie:""};
 window.fetch=function(){return Promise.resolve({ok:true,json:function(){return Promise.resolve(served)}})};
 ${js}
@@ -193,7 +196,11 @@ function look(name){
       if(q===".vote-option") b=[e.offsetTop,e.offsetHeight,e.offsetWidth];
       return b.map(Math.round).join(",")}).join(";")}).join("|");
   var clipped=[].filter.call(document.querySelectorAll(".vote-title,.vote-lie,.vote-count,.vote-label"),function(e){
-    var r=document.createRange();r.selectNodeContents(e);var wide=e.scrollWidth>e.clientWidth||(e.className==="vote-title"&&r.getBoundingClientRect().width>e.getBoundingClientRect().width+0.05);return getComputedStyle(e).visibility!=="hidden"&&(wide||(/lie|label/.test(e.className)&&e.scrollHeight>e.clientHeight+Math.max(1,parseFloat(getComputedStyle(e).fontSize)*0.4)))}).map(function(e){return e.className});
+    var r=document.createRange();r.selectNodeContents(e);var wide=e.scrollWidth>e.clientWidth||(e.className==="vote-title"&&r.getBoundingClientRect().width>e.getBoundingClientRect().width+0.05);return getComputedStyle(e).visibility!=="hidden"&&(wide||(/lie|label/.test(e.className)&&e.scrollHeight>e.clientHeight+Math.max(1,parseFloat(getComputedStyle(e).fontSize)*0.4)))}).map(function(e){
+    var r=document.createRange();r.selectNodeContents(e);
+    return e.className+" {at "+Math.round(performance.now())+", text "+r.getBoundingClientRect().width.toFixed(2)+" in "+e.getBoundingClientRect().width.toFixed(2)+
+      ", scroll "+e.scrollWidth+"/"+e.clientWidth+", title-fit "+document.getElementById("vote-card").style.getPropertyValue("--title-fit")+
+      ", size "+getComputedStyle(e).fontSize+", fonts "+document.fonts.status+" "+fontEvents.join(" ")+"}"});
   var low=document.querySelector(".vote-foot").getBoundingClientRect().bottom;
   var list=document.querySelector(".vote-options").getBoundingClientRect(), rows=[].slice.call(document.querySelectorAll(".vote-option"));
   var whole=rows.length===3&&rows.every(function(r){var b=r.getBoundingClientRect();return b.top>=list.top-1&&b.bottom<=list.bottom+1});
