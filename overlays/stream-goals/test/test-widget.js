@@ -65,13 +65,17 @@ const HOUR = 3600000;
   {
     const giga = (nick, extra) => env.ev("message", { data: { text: "Kappa", nick: nick.toLowerCase(), displayName: nick, badges: [], tags: Object.assign({ "msg-id": "gigantified-emote-message" }, extra) } });
     await load(); giga("Viewer"); await wait(4500);
-    ok(count("bits") === "0 / 5,000", "with no price set and no amount on the message, nothing is guessed (" + count("bits") + ")");
+    ok(count("bits") === "100 / 5,000" && require("../widget/fields.json").gigantifyBits.value === 100, "a Gigantify counts 100 unless you set another price (" + count("bits") + ")");
+    await load({ gigantifyBits: undefined }); giga("Viewer"); await wait(4500);
+    ok(count("bits") === "100 / 5,000", "also for settings saved before there was a price (" + count("bits") + ")");
+    await load({ gigantifyBits: 0 }); giga("Viewer"); await wait(4500);
+    ok(count("bits") === "0 / 5,000", "set to 0, one with no amount on its message is not counted (" + count("bits") + ")");
     await load({ gigantifyBits: 30 }); giga("Viewer"); await wait(4500);
     ok(count("bits") === "30 / 5,000", "with your price set, a Gigantify counts it (" + count("bits") + ")");
     giga("Viewer"); giga("Other"); await wait(4500);
     ok(count("bits") === "90 / 5,000", "and every one of them counts, from the same person too (" + count("bits") + ")");
     await load(); giga("Viewer", { bits: "45" }); await wait(4500);
-    ok(count("bits") === "45 / 5,000", "an amount on the message is counted, with no price set (" + count("bits") + ")");
+    ok(count("bits") === "45 / 5,000", "an amount on the message is counted in place of the default (" + count("bits") + ")");
     await load({ gigantifyBits: 30 }); giga("Viewer", { bits: "45" }); await wait(4500);
     ok(count("bits") === "45 / 5,000", "and wins over the price, without adding to it (" + count("bits") + ")");
     await load({ gigantifyBits: 30 }); giga("Viewer"); env.ev("cheer-latest", { amount: 30, name: "Viewer" }); await wait(4500);
@@ -81,9 +85,30 @@ const HOUR = 3600000;
     await load({ gigantifyBits: 30, chatBits: false }); giga("Viewer"); await wait(4500);
     ok(count("bits") === "30 / 5,000", "the price has its own switch: counting cheers from chat can be off (" + count("bits") + ")");
     await load({ gigantifyBits: 30 }); env.ev("message", { data: { text: "Kappa gigantified-emote-message", nick: "viewer", displayName: "Viewer", badges: [], tags: {} } });
-    env.ev("message", { data: { text: "hi", nick: "viewer", displayName: "Viewer", badges: [], tags: { "msg-id": "animated-message" } } }); await wait(4500);
-    ok(count("bits") === "0 / 5,000", "typing the words, or another Power-up, adds nothing");
+    env.ev("message", { data: { text: "hi", nick: "viewer", displayName: "Viewer", badges: [], tags: { "msg-id": "highlighted-message" } } });
+    env.ev("message", { data: { text: "hi", nick: "viewer", displayName: "Viewer", badges: [], tags: { "msg-id": "constructor" } } }); await wait(4500);
+    ok(count("bits") === "0 / 5,000", "typing the words, or any other kind of marked message, adds nothing");
     await load({ gigantifyBits: 30 }); env.boss("!goals pause"); giga("Viewer"); await wait(4500);
+    ok(count("bits") === "0 / 5,000", "paused, it is not counted");
+  }
+
+  section("Message Effects");
+  {
+    const effect = (nick, extra) => env.ev("message", { data: { text: "hello", nick: nick.toLowerCase(), displayName: nick, badges: [], tags: Object.assign({ "msg-id": "animated-message" }, extra) } });
+    await load(); effect("Viewer"); await wait(4500);
+    ok(count("bits") === "100 / 5,000" && require("../widget/fields.json").effectBits.value === 100, "a Message Effect counts 100 unless you set another price (" + count("bits") + ")");
+    await load({ effectBits: undefined }); effect("Viewer"); await wait(4500);
+    ok(count("bits") === "100 / 5,000", "also for settings saved before there was a price (" + count("bits") + ")");
+    await load({ effectBits: 40, gigantifyBits: 70 }); effect("Viewer");
+    env.ev("message", { data: { text: "Kappa", nick: "viewer", displayName: "Viewer", badges: [], tags: { "msg-id": "gigantified-emote-message" } } }); await wait(4500);
+    ok(count("bits") === "110 / 5,000", "it has its own price, apart from Gigantify's (" + count("bits") + ")");
+    await load({ effectBits: 0 }); effect("Viewer"); await wait(4500);
+    ok(count("bits") === "0 / 5,000", "set to 0, one with no amount on its message is not counted");
+    await load({ effectBits: 40 }); effect("Viewer", { bits: "55" }); await wait(4500);
+    ok(count("bits") === "55 / 5,000", "an amount on the message wins over the price, without adding to it (" + count("bits") + ")");
+    await load({ effectBits: 40 }); effect("Viewer"); env.ev("cheer-latest", { amount: 40, name: "Viewer" }); await wait(4500);
+    ok(count("bits") === "40 / 5,000", "and a cheer event of the same size is not counted again (" + count("bits") + ")");
+    await load(); env.boss("!goals pause"); effect("Viewer"); await wait(4500);
     ok(count("bits") === "0 / 5,000", "paused, it is not counted");
   }
 

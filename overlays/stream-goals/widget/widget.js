@@ -413,7 +413,8 @@
     c.subPoints = bool(f.subPoints, false);
     c.blerpBits = bool(f.blerpBits, true);
     c.chatBits = bool(f.chatBits, true);
-    c.gigantifyBits = clamp(Math.floor(num(f.gigantifyBits, 0)), 0, 100000);
+    c.gigantifyBits = clamp(Math.floor(num(f.gigantifyBits, 100)), 0, 100000);
+    c.effectBits = clamp(Math.floor(num(f.effectBits, 100)), 0, 100000);
     c.blerpName = txt(f.blerpName, "blerp");
     c.format = str(f.format, "{n} / {target}");
     c.currency = txt(f.currency, "£");
@@ -536,20 +537,24 @@
     var t = (data && data.tags) || {}, n = Math.floor(num(t.bits !== undefined ? t.bits : data && data.bits, 0));
     return n > 0 ? n : 0;
   }
-  // Gigantify an Emote is bits spent without a cheer. Twitch marks its chat message with a msg-id, and nothing documents that the
-  // message says what was paid, so when it does not, the price set for the channel is what counts.
-  function isGigantify(data) {
-    var t = data.tags || {};
-    return (t["msg-id"] || data.msgType) === "gigantified-emote-message";
+  // These Power-ups are bits spent without a cheer. Twitch marks each one's chat message with a msg-id, and nothing documents
+  // that the message says what was paid, so when it does not, the price set for the channel is what counts.
+  var POWER_UPS = {
+    "gigantified-emote-message": { price: "gigantifyBits", name: "Gigantify an Emote" },
+    "animated-message": { price: "effectBits", name: "Message Effects" }
+  };
+  function powerUpOf(data) {
+    var t = data.tags || {}, id = String(t["msg-id"] || data.msgType || "");
+    return Object.prototype.hasOwnProperty.call(POWER_UPS, id) ? POWER_UPS[id] : null;
   }
   function onCheerMessage(data) {
     if (!data) return;
-    var gigantify = isGigantify(data);
+    var powerUp = powerUpOf(data);
     var amount = cfg.chatBits ? bitsOfMessage(data) : 0;
-    if (gigantify && !amount) {
-      amount = cfg.gigantifyBits;
+    if (powerUp && !amount) {
+      amount = cfg[powerUp.price];
       if (!amount && cfg.debug && typeof console !== "undefined" && console.log) {
-        console.log("[stream-goals] a Gigantify an Emote arrived with no amount: set Bits for each Gigantify an Emote to count it");
+        console.log("[stream-goals] not counted, because the bits for " + powerUp.name + " are set to 0");
       }
     }
     if (!amount) return;

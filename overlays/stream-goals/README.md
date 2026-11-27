@@ -127,18 +127,18 @@ The bits goal adds up bits from each of these, and a cheer that arrives by more 
 | Blerp | Read from the message Blerp says in chat (see Blerp below). |
 | Tangia | Through Mix It Up, with the `TangiaBits` function (see the README at the top of the repository). |
 | Mix It Up's own Twitch bits | Passed on as cheers by the Mix It Up adapter. |
-| Gigantify an Emote | Read from its chat message, using your price for it (see below). |
+| Gigantify an Emote and Message Effects | Read from their chat messages, using your price for each (see below). |
 | Anything else, by hand | `!goals add bits 500` in chat, or the editor buttons. |
 
-## Gigantify an Emote
+## Gigantify an Emote and Message Effects
 
-**To count it, set Bits for each Gigantify an Emote to what it costs on your channel.** It starts at 0, which does not count it, because the price can be different from one channel to another and a guess would leave your goal quietly wrong. If you change the price on Twitch, change it here too.
+These two Power-ups are bits spent without a cheer. **Bits for each Gigantify an Emote** and **Bits for each Message Effect** are how many bits one of each adds to the goal. Both start at 100. The price can be different from one channel to another, so check yours and change the settings to match, or the goal will be quietly wrong. If you change a price on Twitch, change it here too. Set one to 0 to stop counting it by price.
 
-Gigantify is bits spent without a cheer. Its chat message is marked `gigantified-emote-message`, which other chat tools report but Twitch does not describe, so it could change. If the message ever says how many bits were paid, that number is counted in place of your price. If StreamElements also sends a cheer of the same size from the same person, it counts once.
+Their chat messages are marked `gigantified-emote-message` and `animated-message`, which other chat tools report but Twitch does not describe, so this could change. If a message ever says how many bits were paid, that number is counted in place of your price. If StreamElements also sends a cheer of the same size from the same person, it counts once.
 
-This has been tested against the shape those tools report and **not against live traffic**. Spend one and check the goal moved. If it did not, turn on the `debug` setting, spend one again, and the log will show what arrived.
+This has been tested against the shape those tools report and **not against live traffic**. Spend one of each and check the goal moved by what you paid. If it did not, turn on the `debug` setting, spend one again, and the log will show what arrived.
 
-I cannot promise the other Power-ups, Message Effects and On-Screen Celebration, in StreamElements, and this does not count them.
+I cannot promise On-Screen Celebration in StreamElements, and this does not count it.
 
 ## Cheermotes in chat
 
@@ -167,7 +167,7 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | Commands | The command word and who may use it. |
 | Resetting | When the goals start again, and how many quiet hours mean a new stream. |
 | Subs goal, Bits goal, Tips goal, Follows goal | Whether to show it, its label, what it is for (shown after the label), its goal and its raise amount. |
-| Counting | Whether Blerp bits count and Blerp's chat account name, whether a cheer counts from its chat message when StreamElements sends none, your price for Gigantify an Emote, sub points, how a count reads, the currency symbol and where it goes, the decimal and whether cents show, the reached text and how long it shows before a raise. |
+| Counting | Whether Blerp bits count and Blerp's chat account name, whether a cheer counts from its chat message when StreamElements sends none, your prices for Gigantify an Emote and Message Effects, sub points, how a count reads, the currency symbol and where it goes, the decimal and whether cents show, the reached text and how long it shows before a raise. |
 | Sizes | Text, title and bar sizes, and the space between goals. |
 | Manual controls | Buttons to start again, pause and resume. |
 | Look | Title, the style preset, font, boldness, corners, padding, outer frame, outline, shadow, Animate and whether it fills the height of the box and whether it shrinks to fit it. |
