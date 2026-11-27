@@ -1,8 +1,8 @@
 {
   "name": "two-truths-overlay",
   "version": "1.0.0",
-  "description": "A StreamElements custom widget for Two Truths and a Lie: chat votes, and the card reveals the lie.",
-  "category": "chat",
+  "description": "A StreamElements custom widget for Two Truths and a Lie: chat votes, and an answer server you run reveals the lie. Without the server, you can reveal it by hand.",
+  "category": "hosted",
   "private": true,
   "license": "MIT",
   "author": "Jordan Lee",

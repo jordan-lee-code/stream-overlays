@@ -43,7 +43,8 @@ const CATEGORIES = [
   { id: "goals", title: "Goals and counters", blurb: "Bars and counters that move as chat subscribes, cheers and tips." },
   { id: "chat", title: "Chat and viewers", blurb: "Things your viewers see, and things they can take part in." },
   { id: "info", title: "On-screen info", blurb: "Small panels for your scene: what is playing, the time, your socials, your camera." },
-  { id: "start-end", title: "Stream start and end", blurb: "For the first and the last minutes of a stream." }
+  { id: "start-end", title: "Stream start and end", blurb: "For the first and the last minutes of a stream." },
+  { id: "hosted", title: "Needs your own service", blurb: "These work alongside a separate service that you run yourself, on a computer such as a Raspberry Pi, so they take more setting up than the rest." }
 ];
 
 function cardHtml(c) {
