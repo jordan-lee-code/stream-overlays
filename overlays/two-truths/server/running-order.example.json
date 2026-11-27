@@ -1,4 +1,4 @@
 [
-  { "number": 1, "username": "ExampleViewer", "letter": "B", "lie": "I have been struck by lightning" },
-  { "number": 2, "username": "AnotherViewer", "letter": "C", "lie": "I once met a penguin on a bus" }
+  { "number": 1, "username": "ExampleViewer", "letter": "B", "a": "I have a twin", "b": "I have been struck by lightning", "c": "I can whistle through my nose" },
+  { "number": 2, "username": "AnotherViewer", "letter": "C", "a": "I grew up on a boat", "b": "I have never seen snow", "c": "I once met a penguin on a bus" }
 ]

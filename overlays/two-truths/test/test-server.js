@@ -121,6 +121,26 @@ function start(extra) {
   ok((await state()).rev === before + 1, "only the latest ids are remembered");
   await run("reset");
 
+  console.log("\n[three answers]");
+  writeOrder([{ number: 1, username: "First", letter: "b", a: "one a", b: "one b", c: "one c" }, { number: 2, username: "Second", letter: "A", a: "two a", b: "", c: "two c", lie: "two lie" }]);
+  ok((await run("refresh")) === "Reread the running order: 2 people. 1 without all three answers.", "a refresh says when an entry is missing an answer");
+  await run("reset");
+  ok(!/one a|one b|one c/.test((await get("/state")).text), "no answer is public before !truth");
+  await run("step");
+  let three = await state();
+  ok(three.answers.join("|") === "one a|one b|one c" && three.letter === "" && three.lie === "" && !/two/.test(JSON.stringify(three)), "the first press shows all three, without saying which is the lie");
+  ok((await run("step")) === "#1 - the lie was b: one b", "the lie comes from its letter when it is not written out");
+  three = await state();
+  ok(three.lie === "one b" && three.answers.length === 3, "and the answers stay with the reveal");
+  await run("step");
+  three = await state();
+  ok(three.who === "Second" && three.answers.length === 0 && !/two a|two c|two lie/.test(JSON.stringify(three)), "with an answer missing, none of them are shown");
+  await run("prev");
+  ok((await state()).answers.length === 3, "going back brings the answers back");
+  writeOrder(ORDER);
+  await run("refresh");
+  await run("reset");
+
   console.log("\n[a bad file and bad requests]");
   fs.writeFileSync(path.join(dir, "running-order.json"), "not json, secret words");
   ok((await run("refresh")) === "Reread the running order: 0 people.", "a broken file loads nobody and does not crash it");

@@ -270,7 +270,6 @@
   var LETTERS = ["A", "B", "C", "D", "E", "F", "G", "H"];
   var MAX_OPTIONS = 8;
   var MIN_OPTIONS = 2;
-  var MAX_GROW = 12;                 // how many times larger than its natural size the card may grow to fill a box
   var UNDO_DEPTH = 6;
 
   // ---- runtime state ----
@@ -319,13 +318,14 @@
       followSeconds: clamp(num(f.followSeconds, 2), 1, 30),
       serverKey: str(f.serverKey, "").trim(),
       lieLabel: str(f.lieLabel, "The lie was"),
+      answersTitle: str(f.answersTitle, "{name}'s Answers"),
+      spotLabel: str(f.spotLabel, "Spot the lie.."),
       resultLabel: str(f.resultLabel, "Chat says"),
       tieLabel: str(f.tieLabel, "It's a tie"),
       emptyLabel: str(f.emptyLabel, "Nobody voted"),
       showHint: bool(f.showHint, true),
       debug: bool(f.debug, false),
       scale: clamp(Math.round(num(f.scale, 100)), 25, 400) / 100,
-      grow: bool(f.grow, true),
       themePreset: str(f.themePreset, "glass"),
       panelOpacity: clamp(num(f.panelOpacity, 0.55), 0, 1),
       usePanelOpacity: bool(f.usePanelOpacity, false),
@@ -769,9 +769,31 @@
     waitingWho = { text: who, number: number };
   }
 
+  // True while the card on screen is that person's three answers, waiting for the lie.
+  function showingAnswers(number) {
+    return !!poll && !!poll.answers && !poll.lie && poll.status !== "cancelled" && poll.whoNumber === number;
+  }
+
+  /* Puts the three answers up for chat to vote on. A vote already opened with bare letters keeps its votes. */
+  function showAnswers(answers, heading, number) {
+    waitingWho = null;
+    if (showingAnswers(number)) return;
+    var open = !!poll && poll.status === "running" && !poll.answers && !poll.lie && poll.options.length === 3 && keysOnlyPoll();
+    if (!open) startPoll(answers.slice(), cfg.duration);
+    else snapshot();
+    answers.forEach(function (text, i) { poll.options[i].label = text; });
+    poll.answers = true;
+    poll.who = heading;
+    poll.whoNumber = number;
+    saveState();
+    render();
+  }
+
   // A card for a poll that has not had its reveal goes back to the plain question.
   function forgetWho() {
     waitingWho = null;
+    // Answers that have been taken back, or skipped, come off the screen altogether.
+    if (poll && poll.answers && !poll.lie && poll.status !== "cancelled") { cancelPoll(); return; }
     if (poll && !poll.lie && poll.who) {
       delete poll.who;
       delete poll.whoNumber;
@@ -801,13 +823,21 @@
     if (!first && state.rev === followRev) return;
     followRev = state.rev;
 
+    var answers = Array.isArray(state.answers) && state.answers.length === 3 ? state.answers.map(String) : null;
     var who = state.who ? "#" + state.number + " " + cfg.words.who + " " + state.who : "";
+    if (who && answers) who = cfg.answersTitle.replace("{name}", function () { return state.who; });
     if (state.back) takeBack(state.undone);
     if (!who) { forgetWho(); return; }   // a reset, a skip, or back to before any name
-    if (!state.letter) { showWho(who, state.number); return; }
+    if (!state.letter) {
+      if (answers && !first) showAnswers(answers, who, state.number);
+      else if (!answers) showWho(who, state.number);
+      return;
+    }
     waitingWho = null;
     // Going back never reveals: that lie was read out before this step.
-    if (!first && !state.back) revealLie(state.letter, state.lie, who, state.number);
+    if (first || state.back) return;
+    if (answers && !showingAnswers(state.number) && !(poll && poll.lie && poll.lie.number === state.number)) showAnswers(answers, who, state.number);
+    revealLie(state.letter, state.lie, who, state.number);
   }
 
   // `done` runs once the answer has been applied, or has failed to arrive.
@@ -948,7 +978,7 @@
     if (!t) return -1;
 
     /* In a letters-only poll chat reads the chips, so position counts and the label text does not. */
-    var byPositionOnly = keysOnlyPoll();
+    var byPositionOnly = !poll.answers && keysOnlyPoll();
 
     for (var i = 0; i < poll.options.length; i++) {
       if (!byPositionOnly && t === normalise(poll.options[i].label)) return i;
@@ -1009,6 +1039,7 @@
   function scheduleHide() {
     if (hideTimer) { clearTimeout(hideTimer); hideTimer = null; }
     if (!cfg.resultSeconds) return;   // 0 means leave the result up until told otherwise
+    if (poll && poll.answers && !poll.lie) return;   // the answers stay up until the lie is revealed
     hideTimer = setTimeout(function () {
       if (poll && poll.status === "ended") { poll.status = "hidden"; saveState(); render(); }
     }, cfg.resultSeconds * 1000);
@@ -1054,8 +1085,9 @@
     setClass(el.card, "blind", blind);
 
     // Bare letters need no labels, since the chips already show them.
-    var keysOnly = keysOnlyPoll();
+    var keysOnly = !poll.answers && keysOnlyPoll();
     setClass(el.card, "keys-only", keysOnly);
+    setClass(el.card, "answers", !!poll.answers);
 
     el.title.textContent = poll.who || poll.title || cfg.title;
 
@@ -1074,7 +1106,8 @@
     renderEyebrow(running, result);
     renderOptions(running, result, total, best, blind, keysOnly);
 
-    var lieText = !running && poll.lie ? poll.lie.text : "";
+    // With the answers on the card, the lit row already says what the lie was.
+    var lieText = !running && poll.lie && !poll.answers ? poll.lie.text : "";
     if (el.lie) {
       el.lie.hidden = !lieText;
       el.lie.textContent = lieText;
@@ -1092,12 +1125,11 @@
 
     renderDebug();
 
-    /* Refitting is costly, so it only happens when the card's shape changes. */
-    /* The widest count's length is part of the key, so counts are not clipped when they gain a digit. */
-    var fitKey = poll.options.map(function (o) { return o.label; }).join("|") +
-      "|" + poll.status + "|" + cfg.scale + "|" + cfg.grow + "|" + (poll.who || poll.title || "") +
-      "|" + lieText +
-      "|" + widestCountLength(total, best, blind);
+    /* Refitting is costly, so it only happens when some text has changed. */
+    var fitKey = (poll.answers ? "answers|" : "") + poll.options.map(function (o) { return o.label; }).join("|") +
+      "|" + poll.status + "|" + cfg.scale + "|" + (poll.who || poll.title || "") +
+      "|" + lieText + "|" + el.eyebrow.textContent + "|" + el.hint.textContent +
+      "|" + el.total.textContent.length + "|" + widestCountLength(total, best, blind);
     if (fitKey !== lastFitKey) {
       lastFitKey = fitKey;
       fitToBox();
@@ -1175,6 +1207,7 @@
   }
 
   function renderEyebrow(running, result) {
+    if (poll.answers && !poll.lie) { el.eyebrow.hidden = false; el.eyebrow.textContent = cfg.spotLabel; return; }
     if (running || !result) { el.eyebrow.hidden = true; return; }
     el.eyebrow.hidden = false;
     if (poll.lie) { el.eyebrow.textContent = cfg.lieLabel + " " + LETTERS[poll.lie.index]; return; }
@@ -1187,6 +1220,8 @@
     var isWinner = {};
     if (!running && result) result.winners.forEach(function (i) { isWinner[i] = true; });
     var decided = !running && result && result.winners.length > 0;
+    // Until the lie is out, lighting chat's favourite would look like the answer.
+    if (poll.answers && !poll.lie) { isWinner = {}; decided = false; }
     // Once the lie is known it is the row that lights up, whatever chat thought.
     if (!running && poll.lie) { isWinner = {}; isWinner[poll.lie.index] = true; decided = true; }
 
@@ -1213,52 +1248,9 @@
     if (on) node.classList.add(name); else node.classList.remove(name);
   }
 
-  /* Scales the card to fit the box. Everything is sized in em, so one measurement gives the ratio. */
-  /* Rows clip their overflow, so each one has to be measured itself. */
-  function overflowNow() {
-    if (!el.card) return 0;
-
-    var over = Math.max(
-      el.card.scrollHeight - el.card.clientHeight,
-      el.card.scrollWidth - el.card.clientWidth
-    );
-
-    if (el.options) {
-      over = Math.max(over,
-        el.options.scrollHeight - el.options.clientHeight,
-        el.options.scrollWidth - el.options.clientWidth);
-
-      var space = el.options.clientWidth;
-      var kids = el.options.children || [];
-      for (var i = 0; i < kids.length; i++) {
-        over = Math.max(over, (kids[i].scrollWidth || 0) - space);
-      }
-    }
-
-    return over;
-  }
-
-  /* The widest label in em, measured while every label is on one line. 0 when there is nothing to measure. */
-  function widestInEm(selector) {
-    if (!el.options || typeof el.options.querySelectorAll !== "function") return 0;
-    if (typeof window === "undefined" || typeof window.getComputedStyle !== "function") return 0;
-
-    var nodes = el.options.querySelectorAll(selector);
-    var widest = 0;
-    for (var i = 0; i < nodes.length; i++) {
-      widest = Math.max(widest, nodes[i].offsetWidth || 0);
-    }
-    if (!widest) return 0;
-
-    var fontPx = parseFloat(window.getComputedStyle(nodes[0]).fontSize);
-    if (!fontPx) return 0;
-
-    /* Round up with no extra slack, or every row ends up wider than the card. */
-    return { em: Math.ceil((widest / fontPx) * 1000) / 1000, fontPx: fontPx };
-  }
-
-  /* The same slack goes on the columns and the card, so they agree. */
-  var COLUMN_SLACK_EM = 0.05;
+  /* The widest the layout is designed to be, in the card's own text size. A narrower box gets smaller text. */
+  var DESIGN_EM = 17;
+  var SMALLEST_TEXT = 0.35;
 
   function paddingOf(node) {
     if (typeof window === "undefined" || typeof window.getComputedStyle !== "function") {
@@ -1275,75 +1267,86 @@
     }
   }
 
+  function fontPxOf(node) {
+    if (typeof window === "undefined" || typeof window.getComputedStyle !== "function") return 0;
+    return parseFloat(window.getComputedStyle(node).fontSize) || 0;
+  }
+
+  // Exact, because text a fraction of a pixel too wide still gets cut off with dots.
+  function tooWide(node) {
+    if (node.scrollWidth > node.clientWidth) return true;
+    if (typeof document.createRange !== "function") return false;
+    var range = document.createRange();
+    range.selectNodeContents(node);
+    return range.getBoundingClientRect().width > node.getBoundingClientRect().width + 0.05;
+  }
+
+  // For text that may wrap. Tall letters can poke a little past their line, so only part of a further line counts.
+  function spills(node) {
+    return node.scrollWidth > node.clientWidth + 1 || node.scrollHeight > node.clientHeight + Math.max(1, fontPxOf(node) * 0.4);
+  }
+
+  // Shrinks one kind of text, through a property on the card, until every piece of it fits its own space.
+  function fitText(property, nodes, over) {
+    var size = 1;
+    el.card.style.setProperty(property, "1");
+    while (size > SMALLEST_TEXT && nodes.some(over)) {
+      size = Math.max(SMALLEST_TEXT, size * 0.94);
+      el.card.style.setProperty(property, size.toFixed(3));
+    }
+  }
+
+  function found(selector) {
+    if (!el.options || typeof el.options.querySelectorAll !== "function") return [];
+    return Array.prototype.slice.call(el.options.querySelectorAll(selector));
+  }
+
+  /* The card is always the size of the box. Its text size comes from the box and the number of rows, never from
+     the words, and then any words too long for their space are shrunk on their own. */
   function fitToBox() {
     if (!el.card || !el.app || !el.card.classList) return;
 
-    el.card.style.width = "";   // inline width would beat the measuring rule
-    el.card.style.removeProperty("--label-w");   // last run's columns must not bias this one
-    el.card.style.removeProperty("--count-w");
+    setClass(el.card, "answers", !!(poll && poll.answers));
+    el.card.style.removeProperty("--em");
     el.card.style.setProperty("--fit", "1");
-    el.card.classList.add("measuring");
 
-    var wantsW = Math.max(el.card.offsetWidth, el.card.scrollWidth);
-    var wantsH = Math.max(el.card.offsetHeight, el.card.scrollHeight);
-    var label = widestInEm(".vote-label");
-    var count = widestInEm(".vote-count");
-    var labelEm = label ? label.em + COLUMN_SLACK_EM : 0;
-    var countEm = count ? count.em + COLUMN_SLACK_EM : 0;
-    var slackPx = (label ? COLUMN_SLACK_EM * label.fontPx : 0) +
-                  (count ? COLUMN_SLACK_EM * count.fontPx : 0);
-
-    el.card.classList.remove("measuring");
-    wantsW += slackPx;   // the columns will be that much wider than measured
-
-    /* clientWidth includes padding, which the card cannot use. */
     var pad = paddingOf(el.app);
     var hasW = el.app.clientWidth - pad.x;
     var hasH = el.app.clientHeight - pad.y;
 
+    el.card.classList.add("measuring");
+    var basePx = fontPxOf(el.card);
+    if (basePx) el.card.style.setProperty("--em", basePx + "px");
+    var needsH = el.card.offsetHeight;
+    el.card.classList.remove("measuring");
+
     // The headless tests have no layout and report zeroes.
-    if (!wantsW || !wantsH || !hasW || !hasH) { el.card.style.width = ""; return; }
+    if (!hasW || !hasH || !needsH) return;
 
-    // A little breathing room, so rounding cannot cost the bottom row.
-    var fit = Math.min(cfg.grow ? MAX_GROW : 1, (hasW / wantsW) * 0.98, (hasH / wantsH) * 0.98);
+    var wantsW = basePx ? basePx * DESIGN_EM : el.card.offsetWidth;
+    // The Text size setting can only make text smaller than the largest that fits.
+    var fit = Math.min(hasW / wantsW, hasH / needsH) * 0.98 * Math.min(1, cfg.scale);
+    var passes = 0;
+    var apply = function () {
+      el.card.style.setProperty("--fit", String(Math.floor(fit * 1000) / 1000));
+      var px = fontPxOf(el.card);
+      if (px) el.card.style.setProperty("--em", px + "px");
+    };
+    apply();
 
-    /* A floor keeps the poll readable. It is based on the natural size, not the requested one. */
-    var extraW = 0;   // pixels the corrective passes have handed back to the card
-    var floor = Math.min(1, 0.5 / (cfg.scale || 1));
-    fit = Math.max(floor, fit);
-
-    apply(fit);
-    lastFit = { wantsW: wantsW, wantsH: wantsH, hasW: hasW, hasH: hasH, fit: fit };
-
-    /* Set outright: StreamElements does not size fit-content reliably. */
-    function apply(f) {
-      el.card.style.setProperty("--fit", String(Math.floor(f * 1000) / 1000));
-      el.card.style.width = Math.min(hasW, Math.ceil(wantsW * f) + extraW) + "px";
-      // In em, so it follows the type without needing recomputing per pass.
-      if (labelEm) el.card.style.setProperty("--label-w", labelEm + "em");
-      if (countEm) el.card.style.setProperty("--count-w", countEm + "em");
+    // Line boxes round to whole pixels, so nudge down until the fixed parts are all inside.
+    while (passes < 10 && el.card.scrollHeight > el.card.clientHeight + 1) {
+      fit *= 0.96;
+      passes++;
+      apply();
     }
+    lastFit = { wantsW: Math.round(wantsW), wantsH: needsH, hasW: hasW, hasH: hasH, fit: fit, passes: passes };
 
-    /* Nudge until nothing overflows, since line boxes round to whole pixels. */
-    /* Widen first, and only shrink the type once the card is against the edge of the box. */
-    for (var pass = 0; pass < 10; pass++) {
-      var over = overflowNow();
-      if (over <= 1) break;
-
-      var room = hasW - el.card.offsetWidth;
-      if (room > 1) {
-        extraW += Math.min(room, over + 2);
-        apply(fit);
-        lastFit.passes = pass + 1;
-        continue;
-      }
-
-      if (fit <= floor) break;
-      fit = Math.max(floor, fit * 0.96);
-      apply(fit);
-      lastFit.fit = fit;
-      lastFit.passes = pass + 1;
-    }
+    fitText("--title-fit", el.title ? [el.title] : [], tooWide);
+    fitText("--lie-fit", el.lie && !el.lie.hidden ? [el.lie] : [], spills);
+    fitText("--label-fit", found(".vote-label"), spills);
+    fitText("--count-fit", found(".vote-count"), tooWide);
+    fitText("--foot-fit", el.hint && !el.hint.hidden ? [el.hint] : [], tooWide);
   }
 
   // ---------------------------------------------------------------------------
