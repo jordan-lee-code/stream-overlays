@@ -34,6 +34,59 @@ const HOUR = 3600000;
   ok(count("subs") === "10 / 50", "sub points count tier 2 as 2 and tier 3 as 6 (1 + 2 + 6 + 1) (" + count("subs") + ")");
   bomb(5); ok(count("subs") === "15 / 50", "and a bomb counts each gift as a tier 1 sub");
 
+  section("cheermotes in chat (RIPCheer15)");
+  {
+    const cheerMsg = (text, bits, nick) => env.ev("message", { data: { text, nick: nick.toLowerCase(), displayName: nick, badges: [], tags: { bits: String(bits) } } });
+    await load();
+    cheerMsg("RIPCheer15", 15, "Viewer"); ok(count("bits") === "0 / 5,000", "a cheer in chat waits a moment for its cheer event before it counts (" + count("bits") + ")");
+    await wait(4500); ok(count("bits") === "15 / 5,000", "and counts its bits when StreamElements sends none (" + count("bits") + ")");
+    await load();
+    cheerMsg("Cheer100 hi", 100, "Viewer"); env.ev("cheer-latest", { amount: 100, name: "Viewer" }); await wait(4500);
+    ok(count("bits") === "100 / 5,000", "a cheer sent both ways, the message first, counts once (" + count("bits") + ")");
+    await load();
+    env.ev("cheer-latest", { amount: 100, name: "viewer" }); cheerMsg("Cheer100 hi", 100, "Viewer"); await wait(4500);
+    ok(count("bits") === "100 / 5,000", "and counts once with the cheer event first (" + count("bits") + ")");
+    await load();
+    env.ev("cheer-latest", { amount: 50, name: "A" }); cheerMsg("Cheer50", 50, "A"); env.ev("cheer-latest", { amount: 50, name: "A" }); cheerMsg("Cheer50", 50, "A"); await wait(4500);
+    ok(count("bits") === "100 / 5,000", "two real cheers of the same size from the same person both count (" + count("bits") + ")");
+    await load();
+    env.ev("message", { data: { text: "RIPCheer15", nick: "viewer", displayName: "Viewer", badges: [], tags: {} } }); await wait(4500);
+    ok(count("bits") === "0 / 5,000", "typing a cheermote with no bits spent, so no bits tag, adds nothing (" + count("bits") + ")");
+    cheerMsg("Cheer0", 0, "Viewer"); cheerMsg("Cheer", -5, "Viewer"); await wait(4500); ok(count("bits") === "0 / 5,000", "and an empty or negative tag adds nothing");
+    await load({ chatBits: false }); cheerMsg("RIPCheer15", 15, "Viewer"); await wait(4500);
+    ok(count("bits") === "0 / 5,000", "it can be switched off (" + count("bits") + ")");
+    await load(); env.boss("!goals pause"); cheerMsg("RIPCheer15", 15, "Viewer"); await wait(4500);
+    ok(count("bits") === "0 / 5,000", "paused, it is not counted, as a real cheer is not");
+    await load(); cheerMsg("RIPCheer15", 15, "Viewer"); await load(); await wait(4500);
+    ok(count("bits") === "0 / 5,000", "loading the widget again drops a cheer that was still waiting, so it cannot arrive in the new load");
+  }
+
+  section("Gigantify an Emote");
+  {
+    const giga = (nick, extra) => env.ev("message", { data: { text: "Kappa", nick: nick.toLowerCase(), displayName: nick, badges: [], tags: Object.assign({ "msg-id": "gigantified-emote-message" }, extra) } });
+    await load(); giga("Viewer"); await wait(4500);
+    ok(count("bits") === "0 / 5,000", "with no price set and no amount on the message, nothing is guessed (" + count("bits") + ")");
+    await load({ gigantifyBits: 30 }); giga("Viewer"); await wait(4500);
+    ok(count("bits") === "30 / 5,000", "with your price set, a Gigantify counts it (" + count("bits") + ")");
+    giga("Viewer"); giga("Other"); await wait(4500);
+    ok(count("bits") === "90 / 5,000", "and every one of them counts, from the same person too (" + count("bits") + ")");
+    await load(); giga("Viewer", { bits: "45" }); await wait(4500);
+    ok(count("bits") === "45 / 5,000", "an amount on the message is counted, with no price set (" + count("bits") + ")");
+    await load({ gigantifyBits: 30 }); giga("Viewer", { bits: "45" }); await wait(4500);
+    ok(count("bits") === "45 / 5,000", "and wins over the price, without adding to it (" + count("bits") + ")");
+    await load({ gigantifyBits: 30 }); giga("Viewer"); env.ev("cheer-latest", { amount: 30, name: "Viewer" }); await wait(4500);
+    ok(count("bits") === "30 / 5,000", "if a cheer event of that size comes too, it counts once (" + count("bits") + ")");
+    await load({ gigantifyBits: 30 }); env.ev("cheer-latest", { amount: 30, name: "Viewer" }); giga("Viewer"); await wait(4500);
+    ok(count("bits") === "30 / 5,000", "whichever arrives first (" + count("bits") + ")");
+    await load({ gigantifyBits: 30, chatBits: false }); giga("Viewer"); await wait(4500);
+    ok(count("bits") === "30 / 5,000", "the price has its own switch: counting cheers from chat can be off (" + count("bits") + ")");
+    await load({ gigantifyBits: 30 }); env.ev("message", { data: { text: "Kappa gigantified-emote-message", nick: "viewer", displayName: "Viewer", badges: [], tags: {} } });
+    env.ev("message", { data: { text: "hi", nick: "viewer", displayName: "Viewer", badges: [], tags: { "msg-id": "animated-message" } } }); await wait(4500);
+    ok(count("bits") === "0 / 5,000", "typing the words, or another Power-up, adds nothing");
+    await load({ gigantifyBits: 30 }); env.boss("!goals pause"); giga("Viewer"); await wait(4500);
+    ok(count("bits") === "0 / 5,000", "paused, it is not counted");
+  }
+
   section("Blerp");
   await load();
   const say = (text, nick) => env.ev("message", { data: { text, nick: nick.toLowerCase(), displayName: nick, badges: [] } });

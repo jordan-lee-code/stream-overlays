@@ -117,6 +117,37 @@ The command word is a setting. Viewers can type the bare `!goals` to make the ti
 
 An amount is a number: `500`, `5.50` or `5,50`. For tips it can also have a currency sign in front or behind, such as `$5`, or the symbol you set for tips, such as `5 kr`. Anything else is refused and changes nothing, and is never guessed at. That includes `1,250` (a comma could mean a thousands separator or a decimal, and a wrong guess would add the wrong number), `1e3` and `1k`.
 
+## Every way bits can count
+
+The bits goal adds up bits from each of these, and a cheer that arrives by more than one is counted once.
+
+| Where the bits come from | How they reach the goal |
+|---|---|
+| A cheer, with or without a cheermote such as `Cheer100` or `RIPCheer15` | StreamElements sends it as a cheer. If it does not, the bits tag on the chat message is read instead (see below). |
+| Blerp | Read from the message Blerp says in chat (see Blerp below). |
+| Tangia | Through Mix It Up, with the `TangiaBits` function (see the README at the top of the repository). |
+| Mix It Up's own Twitch bits | Passed on as cheers by the Mix It Up adapter. |
+| Gigantify an Emote | Read from its chat message, using your price for it (see below). |
+| Anything else, by hand | `!goals add bits 500` in chat, or the editor buttons. |
+
+## Gigantify an Emote
+
+**To count it, set Bits for each Gigantify an Emote to what it costs on your channel.** It starts at 0, which does not count it, because the price can be different from one channel to another and a guess would leave your goal quietly wrong. If you change the price on Twitch, change it here too.
+
+Gigantify is bits spent without a cheer. Its chat message is marked `gigantified-emote-message`, which other chat tools report but Twitch does not describe, so it could change. If the message ever says how many bits were paid, that number is counted in place of your price. If StreamElements also sends a cheer of the same size from the same person, it counts once.
+
+This has been tested against the shape those tools report and **not against live traffic**. Spend one and check the goal moved. If it did not, turn on the `debug` setting, spend one again, and the log will show what arrived.
+
+I cannot promise the other Power-ups, Message Effects and On-Screen Celebration, in StreamElements, and this does not count them.
+
+## Cheermotes in chat
+
+A cheer such as `RIPCheer15` should reach the widget as a cheer from StreamElements, and then it counts as bits as it always has. If StreamElements does not send one, the chat message that carries it still says how many bits were spent, so the goal reads that as well.
+
+Twitch puts a `bits` tag on a chat message only when bits were really spent on it, so a viewer typing `RIPCheer15` for nothing adds nothing. The message waits about four seconds for its cheer, and whichever arrives first counts while the other is dropped, so a cheer StreamElements sends both ways is never counted twice. A cheer counted this way fills the bar, pops the number and celebrates a reached goal like any other, and it is not counted while the goals are paused.
+
+**Count a cheer from its chat message** switches it off. Nothing in the StreamElements documentation says for certain what a cheermote's message carries, so if bits still do not count, turn on the `debug` setting and cheer once: the log shows the raw events, and what it shows would tell me what to read.
+
 ## Blerp
 
 Bits spent through the Blerp extension do not reach StreamElements as cheers, so nothing counts them by itself. What does show is the message Blerp says in chat, so the goal reads that instead.
@@ -136,7 +167,7 @@ Every setting has a plain label in StreamElements, grouped as follows.
 | Commands | The command word and who may use it. |
 | Resetting | When the goals start again, and how many quiet hours mean a new stream. |
 | Subs goal, Bits goal, Tips goal, Follows goal | Whether to show it, its label, what it is for (shown after the label), its goal and its raise amount. |
-| Counting | Whether Blerp bits count and Blerp's chat account name, sub points, how a count reads, the currency symbol and where it goes, the decimal and whether cents show, the reached text and how long it shows before a raise. |
+| Counting | Whether Blerp bits count and Blerp's chat account name, whether a cheer counts from its chat message when StreamElements sends none, your price for Gigantify an Emote, sub points, how a count reads, the currency symbol and where it goes, the decimal and whether cents show, the reached text and how long it shows before a raise. |
 | Sizes | Text, title and bar sizes, and the space between goals. |
 | Manual controls | Buttons to start again, pause and resume. |
 | Look | Title, the style preset, font, boldness, corners, padding, outer frame, outline, shadow, Animate and whether it fills the height of the box and whether it shrinks to fit it. |
