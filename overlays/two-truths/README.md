@@ -10,6 +10,10 @@ It has two parts. The **overlay** is a self-contained widget that works on its o
 
 ## Running a round
 
+**With the answer server and all three statements in your running order**, run `!truth`. The card shows "Name's Answers" over "Spot the lie..", with a statement on each of A, B and C, and chat can vote at once. The answers stay up, even after the clock stops, until you run `!truth` again to light the lie. You do not need `!vote` first.
+
+**Otherwise:**
+
 1. Type `!vote` as the streamer or a moderator. A vote opens on A, B and C. Use `!vote 60s` for a longer one, or `!vote Statement one, Statement two, Statement three` to put the words on screen.
 2. Read the statements out. Chat votes with a letter or a number, one vote each, and can change it until the clock stops.
 3. Reveal the lie in one of two ways:
@@ -44,7 +48,7 @@ Undo changes the card only. It does not move the answer server's place in the ru
 
 ## How the overlay stays free of spoilers
 
-The overlay asks the server for one address, `/state`, every two seconds while an address is set. That address holds only what has already been read out: nothing before the first `!truth`, then a name, then that person's lie. The upcoming answers are only reachable with your secret key. The overlay does not need the key to follow along. You can give it one in **Reveals, Secret key** so that it runs `!truth` and the other server commands from chat itself, with no chatbot commands to set up. It still only draws what has been read out, but the key is then saved in the widget's settings, so [read what that means](server/README.md#6-add-the-chat-commands) first.
+The overlay asks the server for one address, `/state`, every two seconds while an address is set. That address holds only what has already been read out: nothing before the first `!truth`, then a name and their three statements, then which one was the lie. The upcoming answers are only reachable with your secret key. The overlay does not need the key to follow along. You can give it one in **Reveals, Secret key** so that it runs `!truth` and the other server commands from chat itself, with no chatbot commands to set up. It still only draws what has been read out, but the key is then saved in the widget's settings, so [read what that means](server/README.md#6-add-the-chat-commands) first.
 
 Anyone who learns the address can read `/state`, so treat it as being as public as your stream. If the server cannot be reached, voting carries on and `!vote reveal` still works.
 

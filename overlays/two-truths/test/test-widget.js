@@ -650,19 +650,18 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   load({ themePreset: "glass" }); await wait(5);
   ok(elements["vote-app"].style["--bg-img"] === "none", "and every other preset leaves the card plain");
   ok(elements["vote-app"].style["--edge"] === "none", "with no outline either");
-  console.log("\n[growing to fill the box]");
-  ok(fields.grow && fields.grow.type === "checkbox" && fields.grow.value === true, "Grow to fill the box is a setting, on by default");
-  // The mock has no layout, so the card and the box are given sizes by hand: a card that wants 300 by 200 pixels at its
-  // natural size, in a box with 900 by 400 to spare, which is limited by its height.
-  const sized = () => { const c = elements["vote-card"], a = elements["vote-app"]; c.offsetWidth = 300; c.scrollWidth = 300; c.offsetHeight = 200; c.scrollHeight = 200; a.clientWidth = 900; a.clientHeight = 400; };
-  sized(); load({ grow: true }); await wait(5); sized(); chat("!vote Pizza, Tacos, Sushi", { broadcaster: true }); await wait(5);
-  const grown = parseFloat(elements["vote-card"].style["--fit"]);
-  ok(grown > 1.5 && grown <= 2, "with growing on, a card that wants 300 by 200 in a box of 900 by 400 is scaled up to meet the box's height (" + grown + ")");
-  sized(); load({ grow: false }); await wait(5); sized(); chat("!vote Pizza, Tacos, Sushi", { broadcaster: true }); await wait(5);
-  ok(parseFloat(elements["vote-card"].style["--fit"]) === 1, "with it off, the card is never made larger than its natural size (" + elements["vote-card"].style["--fit"] + ")");
-  const tight = () => { sized(); elements["vote-app"].clientHeight = 100; };
-  tight(); load({ grow: true }); await wait(5); tight(); chat("!vote Pizza, Tacos, Sushi", { broadcaster: true }); await wait(5);
-  ok(parseFloat(elements["vote-card"].style["--fit"]) < 1, "and a box that is too small still shrinks the card, either way (" + elements["vote-card"].style["--fit"] + ")");
+  console.log("\n[fitting the box]");
+  ok(!fields.grow && fields.scale.max === 100, "the card always fills its box, and Text size only makes text smaller");
+  // The mock has no layout, so the card and the box are given sizes by hand: a layout 300 by 200 pixels at its starting
+  // text size, in a box with 900 by 400 to spare.
+  const sized = () => { const c = elements["vote-card"], a = elements["vote-app"]; c.offsetWidth = 300; c.offsetHeight = 200; c.scrollHeight = 0; c.clientHeight = 0; a.clientWidth = 900; a.clientHeight = 400; };
+  const fitFor = async (settings, prepare) => { (prepare || sized)(); load(settings); await wait(5); (prepare || sized)(); chat("!vote Pizza, Tacos, Sushi", { broadcaster: true }); await wait(5); return parseFloat(elements["vote-card"].style["--fit"]); };
+  const full = await fitFor({});
+  ok(full > 1.9 && full <= 2, "the text is scaled up to suit the box (" + full + ")");
+  const half = await fitFor({ scale: 50 });
+  ok(Math.abs(half - full / 2) < 0.01, "the Text size setting makes it smaller (" + half + ")");
+  const tight = await fitFor({}, () => { sized(); elements["vote-app"].clientHeight = 100; });
+  ok(tight < 0.5, "and a small box gets small text (" + tight + ")");
   load({}); await wait(5);
   console.log("\n[the winning row]");
   const cssText = fs.readFileSync(ROOT + "/widget/widget.css", "utf8");
@@ -822,6 +821,58 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   asked.length = 0; load(); await wait(10000);
   ok(asked.length === 0, "taking the address out stops the asking");
   served = null;
+
+  console.log("\n[three answers on the card]");
+  {
+    const cardIs = (name) => elements["vote-card"].classList.contains(name);
+    const A = ["I own <3> boats", "I met a penguin", "I can juggle"];
+    const quiet = { rev: 1, number: 0, who: "", letter: "", lie: "", answers: [] };
+    const asked1 = { rev: 2, number: 1, who: "Alex", letter: "", lie: "", answers: A };
+    const told1 = { rev: 3, number: 1, who: "Alex", letter: "B", lie: A[1], answers: A };
+    const say = async (s) => { served = s; await wait(2100); };
+    const url = { serverUrl: "https://truths.example.com", resultSeconds: 5, duration: 20 };
+    served = quiet; load(url); await wait(5);
+    ok(!shown(), "nothing is on screen before !truth");
+    await say(asked1);
+    ok(shown() && heading() === "Alex's Answers" && eyebrow() === "Spot the lie..", "the first !truth shows whose answers they are, and asks chat to spot the lie (" + heading() + " / " + eyebrow() + ")");
+    ok(labels().join("|") === "I own &lt;3&gt; boats|I met a penguin|I can juggle", "with an answer on each of A, B and C, as plain text (" + labels().join("|") + ")");
+    ok(cardIs("answers") && !cardIs("keys-only") && timer() > 0 && winners() === 0, "and voting is open");
+    chat("b", { nick: "ann" }); chat("2", { nick: "ben" }); chat("c", { nick: "cat" });
+    ok(votes().join() === "0,2,1", "chat votes by letter or number (" + votes().join() + ")");
+    await wait(60000);
+    ok(shown() && eyebrow() === "Spot the lie..", "when the clock runs out the answers stay up for the reveal");
+    await say(told1);
+    ok(heading() === "Alex's Answers" && eyebrow() === "The lie was B" && lit() === "1" && labels().length === 3, "the second !truth lights the lie, with the answers still there");
+    ok(lieText() === "" && total() === "2 / 3 spotted it", "without repeating it underneath, and says who spotted it");
+    await say({ rev: 4, number: 1, who: "Alex", letter: "", lie: "", answers: A, back: true, undone: { number: 1, part: "lie" } });
+    ok(shown() && eyebrow() === "Spot the lie.." && winners() === 0 && votes().join() === "0,2,1", "undoing the lie takes it off and keeps the answers and votes");
+    await say({ rev: 5, number: 0, who: "", letter: "", lie: "", answers: [], back: true, undone: { number: 1, part: "who" } });
+    ok(!shown(), "undoing the answers takes the card away");
+    await say({ rev: 6, number: 1, who: "Alex", letter: "", lie: "", answers: A });
+    await say({ rev: 7, number: 0, who: "", letter: "", lie: "", answers: [] });
+    ok(!shown(), "and so does a skip or a reset");
+    await say({ rev: 8, number: 1, who: "Alex", letter: "", lie: "", answers: A, back: true, undone: null });
+    ok(shown() && heading() === "Alex's Answers" && votes().join() === "0,0,0", "going back to someone's answers puts them up again");
+    await say({ rev: 9, number: 0, who: "", letter: "", lie: "", answers: [] });
+
+    chat("!vote", boss); await wait(5);
+    chat("a", { nick: "ann" });
+    await say({ rev: 10, number: 2, who: "Sam", letter: "", lie: "", answers: A });
+    ok(heading() === "Sam's Answers" && votes().join() === "1,0,0" && labels().length === 3, "a vote already opened with !vote gets the answers and keeps its votes");
+    await say({ rev: 11, number: 2, who: "Sam", letter: "A", lie: A[0], answers: A });
+    await wait(6000);
+    ok(!shown(), "after the reveal the card leaves as usual");
+    await say({ rev: 12, number: 3, who: "Kit", letter: "C", lie: A[2], answers: A });
+    ok(heading() === "Kit's Answers" && lit() === "2" && labels().length === 3, "a lie whose answers were never shown still arrives with them");
+
+    served = { rev: 20, number: 4, who: "Robin", letter: "", lie: "", answers: A };
+    load(url); await wait(2100);
+    ok(!shown(), "loading the overlay mid-round opens nothing by itself");
+    load(Object.assign({ answersTitle: "What {name} said", spotLabel: "Which?" }, url)); served = quiet; await wait(2100);
+    await say({ rev: 21, number: 4, who: "$& Co", letter: "", lie: "", answers: A });
+    ok(heading() === "What $& Co said" && eyebrow() === "Which?", "both lines are settings, and a name is used exactly as written (" + heading() + ")");
+    served = null;
+  }
 
   console.log("\n[running the server from chat]");
   const note = () => elements["vote-notice"].hidden ? "" : elements["vote-notice"].textContent;

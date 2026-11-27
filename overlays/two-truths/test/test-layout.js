@@ -162,6 +162,70 @@ const scenarios = [
     box: [600, 600], options: SHORT, votes: 1000, allOnOne: true }
 ];
 
+/* One round, from the vote opening to a long lie, measuring where every part sits at each step. The card and
+   its parts must not move or change size, and every piece of text must be inside its own space. */
+const LONG_NAME = "Sample_Wren_With_A_Long_Name";
+const LONG_LIE = "I spent a whole summer teaching a very stubborn parrot to say good morning, and it only ever learned to cough";
+const ANSWERS = [LONG_LIE, "I can juggle five oranges at once while reciting the alphabet backwards", "I once met a penguin on a bus"];
+function round(box, index, answers) {
+  const page = `<!doctype html><html><head><meta charset="utf-8"><style>
+${fontFace}
+html,body{margin:0}
+#box{width:${box[0]}px;height:${box[1]}px}
+${css}
+*,*::before,*::after{animation:none !important;transition:none !important;}
+</style></head><body><div id="box">${html}</div><script>
+window.SE_API={store:{set:()=>Promise.resolve(),get:()=>Promise.resolve(null)}};
+var served={rev:1,number:0,who:"",letter:"",lie:""};
+window.fetch=function(){return Promise.resolve({ok:true,json:function(){return Promise.resolve(served)}})};
+${js}
+window.dispatchEvent(new CustomEvent("onWidgetLoad",{detail:{fieldData:${JSON.stringify(Object.assign({}, defaults, { serverUrl: "https://x", followSeconds: 1, mute: true }))}}}));
+function chat(t,n){window.dispatchEvent(new CustomEvent("onEventReceived",{detail:{listener:"message",
+  event:{data:{text:t,nick:n||"streamer",displayName:n||"Streamer",badges:n?[]:[{type:"broadcaster"}],tags:{}}}}}));}
+var answers=${JSON.stringify(answers || null)};
+var steps=[], wait=function(ms){return new Promise(function(r){setTimeout(r,ms)})};
+function look(name){
+  var card=document.getElementById("vote-card"), c=card.getBoundingClientRect();
+  var at=[".vote-card",".vote-head",".vote-eyebrow",".vote-options",".vote-lie",".vote-foot",".vote-option",".vote-bar",".vote-count"].map(function(q){
+    return [].map.call(document.querySelectorAll(q),function(e){var r=e.getBoundingClientRect();
+      var b=[r.top,r.height]; if(q!==".vote-eyebrow") b.push(r.left,r.width);
+      if(q===".vote-count") b=[r.left,r.width];   // its height follows its text, which may shrink
+      if(q===".vote-option") b=[e.offsetTop,e.offsetHeight,e.offsetWidth];
+      return b.map(Math.round).join(",")}).join(";")}).join("|");
+  var clipped=[].filter.call(document.querySelectorAll(".vote-title,.vote-lie,.vote-count,.vote-label"),function(e){
+    var r=document.createRange();r.selectNodeContents(e);var wide=e.scrollWidth>e.clientWidth||(e.className==="vote-title"&&r.getBoundingClientRect().width>e.getBoundingClientRect().width+0.05);return getComputedStyle(e).visibility!=="hidden"&&(wide||(/lie|label/.test(e.className)&&e.scrollHeight>e.clientHeight+Math.max(1,parseFloat(getComputedStyle(e).fontSize)*0.4)))}).map(function(e){return e.className});
+  var low=document.querySelector(".vote-foot").getBoundingClientRect().bottom;
+  var list=document.querySelector(".vote-options").getBoundingClientRect(), rows=[].slice.call(document.querySelectorAll(".vote-option"));
+  var whole=rows.length===3&&rows.every(function(r){var b=r.getBoundingClientRect();return b.top>=list.top-1&&b.bottom<=list.bottom+1});
+  steps.push({name:name,at:at,whole:whole,clipped:clipped,inside:low<=c.bottom+1&&c.bottom<=${box[1]}+1&&c.right<=${box[0]}+1,
+    w:Math.round(c.width),h:Math.round(c.height),text:parseFloat(getComputedStyle(card).fontSize),title:document.querySelector(".vote-title").textContent});
+}
+(async function(){
+  await document.fonts.ready; await wait(60);
+  if(answers){ served={rev:2,number:5,who:"${LONG_NAME}",letter:"",lie:"",answers:answers}; await wait(1300); }
+  else { chat("!vote 600s"); await wait(300); }
+  look("vote open");
+  for(var v=0;v<1000;v++) chat("a","v"+v); await wait(300); look("1000 votes");
+  served={rev:3,number:5,who:"${LONG_NAME}",letter:"",lie:"",answers:answers||[]}; await wait(1300); look("long name");
+  served={rev:4,number:5,who:"${LONG_NAME}",letter:"A",lie:${JSON.stringify(LONG_LIE)},answers:answers||[]}; await wait(1300); look("long lie");
+  document.title=JSON.stringify(steps);
+})();
+<\/script></body></html>`.replace("<\\/script>", "<\/script>");
+  const file = path.join(tmp, "round-" + index + ".html");
+  fs.writeFileSync(file, page);
+  return new Promise((resolve, reject) => {
+    execFile(CHROME, [
+      "--headless", "--disable-gpu", "--no-sandbox", "--virtual-time-budget=9000",
+      "--user-data-dir=" + path.join(tmp, "round-profile-" + index), "--dump-dom", "file://" + file
+    ], { encoding: "utf8", maxBuffer: 64 * 1024 * 1024 }, (err, dom) => {
+      const m = !err && dom.match(/<title>([^<]*)<\/title>/);
+      if (!m) { reject(err || new Error("the round never reported")); return; }
+      resolve(JSON.parse(m[1]));
+    });
+  });
+}
+const ROUND_BOXES = [[640, 360], [900, 300], [500, 500], [1920, 1080]];
+
 let pass = 0, fail = 0;
 function ok(cond, msg) {
   if (cond) { pass++; console.log("  PASS " + msg); }
@@ -200,8 +264,21 @@ scenarios.forEach((s, i) => {
     r.counts.reduce(function (a, b) { return b.length > a.length ? b : a; }, "") + ")");
 });
 
-try { fs.rmSync(tmp, { recursive: true, force: true }); } catch (e) { /* best effort */ }
-
-console.log("\n=== " + pass + " passed, " + fail + " failed ===");
-process.exit(fail ? 1 : 0);
-}, (e) => { console.error(e.message || e); process.exit(1); });
+const plans = ROUND_BOXES.map((box) => ({ box })).concat(ROUND_BOXES.map((box) => ({ box, answers: ANSWERS })));
+return Promise.all(plans.map((p, i) => round(p.box, i, p.answers))).then((rounds) => {
+  rounds.forEach((steps, i) => {
+    const box = plans[i].box;
+    console.log("\n[one round " + (plans[i].answers ? "with three long answers " : "") + "in a " + box[0] + " by " + box[1] + " box]");
+    const first = steps[0];
+    ok(steps.length === 4 && /Long_Name/.test(steps[3].title), "the round reaches the long lie");
+    ok(first.w >= box[0] * 0.85 && first.h >= box[1] * 0.85, "the card fills the box (" + first.w + " by " + first.h + ")");
+    steps.slice(1).forEach((s) => ok(s.at === first.at && s.text === first.text, "nothing moves or changes size at: " + s.name));
+    ok(steps.every((s) => !s.clipped.length), "all the text fits its space (" + steps.map((s) => s.clipped.join(" ")).join("/") + ")");
+    ok(steps.every((s) => s.inside), "and everything stays inside the card");
+    ok(steps.every((s) => s.whole), "with all three rows showing in full");
+  });
+  try { fs.rmSync(tmp, { recursive: true, force: true }); } catch (e) { /* best effort */ }
+  console.log("\n=== " + pass + " passed, " + fail + " failed ===");
+  process.exit(fail ? 1 : 0);
+});
+}).catch((e) => { console.error(e.message || e); process.exit(1); });

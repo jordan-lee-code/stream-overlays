@@ -44,12 +44,13 @@ function tidy(list) {
   if (!Array.isArray(list)) return [];
   return list
     .filter((r) => r && Number.isInteger(Number(r.number)) && Number(r.number) > 0)
-    .map((r) => ({
-      number: Number(r.number),
-      username: String(r.username || "").trim(),
-      letter: String(r.letter || "").trim(),
-      lie: String(r.lie || "").trim()
-    }))
+    .map((r) => {
+      const text = (k) => String(r[k] || "").trim();
+      const row = { number: Number(r.number), username: text("username"), letter: text("letter"), lie: text("lie"), a: text("a"), b: text("b"), c: text("c") };
+      // With all three answers listed, the lie is whichever one the letter points at.
+      if (!row.lie && /^[abc]$/i.test(row.letter)) row.lie = row[row.letter.toLowerCase()];
+      return row;
+    })
     .sort((a, b) => a.number - b.number);
 }
 
@@ -88,11 +89,17 @@ function publicState() {
   const state = readState();
   const s = state.shown || {};
   return {
-    rev: state.rev, number: s.number || 0, who: s.who || "", letter: s.letter || "", lie: s.lie || "",
+    rev: state.rev, number: s.number || 0, who: s.who || "", letter: s.letter || "", lie: s.lie || "", answers: s.answers || [],
     back: state.back, undone: state.undone
   };
 }
 
+// All three statements, or nothing: a card showing two of them would give the game away.
+const answersOf = (row) => (row.a && row.b && row.c ? [row.a, row.b, row.c] : null);
+const partly = () => {
+  const full = rows.filter(answersOf).length;
+  return full && full < rows.length ? " " + (rows.length - full) + " without all three answers." : "";
+};
 const findRow = (number) => rows.find((r) => r.number === number) || null;
 const whoLine = (row) => "#" + row.number + " was " + row.username + ".";
 const lieLine = (row) => "The lie was " + row.letter + ": " + row.lie;
@@ -142,13 +149,13 @@ function stepAlong() {
   if (!row) return "That is everyone in the running order. !truthreset starts again.";
 
   if (state.stage === 0) {
-    move(state, { current: row.number, stage: 1, shown: { number: row.number, who: row.username } }, { number: row.number, part: "who" });
+    move(state, { current: row.number, stage: 1, shown: { number: row.number, who: row.username, answers: answersOf(row) } }, { number: row.number, part: "who" });
     return whoLine(row);
   }
 
   move(state, {
     current: row.number + 1, stage: 0,
-    shown: { number: row.number, who: row.username, letter: row.letter, lie: row.lie }
+    shown: { number: row.number, who: row.username, letter: row.letter, lie: row.lie, answers: answersOf(row) }
   }, { number: row.number, part: "lie" });
   return "#" + row.number + " - the lie was " + row.letter + ": " + row.lie;
 }
@@ -171,7 +178,7 @@ async function pullFromSource() {
     return "Could not save the new running order. Kept the old copy.";
   }
   rows = list;
-  return "Pulled a fresh running order: " + rows.length + " people.";
+  return "Pulled a fresh running order: " + rows.length + " people." + partly();
 }
 
 function readQuery(params) {
@@ -195,7 +202,7 @@ async function answer(params) {
   const asked = readQuery(params);
   if (asked.what === "refresh") {
     if (SOURCE_URL) return pullFromSource();
-    return "Reread the running order: " + loadOrder() + " people.";
+    return "Reread the running order: " + loadOrder() + " people." + partly();
   }
   if (asked.what === "reset") {
     move(readState(), { current: 1, stage: 0, shown: null });

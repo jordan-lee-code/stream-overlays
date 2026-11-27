@@ -37,7 +37,10 @@ It is a list with one entry for each person:
 | `number` | Their place in the round: 1, 2, 3 and so on, with no gaps. |
 | `username` | Who sent the statements. |
 | `letter` | Which statement is the lie: `A`, `B` or `C`. It has to match the order you read them out. |
-| `lie` | The lie, in words. |
+| `a`, `b`, `c` | The three statements. With all three, the first `!truth` puts them on the overlay for chat to vote on. |
+| `lie` | The lie, in words. You can leave this out when `a`, `b` and `c` are there, because `letter` says which one it is. |
+
+An entry without all three statements still works: the first `!truth` then shows only who it was, and you open the vote with `!vote`.
 
 This file is the answers, so keep it off your stream and out of anything public.
 
@@ -144,7 +147,7 @@ The key sits inside the command's response, so anyone who can edit your chatbot 
 
 ### What each one does
 
-- `!truth` says who #1 was, then what their lie was, then moves to #2. Each reply names its number, so a stray press is easy to notice.
+- `!truth` shows who #1 was with their three statements on the overlay, then reveals their lie, then moves to #2. Chat replies name who it was and then the lie. Each reply names its number, so a stray press is easy to notice.
 - `!truthprev` undoes the last `!truth`, `!truthnext` or `!truthreset`. Use it again to go further back, up to 100 changes. The overlay takes the undone name or lie off its card. Voting does not reopen, and chat will still have seen what was posted.
 - `!truthnext` skips whoever is up, or the rest of them if their name has been read. Nothing is revealed.
 - `!truthreset` goes back to the top.
@@ -159,8 +162,8 @@ In the widget's settings, put `https://truths.example.com` in **Reveals, Answer 
 ## Before you go live
 
 1. Run `!truthreset`.
-2. Type `!vote`, then `!truth` twice.
-3. Check that the name and then the lie appear on the card, and in chat too if your chatbot runs the commands.
+2. Run `!truth`. The card should show whose answers they are, with all three statements. If your entries do not have all three, type `!vote` first.
+3. Run `!truth` again and check that the lie lights up.
 4. Run `!truthreset` again.
 
 ## Settings

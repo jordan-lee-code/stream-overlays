@@ -109,6 +109,18 @@
     "value": "Which one is the lie?",
     "group": "Copy"
   },
+  "answersTitle": {
+    "type": "text",
+    "label": "Heading over someone's three answers ({name} is replaced by their name)",
+    "value": "{name}'s Answers",
+    "group": "Reveals"
+  },
+  "spotLabel": {
+    "type": "text",
+    "label": "Line under that heading, until the lie is revealed",
+    "value": "Spot the lie..",
+    "group": "Reveals"
+  },
   "lieLabel": {
     "type": "text",
     "label": "Tag above a revealed lie, before its letter",
@@ -211,18 +223,12 @@
     "value": false,
     "group": "Copy"
   },
-  "grow": {
-    "type": "checkbox",
-    "label": "Grow to fill the box: the card is as large as the box allows, so a bigger box gives a bigger card. Untick to use the Size setting below as it is",
-    "value": true,
-    "group": "Card"
-  },
   "scale": {
     "type": "number",
-    "label": "Size of everything (percent), used when Grow to fill the box is unticked. A ceiling: the card still shrinks to fit its box when a poll needs more room.",
+    "label": "Text size (percent of the largest that fits). The card always fills its box",
     "value": 100,
     "min": 25,
-    "max": 400,
+    "max": 100,
     "step": 5,
     "group": "Card"
   },
