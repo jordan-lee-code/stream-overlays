@@ -1,7 +1,7 @@
 {
   "command": {
     "type": "text",
-    "label": "Command word. A mod types it on its own to open a poll on A, B and C, or with the statements (!vote Truth A, Truth B, The lie), or with a verb: reveal B, end, cancel, restart, undo, extend 20, results, hide",
+    "label": "Command word. A mod types it on its own to open a poll on A, B and C, or with the statements (!vote Fact A, Fact B, The lie), or with a verb: reveal B, end, cancel, restart, undo, extend 20, results, hide",
     "value": "!vote",
     "group": "Commands"
   },
@@ -17,13 +17,13 @@
   },
   "serverUrl": {
     "type": "text",
-    "label": "Answer server address, such as https://truths.example.com (leave empty to reveal by hand with !vote reveal B)",
+    "label": "Answer server address, such as https://lie.example.com (leave empty to reveal by hand with !vote reveal B)",
     "value": "",
     "group": "Reveals"
   },
   "serverKey": {
     "type": "text",
-    "label": "Secret key (optional): lets this overlay run !truth, !truthnext, !truthprev, !truthreset and !truthrefresh from chat. Remove those commands from your chatbot if you fill this in",
+    "label": "Secret key (optional): lets this overlay run !lie, !lienext, !lieprev, !liereset and !lierefresh from chat. Remove those commands from your chatbot if you fill this in",
     "value": "",
     "group": "Reveals"
   },
@@ -88,7 +88,7 @@
   "resultSeconds": {
     "type": "number",
     "label": "Seconds the result stays on screen (0 keeps it up until you hide it)",
-    "value": 12,
+    "value": 10,
     "min": 0,
     "max": 600,
     "step": 1,
@@ -108,6 +108,57 @@
     "label": "Question shown above the options",
     "value": "Which one is the lie?",
     "group": "Copy"
+  },
+  "praise": {
+    "type": "checkbox",
+    "label": "After the reveal, name everyone who spotted the lie",
+    "value": true,
+    "group": "Reveals"
+  },
+  "praiseTitle": {
+    "type": "text",
+    "label": "Heading over those names",
+    "value": "Well Done",
+    "group": "Reveals"
+  },
+  "praiseAfter": {
+    "type": "number",
+    "label": "Seconds the lie shows before the names",
+    "value": 5,
+    "min": 1,
+    "max": 60,
+    "step": 1,
+    "group": "Reveals"
+  },
+  "praiseSeconds": {
+    "type": "number",
+    "label": "Seconds the names show before the card leaves (they roll faster when there are more)",
+    "value": 10,
+    "min": 3,
+    "max": 60,
+    "step": 1,
+    "group": "Reveals"
+  },
+  "leaderboard": {
+    "type": "checkbox",
+    "label": "Between rounds, rest on a leaderboard of correct answers",
+    "value": true,
+    "group": "Reveals"
+  },
+  "leaderboardTitle": {
+    "type": "text",
+    "label": "Heading over the leaderboard",
+    "value": "Leaderboard",
+    "group": "Reveals"
+  },
+  "leaderboardSize": {
+    "type": "number",
+    "label": "How many people the leaderboard lists",
+    "value": 5,
+    "min": 3,
+    "max": 10,
+    "step": 1,
+    "group": "Reveals"
   },
   "answersTitle": {
     "type": "text",
@@ -1009,6 +1060,12 @@
     "type": "button",
     "label": "Roll back the last change",
     "value": "Undo",
+    "group": "Manual controls"
+  },
+  "btnClearScores": {
+    "type": "button",
+    "label": "Start the leaderboard again",
+    "value": "Clear leaderboard",
     "group": "Manual controls"
   },
   "btnSoundOpen": {

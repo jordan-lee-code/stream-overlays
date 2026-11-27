@@ -4,13 +4,13 @@ A StreamElements custom widget for a round of Two Truths and a Lie. You read out
 
 <p align="center"><img src="docs/poll-open.png" alt="A soft black card with the options A, B and C, a countdown and vote bars" width="340"></p>
 
-It has two parts. The **overlay** is a self-contained widget that works on its own. The **answer server** in [`server/`](server) is optional, and the website has it as a download with its [hosting steps](https://lee-it.co.uk/stream-overlays/two-truths/hosting.html): it keeps your running order, answers your chatbot one reveal at a time, and lets the overlay reveal the lie by itself. It is built from the [Chat Poll](../chat-poll) overlay, so voting, undo, sounds and style settings work the same way.
+It has two parts. The **overlay** is a self-contained widget that works on its own. The **answer server** in [`server/`](server) is optional, and the website has it as a download with its [hosting steps](https://lee-it.co.uk/stream-overlays/spot-the-lie/hosting.html): it keeps your running order, answers your chatbot one reveal at a time, and lets the overlay reveal the lie by itself. It is built from the [Chat Poll](../chat-poll) overlay, so voting, undo, sounds and style settings work the same way.
 
 <p><img src="docs/result.png" alt="A finished vote with option C lit under the label The lie was C" width="340"></p>
 
 ## Running a round
 
-**With the answer server and all three statements in your running order**, run `!truth`. The card shows "Name's Answers" over "Spot the lie..", with a statement on each of A, B and C, and chat can vote at once. The answers stay up, even after the clock stops, until you run `!truth` again to light the lie. You do not need `!vote` first.
+**With the answer server and all three statements in your running order**, run `!lie`. The card shows "Name's Answers" over "Spot the lie..", with a statement on each of A, B and C, and chat can vote at once. The answers stay up, even after the clock stops, until you run `!lie` again to light the lie. You do not need `!vote` first.
 
 **Otherwise:**
 
@@ -18,7 +18,15 @@ It has two parts. The **overlay** is a self-contained widget that works on its o
 2. Read the statements out. Chat votes with a letter or a number, one vote each, and can change it until the clock stops.
 3. Reveal the lie in one of two ways:
    - **By hand:** type `!vote reveal B`.
-   - **With the answer server:** run `!truth` once for who it was, and again for the lie. The overlay puts the name in its heading, then marks the lie.
+   - **With the answer server:** run `!lie` once for who it was, and again for the lie. The overlay puts the name in its heading, then marks the lie.
+
+Five seconds after the reveal, the card changes to **Well Done** and the names of everyone whose vote was on the lie roll up like end credits, one to a line. The card leaves after ten seconds however long the list is, and the roll speeds up or slows down so the last name has gone by then. The heading, both timings and whether it happens at all are settings.
+
+## Leaderboard
+
+Everyone whose vote is on the lie when it is revealed earns a point. After **Well Done**, the card rests on the leaderboard until the next round starts. People level on points share a place. Use `!vote hide` to take it off the screen.
+
+The points are saved with the widget, so they are still there after a refresh, **and next stream too**. Run `!vote scores clear`, or press **Clear leaderboard** in the editor, before a new game and after a practice round. `!liereset` does not clear them, so an accidental one loses nothing. Taking a reveal back with `!lieprev` or `!vote undo` takes its points with it.
 
 A reveal ends the vote if it is still open. It also brings the card back if the result has already left the screen, so there is no rush to get to it before it hides.
 
@@ -36,6 +44,8 @@ A reveal ends the vote if it is still open. It also brings the card back if the 
 | `!vote cancel` | Takes the vote down. |
 | `!vote results` / `!vote hide` | Shows or hides the result. |
 | `!vote undo` | Steps back, including from a mistaken reveal. |
+| `!vote scores` | Shows the leaderboard again, once a lie has been revealed. |
+| `!vote scores clear` | Starts the leaderboard again. |
 
 Undo changes the card only. It does not move the answer server's place in the running order. If you also use the Chat Poll overlay, change the **Command word** setting on one of them, because both start out as `!vote`.
 
@@ -48,11 +58,11 @@ Undo changes the card only. It does not move the answer server's place in the ru
 
 ## How the overlay stays free of spoilers
 
-The overlay asks the server for one address, `/state`, every two seconds while an address is set. That address holds only what has already been read out: nothing before the first `!truth`, then a name and their three statements, then which one was the lie. The upcoming answers are only reachable with your secret key. The overlay does not need the key to follow along. You can give it one in **Reveals, Secret key** so that it runs `!truth` and the other server commands from chat itself, with no chatbot commands to set up. It still only draws what has been read out, but the key is then saved in the widget's settings, so [read what that means](server/README.md#6-add-the-chat-commands) first.
+The overlay asks the server for one address, `/state`, every two seconds while an address is set. That address holds only what has already been read out: nothing before the first `!lie`, then a name and their three statements, then which one was the lie. The upcoming answers are only reachable with your secret key. The overlay does not need the key to follow along. You can give it one in **Reveals, Secret key** so that it runs `!lie` and the other server commands from chat itself, with no chatbot commands to set up. It still only draws what has been read out, but the key is then saved in the widget's settings, so [read what that means](server/README.md#6-add-the-chat-commands) first.
 
 Anyone who learns the address can read `/state`, so treat it as being as public as your stream. If the server cannot be reached, voting carries on and `!vote reveal` still works.
 
-If something goes wrong, `!truthprev` undoes the last server step, and takes it off the card, while `!truthnext` skips a person. All the server commands are in [server/README.md](server/README.md).
+If something goes wrong, `!lieprev` undoes the last server step, and takes it off the card, while `!lienext` skips a person. All the server commands are in [server/README.md](server/README.md).
 
 A browser source that reloads does not replay the last reveal. If it reloads at the very moment of a reveal, use `!vote reveal` to put it on screen.
 

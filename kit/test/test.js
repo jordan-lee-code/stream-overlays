@@ -376,7 +376,7 @@ asection("the website");
     fs.writeFileSync(path.join(dir, "package.json"), JSON.stringify({ category: "hosted", hosting: { folder: "server", guide: "README.md", zip: "svc.zip", unzipsTo: "svc", files: ["run.js"] } }));
     fs.writeFileSync(path.join(dir, "server", "run.js"), "// the service");
     fs.writeFileSync(path.join(dir, "server", "README.md"), "# Hosting\n\n## Steps\n\nA <img src=x onerror=alert(1)> [bad](javascript:alert(1)) [away](../private) [good](https://example.com) `<b>`\n");
-    ["running-order.json", "state.json", "truth.env"].forEach(f => fs.writeFileSync(path.join(dir, "server", f), "PRIVATE-ANSWER"));
+    ["running-order.json", "state.json", "lie.env"].forEach(f => fs.writeFileSync(path.join(dir, "server", f), "PRIVATE-ANSWER"));
     const out = fs.mkdtempSync(path.join(os.tmpdir(), "host-out-"));
     site.build(out, fake);
     const walk = d => fs.readdirSync(d, { withFileTypes: true }).reduce((all, e) => all.concat(e.isDirectory() ? walk(path.join(d, e.name)) : [path.join(d, e.name)]), []);

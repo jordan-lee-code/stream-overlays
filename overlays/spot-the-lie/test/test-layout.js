@@ -173,7 +173,7 @@ ${fontFace}
 html,body{margin:0}
 #box{width:${box[0]}px;height:${box[1]}px}
 ${css}
-*,*::before,*::after{animation:none !important;transition:none !important;}
+*:not(.vote-praise-names),*::before,*::after{animation:none !important;transition:none !important;}
 </style></head><body><div id="box">${html}</div><script>
 window.SE_API={store:{set:()=>Promise.resolve(),get:()=>Promise.resolve(null)}};
 var served={rev:1,number:0,who:"",letter:"",lie:""};
@@ -205,17 +205,35 @@ function look(name){
   if(answers){ served={rev:2,number:5,who:"${LONG_NAME}",letter:"",lie:"",answers:answers}; await wait(1300); }
   else { chat("!vote 600s"); await wait(300); }
   look("vote open");
-  for(var v=0;v<1000;v++) chat("a","v"+v); await wait(300); look("1000 votes");
+  chat("a","a_very_long_viewer_name_indeed_it_is"); for(var v=0;v<999;v++) chat("a","v"+v); await wait(300); look("1000 votes");
   served={rev:3,number:5,who:"${LONG_NAME}",letter:"",lie:"",answers:answers||[]}; await wait(1300); look("long name");
   served={rev:4,number:5,who:"${LONG_NAME}",letter:"A",lie:${JSON.stringify(LONG_LIE)},answers:answers||[]}; await wait(1300); look("long lie");
-  document.title=JSON.stringify(steps);
+  await wait(5000);
+  var card=document.getElementById("vote-card").getBoundingClientRect(), say=document.getElementById("vote-praise-title").getBoundingClientRect();
+  var view=document.getElementById("vote-praise-window").getBoundingClientRect(), names=document.getElementById("vote-praise-names");
+  steps.praise={shown:!document.getElementById("vote-praise").hidden,w:Math.round(card.width),h:Math.round(card.height),
+    titleIn:say.top>=card.top&&say.bottom<=view.top+1&&say.height>0,viewIn:view.bottom<=card.bottom+1&&view.height>20,
+    scrolls:names.classList.contains("scroll"),wide:names.scrollWidth>names.clientWidth+1,
+    from:parseFloat(names.style.getPropertyValue("--praise-from")),to:parseFloat(names.style.getPropertyValue("--praise-to")),
+    viewH:view.height,listH:names.offsetHeight,
+    perLine:[].every.call(names.children,function(n,i){return !i||n.offsetTop>=names.children[i-1].offsetTop+names.children[i-1].offsetHeight-1}),
+    count:names.children.length,
+    // When the browser's own animation ends, in seconds from its start, counting any head start.
+    ends:names.getAnimations().length?names.getAnimations()[0].effect.getComputedTiming().endTime/1000:0};
+  await wait(10500);
+  var bc=document.getElementById("vote-card").getBoundingClientRect(), list=document.getElementById("vote-board-list"), lr=list.getBoundingClientRect();
+  var board={shown:!document.getElementById("vote-board").hidden,w:Math.round(bc.width),h:Math.round(bc.height),count:list.children.length,
+    rows:[].every.call(list.children,function(r){var b=r.getBoundingClientRect();return b.top>=lr.top-1&&b.bottom<=lr.bottom+1&&b.left>=lr.left-1&&b.right<=lr.right+1&&b.height>8}),
+    points:[].every.call(list.querySelectorAll(".vote-board-points"),function(p){var b=p.getBoundingClientRect();return b.width>0&&b.right<=lr.right+1}),
+    inside:lr.bottom<=bc.bottom+1};
+  document.title=JSON.stringify({steps:steps,praise:steps.praise,board:board});
 })();
 <\/script></body></html>`.replace("<\\/script>", "<\/script>");
   const file = path.join(tmp, "round-" + index + ".html");
   fs.writeFileSync(file, page);
   return new Promise((resolve, reject) => {
     execFile(CHROME, [
-      "--headless", "--disable-gpu", "--no-sandbox", "--virtual-time-budget=9000",
+      "--headless", "--disable-gpu", "--no-sandbox", "--virtual-time-budget=34000",
       "--user-data-dir=" + path.join(tmp, "round-profile-" + index), "--dump-dom", "file://" + file
     ], { encoding: "utf8", maxBuffer: 64 * 1024 * 1024 }, (err, dom) => {
       const m = !err && dom.match(/<title>([^<]*)<\/title>/);
@@ -266,7 +284,8 @@ scenarios.forEach((s, i) => {
 
 const plans = ROUND_BOXES.map((box) => ({ box })).concat(ROUND_BOXES.map((box) => ({ box, answers: ANSWERS })));
 return Promise.all(plans.map((p, i) => round(p.box, i, p.answers))).then((rounds) => {
-  rounds.forEach((steps, i) => {
+  rounds.forEach((result, i) => {
+    const steps = result.steps, praise = result.praise, board = result.board;
     const box = plans[i].box;
     console.log("\n[one round " + (plans[i].answers ? "with three long answers " : "") + "in a " + box[0] + " by " + box[1] + " box]");
     const first = steps[0];
@@ -276,6 +295,13 @@ return Promise.all(plans.map((p, i) => round(p.box, i, p.answers))).then((rounds
     ok(steps.every((s) => !s.clipped.length), "all the text fits its space (" + steps.map((s) => s.clipped.join(" ")).join("/") + ")");
     ok(steps.every((s) => s.inside), "and everything stays inside the card");
     ok(steps.every((s) => s.whole), "with all three rows showing in full");
+    ok(praise.shown && praise.w === first.w && praise.h === first.h, "Well Done takes over a card of the same size (" + praise.w + " by " + praise.h + ")");
+    ok(praise.titleIn && praise.viewIn && !praise.wide, "with its heading and the names inside it");
+    ok(board.shown && board.w === first.w && board.h === first.h, "the leaderboard keeps the card the same size");
+    ok(board.count === 5 && board.rows && board.points && board.inside, "with all five rows and their points inside it");
+    ok(praise.ends > 0 && praise.ends < 10, "ending before the card leaves at ten seconds (" + praise.ends.toFixed(2) + "s)");
+    ok(praise.count > 1 && praise.perLine, "with each name on its own line (" + praise.count + " lines)");
+    ok(praise.scrolls && Math.abs(praise.from - praise.viewH) <= 2 && Math.abs(praise.to + praise.listH) <= 2, "rolling from below the window until the last has left the top (" + praise.from + " to " + praise.to + ")");
   });
   try { fs.rmSync(tmp, { recursive: true, force: true }); } catch (e) { /* best effort */ }
   console.log("\n=== " + pass + " passed, " + fail + " failed ===");

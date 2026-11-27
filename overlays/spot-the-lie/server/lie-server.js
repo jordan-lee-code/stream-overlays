@@ -19,21 +19,21 @@ const fs = require("fs");
 const path = require("path");
 const crypto = require("crypto");
 
-const SECRET = process.env.TRUTH_SECRET || "";
-const PORT = process.env.TRUTH_PORT === undefined ? 8099 : Number(process.env.TRUTH_PORT);
+const SECRET = process.env.LIE_SECRET || "";
+const PORT = process.env.LIE_PORT === undefined ? 8099 : Number(process.env.LIE_PORT);
 // Only this machine by default: a tunnel or a reverse proxy running here is what lets the internet in.
-const HOST = process.env.TRUTH_HOST || "127.0.0.1";
-const DATA = process.env.TRUTH_DATA || __dirname;
+const HOST = process.env.LIE_HOST || "127.0.0.1";
+const DATA = process.env.LIE_DATA || __dirname;
 const ORDER_FILE = path.join(DATA, "running-order.json");
 const STATE_FILE = path.join(DATA, "state.json");
 // Optional: an address that returns a running order as JSON, fetched when you refresh.
-const SOURCE_URL = process.env.TRUTH_SOURCE_URL || "";
+const SOURCE_URL = process.env.LIE_SOURCE_URL || "";
 const MIN_SECRET = 12;
 const UNDO_DEPTH = 100;
 const REMEMBERED = 200;
 
 if (SECRET.length < MIN_SECRET) {
-  console.error("Set TRUTH_SECRET to at least " + MIN_SECRET + " characters. Without a key anyone who finds the address can read the answers.");
+  console.error("Set LIE_SECRET to at least " + MIN_SECRET + " characters. Without a key anyone who finds the address can read the answers.");
   console.error("One way to make one:  node -e \"console.log(require('crypto').randomBytes(18).toString('base64url'))\"");
   process.exit(1);
 }
@@ -116,7 +116,7 @@ function move(state, next, did) {
 function nextUp(state) {
   const row = findRow(state.current);
   if (!row) return "That is the end of the running order.";
-  return state.stage === 1 ? "Next !truth says #" + row.number + "'s lie." : "Next !truth says who #" + row.number + " was.";
+  return state.stage === 1 ? "Next !lie says #" + row.number + "'s lie." : "Next !lie says who #" + row.number + " was.";
 }
 
 // Undoes the last step, skip or reset. Its reply goes to chat, so it names numbers and no answers.
@@ -146,7 +146,7 @@ function skip() {
 function stepAlong() {
   const state = readState();
   const row = findRow(state.current);
-  if (!row) return "That is everyone in the running order. !truthreset starts again.";
+  if (!row) return "That is everyone in the running order. !liereset starts again.";
 
   if (state.stage === 0) {
     move(state, { current: row.number, stage: 1, shown: { number: row.number, who: row.username, answers: answersOf(row) } }, { number: row.number, part: "who" });
