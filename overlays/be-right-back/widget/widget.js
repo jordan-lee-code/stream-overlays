@@ -454,6 +454,7 @@
     c.fit = false;                                       // the card is the whole box, so there is nothing to shrink
     c.startMs = clamp(num(f.startMinutes, 0), 0, 2880) * 60000;
     c.meetingTitle = txt(f.meetingTitle, "Currently in a meeting, be back soon <3");
+    c.meetingClock = bool(f.meetingClock, true);
     c.lateTitle = txt(f.lateTitle, "Back any moment now");
     c.countLabel = txt(f.countLabel, "Back in");
     c.awayLabel = txt(f.awayLabel, "Away for");
@@ -586,16 +587,17 @@
     // The card does not shrink to fit, so a long headline gets smaller letters to leave room for the clock under it.
     el.app.style.setProperty("--br-title-fit", Math.round(Math.min(1, Math.sqrt(45 / Math.max(1, title.length))) * 1000) / 1000);
     el.title.hidden = !cfg.showTitle || !title;
-    var label = p === "count" ? cfg.countLabel : p === "away" ? cfg.awayLabel : "";
+    var timed = !state.meeting || cfg.meetingClock;
+    var label = !timed ? "" : p === "count" ? cfg.countLabel : p === "away" ? cfg.awayLabel : "";
     setText(el.label, label);
     el.label.hidden = !label;
-    el.clock.hidden = p !== "count" && p !== "away";
+    el.clock.hidden = !timed || (p !== "count" && p !== "away");
     if (p === "count") setText(el.clock, clockText(left, false));
     if (p === "away") setText(el.clock, clockText(t - state.since, true));
-    el.bar.hidden = p !== "count" || !cfg.showBar;
+    el.bar.hidden = !timed || p !== "count" || !cfg.showBar;
     var total = state.until - state.since;
     el.fill.style.width = (total > 0 ? Math.round(clamp(1 - left / total, 0, 1) * 1000) / 10 : 100) + "%";
-    el.at.hidden = p !== "count" || !cfg.showReturn;
+    el.at.hidden = !timed || p !== "count" || !cfg.showReturn;
     if (p === "count") setText(el.at, (cfg.returnPrefix ? cfg.returnPrefix + " " : "") + timeOfDay(state.until));
     var line = cfg.messages.length ? cfg.messages[msgIndex % cfg.messages.length] : "";
     el.msg.hidden = !line;

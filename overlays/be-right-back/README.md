@@ -76,6 +76,8 @@ Type `!brb meeting` and the headline reads "Currently in a meeting, be back soon
 
 Using `add` or `less` keeps a meeting a meeting, and starting a new break with `!brb` returns to the usual headline. If the meeting runs past the time you gave, the late headline shows as it does for any break. The wording is a setting, **What the headline says during a meeting**.
 
+If you would rather not show a clock in meetings, untick **Show the clock during a meeting**. That also hides the words above it, the bar and the time you will be back, leaving the headline and the rotating lines. A timed meeting still keeps its time, so the late headline appears when it runs out. Ordinary breaks are not affected.
+
 ## A custom headline
 
 For a one-off, put your own words after `custom`, such as `!brb custom "I'm heading out to the shop, see you soon!"`. They become the headline for that break, and the clock counts up. The quote marks are optional.
