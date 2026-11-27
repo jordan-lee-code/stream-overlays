@@ -121,6 +121,17 @@ const cls = c => E("br-app").classList.contains(c);
   await load({ command: "!afk", meetingTitle: "On a call" }); boss("!afk MEETING"); ok(title() === "On a call", "it follows the command word, in any case, and the headline is a setting");
   await load(); boss("!brb meetings"); boss("!meeting"); ok(!stored().since, "a longer word, or !meeting on its own, is not a meeting");
 
+  section("a meeting with the clock off");
+  const timers = ["br-label", "br-clock", "br-bar", "br-at"];
+  await load({ meetingClock: false });
+  boss("!brb meeting");
+  ok(timers.every(id => !shown(id)) && title() === meetingWords && shown("br-msg"), "only the headline and the rotating line show");
+  boss("!brb meeting 30m"); ok(timers.every(id => !shown(id)) && left() === 30 * MIN, "a timed meeting hides them too, and still keeps its time");
+  await reload(); ok(timers.every(id => !shown(id)), "and they stay hidden after a refresh");
+  await skip(31 * MIN); ok(title() === "Back any moment now", "it still says when it has run late");
+  boss("!brb 5m"); ok(timers.every(shown), "an ordinary break keeps its clock, words, bar and time");
+  boss('!brb custom "Walking the dog"'); ok(shown("br-clock"), "and so does a custom headline");
+
   section("a custom headline");
   const shop = "I'm heading out to the shop, see you soon!";
   await load({ startMinutes: 10 });
