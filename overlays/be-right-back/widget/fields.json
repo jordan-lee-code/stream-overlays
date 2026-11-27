@@ -44,7 +44,7 @@
   },
   "meetingClock": {
     "type": "checkbox",
-    "label": "Show the clock during a meeting. Untick it to also hide the words above it, the bar and the time you will be back",
+    "label": "Show the clock during a meeting. Untick it to also hide the words above it, the bar and the time you will be back. A meeting given a time, such as !brb meeting 30m, still shows them",
     "value": true,
     "group": "Break"
   },
@@ -56,7 +56,7 @@
   },
   "showClock": {
     "type": "checkbox",
-    "label": "Show the clock. Untick it to hide it for every break, along with the words above it, the bar and the time you will be back",
+    "label": "Show the clock. Untick it to hide it, along with the words above it, the bar and the time you will be back. Giving a time in chat, such as !brb 30m, still shows them",
     "value": true,
     "group": "Break"
   },

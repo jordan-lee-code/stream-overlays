@@ -396,7 +396,7 @@
 
   // since is the moment the break began, and until is the moment you said you would be back (0 for no set time). Both 0 means
   // no break is on.
-  function blankState() { return { since: 0, until: 0, meeting: false, message: "" }; }
+  function blankState() { return { since: 0, until: 0, meeting: false, message: "", asked: false }; }
   function now() { return Date.now(); }
 
   // "15m", "1h30m", "90s", "1:30:00", "5:00" (minutes and seconds) or a bare number of
@@ -489,7 +489,7 @@
   // A break back in `ms`, or with no set time when `ms` is 0.
   function begin(ms, kind) {
     if (ms < 0 || ms > MAX_MS || isNaN(ms)) return false;
-    state.since = now(); state.until = ms > 0 ? now() + ms : 0; state.meeting = !!(kind && kind.meeting); state.message = (kind && kind.message) || "";
+    state.since = now(); state.until = ms > 0 ? now() + ms : 0; state.meeting = !!(kind && kind.meeting); state.message = (kind && kind.message) || ""; state.asked = !!(kind && kind.asked);
     save(); render();
     return true;
   }
@@ -505,11 +505,12 @@
     var p = phase();
     if (p === "idle") { if (sign > 0) begin(ms, kind); return; }
     // A break with no set time is given one from now, and keeps the moment it began.
-    if (p === "away") { if (sign > 0) { state.until = now() + ms; save(); render(); } return; }
+    if (p === "away") { if (sign > 0) { state.until = now() + ms; state.asked = true; save(); render(); } return; }
     var base = p === "late" ? now() : state.until;
     var until = base + sign * ms;
     if (until - now() > MAX_MS) return;
     state.until = Math.max(now(), until);
+    if (sign > 0) state.asked = true;
     save(); render();
   }
   function stop() { state = blankState(); save(); render(); }
@@ -534,24 +535,25 @@
     var meeting = /^meeting(\s|$)/i.test(rest);
     if (meeting) rest = rest.slice(7).replace(/^\s+/, "");
     var kind = { meeting: meeting };
+    var asked = { meeting: meeting, asked: true };   // a time typed in chat shows the clock, whatever the settings say
     var usualMs = meeting ? 0 : cfg.startMs;   // a meeting rarely lasts as long as your usual break
     if (!rest) { begin(usualMs, kind); return; }
     var m = /^(\S+)\s*(.*)$/.exec(rest), first = m[1].toLowerCase(), more = m[2];
     switch (first) {
-      case "start": begin(more ? parseDuration(more) : usualMs, kind); return;
-      case "at": beginAt(more, kind); return;
-      case "add": shift(parseDuration(more), 1, kind); return;
+      case "start": if (more) begin(parseDuration(more), asked); else begin(usualMs, kind); return;
+      case "at": beginAt(more, asked); return;
+      case "add": shift(parseDuration(more), 1, asked); return;
       case "custom": var message = customMessage(more); if (message && !meeting) begin(0, { message: message }); return;
       case "less": shift(parseDuration(more), -1); return;
       case "back": case "stop": case "clear": case "done": stop(); return;
     }
     var dur = parseDuration(rest);
-    if (!isNaN(dur) && dur > 0) begin(dur, kind);
+    if (!isNaN(dur) && dur > 0) begin(dur, asked);
   }
   function handleButton(field) {
     switch (field) {
       case "btnStart": begin(cfg.startMs); break;
-      case "btnAdd5": shift(300000, 1); break;
+      case "btnAdd5": shift(300000, 1, { asked: true }); break;
       case "btnLess1": shift(60000, -1); break;
       case "btnStop": stop(); break;
     }
@@ -570,6 +572,7 @@
         s.until = isFinite(until) && until > 0 ? until : 0;
         s.meeting = saved.meeting === true;
         s.message = typeof saved.message === "string" ? saved.message : "";
+        s.asked = saved.asked === true;
       }
     }
     return s;
@@ -589,7 +592,7 @@
     // The card does not shrink to fit, so a long headline gets smaller letters to leave room for the clock under it.
     el.app.style.setProperty("--br-title-fit", Math.round(Math.min(1, Math.sqrt(45 / Math.max(1, title.length))) * 1000) / 1000);
     el.title.hidden = !cfg.showTitle || !title;
-    var timed = cfg.showClock && (!state.meeting || cfg.meetingClock);
+    var timed = (state.asked && state.until > 0) || (cfg.showClock && (!state.meeting || cfg.meetingClock));
     var label = !timed ? "" : p === "count" ? cfg.countLabel : p === "away" ? cfg.awayLabel : "";
     setText(el.label, label);
     el.label.hidden = !label;
