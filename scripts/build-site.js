@@ -46,7 +46,7 @@ const CATEGORIES = [
   { id: "chat", title: "Chat and viewers", blurb: "Things your viewers see, and things they can take part in." },
   { id: "info", title: "On-screen info", blurb: "Small panels for your scene: what is playing, the time, your socials, your camera." },
   { id: "start-end", title: "Stream start and end", blurb: "For the first and the last minutes of a stream." },
-  { id: "hosted", title: "Needs your own service", blurb: "These work alongside a separate service that you run yourself, on a computer such as a Raspberry Pi, so they take more setting up than the rest." }
+  { id: "hosted", title: "Needs your own service", blurb: "These work alongside a separate service that you run yourself, on a computer such as a Raspberry Pi, so they take more setting up than the rest. Automatic reveals also need a public https address for your service." }
 ];
 
 function cardHtml(c) {

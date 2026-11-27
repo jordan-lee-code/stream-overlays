@@ -375,6 +375,9 @@
       '<p class="hint">These work with no server. To have the lie revealed for you, host the answer server and put ' +
       'its address in the Answer server address setting under Reveals below. ' +
       '<span id="hosting-link">The hosting steps are in <code>server/README.md</code>.</span></p>' +
+      '<p class="hint">For automatic reveals, your server needs a public <code>https</code> address. The hosting guide uses ' +
+      'Cloudflare Tunnel, and a permanent address needs your own domain on Cloudflare. Enter that address under ' +
+      '<strong>Reveals, Answer server address</strong>, without the key. Revealing with <code>!vote reveal B</code> needs no server or tunnel.</p>' +
 
       '<h2>Chat votes</h2>' +
       '<div class="row">' +
