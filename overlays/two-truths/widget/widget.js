@@ -1,6 +1,7 @@
 /* Copyright (c) 2026 Jordan Lee (https://ko-fi.com/journeyingjordan). Released under the MIT licence: this notice must be kept in copies and substantial portions of the code. See LICENSE. */
 /* Two Truths and a Lie. StreamElements widget logic.
-   The server only ever tells this widget what has already been read out, so no unrevealed answer reaches the page. */
+   The card is only ever drawn from what has already been read out. Given the secret key, the widget also
+   sends the server's commands from chat. */
 (function () {
   "use strict";
 
@@ -291,6 +292,10 @@
   var followRev = null;   // the server's last change that has been seen; null until it first answers
   var followBusy = 0;     // when the request still waiting for an answer was sent, or 0
   var waitingWho = null;  // who is up, heard before their poll was opened
+  var followSeq = 0;      // only the newest answer from the server is used
+  var noticeTimer = null;
+  var NOTICE_MS = 8000;
+  var SERVER_COMMANDS = { "!truth": "step", "!truthprev": "prev", "!truthnext": "next", "!truthreset": "reset", "!truthrefresh": "refresh" };
 
   function cmd(v, dflt) {
     return str(v, dflt).toLowerCase().trim();
@@ -312,6 +317,7 @@
       title: str(f.title, "Which one is the lie?"),
       serverUrl: str(f.serverUrl, "").trim().replace(/\/+$/, "").replace(/\/state$/, ""),
       followSeconds: clamp(num(f.followSeconds, 2), 1, 30),
+      serverKey: str(f.serverKey, "").trim(),
       lieLabel: str(f.lieLabel, "The lie was"),
       resultLabel: str(f.resultLabel, "Chat says"),
       tieLabel: str(f.tieLabel, "It's a tie"),
@@ -804,21 +810,73 @@
     if (!first && !state.back) revealLie(state.letter, state.lie, who, state.number);
   }
 
-  function askServer() {
+  // `done` runs once the answer has been applied, or has failed to arrive.
+  function askServer(done) {
     if (!cfg.serverUrl || typeof fetch !== "function") return;
     // One question at a time, and one that never answers is given up on after ten seconds.
     if (followBusy && Date.now() - followBusy < 10000) return;
-    var sent = followBusy = Date.now();
+    followBusy = Date.now();
+    var seq = ++followSeq;
     var token = loadToken;
+    var finish = function (state, problem) {
+      if (seq !== followSeq || token !== loadToken) return;
+      followBusy = 0;
+      if (state) applyState(state);
+      if (problem && cfg.debug && typeof console !== "undefined") console.log("[two truths] " + problem);
+      if (done) done();
+    };
     fetch(cfg.serverUrl + "/state", { cache: "no-store" }).then(function (r) {
       if (!r.ok) throw new Error("the answer server replied " + r.status);
       return r.json();
     }).then(function (state) {
-      if (followBusy === sent) followBusy = 0;
-      if (token === loadToken) applyState(state);
+      finish(state);
     }).catch(function (e) {
-      if (followBusy === sent) followBusy = 0;
-      if (cfg.debug && typeof console !== "undefined") console.log("[two truths] " + e.message);
+      finish(null, e.message);
+    });
+  }
+
+  function hideNotice() {
+    if (noticeTimer) { clearTimeout(noticeTimer); noticeTimer = null; }
+    if (el.notice) { el.notice.hidden = true; el.notice.textContent = ""; }
+  }
+
+  function notice(message) {
+    if (!el.notice) return;
+    hideNotice();
+    el.notice.textContent = String(message).slice(0, 200);
+    el.notice.hidden = false;
+    noticeTimer = setTimeout(hideNotice, NOTICE_MS);
+  }
+
+  // True when the card on screen already shows what a !truth reply read out.
+  function onCard(reply) {
+    var read = /^#(\d+) (- the lie was|was )/.exec(reply);
+    if (!read || !poll || el.card.hidden) return false;
+    var number = Number(read[1]);
+    if (read[2] === "was ") return poll.whoNumber === number;
+    return !!poll.lie && poll.lie.number === number;
+  }
+
+  /* Runs one of the server's commands. The id is the chat message's own, so a second copy of this widget
+     hearing the same message cannot run it twice. The address holds the key, so it is never logged. */
+  function sendCommand(what, id) {
+    if (typeof fetch !== "function") return;
+    var token = loadToken;
+    var url = cfg.serverUrl + "/?q=" + what + "&key=" + encodeURIComponent(cfg.serverKey) + (id ? "&id=" + encodeURIComponent(id) : "");
+    fetch(url, { cache: "no-store" }).then(function (r) {
+      if (!r.ok) throw new Error(String(r.status));
+      return r.text();
+    }).then(function (reply) {
+      if (token !== loadToken) return;
+      reply = String(reply).trim();
+      if (/missing its key/.test(reply)) return notice("The answer server refused the key. Check Secret key in the settings.");
+      if (!reply || reply.charAt(0) === "<") return notice("That address did not reply like the answer server.");
+      followBusy = 0;   // an answer already on its way may be from before this command
+      if (what !== "step") { notice(reply); askServer(); return; }
+      askServer(function () { if (!onCard(reply)) notice(reply); });
+    }).catch(function () {
+      // It may have run even so, and sending it again could reveal one step too many.
+      if (token === loadToken) notice("No reply from the answer server. Check the card before trying again.");
     });
   }
 
@@ -828,7 +886,7 @@
     followBusy = 0;
     waitingWho = null;
     if (!cfg.serverUrl) return;
-    followTimer = setInterval(askServer, cfg.followSeconds * 1000);
+    followTimer = setInterval(function () { askServer(); }, cfg.followSeconds * 1000);
     askServer();
   }
 
@@ -1299,6 +1357,11 @@
     var rest = text.replace(/^\S+\s*/, "").trim();
     var roles = rolesOf(data);
     var manage = canManage(roles);
+    // Without a key these are left for a chatbot to handle.
+    if (cfg.serverKey && cfg.serverUrl && Object.prototype.hasOwnProperty.call(SERVER_COMMANDS, first)) {
+      if (manage && !rest) sendCommand(SERVER_COMMANDS[first], data.msgId);
+      return;
+    }
     // Commands come first, so they are never counted as votes. A verb only counts when it is the whole line.
     if (first === cfg.cmd) {
       if (!manage) return;
@@ -1440,6 +1503,7 @@
     el.timer = document.getElementById("vote-timer");
     el.eyebrow = document.getElementById("vote-eyebrow");
     el.lie = document.getElementById("vote-lie");
+    el.notice = document.getElementById("vote-notice");
     el.options = document.getElementById("vote-options");
     el.total = document.getElementById("vote-total");
     el.hint = document.getElementById("vote-hint");
@@ -1448,6 +1512,7 @@
     applyTheme();
     watchResize();
     stopTicking();
+    hideNotice();
     poll = null;
     undoStack = [];
     lastFitKey = null;   // the box or the settings may have changed, so measure afresh

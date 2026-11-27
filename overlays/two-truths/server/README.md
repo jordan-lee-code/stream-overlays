@@ -111,7 +111,26 @@ Then check from another network, such as a phone with Wi-Fi off, that `https://t
 
 ## 6. Add the chat commands
 
-Add these in your chatbot, with your own address in place of `truths.example.com` and your key in place of `KEY`. **Set all five to moderators only.**
+There are two ways to run the five commands, `!truth`, `!truthprev`, `!truthnext`, `!truthreset` and `!truthrefresh`. **Pick one**, because with both set up a single message can move the round on twice.
+
+| | The overlay runs them | Your chatbot runs them |
+| --- | --- | --- |
+| Setting up | Put the address and the key in the widget's settings | Add five commands to the chatbot |
+| What you see | The card, with a short message on it for skips, going back and problems | A reply in chat, and the card |
+| The overlay must be open | Yes | No |
+| Where the key is kept | The widget's settings | The chatbot's commands |
+
+### The overlay runs them
+
+Put your key in **Reveals, Secret key**, beside the address from step 7, and remove or switch off any of these five commands in your chatbot. You and your moderators can then type them in chat, or only you if **Who can run polls** is set to the broadcaster. Nothing is posted in chat in reply. If the editor and OBS both have the overlay open, the server still runs each message once.
+
+The key can read every answer. It is saved with the widget's settings, so it shows in the editor, in a copy of the **Data** tab or `fields.json`, and to whatever else can load the widget with its settings. Take it out before you share any of those.
+
+If you update from an older copy, update `truth-server.js` on your server too and restart it. An older server runs the command but the overlay cannot read its reply.
+
+### Your chatbot runs them
+
+Leave **Secret key** empty. Add these in your chatbot, with your own address in place of `truths.example.com` and your key in place of `KEY`. **Set all five to moderators only.**
 
 | Command | Response |
 | --- | --- |
@@ -123,6 +142,8 @@ Add these in your chatbot, with your own address in place of `truths.example.com
 
 The key sits inside the command's response, so anyone who can edit your chatbot commands can read it. Keep your chatbot dashboard off stream.
 
+### What each one does
+
 - `!truth` says who #1 was, then what their lie was, then moves to #2. Each reply names its number, so a stray press is easy to notice.
 - `!truthprev` undoes the last `!truth`, `!truthnext` or `!truthreset`. Use it again to go further back, up to 100 changes. The overlay takes the undone name or lie off its card. Voting does not reopen, and chat will still have seen what was posted.
 - `!truthnext` skips whoever is up, or the rest of them if their name has been read. Nothing is revealed.
@@ -133,13 +154,13 @@ To check one answer without moving on, `?q=who+3&key=KEY` or `?q=lie+3&key=KEY` 
 
 ## 7. Connect the overlay
 
-In the widget's settings, put `https://truths.example.com` in **Reveals, Answer server address**. Leave the key out. The overlay does not need it.
+In the widget's settings, put `https://truths.example.com` in **Reveals, Answer server address**, without the key on the end. The key only goes in **Reveals, Secret key**, and only if the overlay runs the commands.
 
 ## Before you go live
 
 1. Run `!truthreset`.
 2. Type `!vote`, then `!truth` twice.
-3. Check that the name and then the lie appear on the card, and in chat.
+3. Check that the name and then the lie appear on the card, and in chat too if your chatbot runs the commands.
 4. Run `!truthreset` again.
 
 ## Settings

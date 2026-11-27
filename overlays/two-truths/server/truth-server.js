@@ -10,6 +10,7 @@
  *   /state          open to anyone, and only ever says what has already been revealed.
  *                   The overlay reads this.
  *   /?q=...&key=... the commands, which can read any answer, so they all need the key.
+ *                   A chatbot calls these, or the overlay does when it has been given the key.
  */
 "use strict";
 
@@ -29,6 +30,7 @@ const STATE_FILE = path.join(DATA, "state.json");
 const SOURCE_URL = process.env.TRUTH_SOURCE_URL || "";
 const MIN_SECRET = 12;
 const UNDO_DEPTH = 100;
+const REMEMBERED = 200;
 
 if (SECRET.length < MIN_SECRET) {
   console.error("Set TRUTH_SECRET to at least " + MIN_SECRET + " characters. Without a key anyone who finds the address can read the answers.");
@@ -212,6 +214,20 @@ async function answer(params) {
   return whoLine(row) + " " + lieLine(row);
 }
 
+/* Two copies of the overlay, such as the editor and OBS, both hear the same chat message. Each
+   sends its id, so the command runs once and both get the same reply. */
+const heard = new Map();
+function answerOnce(params) {
+  const id = String(params.get("id") || "").slice(0, 100);
+  if (!id) return answer(params);
+  if (heard.has(id)) return heard.get(id);
+  const reply = answer(params);
+  heard.set(id, reply);
+  if (heard.size > REMEMBERED) heard.delete(heard.keys().next().value);
+  reply.catch(() => heard.delete(id));
+  return reply;
+}
+
 function send(res, status, type, body, extra) {
   // Never cached: a cached step would repeat itself for ever.
   res.writeHead(status, Object.assign({ "content-type": type + "; charset=utf-8", "cache-control": "no-store" }, extra));
@@ -226,9 +242,11 @@ const server = http.createServer(async (req, res) => {
     // The overlay runs on another site, so the browser needs to be told this may be read from there.
     if (url.pathname === "/state") return send(res, 200, "application/json", JSON.stringify(publicState()), { "access-control-allow-origin": "*" });
     if (url.pathname !== "/") return send(res, 404, "text/plain", "Nothing here.\n");
+    // The overlay reads these replies from another site too. The key is what protects them.
+    const open = { "access-control-allow-origin": "*" };
     // A chatbot posts whatever comes back, so even a refusal is a plain sentence.
-    if (!keyMatches(url.searchParams.get("key"))) return send(res, 200, "text/plain", "Sorry, that link is missing its key.");
-    return send(res, 200, "text/plain", await answer(url.searchParams));
+    if (!keyMatches(url.searchParams.get("key"))) return send(res, 200, "text/plain", "Sorry, that link is missing its key.", open);
+    return send(res, 200, "text/plain", await answerOnce(url.searchParams), open);
   } catch (e) {
     console.error(e.code || e.name);
     return send(res, 200, "text/plain", "Something went wrong on the answer server. Check its log.");
