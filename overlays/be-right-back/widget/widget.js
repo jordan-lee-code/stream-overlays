@@ -474,7 +474,7 @@
     return c;
   }
 
-  // idle: nothing is set, so it is just the headline and the lines. away: a break with no set time, counting up. count: a break
+  // idle: no break is on, so the overlay is hidden. away: a break with no set time, counting up. count: a break
   // with a time you said you would be back, counting down. late: that time has passed and you are not back yet.
   function phase() {
     if (!state.since) return "idle";
@@ -578,6 +578,7 @@
   function render() {
     if (!el.app) return;
     var p = phase(), t = now(), left = Math.max(0, state.until - t);
+    el.app.hidden = p === "idle";
     el.app.classList.toggle("idle", p === "idle");
     el.app.classList.toggle("away", p === "away");
     el.app.classList.toggle("count", p === "count");
