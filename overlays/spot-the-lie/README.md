@@ -30,10 +30,23 @@ The points are saved with the widget, so they are still there after a refresh, *
 
 A reveal ends the vote if it is still open. It also brings the card back if the result has already left the screen, so there is no rush to get to it before it hides.
 
+## Answer server commands
+
+These need the [answer server](server/README.md). The overlay runs them when it has your secret key, or your chatbot can.
+
+| Command | What it does |
+| --- | --- |
+| `!lie` | Takes the next step: first someone's three answers, then which one was the lie. |
+| `!lienext` | Skips whoever is up, or just their lie if their answers are showing. Nothing more is revealed. |
+| `!lieprev` | Goes back one step. Voting stays closed, and chat will have seen what was shown. |
+| `!liereset` | Goes back to the first person. The leaderboard is left as it is. |
+| `!lierefresh` | Reloads your running order and keeps your place. |
+
 ## Commands
 
 | Command | What it does |
 | --- | --- |
+| `A`, `B` or `2` | Anyone: votes for that statement while voting is open. |
 | `!vote` | Opens a vote on A, B and C. |
 | `!vote 60s` | The same, with its own length. |
 | `!vote One, Two, Three` | A vote with the statements on screen. |

@@ -98,7 +98,7 @@ Every command word is configurable. The defaults are:
 | `!spin open` | broadcaster, mods | Opens entries. |
 | `!spin close` | broadcaster, mods | Closes entries. |
 | `!spin clear` | broadcaster, mods | Removes everyone from the wheel. |
-| `!spin remove name` | broadcaster, mods | Removes one entrant. |
+| `!spin remove Alice` | broadcaster, mods | Removes one entrant. |
 | `!spin add Alice, Bob` | broadcaster, mods | Adds entrants by hand, comma separated. |
 | `!spin reroll` | broadcaster, mods | Puts the last winner back and draws again. |
 | `!spin lastwinner` | broadcaster, mods | Re-shows the most recent winner. |
@@ -106,7 +106,7 @@ Every command word is configurable. The defaults are:
 | `!spin forfeit add Karaoke, Pyjama party` | broadcaster, mods | Forfeits: adds one or more, comma separated. |
 | `!spin forfeit remove Karaoke` | broadcaster, mods | Forfeits: removes one by name. |
 | `!spin forfeit clear` | broadcaster, mods | Forfeits: clears the wheel. |
-| `!spin ask <question>` | anyone | Truth or...: submits a question. |
+| `!spin ask What was your first job?` | anyone | Truth or...: submits a question. |
 | `!spin veto` | broadcaster, mods | Truth or...: skips the current question, spending a lifeline. |
 | `!spin strike` | mods | Truth or...: removes the current question for free. |
 | `!spin resetlifelines` | broadcaster, mods | Truth or...: tops the lifelines back up. |

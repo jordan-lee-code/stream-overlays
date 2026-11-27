@@ -190,6 +190,31 @@ asection("the website");
     names.forEach(n => ["dev/index.html", "dev/harness.js", "dev/copy-panel.js", "widget/widget.html", "widget/widget.css", "widget/widget.js", "widget/fields.json"].forEach(f =>
       assert.ok(fs.existsSync(path.join(outDir, n, f)), n + " is missing " + f)));
   });
+  atest("one page lists every overlay's chat commands, and the landing page links to it", () => {
+    const page = fs.readFileSync(path.join(outDir, "commands.html"), "utf8");
+    assert.ok(index.indexOf('href="commands.html"') !== -1, "the landing page has no link to it");
+    names.forEach(n => {
+      const fields = JSON.parse(fs.readFileSync(path.join(repoRoot, "overlays", n, "widget", "fields.json"), "utf8"));
+      const own = fields.tmCommand || fields.command;
+      const word = own && own.type === "text" ? own.value : "";
+      const section = (new RegExp('<section id="' + n + '"[\\s\\S]*?</section>').exec(page) || [""])[0];
+      if (word) assert.ok(section.indexOf('<td class="type"><code>' + word) !== -1, n + " has the command word " + word + " and no command listed in a README table headed Command");
+      assert.ok(page.indexOf('href="' + n + '/dev/"') !== -1, n + " is not mentioned");
+      if (word && section) assert.ok(section.indexOf("Command word: <code>" + word + "</code>") !== -1, n + " does not name " + word + " as its command word");
+    });
+    ["!lie</code>", "!lierefresh</code>", "!brb meeting 30m", "!brb custom", "!spin ask What", "!chatfeed hide NoisyBot"].forEach(c => assert.ok(page.indexOf("<code>" + c) !== -1, c + " is missing"));
+    assert.ok(page.indexOf("href=\"#meetings\"") === -1 && page.indexOf("server/README.md") === -1, "a link into a README would lead nowhere");
+  });
+  atest("command tables are read from a README, once each, with who can use them", () => {
+    const { commandTables, commandsPage } = require("../../scripts/commands-page");
+    const readme = "## Chat commands\n\n| Command | Who | What it does |\n| --- | --- | --- |\n| `!a one \\| two` | mods | Does <b>it</b>. [x](javascript:alert(1)) [y](https://example.com) |\n\n## Again\n\n| Command | What it does |\n| --- | --- |\n| `!a one \\| two` | Repeated. |\n\n| What you write | What shows |\n| --- | --- |\n| `!no` | Not a command table. |\n";
+    const tables = commandTables(readme);
+    assert.strictEqual(tables.length, 1);
+    assert.deepStrictEqual([tables[0].heading, tables[0].hasWho, tables[0].rows.length, tables[0].rows[0].command, tables[0].rows[0].who], ["Chat commands", true, 1, "`!a one | two`", "mods"]);
+    const page = commandsPage([{ name: "x", title: "<i>X</i>", word: "!a", limit: true, tables }]);
+    assert.ok(page.indexOf("<b>it</b>") === -1 && page.indexOf("<i>X</i>") === -1 && page.indexOf('href="javascript:') === -1, "markup or an unsafe link got through");
+    assert.ok(page.indexOf('<a href="https://example.com">y</a>') !== -1 && page.indexOf("<code>!a one | two</code>") !== -1);
+  });
   atest("every overlay has a picture for its card, and it reaches the site", () => {
     names.forEach(n => {
       assert.ok(fs.existsSync(path.join(repoRoot, "overlays", n, "docs", "card.png")), n + " has no docs/card.png (node kit/bin/overlay-kit.js gallery overlays/" + n + " --card)");
