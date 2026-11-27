@@ -106,6 +106,22 @@
           }
         },
         {
+          "label": "Message Effect in chat",
+          "kind": "se",
+          "listener": "message",
+          "event": {
+            "data": {
+              "text": "thank you for the stream",
+              "nick": "viewer",
+              "displayName": "Viewer",
+              "badges": [],
+              "tags": {
+                "msg-id": "animated-message"
+              }
+            }
+          }
+        },
+        {
           "label": "Blerp 100 bits",
           "kind": "se",
           "listener": "message",

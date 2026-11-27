@@ -233,8 +233,17 @@
   },
   "gigantifyBits": {
     "type": "number",
-    "label": "Bits for each Gigantify an Emote: enter your channel's price for it. Used when its chat message does not say what was paid. 0 does not count it",
-    "value": 0,
+    "label": "Bits for each Gigantify an Emote: set this to your channel's price for it. Used when its chat message does not say what was paid. 0 does not count it",
+    "value": 100,
+    "min": 0,
+    "max": 100000,
+    "step": 1,
+    "group": "Counting"
+  },
+  "effectBits": {
+    "type": "number",
+    "label": "Bits for each Message Effect: set this to your channel's price for it. Used when its chat message does not say what was paid. 0 does not count it",
+    "value": 100,
     "min": 0,
     "max": 100000,
     "step": 1,
