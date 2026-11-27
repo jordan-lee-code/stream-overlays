@@ -187,6 +187,13 @@ function chat(t,n){window.dispatchEvent(new CustomEvent("onEventReceived",{detai
   event:{data:{text:t,nick:n||"streamer",displayName:n||"Streamer",badges:n?[]:[{type:"broadcaster"}],tags:{}}}}}));}
 var answers=${JSON.stringify(answers || null)};
 var steps=[], wait=function(ms){return new Promise(function(r){setTimeout(r,ms)})};
+/* The card's font can still be on its way when a step is reached, and the widget can only fit the text again once it
+   has landed. So wait for that and nothing else: no vote or reveal is sent, and the widget has to do the refit itself.
+   Reading a size first makes the browser ask for any font it has not asked for yet. */
+async function settled(){
+  for(var i=0;i<60;i++){ void document.body.offsetWidth; await wait(100); if(document.fonts.status!=="loading") break; }
+  await wait(200);
+}
 function look(name){
   var card=document.getElementById("vote-card"), c=card.getBoundingClientRect();
   var at=[".vote-card",".vote-head",".vote-eyebrow",".vote-options",".vote-lie",".vote-foot",".vote-option",".vote-bar",".vote-count"].map(function(q){
@@ -211,10 +218,10 @@ function look(name){
   await document.fonts.ready; await wait(60);
   if(answers){ served={rev:2,number:5,who:"${LONG_NAME}",letter:"",lie:"",answers:answers}; await wait(1300); }
   else { chat("!vote 600s"); await wait(300); }
-  look("vote open");
-  chat("a","a_very_long_viewer_name_indeed_it_is"); for(var v=0;v<999;v++) chat("a","v"+v); await wait(300); look("1000 votes");
-  served={rev:3,number:5,who:"${LONG_NAME}",letter:"",lie:"",answers:answers||[]}; await wait(1300); look("long name");
-  served={rev:4,number:5,who:"${LONG_NAME}",letter:"A",lie:${JSON.stringify(LONG_LIE)},answers:answers||[]}; await wait(1300); look("long lie");
+  await settled(); look("vote open");
+  chat("a","a_very_long_viewer_name_indeed_it_is"); for(var v=0;v<999;v++) chat("a","v"+v); await wait(300); await settled(); look("1000 votes");
+  served={rev:3,number:5,who:"${LONG_NAME}",letter:"",lie:"",answers:answers||[]}; await wait(1300); await settled(); look("long name");
+  served={rev:4,number:5,who:"${LONG_NAME}",letter:"A",lie:${JSON.stringify(LONG_LIE)},answers:answers||[]}; await wait(1300); await settled(); look("long lie");
   await wait(5000);
   var card=document.getElementById("vote-card").getBoundingClientRect(), say=document.getElementById("vote-praise-title").getBoundingClientRect();
   var view=document.getElementById("vote-praise-window").getBoundingClientRect(), names=document.getElementById("vote-praise-names");
