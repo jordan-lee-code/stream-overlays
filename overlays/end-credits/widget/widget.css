@@ -23,7 +23,7 @@
 /* The credits are clipped to the panel by this window, so the panel itself can let its decorations hang outside. */
 .ec-window { position: absolute; inset: 0; overflow: hidden; border-radius: inherit; }
 #ec-root [hidden] { display: none !important; }
-/* Until the credits roll the whole widget is gone. */
+/* With the waiting card switched off, the whole widget is gone until the credits roll. */
 #ec-root[hidden] { display: none !important; }
 
 /* The Animate field switches off the small motions. The roll itself always scrolls, since a roll that does not move is not one. */
@@ -76,6 +76,7 @@
   transform: translateY(100cqh);
 }
 .ec-roll.go { animation: ec-scroll var(--ec-dur, 60s) linear forwards; }
+.ec-roll.wait { top: 50%; transform: translateY(-50%); }
 @keyframes ec-scroll {
   from { transform: translateY(100cqh); }
   to { transform: translateY(-100%); }

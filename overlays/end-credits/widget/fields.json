@@ -138,6 +138,12 @@
     "value": "See you next time",
     "group": "Credits"
   },
+  "waitCard": {
+    "type": "checkbox",
+    "label": "Show the card with its title while waiting for the roll",
+    "value": true,
+    "group": "Roll"
+  },
   "speed": {
     "type": "number",
     "label": "Roll speed (percent of the box height per second)",
