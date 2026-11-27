@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Be Right Back can hide the clock for every break. Untick Show the clock to leave just the headline and the rotating lines. It is on by default, and the separate meeting setting still works for hiding it in meetings only.
 - The website has a new page listing every chat command for every overlay, with examples, and a box to search them. It is made from the command tables in each overlay's README, so the two stay the same. The READMEs gain the rows that were missing: the Be Right Back meeting and custom headline commands, the Two Truths and a Lie server commands, and examples where a command only had a placeholder.
 - **Two Truths and a Lie has new names underneath. The game keeps its title.** The overlay now lives in `overlays/spot-the-lie`, so its pages on the website have moved to match and old links stop working. The server is `lie-server.js`, its settings start `LIE_` instead of `TRUTH_`, and its download is `lie-server.zip`. **To update:** rename those on your server, and copy the overlay's new code. Saved votes and scores start afresh.
 - **Two Truths and a Lie's server commands are now `!lie`.** `!lie` takes the next step, with `!lienext`, `!lieprev`, `!liereset` and `!lierefresh`. The old names no longer do anything, so if a chatbot runs these for you, rename them there. `!vote` is unchanged.

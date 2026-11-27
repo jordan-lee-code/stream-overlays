@@ -54,6 +54,12 @@
     "value": "Back any moment now",
     "group": "Break"
   },
+  "showClock": {
+    "type": "checkbox",
+    "label": "Show the clock. Untick it to hide it for every break, along with the words above it, the bar and the time you will be back",
+    "value": true,
+    "group": "Break"
+  },
   "showReturn": {
     "type": "checkbox",
     "label": "Show the time you will be back under the clock",
