@@ -53,6 +53,21 @@
             "label": "!brb back",
             "kind": "chat",
             "text": "!brb back"
+          },
+          {
+            "label": "!brb meeting",
+            "kind": "chat",
+            "text": "!brb meeting"
+          },
+          {
+            "label": "!brb meeting 30m",
+            "kind": "chat",
+            "text": "!brb meeting 30m"
+          },
+          {
+            "label": "!brb custom",
+            "kind": "chat",
+            "text": "!brb custom \"I'm heading out to the shop, see you soon!\""
           }
         ]
       }

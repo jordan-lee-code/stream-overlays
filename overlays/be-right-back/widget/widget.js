@@ -386,6 +386,7 @@
   var STORE_KEY = "be_right_back_v1";
   var TICK_MS = 250;
   var MAX_MS = 48 * 3600000;
+  var MAX_MESSAGE = 140;
   var el = {};
   var cfg = {};
   var state = blankState();
@@ -395,7 +396,7 @@
 
   // since is the moment the break began, and until is the moment you said you would be back (0 for no set time). Both 0 means
   // no break is on.
-  function blankState() { return { since: 0, until: 0 }; }
+  function blankState() { return { since: 0, until: 0, meeting: false, message: "" }; }
   function now() { return Date.now(); }
 
   // "15m", "1h30m", "90s", "1:30:00", "5:00" (minutes and seconds) or a bare number of
@@ -452,6 +453,7 @@
     var c = readCommon(f, { command: "!brb", title: "Be right back" });
     c.fit = false;                                       // the card is the whole box, so there is nothing to shrink
     c.startMs = clamp(num(f.startMinutes, 0), 0, 2880) * 60000;
+    c.meetingTitle = txt(f.meetingTitle, "Currently in a meeting, be back soon <3");
     c.lateTitle = txt(f.lateTitle, "Back any moment now");
     c.countLabel = txt(f.countLabel, "Back in");
     c.awayLabel = txt(f.awayLabel, "Away for");
@@ -483,23 +485,23 @@
   // The break
   // ---------------------------------------------------------------------------
   // A break back in `ms`, or with no set time when `ms` is 0.
-  function begin(ms) {
+  function begin(ms, kind) {
     if (ms < 0 || ms > MAX_MS || isNaN(ms)) return false;
-    state.since = now(); state.until = ms > 0 ? now() + ms : 0;
+    state.since = now(); state.until = ms > 0 ? now() + ms : 0; state.meeting = !!(kind && kind.meeting); state.message = (kind && kind.message) || "";
     save(); render();
     return true;
   }
-  function beginAt(text) {
+  function beginAt(text, kind) {
     var c = parseClock(text);
     if (!c) return false;
-    return begin(nextAt(c) - now());
+    return begin(nextAt(c) - now(), kind);
   }
   // Moves the time you will be back. Adding to a break that has no time, or that is not on, gives it one from now, and taking time off
   // a break that is not counting down is ignored.
-  function shift(ms, sign) {
+  function shift(ms, sign, kind) {
     if (!(ms > 0)) return;
     var p = phase();
-    if (p === "idle") { if (sign > 0) begin(ms); return; }
+    if (p === "idle") { if (sign > 0) begin(ms, kind); return; }
     // A break with no set time is given one from now, and keeps the moment it began.
     if (p === "away") { if (sign > 0) { state.until = now() + ms; save(); render(); } return; }
     var base = p === "late" ? now() : state.until;
@@ -509,6 +511,13 @@
     save(); render();
   }
   function stop() { state = blankState(); save(); render(); }
+
+  // Phones often turn typed quote marks into curly ones, so both kinds are taken off.
+  function customMessage(text) {
+    var t = String(text || "").replace(/^\s+|\s+$/g, ""), quoted = /^["\u201C]([\s\S]*)["\u201D]$/.exec(t);
+    if (quoted) t = quoted[1].replace(/^\s+|\s+$/g, "");
+    return t.slice(0, MAX_MESSAGE).replace(/[\uD800-\uDBFF]$/, "");   // so the cut never leaves half an emoji
+  }
 
   // ---------------------------------------------------------------------------
   // Chat and buttons
@@ -520,17 +529,22 @@
     if (low !== base && low.indexOf(base + " ") !== 0) return;
     var rest = text.slice(base.length).replace(/^\s+|\s+$/g, "");
     if (!canManage(cfg, rolesOf(data))) { if (!rest) popTitle(); return; }   // anyone can ask to see it, and only managers can change it
-    if (!rest) { begin(cfg.startMs); return; }
+    var meeting = /^meeting(\s|$)/i.test(rest);
+    if (meeting) rest = rest.slice(7).replace(/^\s+/, "");
+    var kind = { meeting: meeting };
+    var usualMs = meeting ? 0 : cfg.startMs;   // a meeting rarely lasts as long as your usual break
+    if (!rest) { begin(usualMs, kind); return; }
     var m = /^(\S+)\s*(.*)$/.exec(rest), first = m[1].toLowerCase(), more = m[2];
     switch (first) {
-      case "start": if (more) begin(parseDuration(more)); else begin(cfg.startMs); return;
-      case "at": beginAt(more); return;
-      case "add": shift(parseDuration(more), 1); return;
+      case "start": begin(more ? parseDuration(more) : usualMs, kind); return;
+      case "at": beginAt(more, kind); return;
+      case "add": shift(parseDuration(more), 1, kind); return;
+      case "custom": var message = customMessage(more); if (message && !meeting) begin(0, { message: message }); return;
       case "less": shift(parseDuration(more), -1); return;
       case "back": case "stop": case "clear": case "done": stop(); return;
     }
     var dur = parseDuration(rest);
-    if (!isNaN(dur) && dur > 0) begin(dur);
+    if (!isNaN(dur) && dur > 0) begin(dur, kind);
   }
   function handleButton(field) {
     switch (field) {
@@ -552,6 +566,8 @@
       if (isFinite(since) && since > 0) {
         s.since = since;
         s.until = isFinite(until) && until > 0 ? until : 0;
+        s.meeting = saved.meeting === true;
+        s.message = typeof saved.message === "string" ? saved.message : "";
       }
     }
     return s;
@@ -565,8 +581,10 @@
     el.app.classList.toggle("away", p === "away");
     el.app.classList.toggle("count", p === "count");
     el.app.classList.toggle("late", p === "late");
-    var title = p === "late" ? cfg.lateTitle : cfg.title;
+    var title = p === "late" ? cfg.lateTitle : state.message || (state.meeting ? cfg.meetingTitle : cfg.title);
     setText(el.title, title);
+    // The card does not shrink to fit, so a long headline gets smaller letters to leave room for the clock under it.
+    el.app.style.setProperty("--br-title-fit", Math.round(Math.min(1, Math.sqrt(45 / Math.max(1, title.length))) * 1000) / 1000);
     el.title.hidden = !cfg.showTitle || !title;
     var label = p === "count" ? cfg.countLabel : p === "away" ? cfg.awayLabel : "";
     setText(el.label, label);

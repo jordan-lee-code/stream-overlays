@@ -70,6 +70,18 @@ The command word is a setting. Viewers can type the bare `!brb` to make the head
 
 **Writing a time of day.** After `at`, a 24-hour time such as `20:30`, or an am or pm one such as `8pm` or `8:30 pm`. If that time has already passed today, it means tomorrow. A bare number is not a time of day, because a bare number is minutes.
 
+## Meetings
+
+Type `!brb meeting` and the headline reads "Currently in a meeting, be back soon <3", with the clock counting up. It takes the same words as `!brb`, so `!brb meeting 30m`, `!brb meeting at 15:00` and `!brb meeting back` all work, and the same people can use it. The default break length does not apply to a meeting, so it has no set time unless you give it one.
+
+Using `add` or `less` keeps a meeting a meeting, and starting a new break with `!brb` returns to the usual headline. If the meeting runs past the time you gave, the late headline shows as it does for any break. The wording is a setting, **What the headline says during a meeting**.
+
+## A custom headline
+
+For a one-off, put your own words after `custom`, such as `!brb custom "I'm heading out to the shop, see you soon!"`. They become the headline for that break, and the clock counts up. The quote marks are optional.
+
+Everything after `custom` becomes the headline. To set a return time, use `!brb add 10m` afterwards. It counts from now and keeps your words. `!brb back` or a new break clears it. Headlines are cut at 140 characters, and one longer than 45 gets smaller letters to leave room for the clock. The same people who can run a break can set one. If the headline is switched off in the settings, custom words are hidden too.
+
 ## When you run late
 
 If the time you gave passes and you have not typed `!brb back`, the clock and bar go and the headline changes to the words in **What the headline says when the time you gave has passed**, "Back any moment now" by default. It stays until you clear it, or give a new time with `!brb add 5m`, which counts from now. A break that ran past its time while the overlay was closed shows the same way as soon as it loads.
