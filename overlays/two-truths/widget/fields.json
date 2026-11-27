@@ -21,6 +21,12 @@
     "value": "",
     "group": "Reveals"
   },
+  "serverKey": {
+    "type": "text",
+    "label": "Secret key (optional): lets this overlay run !truth, !truthnext, !truthprev, !truthreset and !truthrefresh from chat. Remove those commands from your chatbot if you fill this in",
+    "value": "",
+    "group": "Reveals"
+  },
   "followSeconds": {
     "type": "number",
     "label": "How often to ask the answer server what has been revealed, in seconds",

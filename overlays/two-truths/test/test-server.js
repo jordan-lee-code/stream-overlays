@@ -43,7 +43,8 @@ function start(extra) {
   const first = await get("/state");
   ok(first.headers.get("access-control-allow-origin") === "*" && first.headers.get("cache-control") === "no-store", "the overlay may read /state, and it is never cached");
   ok(!/First|Second|first lie/.test(first.text), "before the round, /state names nobody");
-  ok((await get("/?q=step&key=" + KEY)).headers.get("access-control-allow-origin") === null, "other sites are not invited to read the commands");
+  ok((await get("/?q=step&key=" + KEY)).headers.get("access-control-allow-origin") === "*", "the overlay may read a command's reply when it has the key");
+  ok((await get("/?q=step&key=wrong")).headers.get("access-control-allow-origin") === "*", "and may read that its key was refused");
   ok((await get("/health")).text === "ok, 2 people loaded\n", "health says how many are loaded");
   await run("reset");
 
@@ -102,6 +103,22 @@ function start(extra) {
   ok((await get("/?q=prev&key=wrong")).text === "Sorry, that link is missing its key." && (await get("/?q=next")).text === "Sorry, that link is missing its key." && (await state()).rev === quiet, "both need the key");
   for (let i = 0; i < 70; i++) { await run("reset"); await run("step"); }
   ok(JSON.parse(fs.readFileSync(path.join(dir, "state.json"), "utf8")).history.length === 100, "the history does not grow for ever");
+  await run("reset");
+
+  console.log("\n[one chat message, heard twice]");
+  const press = async (q, id) => (await get("/?q=" + q + "&key=" + KEY + "&id=" + id)).text;
+  const twice = await Promise.all([press("step", "msg-1"), press("step", "msg-1")]);
+  const once = await state();
+  ok(twice[0] === twice[1] && once.who !== "" && once.letter === "", "two copies sending it together move one step (" + twice[0] + ")");
+  ok((await press("step", "msg-1")) === twice[0] && (await state()).rev === once.rev, "and a late copy gets the same reply without moving");
+  ok((await press("step", "msg-2")) !== twice[0] && (await state()).rev === once.rev + 1, "the next message moves on");
+  ok((await get("/?q=step&key=wrong&id=msg-3")).text === "Sorry, that link is missing its key.", "a wrong key is refused with an id too");
+  await press("reset", "msg-3");
+  ok((await state()).who === "", "and that refusal does not use up the id");
+  for (let i = 0; i < 205; i++) await press("who+1", "bulk-" + i);
+  const before = (await state()).rev;
+  await press("step", "msg-1");
+  ok((await state()).rev === before + 1, "only the latest ids are remembered");
   await run("reset");
 
   console.log("\n[a bad file and bad requests]");
