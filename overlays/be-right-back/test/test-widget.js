@@ -133,6 +133,16 @@ const cls = c => E("br-app").classList.contains(c);
   boss("!brb 5m"); ok(timers.every(shown), "an ordinary break keeps its clock, words, bar and time");
   boss('!brb custom "Walking the dog"'); ok(shown("br-clock"), "and so does a custom headline");
 
+  section("the clock off for every break");
+  await load({ showClock: false, meetingClock: true });
+  for (const [command, words] of [["!brb 5m", "Be right back"], ["!brb meeting 30m", meetingWords], ['!brb custom "Walking the dog"', "Walking the dog"], ["!brb", "Be right back"]]) {
+    boss(command);
+    ok(shown("br-app") && title() === words && shown("br-msg") && timers.every(id => !shown(id)), command + " shows only the headline and the rotating line");
+  }
+  boss("!brb 5m"); await reload(); ok(timers.every(id => !shown(id)) && left() === 5 * MIN, "they stay hidden after a refresh, and the time is still kept");
+  await skip(6 * MIN); ok(title() === "Back any moment now", "it still says when it has run late");
+  boss("!brb back"); ok(!shown("br-app"), "and !brb back still hides the overlay");
+
   section("a custom headline");
   const shop = "I'm heading out to the shop, see you soon!";
   await load({ startMinutes: 10 });

@@ -82,6 +82,10 @@ For a one-off, put your own words after `custom`, such as `!brb custom "I'm head
 
 Everything after `custom` becomes the headline. To set a return time, use `!brb add 10m` afterwards. It counts from now and keeps your words. `!brb back` or a new break clears it. Headlines are cut at 140 characters, and one longer than 45 gets smaller letters to leave room for the clock. The same people who can run a break can set one. If the headline is switched off in the settings, custom words are hidden too.
 
+## Without a clock
+
+If you would rather not show a clock at all, untick **Show the clock**. Every break, including meetings and custom headlines, then shows only the headline and the rotating lines, without the words above the clock, the bar or the time you will be back. A timed break still keeps its time, so the late headline appears when it runs out. To hide the clock in meetings only, leave this ticked and untick **Show the clock during a meeting**.
+
 ## When you run late
 
 If the time you gave passes and you have not typed `!brb back`, the clock and bar go and the headline changes to the words in **What the headline says when the time you gave has passed**, "Back any moment now" by default. It stays until you clear it, or give a new time with `!brb add 5m`, which counts from now. A break that ran past its time while the overlay was closed shows the same way as soon as it loads.
