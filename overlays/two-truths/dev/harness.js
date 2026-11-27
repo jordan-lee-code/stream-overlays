@@ -364,7 +364,8 @@
       '<span id="hosting-link">The hosting steps are in <code>server/README.md</code>.</span></p>' +
       '<p class="hint">For automatic reveals, your server needs a public <code>https</code> address. The hosting guide uses ' +
       'Cloudflare Tunnel, and a permanent address needs your own domain on Cloudflare. Enter that address under ' +
-      '<strong>Reveals, Answer server address</strong>, without the key. Revealing with <code>!vote reveal B</code> needs no server or tunnel.</p>' +
+      '<strong>Reveals, Answer server address</strong>, without the key on the end. To run the round without chatbot commands, also put the key in ' +
+      '<strong>Reveals, Secret key</strong>. Revealing with <code>!vote reveal B</code> needs no server or tunnel.</p>' +
 
       '<h2>Chat votes</h2>' +
       '<div class="row">' +

@@ -31,7 +31,7 @@ function makeEl(id) {
   e.classList._s = e._cls; return e;
 }
 const ids = ["vote-app", "vote-card", "vote-title", "vote-timer", "vote-eyebrow",
-  "vote-options", "vote-lie", "vote-total", "vote-hint", "vote-font-link"];
+  "vote-options", "vote-lie", "vote-notice", "vote-total", "vote-hint", "vote-font-link"];
 const elements = {}; ids.forEach(id => elements[id] = makeEl(id));
 const document = {
   getElementById: id => elements[id] || null,
@@ -57,7 +57,16 @@ class Audio {
 // A pretend answer server: `served` is what /state says next, and `asked` is every address the widget fetched.
 let served = null;
 const asked = [];
+// Commands: `sent` is every command address, `reply` what comes back (null is no answer), and `after` what /state says once it has run.
+let reply = null, after = null, status = 200;
+const sent = [];
 const fetchMock = (url) => {
+  if (url.indexOf("/?q=") !== -1) {
+    sent.push(url);
+    if (after) served = after;
+    const body = reply;
+    return body === null ? Promise.reject(new Error("offline " + url)) : Promise.resolve({ ok: status === 200, status, text: () => Promise.resolve(body) });
+  }
   asked.push(url);
   return served ? Promise.resolve({ ok: true, json: () => Promise.resolve(JSON.parse(JSON.stringify(served))) }) : Promise.reject(new Error("offline"));
 };
@@ -86,6 +95,7 @@ function chat(text, o) {
   if (o.mod) badges.push({ type: "moderator" });
   const data = { text, nick: (o.nick || "viewer").toLowerCase(), displayName: o.nick || "Viewer",
     badges, tags: { mod: o.mod ? "1" : "0" } };
+  if (o.id) data.msgId = o.id;
   window.dispatchEvent(new CustomEvent("onEventReceived", { detail: { listener: "message", event: { data } } }));
 }
 const boss = { broadcaster: true, nick: "Streamer" };
@@ -812,6 +822,96 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   asked.length = 0; load(); await wait(10000);
   ok(asked.length === 0, "taking the address out stops the asking");
   served = null;
+
+  console.log("\n[running the server from chat]");
+  const note = () => elements["vote-notice"].hidden ? "" : elements["vote-notice"].textContent;
+  const server = { serverUrl: "https://truths.example.com/", serverKey: "  a-key&with=odd+chars  ", followSeconds: 30 };
+  const quietState = { rev: 1, number: 0, who: "", letter: "", lie: "" };
+  const mod = (o) => Object.assign({ mod: true, nick: "Marlow" }, o || {});
+
+  sent.length = 0; reply = "#1 was Alex."; served = quietState;
+  load({ serverUrl: server.serverUrl }); await wait(5);
+  chat("!truth", boss); chat("!truthreset", boss); await wait(5);
+  ok(sent.length === 0, "with no key the commands are left to a chatbot");
+  load({ serverKey: server.serverKey }); await wait(5);
+  chat("!truth", boss); await wait(5);
+  ok(sent.length === 0, "and with a key but no address nothing is sent");
+
+  load(server); await wait(5);
+  chat("!truth", { nick: "Randomer" }); await wait(5);
+  ok(sent.length === 0, "a viewer cannot run them");
+  chat("!truth please", boss); chat("!truthful", boss); chat("!truth 2", boss); await wait(5);
+  ok(sent.length === 0, "nor does a line that only starts like one");
+  load(Object.assign({ whoCanManage: "broadcaster" }, server)); await wait(5);
+  chat("!truth", mod()); await wait(5);
+  ok(sent.length === 0, "in broadcaster-only mode a moderator cannot either");
+
+  served = quietState; load(server); await wait(5);
+  chat("!vote", boss); await wait(5);
+  chat("a", { nick: "ann" }); chat("c", { nick: "ben" });
+  after = { rev: 2, number: 1, who: "Alex", letter: "", lie: "" };
+  chat("!TRUTH", mod({ id: "abc 1" })); await wait(5);
+  ok(sent.length === 1 && sent[0] === "https://truths.example.com/?q=step&key=a-key%26with%3Dodd%2Bchars&id=abc%201", "a moderator's !truth is sent with the key and the message id (" + sent[0].replace(/key=[^&]+/, "key=...") + ")");
+  ok(heading() === "#1 was Alex" && note() === "", "the name is on the card at once, with no extra message");
+  ok(votes().join() === "1,0,1", "and the command is not counted as a vote");
+  reply = "#1 - the lie was C: sharks"; after = { rev: 3, number: 1, who: "Alex", letter: "C", lie: "sharks" };
+  chat("!truth", boss); await wait(5);
+  ok(eyebrow() === "The lie was C" && lieText() === "sharks" && note() === "", "the second !truth reveals the lie at once");
+  ok(sent[1].indexOf("&id=") === -1, "a message with no id is sent without one");
+
+  reply = "Went back one. Next !truth says #1's lie."; after = { rev: 4, number: 1, who: "Alex", letter: "", lie: "", back: true, undone: { number: 1, part: "lie" } };
+  chat("!truthprev", boss); await wait(5);
+  ok(sent[2].indexOf("?q=prev&") !== -1 && lieText() === "" && !/The lie was/.test(eyebrow()) && note() === reply, "!truthprev takes the lie off and says what happened");
+  await wait(8100);
+  ok(note() === "", "the message goes after a few seconds");
+  const others = [["!truthnext", "next"], ["!truthreset", "reset"], ["!truthrefresh", "refresh"]];
+  after = null;
+  for (const [command, q] of others) {
+    reply = "Done " + q + ".";
+    chat(command, boss); await wait(5);
+    ok(sent[sent.length - 1].indexOf("?q=" + q + "&") !== -1 && note() === reply, command + " is sent, and its reply is shown");
+  }
+
+  chat("!vote cancel", boss);
+  served = { rev: 10, number: 0, who: "", letter: "", lie: "" }; await wait(30100);
+  reply = "#2 was Sam."; after = { rev: 11, number: 2, who: "Sam", letter: "", lie: "" };
+  chat("!truth", boss); await wait(5);
+  ok(!shown() && note() === "#2 was Sam.", "with no poll on screen, !truth still shows what it read out");
+  chat("!vote", boss); await wait(5);
+  ok(heading() === "#2 was Sam", "and the name is waiting for the next poll");
+  reply = "That is everyone in the running order. !truthreset starts again."; after = null;
+  chat("!truth", boss); await wait(5);
+  ok(note() === reply, "the end of the running order is said on screen");
+
+  reply = "Sorry, that link is missing its key.";
+  chat("!truth", boss); await wait(5);
+  ok(/refused the key/.test(note()), "a wrong key says to check the setting");
+  reply = "<!doctype html><p>another site</p>";
+  chat("!truth", boss); await wait(5);
+  ok(/did not reply like the answer server/.test(note()), "a web page is not shown as a reply");
+  reply = "x".repeat(900);
+  chat("!truthnext", boss); await wait(5);
+  ok(note().length === 200, "a long reply is cut short");
+  const count = sent.length;
+  reply = null;
+  chat("!truth", boss); await wait(20000);
+  ok(sent.length === count + 1, "a command with no answer is never sent again by itself");
+  reply = null;
+  chat("!truth", boss); await wait(5);
+  ok(/Check the card/.test(note()) && note().indexOf("a-key") === -1, "and it says to check the card, without the key");
+  status = 502; reply = "Bad gateway";
+  chat("!truthreset", boss); await wait(5);
+  ok(/Check the card/.test(note()), "so does an error from the tunnel");
+  status = 200;
+  const logged = [], realLog = console.log;
+  load(Object.assign({ debug: true }, server)); await wait(5);
+  reply = null; console.log = (...a) => logged.push(a.join(" "));
+  chat("!truth", boss); await wait(5);
+  console.log = realLog;
+  ok(logged.join(" ").indexOf("a-key") === -1, "the key is never logged, even with troubleshooting on");
+  reload(); await wait(5);
+  ok(note() === "", "a reload clears the message");
+  served = null; reply = null; after = null;
 
 
   console.log("\n=== " + pass + " passed, " + fail + " failed ===");

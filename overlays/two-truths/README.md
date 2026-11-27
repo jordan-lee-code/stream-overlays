@@ -44,11 +44,11 @@ Undo changes the card only. It does not move the answer server's place in the ru
 
 ## How the overlay stays free of spoilers
 
-The overlay asks the server for one address, `/state`, every two seconds while an address is set. That address holds only what has already been read out: nothing before the first `!truth`, then a name, then that person's lie. The upcoming answers are only reachable with your secret key, and the overlay is never given the key.
+The overlay asks the server for one address, `/state`, every two seconds while an address is set. That address holds only what has already been read out: nothing before the first `!truth`, then a name, then that person's lie. The upcoming answers are only reachable with your secret key. The overlay does not need the key to follow along. You can give it one in **Reveals, Secret key** so that it runs `!truth` and the other server commands from chat itself, with no chatbot commands to set up. It still only draws what has been read out, but the key is then saved in the widget's settings, so [read what that means](server/README.md#6-add-the-chat-commands) first.
 
 Anyone who learns the address can read `/state`, so treat it as being as public as your stream. If the server cannot be reached, voting carries on and `!vote reveal` still works.
 
-If something goes wrong, `!truthprev` on your chatbot undoes the last server step, and takes it off the card, while `!truthnext` skips a person. All the server commands are in [server/README.md](server/README.md).
+If something goes wrong, `!truthprev` undoes the last server step, and takes it off the card, while `!truthnext` skips a person. All the server commands are in [server/README.md](server/README.md).
 
 A browser source that reloads does not replay the last reveal. If it reloads at the very moment of a reveal, use `!vote reveal` to put it on screen.
 
