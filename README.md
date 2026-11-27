@@ -20,6 +20,7 @@ A set of overlays for Twitch streams, for StreamElements and Mix It Up. Each is 
 | --- | --- |
 | [Spin Wheel](overlays/spin-wheel) | A wheel for giveaways, raffles and forfeits. |
 | [Chat Poll](overlays/chat-poll) | Quick polls voted on by typing an option. |
+| [Two Truths and a Lie](overlays/two-truths) | Chat votes on the lie, and the card reveals it, by hand or from an answer server you host. |
 | [Leaderboard](overlays/leaderboard) | Top gifters, cheerers and tippers. |
 | [Recent Activity](overlays/recent-activity) | The latest subs, gifts, bits, tips, follows and raids. |
 | [Chat Feed](overlays/chat-feed) | On-screen chat with profile pictures and pronouns, in the same style presets. |

@@ -1,0 +1,16 @@
+[Unit]
+Description=Two Truths and a Lie answer server
+After=network.target
+
+[Service]
+# Change YOURNAME to the account that holds the folder, in all three places.
+User=YOURNAME
+WorkingDirectory=/home/YOURNAME/truth-server
+ExecStart=/usr/bin/node /home/YOURNAME/truth-server/truth-server.js
+# TRUTH_SECRET lives in this file, which only root can read.
+EnvironmentFile=/etc/truth-server.env
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target

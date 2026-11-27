@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Two Truths and a Lie, local dev harness</title>
+  <link rel="stylesheet" href="../widget/widget.css">
+  <link rel="stylesheet" href="dev.css">
+  <style>
+    #stage { width: 960px; height: 540px; }
+  </style>
+</head>
+<body>
+  <div id="layout">
+    <div id="stage-wrap"><div id="stage"></div></div>
+    <div id="controls"></div>
+  </div>
+  <script src="copy-panel.js"></script>
+  <script src="design-panel.js"></script>
+  <script src="snapshot-panel.js"></script>
+  <script src="mixitup-pack.js"></script>
+  <script src="box-size.js"></script>
+  <script src="harness.js"></script>
+  <!-- Ko-fi support button. It is part of this local dev page only, not the widget, so it never appears on stream. -->
+  <script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
+  <script>
+    if (window.kofiWidgetOverlay) {
+      kofiWidgetOverlay.draw('journeyingjordan', {
+        'type': 'floating-chat',
+        'floating-chat.donateButton.text': 'Support me',
+        'floating-chat.donateButton.background-color': '#ff38b8',
+        'floating-chat.donateButton.text-color': '#fff'
+      });
+    }
+  </script>
+</body>
+</html>
