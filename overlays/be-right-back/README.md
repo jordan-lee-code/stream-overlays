@@ -74,13 +74,19 @@ Type `!brb meeting` and the headline reads "Currently in a meeting, be back soon
 
 Using `add` or `less` keeps a meeting a meeting, and starting a new break with `!brb` returns to the usual headline. If the meeting runs past the time you gave, the late headline shows as it does for any break. The wording is a setting, **What the headline says during a meeting**.
 
-If you would rather not show a clock in meetings, untick **Show the clock during a meeting**. That also hides the words above it, the bar and the time you will be back, leaving the headline and the rotating lines. A timed meeting still keeps its time, so the late headline appears when it runs out. Ordinary breaks are not affected.
+If you would rather not show a clock in meetings, untick **Show the clock during a meeting**. That also hides the words above it, the bar and the time you will be back, leaving the headline and the rotating lines. A meeting you give a time, such as `!brb meeting 30m`, still shows them. Ordinary breaks are not affected.
 
 ## A custom headline
 
 For a one-off, put your own words after `custom`, such as `!brb custom "I'm heading out to the shop, see you soon!"`. They become the headline for that break, and the clock counts up. The quote marks are optional.
 
 Everything after `custom` becomes the headline. To set a return time, use `!brb add 10m` afterwards. It counts from now and keeps your words. `!brb back` or a new break clears it. Headlines are cut at 140 characters, and one longer than 45 gets smaller letters to leave room for the clock. The same people who can run a break can set one. If the headline is switched off in the settings, custom words are hidden too.
+
+## Without a clock
+
+If you would rather not show a clock, untick **Show the clock**. Breaks, meetings and custom headlines with no time typed then show only the headline and the rotating lines, without the words above the clock, the bar or the time you will be back. To do this in meetings only, leave it ticked and untick **Show the clock during a meeting**.
+
+Typing a time in chat shows the clock even with either setting unticked, as in `!brb 30m`, `!brb meeting at 15:00` or `!brb add 10m`. The **Add five minutes** button does too. A break using your default length has no typed time, so its clock stays hidden, and the late headline still appears when it runs out. The bar and the time you will be back keep following their own settings.
 
 ## When you run late
 

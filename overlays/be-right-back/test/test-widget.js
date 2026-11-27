@@ -122,16 +122,32 @@ const cls = c => E("br-app").classList.contains(c);
   await load({ command: "!afk", meetingTitle: "On a call" }); boss("!afk MEETING"); ok(title() === "On a call", "it follows the command word, in any case, and the headline is a setting");
   await load(); boss("!brb meetings"); boss("!meeting"); ok(!stored().since, "a longer word, or !meeting on its own, is not a meeting");
 
-  section("a meeting with the clock off");
+  section("the clock settings, and times typed in chat");
   const timers = ["br-label", "br-clock", "br-bar", "br-at"];
+  const hidden = () => timers.every(id => !shown(id));
+  for (const off of [{ meetingClock: false }, { showClock: false }]) {
+    const name = Object.keys(off)[0];
+    await load(off);
+    boss("!brb meeting"); ok(hidden() && title() === meetingWords && shown("br-msg"), name + " off: a meeting with no time shows only the headline and the rotating line");
+    for (const command of ["!brb meeting 30m", "!brb meeting start 30m", "!brb meeting at 23:59", "!brb meeting add 30m"]) {
+      boss("!brb back"); boss(command); ok(timers.every(shown), name + " off: " + command + " shows the clock");
+    }
+    await reload(); ok(timers.every(shown), name + " off: and it still shows after a refresh");
+    boss("!brb back"); boss("!brb meeting"); boss("!brb add 10m"); ok(timers.every(shown), name + " off: adding a time later shows it too");
+    boss("!brb meeting"); ok(hidden(), name + " off: a new meeting with no time hides it again");
+    boss("!brb back"); ok(!shown("br-app"), name + " off: !brb back still hides the overlay");
+  }
+  await load({ showClock: false });
+  boss("!brb"); ok(hidden(), "a bare !brb shows no clock");
+  boss("!brb 5m"); ok(timers.every(shown), "a timed break shows it");
+  boss('!brb custom "Walking the dog"'); ok(hidden(), "a custom headline with no time does not");
+  button("btnAdd5"); ok(timers.every(shown), "until the button adds a time");
+  await load({ showClock: false, startMinutes: 10 });
+  boss("!brb"); ok(hidden() && left() === 10 * MIN, "the default length is not a typed time, so it stays hidden");
+  boss("!brb less 1m"); ok(hidden(), "and taking time off does not show it");
+  await skip(10 * MIN); ok(title() === "Back any moment now", "it still says when it has run late");
   await load({ meetingClock: false });
-  boss("!brb meeting");
-  ok(timers.every(id => !shown(id)) && title() === meetingWords && shown("br-msg"), "only the headline and the rotating line show");
-  boss("!brb meeting 30m"); ok(timers.every(id => !shown(id)) && left() === 30 * MIN, "a timed meeting hides them too, and still keeps its time");
-  await reload(); ok(timers.every(id => !shown(id)), "and they stay hidden after a refresh");
-  await skip(31 * MIN); ok(title() === "Back any moment now", "it still says when it has run late");
-  boss("!brb 5m"); ok(timers.every(shown), "an ordinary break keeps its clock, words, bar and time");
-  boss('!brb custom "Walking the dog"'); ok(shown("br-clock"), "and so does a custom headline");
+  boss("!brb"); ok(shown("br-clock"), "with only the meeting setting off, ordinary breaks keep their clock");
 
   section("a custom headline");
   const shop = "I'm heading out to the shop, see you soon!";
