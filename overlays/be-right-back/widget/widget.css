@@ -64,7 +64,7 @@
 
 .br-title {
   max-width: 100%;
-  font-size: calc(var(--br-title, 5.5) * var(--u));
+  font-size: calc(var(--br-title, 5.5) * var(--br-title-fit, 1) * var(--u));
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--w-accent);
@@ -72,7 +72,7 @@
 }
 .br-title.pop { animation: br-pop 0.45s ease; }
 /* When you are running late the headline is the whole point, so it takes the clock's place. */
-#br-app.late .br-title { font-size: calc(var(--br-clock, 15) * var(--u) * 0.6); letter-spacing: 0.04em; animation: br-pop 0.7s ease; }
+#br-app.late .br-title { font-size: calc(var(--br-clock, 15) * var(--br-title-fit, 1) * var(--u) * 0.6); letter-spacing: 0.04em; animation: br-pop 0.7s ease; }
 
 .br-label {
   font-size: calc(var(--br-label, 3) * var(--u));
