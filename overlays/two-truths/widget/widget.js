@@ -1,20 +1,6 @@
 /* Copyright (c) 2026 Jordan Lee (https://ko-fi.com/journeyingjordan). Released under the MIT licence: this notice must be kept in copies and substantial portions of the code. See LICENSE. */
-/* Two Truths and a Lie. StreamElements custom widget logic.
- *
- * The streamer (or a trusted mod) types `!vote` and a countdown starts over three
- * statements, A, B and C; chat votes by typing a letter or a number. When the lie
- * is revealed, by `!vote reveal B` or by the answer server in ../server, the card
- * marks it and says how many people spotted it. The server only ever tells this
- * widget what has already been read out, so no unrevealed answer reaches the page.
- *
- * Because a live poll is a thing that goes wrong in front of people, every
- * destructive step takes a snapshot first, so `!voteundo` can put back the poll
- * that was just ended, cancelled, restarted, or replaced.
- *
- * It leans on nothing beyond the two
- * custom events and SE_API.store, so dev/harness.js can drive the exact file in
- * a plain browser.
- */
+/* Two Truths and a Lie. StreamElements widget logic.
+   The server only ever tells this widget what has already been read out, so no unrevealed answer reaches the page. */
 (function () {
   "use strict";
 
@@ -398,9 +384,7 @@
     };
   }
 
-  // A sound is a file uploaded into the widget settings. Each play makes a fresh
-  // Audio so quick votes can overlap, and a browser that refuses to autoplay stays
-  // quiet instead of erroring.
+  // Each play makes a fresh Audio, so quick votes can overlap.
   function playSound(kind) {
     var snd = cfg.sounds;
     if (!snd || !snd.enabled || !snd[kind] || !snd[kind].url) return;
@@ -531,9 +515,7 @@
     root.style.setProperty("--pulse-s", L.pulseMs + "s");
     if (L.animate) root.classList.remove("no-motion");
     else root.classList.add("no-motion");
-    // Inside the StreamElements frame the page has no height of its own, so "100% of the box" came out as "as tall as the card",
-    // and the fit never saw a card that was too tall. The frame's viewport is the box, so inside a frame it is used. Outside one
-    // (the dev page, which draws the widget in a box of its own) the box it was given is kept.
+    // In StreamElements the frame's viewport is the box. The page itself is only as tall as the card.
     var framed = false;
     try { framed = window.self !== window.top; } catch (e) { framed = true; }
     if (framed) {
@@ -549,16 +531,13 @@
     if (L.titleFont) loadFont(L.titleFont, "vote-font-link-title");
   }
 
-  // BioRhyme is a variable font, so ask for its whole weight range and every
-  // boldness the settings offer is drawn for real. Other families are requested
-  // plainly because single-weight ones reject a weight axis.
+  // BioRhyme is variable, so ask for its whole weight range.
   var FONT_WEIGHTS = { "BioRhyme": ":wght@200..800" };
 
   function loadFont(name, id) {
     if (!name) return;
     id = id || "vote-font-link";
-    // Single-weight families (e.g. Chicle) reject a weight axis on the css2 API,
-    // so request the family plainly and let the browser faux-bold as needed.
+    // Single-weight families reject a weight axis.
     var href = "https://fonts.googleapis.com/css2?family=" +
       encodeURIComponent(name).replace(/%20/g, "+") + (FONT_WEIGHTS[name] || "") + "&display=swap";
     var link = document.getElementById(id);
@@ -572,15 +551,7 @@
     watchFonts();
   }
 
-  /* The card is measured to decide how big it can be, and that measurement is
-     only as good as the font in use at the time. Chicle arrives asynchronously
-     from Google Fonts and is a good deal wider than the fallback it replaces, so
-     a poll opened before it lands gets measured against narrow text, and then
-     every statement grows past the room it was given.
-
-     So the fit is recomputed once the fonts have settled. This is the difference
-     between a widget that looks right in a test where the font is already there
-     and one that looks right on a stream where it is still downloading. */
+  /* Fonts arrive late and change the card's width, so it is measured again once they land. */
   function watchFonts() {
     if (fontsWatched) return;
     if (typeof document === "undefined" || !document.fonts) return;
@@ -596,9 +567,7 @@
     } catch (e) { /* font timing is an optimisation, never a hard requirement */ }
   }
 
-  /* The widget box can also change under us, most obviously when the box is
-     dragged to a new size in the StreamElements editor, which fires no load
-     event at all. */
+  /* Resizing the box in the StreamElements editor fires no load event. */
   function watchResize() {
     if (resizeWatched || typeof ResizeObserver !== "function" || !el.app) return;
     resizeWatched = true;
@@ -635,9 +604,7 @@
       catch (e) { /* store is best-effort */ }
     }, 300);
   }
-  /* Hands the saved data back without installing it, so the caller can decide
-     whether it is still wanted. Reading the store is asynchronous, and a poll can
-     be opened in the gap before it answers. */
+  /* Returns the saved data without installing it, since a poll may open before the store answers. */
   function restoreState(done) {
     if (!hasStore() || typeof SE_API.store.get !== "function") { done(null); return; }
     try {
@@ -675,9 +642,7 @@
     while (undoStack.length > UNDO_DEPTH) undoStack.shift();
   }
 
-  /* Options arrive as one comma-separated run, because typing a poll into chat
-     mid-stream wants to be one quick line. A leading "60s" sets the length for
-     this poll only, which keeps the common case (`!vote a, b, c`) short. */
+  /* A leading "60s" sets the length of this poll only. */
   function parseStart(rest) {
     var duration = cfg.duration;
     var text = String(rest || "").trim();
@@ -809,10 +774,7 @@
     }
   }
 
-  /* The server went back a step, so whatever that step put on the card comes off it. Voting
-     stays closed, because chat has already seen the answer. Undoing a name undoes that
-     person's lie too, in case two steps back arrived between two questions. A reveal typed
-     by hand has no number, and the server never takes it back. */
+  /* Takes off whatever the undone step put on the card. Voting stays closed, and a reveal typed by hand is never taken back. */
   function takeBack(undone) {
     if (!poll || !undone) return;
     if (poll.lie && poll.lie.number === undone.number) {
@@ -826,8 +788,7 @@
     }
   }
 
-  /* What the server says has been revealed. Its first answer after a load only sets the
-     starting point, so a refreshed browser source never replays an old reveal over a new poll. */
+  /* The first answer after a load only sets the starting point, so a refresh never replays an old reveal. */
   function applyState(state) {
     if (!state || typeof state.rev !== "number") return;
     var first = followRev === null;
@@ -880,9 +841,7 @@
     render();
   }
 
-  /* The "chat wasn't ready" fix: same options, votes wiped, clock back to full.
-     Nobody has to retype three statements because the first ten seconds were
-     spent explaining the rules. */
+  /* Same options, votes wiped, clock back to full. */
   function restartPoll() {
     if (!poll || !poll.options.length) return;
     snapshot();
@@ -902,10 +861,7 @@
     render();
   }
 
-  /* Rollback. Every destructive step snapshots first, so this walks back through
-     ending, cancelling, restarting, or being replaced by a newer poll. A poll
-     that comes back already past its clock is reopened for a short grace window
-     so that it does not instantly re-end. */
+  /* Undo. A poll that comes back past its clock reopens for a short grace window. */
   function undo() {
     if (!undoStack.length) return;
     poll = undoStack.pop();
@@ -928,19 +884,12 @@
     return String(s).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   }
 
-  /* A vote can be the option itself, its number, or its letter. The letters are
-     what the running-order sheet prints, and the numbers are what chat reaches
-     for anyway, so all three are accepted instead of being made into a rule people
-     have to remember. */
+  /* A vote can be the option's text, its number or its letter. */
   function matchVote(text) {
     var t = normalise(text);
     if (!t) return -1;
 
-    /* In a letters-only poll the labels are not shown and the chips are what
-       chat is reading, so matching on label text would send a vote to the wrong
-       row: `!vote B, A, C` displays as A, B, C, and someone typing B means the
-       second row, not the one that happens to be labelled B. Position is
-       the only thing that can be trusted here. */
+    /* In a letters-only poll chat reads the chips, so position counts and the label text does not. */
     var byPositionOnly = keysOnlyPoll();
 
     for (var i = 0; i < poll.options.length; i++) {
@@ -1046,8 +995,7 @@
     var blind = running && !cfg.liveResults;
     setClass(el.card, "blind", blind);
 
-    // A poll of bare letters needs no labels, since each one would only repeat
-    // the chip sitting next to it.
+    // Bare letters need no labels, since the chips already show them.
     var keysOnly = keysOnlyPoll();
     setClass(el.card, "keys-only", keysOnly);
 
@@ -1086,18 +1034,8 @@
 
     renderDebug();
 
-    /* Re-fitting costs two layout passes, so it only happens when something
-       that changes the card's shape has changed. A vote landing moves a bar and
-       a number inside a row that is already the right size, and doing this for
-       every one of two thousand votes would be a waste. */
-    /* The widest count text belongs in the key. The card is measured when a poll
-       opens, when every count reads `0 · 0%`, and `128 · 55%` is a good deal
-       wider than that. Without this the column keeps the width it was measured
-       at and the percentages get cut off as soon as the votes arrive.
-
-       It is the text's *length*, not its value, so this refits when a
-       count gains a digit and not on every single vote. Three or four times in a
-       busy poll, not two thousand. */
+    /* Refitting is costly, so it only happens when the card's shape changes. */
+    /* The widest count's length is part of the key, so counts are not clipped when they gain a digit. */
     var fitKey = poll.options.map(function (o) { return o.label; }).join("|") +
       "|" + poll.status + "|" + cfg.scale + "|" + cfg.grow + "|" + (poll.who || poll.title || "") +
       "|" + lieText +
@@ -1108,9 +1046,7 @@
     }
   }
 
-  /* Kept short on purpose. This line is the widest thing in the card, so a long
-     one ends up setting the card's whole width and a two-option poll ends up in a
-     box built for a sentence nobody needed. */
+  /* Kept short, because this line can set the card's width. */
   function hintText() {
     var keys = poll.options.map(function (o, i) { return LETTERS[i]; });
     var W = cfg.words;
@@ -1120,15 +1056,7 @@
     return W.hintVerb + " " + keys.slice(0, -1).join(", ") + " " + W.hintOr + " " + keys[keys.length - 1] + tail;
   }
 
-  /* True when the options are nothing but the poll's own keys, as in
-     `!vote A, B, C` or `!vote 1, 2, 3`. Order does not matter, so `!vote B, A, C`
-     counts too and simply shows as A, B, C.
-
-     It asks whether the labels are the complete set of keys, instead of checking
-     them one position at a time. Options are deduplicated on the way in, so a
-     poll of three whose labels contain all of A, B and C can only be those three
-     in some order. `!vote A, B, Z` is not the set, so it keeps its labels and Z
-     stays visible. Otherwise it would vanish behind a chip reading C. */
+  /* True when the options are just the poll's own keys, in any order, so their labels can be hidden. */
   function keysOnlyPoll() {
     if (!poll || !poll.options.length) return false;
 
@@ -1144,10 +1072,7 @@
     return letters || numbers;
   }
 
-  /* Everything a sizing question needs answering, in one screenshot-able line:
-     the box it was given, what the card wanted, what it settled on, whether the
-     font had actually arrived when it measured, and whether any row is currently
-     wider than the space it has. */
+  /* Sizing details on one line, for troubleshooting from a screenshot. */
   function renderDebug() {
     if (!el.debug) return;
     el.debug.hidden = !cfg.debug;
@@ -1180,8 +1105,7 @@
       " | font " + font + " loaded:" + loaded;
   }
 
-  /* How many characters the widest count will occupy, built the same way
-     renderOptions builds the real thing so the two cannot drift apart. */
+  /* Length of the widest count, built the way renderOptions builds it. */
   function widestCountLength(total, best, blind) {
     if (blind) return 0;
     var widest = 0;
@@ -1231,21 +1155,8 @@
     if (on) node.classList.add(name); else node.classList.remove(name);
   }
 
-  /* The card can never be wider than the widget box, so when the chosen size is
-     too ambitious for what is in the poll, something has to give. Wrapping was
-     the old answer, and it is a poor one: `Pizza` broken into `Piz` and `za`
-     helps nobody, and a statement pushed onto a third line disappears entirely.
-     So the size setting is treated as a ceiling, not a fixed value.
-
-     Everything in the card is sized in em from one font-size, so its appetite
-     for space is exactly proportional to that number. That means one
-     measurement is enough: ask what it would want unconstrained, compare with
-     what the box has, and scale by the ratio. No loop, no guessing. */
-  /* How far anything is currently spilling past the room it has.
-     The rows have to be asked individually. `.vote-options` clips its overflow,
-     so a row that is too wide never shows up in the card's own scrollWidth, and
-     the corrective loop used to stop while the counts were being cut off the
-     right-hand edge of every row. */
+  /* Scales the card to fit the box. Everything is sized in em, so one measurement gives the ratio. */
+  /* Rows clip their overflow, so each one has to be measured itself. */
   function overflowNow() {
     if (!el.card) return 0;
 
@@ -1269,11 +1180,7 @@
     return over;
   }
 
-  /* The widest statement, expressed in em of the label's own font size. Called
-     while the card is being measured, so every label is on one line at its
-     natural width and the widest is a real answer, not whatever the
-     current column happens to allow. Returns 0 when there is nothing to measure,
-     which leaves the column at `auto` and the old behaviour. */
+  /* The widest label in em, measured while every label is on one line. 0 when there is nothing to measure. */
   function widestInEm(selector) {
     if (!el.options || typeof el.options.querySelectorAll !== "function") return 0;
     if (typeof window === "undefined" || typeof window.getComputedStyle !== "function") return 0;
@@ -1288,22 +1195,11 @@
     var fontPx = parseFloat(window.getComputedStyle(nodes[0]).fontSize);
     if (!fontPx) return 0;
 
-    /* Rounded up, and not a hair more. There used to be an extra 0.05em of
-       slack here "to be safe", and it was the opposite of safe: the card's width
-       comes from a measurement taken without it, so every row ended up wider
-       than the card by the slack on its two columns. That overflow is a ratio,
-       not a fixed amount, so shrinking the card scaled the gap down with
-       everything else and never closed it. The corrective loop ran its full
-       eight passes on every poll and left the type at 72% of the size it should
-       have been. Rounding up to the nearest thousandth is enough. */
+    /* Round up with no extra slack, or every row ends up wider than the card. */
     return { em: Math.ceil((widest / fontPx) * 1000) / 1000, fontPx: fontPx };
   }
 
-  /* A hair of slack on each column so a rounded measurement never clips its own
-     last glyph, and the same slack added to the card's width so the row and the
-     card agree. Adding it to one and not the other is what left every row a
-     fraction wider than the card it sits in, an overflow that scales with the
-     type and so survives any amount of shrinking. */
+  /* The same slack goes on the columns and the card, so they agree. */
   var COLUMN_SLACK_EM = 0.05;
 
   function paddingOf(node) {
@@ -1342,30 +1238,18 @@
     el.card.classList.remove("measuring");
     wantsW += slackPx;   // the columns will be that much wider than measured
 
-    /* `clientWidth` counts the padding, and the card only gets the content box.
-       Taking the padding off matters: without it the fit believes it has more
-       room than it does, sizes the card to the whole box, and the padding it
-       forgot about pushes the rows straight back into overflow. */
+    /* clientWidth includes padding, which the card cannot use. */
     var pad = paddingOf(el.app);
     var hasW = el.app.clientWidth - pad.x;
     var hasH = el.app.clientHeight - pad.y;
 
-    // A DOM without real layout (the headless tests) reports zeroes. Nothing
-    // sensible can be computed from those, so leave the card to the stylesheet.
+    // The headless tests have no layout and report zeroes.
     if (!wantsW || !wantsH || !hasW || !hasH) { el.card.style.width = ""; return; }
 
-    // A couple of percent of breathing room, so the card never lands exactly on
-    // the boundary where a rounding error costs you the bottom row.
-    // With Grow on, the card is as large as the box allows, and a box twice the size gives a card twice the size. With it
-    // off, the card never goes past the size the Size setting asks for, and only shrinks to fit.
+    // A little breathing room, so rounding cannot cost the bottom row.
     var fit = Math.min(cfg.grow ? MAX_GROW : 1, (hasW / wantsW) * 0.98, (hasH / wantsH) * 0.98);
 
-    /* A floor, because past a point shrinking stops being a kindness and just
-       produces a poll nobody can read from the sofa. It is measured against the
-       card's natural size, not the requested one: half of natural, never
-       half of whatever multiplier happens to be set. A floor tied to the setting
-       would mean asking for 400% left the card stuck at an effective 140%, too
-       big for a small box, still wrapping, and mystifying. */
+    /* A floor keeps the poll readable. It is based on the natural size, not the requested one. */
     var extraW = 0;   // pixels the corrective passes have handed back to the card
     var floor = Math.min(1, 0.5 / (cfg.scale || 1));
     fit = Math.max(floor, fit);
@@ -1373,14 +1257,7 @@
     apply(fit);
     lastFit = { wantsW: wantsW, wantsH: wantsH, hasW: hasW, hasH: hasH, fit: fit };
 
-    /* The width is set outright instead of being left to `width: fit-content`.
-       Asking the browser to size the card from its own contents works here and
-       does not work in StreamElements, where the card was settling at 639px
-       while reporting that it wanted 758px and had 1920px of room, and the rows
-       overflowed into the clipping. We have already measured what it wants and
-       we know what we are scaling it by, so there is nothing to ask: the number
-       is simply known, and guessing at intrinsic sizing across two environments
-       was never going to be the reliable path. */
+    /* Set outright: StreamElements does not size fit-content reliably. */
     function apply(f) {
       el.card.style.setProperty("--fit", String(Math.floor(f * 1000) / 1000));
       el.card.style.width = Math.min(hasW, Math.ceil(wantsW * f) + extraW) + "px";
@@ -1389,20 +1266,8 @@
       if (countEm) el.card.style.setProperty("--count-w", countEm + "em");
     }
 
-    /* The ratio gets it right to within a percent or so, but line boxes round to
-       whole pixels and seven of those add up, so the card can still sit a hair
-       over the edge. A few corrective nudges settle it. This asks the elements
-       whether they are actually overflowing instead of trusting the arithmetic,
-       which is the only question that matters. */
-    /* Correcting what the arithmetic did not quite get right.
-
-       Widening comes first, and that ordering is the point. An overflow of a
-       dozen pixels inside a box with thirteen hundred to spare is not a reason
-       to shrink the type; it is a reason to take twelve more pixels. Only when
-       the card is already against the edge of the box does making it smaller
-       become the right answer. Getting that the wrong way round left polls
-       rendering at 72% of the size they could have been, because the loop kept
-       shrinking to solve a problem that a few spare pixels would have fixed. */
+    /* Nudge until nothing overflows, since line boxes round to whole pixels. */
+    /* Widen first, and only shrink the type once the card is against the edge of the box. */
     for (var pass = 0; pass < 10; pass++) {
       var over = overflowNow();
       if (over <= 1) break;
@@ -1434,11 +1299,7 @@
     var rest = text.replace(/^\S+\s*/, "").trim();
     var roles = rolesOf(data);
     var manage = canManage(roles);
-    // Commands first, so a poll option that happens to look like a command word
-    // can never be voted for by accident. One command word does everything: with
-    // options it starts a poll, and with one of these verbs on its own it runs the
-    // poll. A line is a verb only when it is exactly that verb, so
-    // "!vote End of year, Tacos" is still a poll with two options.
+    // Commands come first, so they are never counted as votes. A verb only counts when it is the whole line.
     if (first === cfg.cmd) {
       if (!manage) return;
       var verb = rest.toLowerCase();
@@ -1591,14 +1452,8 @@
     undoStack = [];
     lastFitKey = null;   // the box or the settings may have changed, so measure afresh
 
-    /* A browser-source refresh mid-poll is the moment this matters most: the
-       clock is stored as a wall-clock time, so the poll picks up exactly where
-       it was, without restarting or dying.
-
-       Two guards on the way back. The token drops a stale read if the settings
-       panel fires another load while this one is still waiting. And a poll that
-       opened while the store was being read is newer than anything saved, so it
-       is left alone instead of being overwritten by the older copy. */
+    /* The clock is stored as wall-clock time, so a refresh picks the poll up where it was.
+       A stale store read, or one older than a newly opened poll, is ignored. */
     var token = ++loadToken;
     follow();
 

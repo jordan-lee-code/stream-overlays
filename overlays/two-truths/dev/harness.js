@@ -24,18 +24,14 @@
   var fieldData = {};
   var fieldDefs = {};
 
-  // A little crowd to vote with, so a simulated chat looks like people instead of
-  // viewer1 through viewer40.
+  // Named viewers for simulated chat.
   var CROWD = ("alder ember sable juniper marlow bramble wren fennel hazel " +
     "otter peregrine sorrel thistle rowan clover magpie birch heather linnet " +
     "quill saffron tansy vesper yarrow bracken").split(" ");
 
   var LETTERS = "ABCDEFGH";
 
-  /* Once the named crowd runs out, keep going with alder2, ember2 and so on.
-     Every voter still needs a distinct name, because the widget counts one vote
-     per person and a repeated name would overwrite an earlier vote
-     without adding to the total. */
+  /* Numbered names after that, since each person only gets one vote. */
   function voterName(i) {
     var base = CROWD[i % CROWD.length];
     var round = Math.floor(i / CROWD.length);
@@ -169,13 +165,7 @@
 
   function asBoss() { return { nick: "Streamer", broadcaster: true }; }
 
-  /* Fake a rush of chat voting. Votes trickle in over a couple of seconds
-     instead of landing all at once, because watching the bars move is the whole point
-     of looking at this locally.
-
-     They go out in small batches on one repeating timer, not one timer
-     per voter, so a rush of a few thousand stays smooth instead of asking the
-     browser to hold thousands of pending timeouts. */
+  /* Fake a rush of votes, sent in batches from one timer. */
   var simTimer = null;
   var simSent = 0;
 
@@ -189,8 +179,7 @@
     options = Math.min(8, Math.max(2, options || 3));
     spreadMs = spreadMs || 2500;
 
-    // Give one option a gentle lead, so the bars tell a story instead of
-    // landing in a dead heat every single time.
+    // Give one option a gentle lead.
     var favourite = Math.floor(Math.random() * options);
     var step = 40;
     var perTick = Math.ceil(count / Math.max(1, Math.round(spreadMs / step)));
@@ -211,9 +200,7 @@
     }, step);
   }
 
-  /* Shows how many the harness has actually sent, so it can be read against the
-     card's own total. If those two ever disagree, the discrepancy is the thing
-     worth looking at, not a guess about whether it "felt right". */
+  /* Shows how many votes were sent, to compare with the card's total. */
   function reportSim(count) {
     var out = document.getElementById("sim-status");
     if (out) out.textContent = "sent " + simSent + " of " + count;
@@ -463,8 +450,7 @@
       sendChat("!vote Mod A, Mod B", { nick: "Marlow", mod: true });
     };
 
-    // A rush that is still running would bleed its votes into whatever comes
-    // next, so opening or resetting a poll stops it first.
+    // Stop any rush first, so its votes do not spill into the next poll.
     c.querySelectorAll("[data-poll]").forEach(function (b) {
       b.onclick = function () { stopSim(); sendChat(b.getAttribute("data-poll"), asBoss()); };
     });
@@ -476,7 +462,7 @@
       };
     });
 
-    // The website has a page for the hosting steps. A copy of the repository has the file named above instead.
+    // Link the hosting page when this is the website.
     fetch("../hosting.html", { method: "HEAD" }).then(function (r) {
       if (r.ok) document.getElementById("hosting-link").innerHTML = '<a href="../hosting.html">Download the server and read how to host it</a>.';
     }).catch(function () {});

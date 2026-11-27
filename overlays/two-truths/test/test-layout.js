@@ -1,17 +1,7 @@
-/* Layout regression test for the Two Truths and a Lie widget.
- *
- * The headless suite in test-widget.js drives the real logic through a DOM mock,
- * which is perfect for counting votes and hopeless for anything about size,
- * because a mock has no layout. Every sizing bug this widget has had was
- * invisible to it: statements broken mid-word, an option pushed off the bottom,
- * counts clipped past the right edge.
- *
- * So this one renders the actual widget in headless Chromium at a range of box
- * sizes and scale settings, and asserts on what the browser computed. It needs
- * `chromium` on PATH and skips cleanly when there is none.
- *
- *   node test/test-layout.js
- */
+/* Layout test for the Two Truths and a Lie widget. The DOM mock has no layout, so this renders the
+   real widget in headless Chromium and skips when chromium is not on PATH.
+   
+     node test/test-layout.js */
 const fs = require("fs");
 const os = require("os");
 const path = require("path");
@@ -48,9 +38,7 @@ Object.keys(fields).forEach((k) => {
 
 const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "vote-layout-"));
 
-/* Chicle is a wide display face and the widget's default, so measuring against a
-   narrow fallback would let real overflows pass. Fetched once if the network is
-   there; without it the structural assertions still hold, they are just kinder. */
+/* The default font is wide, so it is fetched when the network allows. */
 let fontFace = "";
 try {
   const url = "https://fonts.gstatic.com/s/chicle/v27/lJwG-pw9i2dqU-Bzzmiv.woff2";
@@ -67,10 +55,7 @@ try {
 function measure(scenario, index) {
   const fd = Object.assign({}, defaults, scenario.fields || {});
 
-  /* `lateFont` reproduces a cold browser source: the poll opens while Chicle is
-     still on its way, so the first measurement sees the narrower fallback. The
-     widget has to notice the font landing and measure again, or every statement
-     grows past the room it was given. */
+  /* lateFont opens the poll before the font has arrived. */
   const late = scenario.lateFont && fontFace;
   const page = `<!doctype html><html><head><meta charset="utf-8"><style>
 ${late ? "" : fontFace}
@@ -140,8 +125,7 @@ setTimeout(function(){
 
 const SHORT = "Spaghetti, Sandwich, Coleslaw, Ice Cream";
 const LONG = "Pizza, Roll, Spaghetti, Lasagne. Sandwich, Kebab, Coleslaw, Ice Cream";
-// Eight options, the maximum, and the case that was missing when every layout
-// test stopped at seven and the eight-option path shipped broken.
+// Eight options, the maximum.
 const EIGHT = "Spaghetti, Lasagne, Salmon, Shish Kebab, Sandwich, Kebab, Coleslaw, Ice Cream";
 
 const scenarios = [
@@ -169,9 +153,7 @@ const scenarios = [
   { name: "4 options, 1240 votes cast", box: [1920, 1080], options: SHORT, votes: 1240, optionCount: 4 },
   { name: "8 options, 137 votes, narrow box", box: [700, 900], options: EIGHT, votes: 137, optionCount: 8 },
 
-  /* The widest count a poll can actually produce. Every vote on one option makes
-     that row read "1000 \u00b7 100%", and since the count column is shared this
-     sizes it for the worst case on every row at once. */
+  /* Every vote on one option gives the widest count. */
   { name: "8 options, 1000 votes all on one (widest possible count)",
     box: [1920, 1080], options: EIGHT, votes: 1000, allOnOne: true },
   { name: "8 options, 1000 on one, narrow box",
