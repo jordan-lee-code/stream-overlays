@@ -10,7 +10,7 @@
 "use strict";
 const fs = require("fs");
 const path = require("path");
-const { spawn } = require("child_process");
+const capture = require("./capture");
 
 const ROOT = path.join(__dirname, "..");
 const KIT = path.join(ROOT, "kit", "bin", "overlay-kit.js");
@@ -37,16 +37,10 @@ overlays.forEach(n => {
   add(n + " tests", "npm", ["test", "--silent"], dir, n, "tests");
 });
 
-function execute(job) {
-  return new Promise(resolve => {
-    const began = Date.now();
-    let out = "";
-    const child = spawn(job.cmd, job.args, { cwd: job.cwd, env: process.env });
-    child.stdout.on("data", d => { out += d; });
-    child.stderr.on("data", d => { out += d; });
-    child.on("error", e => { out += String(e); resolve({ ok: false, out, ms: Date.now() - began }); });
-    child.on("close", code => resolve({ ok: code === 0, out, ms: Date.now() - began }));
-  });
+async function execute(job) {
+  const began = Date.now();
+  const r = await capture(job.cmd, job.args, { cwd: job.cwd, env: process.env });
+  return { ok: r.code === 0, out: r.out, ms: Date.now() - began };
 }
 
 (async () => {

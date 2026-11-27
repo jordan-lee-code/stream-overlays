@@ -462,17 +462,18 @@ function ok(cond, msg) { if (cond) { pass++; console.log("  PASS " + msg); } els
   load({ duration: 600 }); await wait(5);
   chat("!vote 600s Truth A, Truth B, The lie", boss); await wait(5);
   const expected = [0, 0, 0];
-  const t0 = Date.now();
+  // Counted in this test's own processor time, so a machine busy with other things does not make the widget look slow.
+  const began = process.cpuUsage();
   for (let i = 0; i < 2000; i++) {
     const pick = i % 3;
     expected[pick]++;
     chat([String(pick + 1), "ABC"[pick], "abc"[pick]][i % 3], { nick: "voter" + i });
   }
-  const elapsed = Date.now() - t0;
+  const used = process.cpuUsage(began), elapsed = Math.round((used.user + used.system) / 1000);
   ok(votes().join(",") === expected.join(","),
     "2000 voters counted exactly (" + votes().join(",") + " vs " + expected.join(",") + ")");
   ok(total() === "2000 votes", "the total agrees (" + total() + ")");
-  ok(elapsed < 3000, "2000 votes stay comfortably fast (" + elapsed + "ms)");
+  ok(elapsed < 3000, "2000 votes stay comfortably fast (" + elapsed + "ms of processor time)");
   chat("2", { nick: "voter0" });
   ok(total() === "2000 votes", "a returning voter moves their vote without adding one");
 

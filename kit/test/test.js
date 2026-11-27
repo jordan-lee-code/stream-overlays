@@ -426,6 +426,23 @@ asection("the website");
   });
 }
 
+asection("reading what a suite prints");
+{
+  const capture = require("../../scripts/capture");
+  atest("nothing is lost from a suite that ends with process.exit() while the reader is busy", async () => {
+    const wanted = capture(process.execPath, ["-e", 'for (let i = 0; i < 3000; i++) console.log("line " + i + " " + "x".repeat(60)); console.log("=== done ==="); process.exit(0);']);
+    const until = Date.now() + 1500; while (Date.now() < until) { /* too busy to read anything for a moment */ }
+    const r = await wanted;
+    assert.strictEqual(r.out.split("\n").length - 1, 3001);
+    assert.ok(r.code === 0 && /=== done ===/.test(r.out));
+  });
+  atest("both streams are kept, with how the command ended", async () => {
+    const r = await capture(process.execPath, ["-e", 'console.log("out"); console.error("err"); process.exit(3);']);
+    assert.ok(r.code === 3 && /out/.test(r.out) && /err/.test(r.out));
+    assert.ok(/ENOENT/.test((await capture("no-such-command-here", [])).out));
+  });
+}
+
 asection("the pretend clock");
 {
   const createClock = require("../shared/clock");
