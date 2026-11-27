@@ -412,6 +412,8 @@
     c.raise = { subs: Math.max(0, num(f.raiseSubs, 25)), bits: Math.max(0, num(f.raiseBits, 2500)), tips: Math.max(0, num(f.raiseTips, 0)), follows: Math.max(0, num(f.raiseFollows, 50)) };
     c.subPoints = bool(f.subPoints, false);
     c.blerpBits = bool(f.blerpBits, true);
+    c.chatBits = bool(f.chatBits, true);
+    c.gigantifyBits = clamp(Math.floor(num(f.gigantifyBits, 0)), 0, 100000);
     c.blerpName = txt(f.blerpName, "blerp");
     c.format = str(f.format, "{n} / {target}");
     c.currency = txt(f.currency, "£");
@@ -503,7 +505,65 @@
     if (bool(event.bulkGifted, false)) { count("subs", each * Math.max(0, Math.floor(num(event.amount, 0)))); return; }
     count("subs", each);
   }
-  function onCheer(event) { count("bits", Math.floor(num(event && event.amount, 0))); }
+  // A cheer should arrive as a cheer-latest event. When one does not (a cheermote such as RIPCheer15 can reach the chat without it), the
+  // chat message that carries it still says how many bits were spent: Twitch puts a bits tag on a message only when bits were really
+  // spent on it, so a viewer typing RIPCheer15 for nothing adds nothing. The message waits a few seconds for its cheer event, and
+  // whichever is first counts and the other is dropped, so a cheer that is sent both ways is never counted twice.
+  var CHEER_WAIT = 4000, CHEER_KEEP = 20000;
+  var seenCheers = [], waitingCheers = [];
+  function lowerName(n) { return String(n || "").replace(/^@/, "").toLowerCase(); }
+  function namesOf(list) { var out = []; for (var i = 0; i < list.length; i++) { var n = lowerName(list[i]); if (n) out.push(n); } return out; }
+  // The same cheer when the bits match and, if both say who, the name does too.
+  function sameCheer(a, b) {
+    if (a.amount !== b.amount) return false;
+    if (!a.names.length || !b.names.length) return true;
+    for (var i = 0; i < a.names.length; i++) if (b.names.indexOf(a.names[i]) !== -1) return true;
+    return false;
+  }
+  function onCheer(event) {
+    event = event || {};
+    var amount = Math.floor(num(event.amount, 0)), mine = { amount: amount, names: namesOf([event.name, event.username, event.displayName]), at: now() };
+    for (var i = 0; i < waitingCheers.length; i++) {
+      if (sameCheer(waitingCheers[i], mine)) { clearTimeout(waitingCheers[i].timer); waitingCheers.splice(i, 1); break; }
+    }
+    if (amount > 0) {
+      seenCheers = seenCheers.filter(function (c) { return mine.at - c.at < CHEER_KEEP; });
+      seenCheers.push(mine);
+    }
+    count("bits", amount);
+  }
+  function bitsOfMessage(data) {
+    var t = (data && data.tags) || {}, n = Math.floor(num(t.bits !== undefined ? t.bits : data && data.bits, 0));
+    return n > 0 ? n : 0;
+  }
+  // Gigantify an Emote is bits spent without a cheer. Twitch marks its chat message with a msg-id, and nothing documents that the
+  // message says what was paid, so when it does not, the price set for the channel is what counts.
+  function isGigantify(data) {
+    var t = data.tags || {};
+    return (t["msg-id"] || data.msgType) === "gigantified-emote-message";
+  }
+  function onCheerMessage(data) {
+    if (!data) return;
+    var gigantify = isGigantify(data);
+    var amount = cfg.chatBits ? bitsOfMessage(data) : 0;
+    if (gigantify && !amount) {
+      amount = cfg.gigantifyBits;
+      if (!amount && cfg.debug && typeof console !== "undefined" && console.log) {
+        console.log("[stream-goals] a Gigantify an Emote arrived with no amount: set Bits for each Gigantify an Emote to count it");
+      }
+    }
+    if (!amount) return;
+    var t = data.tags || {}, mine = { amount: amount, names: namesOf([data.displayName, data.nick, data.username, t["display-name"]]), at: now() };
+    for (var i = 0; i < seenCheers.length; i++) {
+      if (now() - seenCheers[i].at < CHEER_KEEP && sameCheer(seenCheers[i], mine)) { seenCheers.splice(i, 1); return; }
+    }
+    mine.timer = setTimeout(function () {
+      var at = waitingCheers.indexOf(mine);
+      if (at !== -1) waitingCheers.splice(at, 1);
+      count("bits", mine.amount);
+    }, CHEER_WAIT);
+    waitingCheers.push(mine);
+  }
   // Blerp takes bits through a Twitch extension, which StreamElements does not see as a cheer, so the only sign of them is the message
   // Blerp says in chat, which names the bits ("... for 100 bits (sound)"). A message only counts when it is from Blerp's own account, so a
   // viewer typing the same words adds nothing.
@@ -746,6 +806,8 @@
     applyLook(); watchRows();
     storeLoad(STORE_KEY, function (saved) {
       for (var k in raiseTimers) if (raiseTimers.hasOwnProperty(k)) clearTimeout(raiseTimers[k]);
+      for (var w = 0; w < waitingCheers.length; w++) clearTimeout(waitingCheers[w].timer);
+      waitingCheers = []; seenCheers = [];
       raiseTimers = {};
       state = restore(saved);
       // A widget last seen long ago, or one set to start fresh every load, means a new stream.
@@ -764,7 +826,7 @@
     var ev = d.event || {};
     debugLog(cfg, "stream-goals", d.listener, ev);
     switch (d.listener) {
-      case "message": onBlerpMessage(ev.data); handleChat(ev.data); break;
+      case "message": onBlerpMessage(ev.data); onCheerMessage(ev.data); handleChat(ev.data); break;
       case "subscriber-latest": onSub(ev); break;
       case "cheer-latest": onCheer(ev); break;
       case "tip-latest": onTip(ev); break;

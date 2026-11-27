@@ -225,6 +225,21 @@
     "value": "blerp",
     "group": "Counting"
   },
+  "chatBits": {
+    "type": "checkbox",
+    "label": "Count a cheer from its chat message when StreamElements sends no cheer for it (such as RIPCheer15). A cheer it does send is never counted twice",
+    "value": true,
+    "group": "Counting"
+  },
+  "gigantifyBits": {
+    "type": "number",
+    "label": "Bits for each Gigantify an Emote: enter your channel's price for it. Used when its chat message does not say what was paid. 0 does not count it",
+    "value": 0,
+    "min": 0,
+    "max": 100000,
+    "step": 1,
+    "group": "Counting"
+  },
   "format": {
     "type": "text",
     "label": "How a count reads ({n} and {target})",
