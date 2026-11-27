@@ -36,6 +36,12 @@
     "value": "Away for",
     "group": "Break"
   },
+  "meetingTitle": {
+    "type": "text",
+    "label": "What the headline says during a meeting",
+    "value": "Currently in a meeting, be back soon <3",
+    "group": "Break"
+  },
   "lateTitle": {
     "type": "text",
     "label": "What the headline says when the time you gave has passed and you are not back yet",
