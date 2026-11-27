@@ -34,16 +34,6 @@
       "script": "chat('!brb 1s');__t+=2000;"
     },
     {
-      "file": "idle.png",
-      "width": 640,
-      "height": 360,
-      "fields": {
-        "animate": false,
-        "messages": "Back in a few minutes"
-      },
-      "script": ""
-    },
-    {
       "file": "stretched.png",
       "width": 300,
       "height": 460,

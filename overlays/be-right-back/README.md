@@ -1,6 +1,6 @@
 # Be Right Back Overlay
 
-A StreamElements custom widget for the moments you step away. Type `!brb 5m` and a big clock counts down to your return on a "Be right back" screen, with a bar that fills, the time you will be back, and a few friendly lines that take turns. Type `!brb` on its own and it counts up instead, so chat can see how long you have been gone. When you are back, `!brb back` clears it.
+A StreamElements custom widget for the moments you step away. Type `!brb 5m` and a big clock counts down to your return on a "Be right back" screen, with a bar that fills, the time you will be back, and a few friendly lines that take turns. Type `!brb` on its own and it counts up instead, so chat can see how long you have been gone. When you are back, `!brb back` hides the overlay until your next break.
 
 <p align="center"><img src="docs/default.png" alt="A full-screen be right back card with Back in above a large clock reading 04:32, a bar, the words Back at 20:00 and a friendly line underneath, in a white frame" width="640"></p>
 
@@ -36,10 +36,6 @@ It is a single self-contained widget in plain JavaScript, with no dependencies a
 
 <p><img src="docs/stretched.png" alt="A tall narrow card in the trans pride colours, with the headline, a clock and the time you will be back in the middle" width="300"></p>
 
-**Just the headline.** With nothing set, it is a card with a headline and your lines, which suits a scene that is always a break.
-
-<p><img src="docs/idle.png" alt="A card with the words Be right back and a line underneath" width="640"></p>
-
 **Your own look.** Choose Custom for the style preset and every colour, the font, the corners and the wording are settings.
 
 <p><img src="docs/custom.png" alt="A deep plum card with pink lettering in a script font, the headline Gone for a bit and a clock reading 04:32" width="640"></p>
@@ -49,7 +45,7 @@ It is a single self-contained widget in plain JavaScript, with no dependencies a
 1. In StreamElements, edit your overlay and add **+ Add Widget, Static/Custom, Custom Widget**.
 2. Select the widget, open **Settings, Open Editor**, and paste each file from `widget/` into the matching tab: `widget.html` into HTML, `widget.css` into CSS, `widget.js` into JS, and `fields.json` into Fields.
 3. Click **Done**. The settings are grouped into Commands, Break, Messages, Size, Manual controls, Look, Custom colours and Troubleshooting.
-4. Make the widget as big as your scene, 1920 by 1080 for a full screen, and put it at the front of a "Be right back" scene with your own background behind it. Switch to that scene when you step away, and type `!brb` in chat.
+4. Make the widget as big as your scene, 1920 by 1080 for a full screen, and put it at the front of a "Be right back" scene with your own background behind it. Switch to that scene when you step away, and type `!brb` in chat. The overlay is hidden until a break starts, so a blank overlay before then is expected.
 
 The widget reads Twitch chat through StreamElements, so it works as soon as it is on an active overlay.
 
@@ -64,7 +60,7 @@ The command word is a setting. Viewers can type the bare `!brb` to make the head
 | `!brb at 20:30` | Starts one that ends at the next 20:30 on the computer running the overlay. `8pm` and `8:30 pm` work too. |
 | `!brb add 5m` | Pushes your return back by five minutes. Adding to a break with no set time gives it one, counted from now. |
 | `!brb less 2m` | Brings your return forward by two minutes. |
-| `!brb back` | You are back: clears the break and goes back to the headline. `stop`, `clear` and `done` do the same. |
+| `!brb back` | You are back: clears the break and hides the overlay. `stop`, `clear` and `done` do the same. |
 
 **Writing a length of time.** `90s`, `10m`, `1h30m`, `1d`, `1.5h`, `1:30:00` (hours, minutes, seconds), `5:00` (minutes and seconds), or a bare number, which is minutes. A break can be set up to two days ahead, and anything longer or unreadable is ignored.
 
@@ -75,6 +71,8 @@ The command word is a setting. Viewers can type the bare `!brb` to make the head
 Type `!brb meeting` and the headline reads "Currently in a meeting, be back soon <3", with the clock counting up. It takes the same words as `!brb`, so `!brb meeting 30m`, `!brb meeting at 15:00` and `!brb meeting back` all work, and the same people can use it. The default break length does not apply to a meeting, so it has no set time unless you give it one.
 
 Using `add` or `less` keeps a meeting a meeting, and starting a new break with `!brb` returns to the usual headline. If the meeting runs past the time you gave, the late headline shows as it does for any break. The wording is a setting, **What the headline says during a meeting**.
+
+If you would rather not show a clock in meetings, untick **Show the clock during a meeting**. That also hides the words above it, the bar and the time you will be back, leaving the headline and the rotating lines. A timed meeting still keeps its time, so the late headline appears when it runs out. Ordinary breaks are not affected.
 
 ## A custom headline
 
