@@ -113,13 +113,38 @@
   outline-offset: calc(var(--frame-w, 0) * -1em);
   box-shadow: var(--shadow);
   text-shadow: var(--text-shadow);
-  animation: vote-in var(--in-s) cubic-bezier(0.18, 1.4, 0.4, 1) both;
+  /* No fill after the end, or the animation would hold the card solid and it could not fade out. */
+  animation: vote-in var(--in-s) ease-out backwards;
+  transition: opacity var(--in-s) ease;
 }
+#vote-app .vote-card.leaving { opacity: 0; }
 
 @keyframes vote-in {
-  from { transform: translateY(-0.6em) scale(0.92); opacity: 0; }
-  to { transform: translateY(0) scale(1); opacity: 1; }
+  from { transform: translateY(0.35em); opacity: 0; }
 }
+
+/* ---- Fades ---- */
+/* Words that have changed, and whichever screen has just taken the card, come up from nothing. Each ends at its own
+   opacity, so nothing is held once it has finished. */
+@keyframes vote-fade {
+  from { opacity: 0; }
+}
+/* The same fade under a second name, because an animation only starts again when its name changes. */
+@keyframes vote-fade-again {
+  from { opacity: 0; }
+}
+.vote-head,
+.vote-eyebrow,
+.vote-options,
+.vote-lie,
+.vote-foot,
+.vote-praise,
+.vote-board { animation: vote-fade var(--in-s) ease backwards; }
+.vote-card .fade-in,
+.vote-notice.fade-in { animation: vote-fade-again var(--in-s) ease backwards; }
+/* A screen about to be replaced fades away first. The decorations stay as they are. */
+.vote-card > :not(.w-deco) { transition: opacity var(--in-s) ease; }
+#vote-app .vote-card.changing > :not(.w-deco) { opacity: 0; }
 
 /* Used while widget.js finds the height every part needs, to choose the text size for this box. */
 .vote-card.measuring { height: auto; }
@@ -227,7 +252,7 @@
   padding: 0.22em 0.45em;
   border-radius: 0.5em;
   background: var(--c-row);
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  transition: opacity var(--in-s) ease, background-color var(--in-s) ease, color var(--in-s) ease;
 }
 
 /* The keyword chip: what someone actually types in chat. */
@@ -300,7 +325,6 @@
 .vote-option.win {
   background: var(--c-win-bg);
   color: var(--c-win);
-  animation: vote-win 0.5s cubic-bezier(0.18, 1.5, 0.4, 1) both;
 }
 .vote-option.win .vote-key {
   background: var(--c-win);
@@ -313,13 +337,9 @@
 .vote-option.win .vote-bar { background: color-mix(in srgb, var(--c-win) 22%, transparent); }
 .vote-option.win .vote-fill { background: var(--c-win); }
 
-@keyframes vote-win {
-  from { transform: scale(0.94); }
-  60%  { transform: scale(1.045); }
-  to   { transform: scale(1); }
-}
-
 .vote-option.lost { opacity: var(--lost-opacity); }
+/* The parts of a row change colour along with it. */
+.vote-label, .vote-count, .vote-key, .vote-bar { transition: color var(--in-s) ease, background-color var(--in-s) ease; }
 
 /* ---- Foot ---- */
 .vote-foot {
@@ -557,7 +577,8 @@
   list-style: none;
   display: flex;
   flex-direction: column;
-  justify-content: safe center;
+  /* From the top, so first place is always just under the heading, however few are on the list. */
+  justify-content: flex-start;
   gap: 0.2em;
   font-size: calc(1.15em * var(--board-fit, 1));
 }
@@ -594,4 +615,6 @@
   border-radius: 0.6em;
   pointer-events: none;
 }
+.vote-notice { transition: opacity var(--in-s) ease; }
+.vote-notice.leaving { opacity: 0; }
 .vote-notice[hidden] { display: none; }

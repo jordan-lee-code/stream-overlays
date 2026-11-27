@@ -280,6 +280,10 @@
   var saveTimer = null;
   var tickTimer = null;
   var hideTimer = null;
+  var fadeTimer = null;   // starts a screen fading just before a timed change replaces it
+  var leaveTimer = null;  // takes the card away once it has faded out
+  var rowsDrawn = "";     // which rows are on screen, so they can be changed in place
+  var pollDrawn = "";     // which poll is on screen, so a new one fades in
   var loadToken = 0;      // guards against a stale store read landing after a newer load
   var lastFitKey = null;  // what the card was last measured against, so refits are rare
   var fontsWatched = false;
@@ -885,7 +889,7 @@
 
   function hideNotice() {
     if (noticeTimer) { clearTimeout(noticeTimer); noticeTimer = null; }
-    if (el.notice) { el.notice.hidden = true; el.notice.textContent = ""; }
+    if (el.notice) { el.notice.hidden = true; el.notice.textContent = ""; setClass(el.notice, "leaving", false); }
   }
 
   function notice(message) {
@@ -893,7 +897,11 @@
     hideNotice();
     el.notice.textContent = String(message).slice(0, 200);
     el.notice.hidden = false;
-    noticeTimer = setTimeout(hideNotice, NOTICE_MS);
+    fadeIn(el.notice);
+    noticeTimer = setTimeout(function () {
+      setClass(el.notice, "leaving", true);
+      noticeTimer = setTimeout(hideNotice, fadeMs());
+    }, NOTICE_MS);
   }
 
   // True when the card on screen already shows what a !lie reply read out.
@@ -978,7 +986,7 @@
       poll.endsAt = Date.now() + cfg.reopenSeconds * 1000;
     }
     if (poll.status === "running") startTicking(); else stopTicking();
-    if (hideTimer) { clearTimeout(hideTimer); hideTimer = null; }
+    clearHide();
     saveState();
     render();
   }
@@ -1049,7 +1057,7 @@
   // ---------------------------------------------------------------------------
   function startTicking() {
     stopTicking();
-    if (hideTimer) { clearTimeout(hideTimer); hideTimer = null; }
+    clearHide();
     tickTimer = setInterval(function () {
       if (!poll || poll.status !== "running") { stopTicking(); return; }
       if (Date.now() >= poll.endsAt) endPoll("timer");
@@ -1059,19 +1067,40 @@
   function stopTicking() {
     if (tickTimer) { clearInterval(tickTimer); tickTimer = null; }
   }
-  function scheduleHide() {
+  function fadeMs() { return cfg.look.animate ? cfg.look.enterMs * 1000 : 0; }
+
+  function clearHide() {
     if (hideTimer) { clearTimeout(hideTimer); hideTimer = null; }
+    if (fadeTimer) { clearTimeout(fadeTimer); fadeTimer = null; }
+    setClass(el.card, "changing", false);
+  }
+
+  // Runs `change` after a wait. When it swaps one screen for another, the old one fades out first.
+  function after(ms, change, swaps) {
+    hideTimer = setTimeout(function () {
+      hideTimer = null;
+      setClass(el.card, "changing", false);
+      change();
+    }, ms);
+    if (swaps && fadeMs() && ms > fadeMs()) {
+      fadeTimer = setTimeout(function () { fadeTimer = null; setClass(el.card, "changing", true); }, ms - fadeMs());
+    }
+  }
+
+  function scheduleHide() {
+    clearHide();
     if (poll && poll.answers && !poll.lie) return;   // the answers stay up until the lie is revealed
     // First the lie on its own, then the people who spotted it, and only then does the card leave.
     if (cfg.praise && poll && poll.lie && !poll.praising && spotters().length) {
-      hideTimer = setTimeout(startPraise, cfg.praiseAfter * 1000);
+      after(cfg.praiseAfter * 1000, startPraise, true);
       return;
     }
     var seconds = poll && poll.praising ? cfg.praiseSeconds : cfg.resultSeconds;
     if (!cfg.resultSeconds) return;   // 0 means leave the result up until told otherwise
-    hideTimer = setTimeout(function () {
+    // The leaderboard takes the card over. When the card is leaving instead, it fades as a whole.
+    after(seconds * 1000, function () {
       if (poll && poll.status === "ended") { poll.status = restingStatus(); saveState(); render(); }
-    }, seconds * 1000);
+    }, !!poll && restingStatus() === "board");
   }
 
   // The display names of everyone whose vote is on the lie.
@@ -1131,7 +1160,7 @@
 
   function showScores() {
     if (!poll || poll.status === "running" || (poll.answers && !poll.lie) || !standings().length) return;
-    if (hideTimer) { clearTimeout(hideTimer); hideTimer = null; }
+    clearHide();
     poll.status = "board";
     saveState();
     render();
@@ -1232,14 +1261,46 @@
     return !!poll && (poll.status === "running" || poll.status === "ended" || (poll.status === "board" && cfg.leaderboard && rounds.length > 0));
   }
 
+  // The card stays on the page while it fades out. "leaving" means it is on its way off.
+  function hideCard() {
+    if (el.card.hidden || leaveTimer) return;
+    if (!fadeMs()) { el.card.hidden = true; return; }
+    setClass(el.card, "leaving", true);
+    leaveTimer = setTimeout(function () {
+      leaveTimer = null;
+      el.card.hidden = true;
+      setClass(el.card, "leaving", false);
+    }, fadeMs());
+  }
+
+  function showCard() {
+    if (leaveTimer) { clearTimeout(leaveTimer); leaveTimer = null; }
+    setClass(el.card, "leaving", false);
+    el.card.hidden = false;
+  }
+
+  // Fades a part in again, for words that have just changed.
+  function fadeIn(node) {
+    if (!node || !node.classList) return;
+    node.classList.remove("fade-in");
+    void node.offsetWidth;
+    node.classList.add("fade-in");
+  }
+
+  function setText(node, text) {
+    if (node.textContent === text) return;
+    node.textContent = text;
+    fadeIn(node);
+  }
+
   function render() {
     if (!el.card) return;
 
     if (!visible()) {
-      el.card.hidden = true;
+      hideCard();
       return;
     }
-    el.card.hidden = false;
+    showCard();
 
     var running = poll.status === "running";
     var result = poll.result;
@@ -1259,7 +1320,11 @@
     setClass(el.card, "keys-only", keysOnly);
     setClass(el.card, "answers", !!poll.answers);
 
-    el.title.textContent = poll.who || poll.title || cfg.title;
+    setText(el.title, poll.who || poll.title || cfg.title);
+    if (poll.id !== pollDrawn) {
+      pollDrawn = poll.id;
+      fadeIn(el.options);
+    }
 
     el.timer.hidden = !running;
     if (running) {
@@ -1381,13 +1446,13 @@
   }
 
   function renderEyebrow(running, result) {
-    if (poll.answers && !poll.lie) { el.eyebrow.hidden = false; el.eyebrow.textContent = cfg.spotLabel; return; }
+    if (poll.answers && !poll.lie) { el.eyebrow.hidden = false; setText(el.eyebrow, cfg.spotLabel); return; }
     if (running || !result) { el.eyebrow.hidden = true; return; }
     el.eyebrow.hidden = false;
-    if (poll.lie) { el.eyebrow.textContent = cfg.lieLabel + " " + LETTERS[poll.lie.index]; return; }
-    if (!result.winners.length) el.eyebrow.textContent = cfg.emptyLabel;
-    else if (result.winners.length > 1) el.eyebrow.textContent = cfg.tieLabel;
-    else el.eyebrow.textContent = cfg.resultLabel;
+    if (poll.lie) { setText(el.eyebrow, cfg.lieLabel + " " + LETTERS[poll.lie.index]); return; }
+    if (!result.winners.length) setText(el.eyebrow, cfg.emptyLabel);
+    else if (result.winners.length > 1) setText(el.eyebrow, cfg.tieLabel);
+    else setText(el.eyebrow, cfg.resultLabel);
   }
 
   function renderOptions(running, result, total, best, blind, keysOnly) {
@@ -1399,22 +1464,46 @@
     // Once the lie is known it is the row that lights up, whatever chat thought.
     if (!running && poll.lie) { isWinner = {}; isWinner[poll.lie.index] = true; decided = true; }
 
-    var html = poll.options.map(function (o, i) {
-      var pct = total > 0 ? Math.round((o.votes / total) * 100) : 0;
-      var width = best > 0 ? Math.round((o.votes / best) * 100) : 0;
-      var cls = "vote-option";
-      if (decided) cls += isWinner[i] ? " win" : " lost";
+    var rows = poll.options.map(function (o, i) {
+      return {
+        cls: "vote-option" + (decided ? (isWinner[i] ? " win" : " lost") : ""),
+        votes: o.votes,
+        pct: total > 0 ? Math.round((o.votes / total) * 100) : 0,
+        width: best > 0 ? Math.round((o.votes / best) * 100) : 0,
+        count: ""
+      };
+    });
+    rows.forEach(function (row) { row.count = blind ? "" : row.votes + " · " + row.pct + "%"; });
 
-      return '<li class="' + cls + '" style="--seg:' + segColor(i) + '"' +
-        ' data-index="' + i + '" data-votes="' + o.votes + '" data-pct="' + pct + '">' +
+    // The same rows as last time are only changed, never rebuilt, so bars can slide and highlights can fade.
+    var same = JSON.stringify([poll.id, keysOnly, poll.options.map(function (o) { return o.label; })]);
+    if (same === rowsDrawn && updateRows(rows)) return;
+    rowsDrawn = same;
+
+    el.options.innerHTML = rows.map(function (row, i) {
+      return '<li class="' + row.cls + '" style="--seg:' + segColor(i) + '"' +
+        ' data-index="' + i + '" data-votes="' + row.votes + '" data-pct="' + row.pct + '">' +
         '<span class="vote-key">' + LETTERS[i] + '</span>' +
-        (keysOnly ? "" : '<span class="vote-label">' + escapeHtml(o.label) + '</span>') +
-        '<span class="vote-bar"><span class="vote-fill" style="width:' + width + '%"></span></span>' +
-        '<span class="vote-count">' + (blind ? "" : o.votes + " · " + pct + "%") + '</span>' +
+        (keysOnly ? "" : '<span class="vote-label">' + escapeHtml(poll.options[i].label) + '</span>') +
+        '<span class="vote-bar"><span class="vote-fill" style="width:' + row.width + '%"></span></span>' +
+        '<span class="vote-count">' + row.count + '</span>' +
         '</li>';
     }).join("");
+  }
 
-    el.options.innerHTML = html;
+  // False when the rows are not there to change, which leaves them to be built.
+  function updateRows(rows) {
+    var items = el.options.children;
+    if (!items || items.length !== rows.length || !items[0] || typeof items[0].querySelector !== "function") return false;
+    rows.forEach(function (row, i) {
+      var item = items[i];
+      item.className = row.cls;
+      item.setAttribute("data-votes", row.votes);
+      item.setAttribute("data-pct", row.pct);
+      item.querySelector(".vote-fill").style.width = row.width + "%";
+      item.querySelector(".vote-count").textContent = row.count;
+    });
+    return true;
   }
 
   function setClass(node, name, on) {
@@ -1705,11 +1794,16 @@
     applyTheme();
     watchResize();
     stopTicking();
-    if (hideTimer) { clearTimeout(hideTimer); hideTimer = null; }
+    clearHide();
     hideNotice();
     poll = null;
     undoStack = [];
     rounds = [];
+    rowsDrawn = "";
+    pollDrawn = "";
+    if (leaveTimer) { clearTimeout(leaveTimer); leaveTimer = null; }
+    setClass(el.card, "leaving", false);
+    if (el.card) el.card.hidden = true;
     lastFitKey = null;   // the box or the settings may have changed, so measure afresh
 
     /* The clock is stored as wall-clock time, so a refresh picks the poll up where it was.

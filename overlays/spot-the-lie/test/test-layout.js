@@ -176,6 +176,9 @@ ${css}
 *:not(.vote-praise-names),*::before,*::after{animation:none !important;transition:none !important;}
 </style></head><body><div id="box">${html}</div><script>
 window.SE_API={store:{set:()=>Promise.resolve(),get:()=>Promise.resolve(null)}};
+// When fonts started and finished loading, to explain any text that does not fit.
+var fontEvents=[];
+["loading","loadingdone","loadingerror"].forEach(function(n){document.fonts.addEventListener(n,function(){fontEvents.push(n+"@"+Math.round(performance.now()))})});
 var served={rev:1,number:0,who:"",letter:"",lie:""};
 window.fetch=function(){return Promise.resolve({ok:true,json:function(){return Promise.resolve(served)}})};
 ${js}
@@ -184,6 +187,13 @@ function chat(t,n){window.dispatchEvent(new CustomEvent("onEventReceived",{detai
   event:{data:{text:t,nick:n||"streamer",displayName:n||"Streamer",badges:n?[]:[{type:"broadcaster"}],tags:{}}}}}));}
 var answers=${JSON.stringify(answers || null)};
 var steps=[], wait=function(ms){return new Promise(function(r){setTimeout(r,ms)})};
+/* The card's font can still be on its way when a step is reached, and the widget can only fit the text again once it
+   has landed. So wait for that and nothing else: no vote or reveal is sent, and the widget has to do the refit itself.
+   Reading a size first makes the browser ask for any font it has not asked for yet. */
+async function settled(){
+  for(var i=0;i<60;i++){ void document.body.offsetWidth; await wait(100); if(document.fonts.status!=="loading") break; }
+  await wait(200);
+}
 function look(name){
   var card=document.getElementById("vote-card"), c=card.getBoundingClientRect();
   var at=[".vote-card",".vote-head",".vote-eyebrow",".vote-options",".vote-lie",".vote-foot",".vote-option",".vote-bar",".vote-count"].map(function(q){
@@ -193,7 +203,11 @@ function look(name){
       if(q===".vote-option") b=[e.offsetTop,e.offsetHeight,e.offsetWidth];
       return b.map(Math.round).join(",")}).join(";")}).join("|");
   var clipped=[].filter.call(document.querySelectorAll(".vote-title,.vote-lie,.vote-count,.vote-label"),function(e){
-    var r=document.createRange();r.selectNodeContents(e);var wide=e.scrollWidth>e.clientWidth||(e.className==="vote-title"&&r.getBoundingClientRect().width>e.getBoundingClientRect().width+0.05);return getComputedStyle(e).visibility!=="hidden"&&(wide||(/lie|label/.test(e.className)&&e.scrollHeight>e.clientHeight+Math.max(1,parseFloat(getComputedStyle(e).fontSize)*0.4)))}).map(function(e){return e.className});
+    var r=document.createRange();r.selectNodeContents(e);var wide=e.scrollWidth>e.clientWidth||(e.className==="vote-title"&&r.getBoundingClientRect().width>e.getBoundingClientRect().width+0.05);return getComputedStyle(e).visibility!=="hidden"&&(wide||(/lie|label/.test(e.className)&&e.scrollHeight>e.clientHeight+Math.max(1,parseFloat(getComputedStyle(e).fontSize)*0.4)))}).map(function(e){
+    var r=document.createRange();r.selectNodeContents(e);
+    return e.className+" {at "+Math.round(performance.now())+", text "+r.getBoundingClientRect().width.toFixed(2)+" in "+e.getBoundingClientRect().width.toFixed(2)+
+      ", scroll "+e.scrollWidth+"/"+e.clientWidth+", title-fit "+document.getElementById("vote-card").style.getPropertyValue("--title-fit")+
+      ", size "+getComputedStyle(e).fontSize+", fonts "+document.fonts.status+" "+fontEvents.join(" ")+"}"});
   var low=document.querySelector(".vote-foot").getBoundingClientRect().bottom;
   var list=document.querySelector(".vote-options").getBoundingClientRect(), rows=[].slice.call(document.querySelectorAll(".vote-option"));
   var whole=rows.length===3&&rows.every(function(r){var b=r.getBoundingClientRect();return b.top>=list.top-1&&b.bottom<=list.bottom+1});
@@ -204,10 +218,10 @@ function look(name){
   await document.fonts.ready; await wait(60);
   if(answers){ served={rev:2,number:5,who:"${LONG_NAME}",letter:"",lie:"",answers:answers}; await wait(1300); }
   else { chat("!vote 600s"); await wait(300); }
-  look("vote open");
-  chat("a","a_very_long_viewer_name_indeed_it_is"); for(var v=0;v<999;v++) chat("a","v"+v); await wait(300); look("1000 votes");
-  served={rev:3,number:5,who:"${LONG_NAME}",letter:"",lie:"",answers:answers||[]}; await wait(1300); look("long name");
-  served={rev:4,number:5,who:"${LONG_NAME}",letter:"A",lie:${JSON.stringify(LONG_LIE)},answers:answers||[]}; await wait(1300); look("long lie");
+  await settled(); look("vote open");
+  chat("a","a_very_long_viewer_name_indeed_it_is"); for(var v=0;v<999;v++) chat("a","v"+v); await wait(300); await settled(); look("1000 votes");
+  served={rev:3,number:5,who:"${LONG_NAME}",letter:"",lie:"",answers:answers||[]}; await wait(1300); await settled(); look("long name");
+  served={rev:4,number:5,who:"${LONG_NAME}",letter:"A",lie:${JSON.stringify(LONG_LIE)},answers:answers||[]}; await wait(1300); await settled(); look("long lie");
   await wait(5000);
   var card=document.getElementById("vote-card").getBoundingClientRect(), say=document.getElementById("vote-praise-title").getBoundingClientRect();
   var view=document.getElementById("vote-praise-window").getBoundingClientRect(), names=document.getElementById("vote-praise-names");
@@ -225,7 +239,13 @@ function look(name){
   var board={shown:!document.getElementById("vote-board").hidden,w:Math.round(bc.width),h:Math.round(bc.height),count:list.children.length,
     rows:[].every.call(list.children,function(r){var b=r.getBoundingClientRect();return b.top>=lr.top-1&&b.bottom<=lr.bottom+1&&b.left>=lr.left-1&&b.right<=lr.right+1&&b.height>8}),
     points:[].every.call(list.querySelectorAll(".vote-board-points"),function(p){var b=p.getBoundingClientRect();return b.width>0&&b.right<=lr.right+1}),
-    inside:lr.bottom<=bc.bottom+1};
+    inside:lr.bottom<=bc.bottom+1,
+    top:list.children.length?list.children[0].getBoundingClientRect().top-lr.top:99};
+  // With only one person listed, first place is in the same spot, not floating in the middle.
+  var kept=[].slice.call(list.children,1); kept.forEach(function(r){list.removeChild(r)});
+  board.alone=list.children[0].getBoundingClientRect().top-lr.top;
+  board.under=list.children[0].getBoundingClientRect().top-document.getElementById("vote-board-title").getBoundingClientRect().bottom;
+  board.text=parseFloat(getComputedStyle(document.getElementById("vote-card")).fontSize);
   document.title=JSON.stringify({steps:steps,praise:steps.praise,board:board});
 })();
 <\/script></body></html>`.replace("<\\/script>", "<\/script>");
@@ -299,6 +319,7 @@ return Promise.all(plans.map((p, i) => round(p.box, i, p.answers))).then((rounds
     ok(praise.titleIn && praise.viewIn && !praise.wide, "with its heading and the names inside it");
     ok(board.shown && board.w === first.w && board.h === first.h, "the leaderboard keeps the card the same size");
     ok(board.count === 5 && board.rows && board.points && board.inside, "with all five rows and their points inside it");
+    ok(Math.abs(board.top) <= 1 && Math.abs(board.alone) <= 1 && board.under >= 0 && board.under <= board.text, "first place sits just under the heading, with five listed or only one (" + Math.round(board.under) + "px below it)");
     ok(praise.ends > 0 && praise.ends < 10, "ending before the card leaves at ten seconds (" + praise.ends.toFixed(2) + "s)");
     ok(praise.count > 1 && praise.perLine, "with each name on its own line (" + praise.count + " lines)");
     ok(praise.scrolls && Math.abs(praise.from - praise.viewH) <= 2 && Math.abs(praise.to + praise.listH) <= 2, "rolling from below the window until the last has left the top (" + praise.from + " to " + praise.to + ")");

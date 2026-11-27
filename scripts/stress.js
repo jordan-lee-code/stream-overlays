@@ -19,7 +19,8 @@
 "use strict";
 const fs = require("fs");
 const path = require("path");
-const { spawn, spawnSync } = require("child_process");
+const { spawnSync } = require("child_process");
+const capture = require("./capture");
 
 const ROOT = path.join(__dirname, "..");
 const args = process.argv.slice(2);
@@ -50,16 +51,10 @@ function plan(name) {
   };
 }
 
-function run(suite) {
-  return new Promise(resolve => {
-    const began = Date.now();
-    let out = "";
-    const child = spawn("sh", ["-c", suite.cmd], { cwd: suite.cwd, env: process.env });
-    child.stdout.on("data", d => { out += d; });
-    child.stderr.on("data", d => { out += d; });
-    child.on("error", e => resolve({ ok: false, out: String(e), ms: Date.now() - began }));
-    child.on("close", code => resolve({ ok: code === 0 && /=== \d+ passed, 0 failed ===/.test(out), out, ms: Date.now() - began }));
-  });
+async function run(suite) {
+  const began = Date.now();
+  const r = await capture("sh", ["-c", suite.cmd], { cwd: suite.cwd, env: process.env });
+  return { ok: r.code === 0 && /=== \d+ passed, 0 failed ===/.test(r.out), out: r.out, ms: Date.now() - began, ended: r.signal ? "stopped by " + r.signal : "exit code " + r.code };
 }
 
 (async () => {
@@ -94,7 +89,7 @@ function run(suite) {
     const counts = {};
     bad.forEach(r => {
       const fails = r.out.split("\n").filter(l => /^\s*FAIL\b/.test(l)).map(l => l.replace(/^\s*FAIL\s*/, ""));
-      (fails.length ? fails : ["(no failing check reported; " + r.out.split("\n").filter(Boolean).slice(-1)[0] + ")"]).forEach(f => { counts[f] = (counts[f] || 0) + 1; });
+      (fails.length ? fails : ["(no failing check reported; " + r.ended + "; last line: " + r.out.split("\n").filter(Boolean).slice(-1)[0] + ")"]).forEach(f => { counts[f] = (counts[f] || 0) + 1; });
     });
     Object.keys(counts).sort((a, b) => counts[b] - counts[a]).forEach(f => console.log("    failed in " + counts[f] + " of " + rs.length + " runs: " + f));
   });
